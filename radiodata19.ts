@@ -54,24 +54,46 @@ für CalliBot, MakerKitCar, CaR4
     //% pBuffer.shadow="radio_sendBuffer19"
     //% inlineInputMode=inline 
     export function setByte(pBuffer: Buffer, pBufferOffset: eBufferOffset, pByte: number, pBufferPointer?: eBufferPointer) {
-        if (!pBufferPointer) pBufferPointer = eBufferPointer.p0  // wenn nicht angegeben internen Wert nehmen
-        switch (pBufferOffset) {
-            case eBufferOffset.b1_Servo:
-                pBuffer[pBufferPointer + eBufferOffset.b1_Servo] &= 0b11100000 // AND Bit 7-6-5 bleiben; 4-3-2-1-0 auf 0 setzen
-                pBuffer[pBufferPointer + eBufferOffset.b1_Servo] |= (pByte & 0b00011111) // OR Bit 7-6-5 bleiben; 4-3-2-1-0 auf pByte setzen
-                //pBuffer[pBufferPointer + eBufferOffset.b1_Servo] |= (Math.round(pByte / 3 - 14) & 0b00011111) // OR Bit 7-6-5 bleiben; 4-3-2-1-0 auf Ergebnis setzen
+        if (!pBufferPointer) pBufferPointer = eBufferPointer.p0  // wenn nicht angegeben
 
-                //n_sendBuffer19.setUint8(pBufferPointer + pBufferOffset, Math.round(pByte / 3 - 14) & 0b00011111)
-                break
-            //case eBufferOffset.b1_3Bit:
-            //    pBuffer[pBufferPointer + eBufferOffset.b1_Servo] &= 0b00011111 // AND Bit 4-3-2-1-0 bleiben; 7-6-5 auf 0 setzen
-            //    pBuffer[pBufferPointer + eBufferOffset.b1_Servo] |= (pByte << 5) // OR Bit 4-3-2-1-0 bleiben
-            //    break
-            default: // b0_Motor und b2_Fahrstrecke 0..255
-                pBuffer.setUint8(pBufferPointer + pBufferOffset, pByte)
-                break
+        if (pBufferOffset == eBufferOffset.b1_Servo) {
+            pBuffer[pBufferPointer + pBufferOffset] &= 0b11100000 // AND Bit 7-6-5 bleiben; 4-3-2-1-0 auf 0 setzen
+            pBuffer[pBufferPointer + pBufferOffset] |= (pByte & 0b00011111) // OR Bit 7-6-5 bleiben; 4-3-2-1-0 auf pByte setzen
+        } else {
+            pBuffer.setUint8(pBufferPointer + pBufferOffset, pByte)
+        }
+
+        /* 
+                switch (pBufferOffset) {
+                    case eBufferOffset.b1_Servo:
+                        pBuffer[pBufferPointer + pBufferOffset] &= 0b11100000 // AND Bit 7-6-5 bleiben; 4-3-2-1-0 auf 0 setzen
+                        pBuffer[pBufferPointer + pBufferOffset] |= (pByte & 0b00011111) // OR Bit 7-6-5 bleiben; 4-3-2-1-0 auf pByte setzen
+                        //pBuffer[pBufferPointer + eBufferOffset.b1_Servo] |= (Math.round(pByte / 3 - 14) & 0b00011111) // OR Bit 7-6-5 bleiben; 4-3-2-1-0 auf Ergebnis setzen
+        
+                        //n_sendBuffer19.setUint8(pBufferPointer + pBufferOffset, Math.round(pByte / 3 - 14) & 0b00011111)
+                        break
+                    //case eBufferOffset.b1_3Bit:
+                    //    pBuffer[pBufferPointer + eBufferOffset.b1_Servo] &= 0b00011111 // AND Bit 4-3-2-1-0 bleiben; 7-6-5 auf 0 setzen
+                    //    pBuffer[pBufferPointer + eBufferOffset.b1_Servo] |= (pByte << 5) // OR Bit 4-3-2-1-0 bleiben
+                    //    break
+                    default: // b0_Motor und b2_Fahrstrecke 0..255
+                        pBuffer.setUint8(pBufferPointer + pBufferOffset, pByte)
+                        break
+                } */
+    }
+
+    //% group="Datenpaket auswerten" subcategory="Buffer"
+    //% block="Buffer %pBuffer get Byte %pOffset || %pBufferPointer " weight=7
+    export function getByte(pBuffer: Buffer, pBufferOffset: eBufferOffset, pBufferPointer?: eBufferPointer) {
+        if (!pBufferPointer) pBufferPointer = eBufferPointer.p0  // wenn nicht angegeben
+
+        if (pBufferOffset == eBufferOffset.b1_Servo) {
+            return pBuffer[pBufferPointer + eBufferOffset.b1_Servo] & 0b00011111 // AND Bit 7-6-5 löschen
+        } else {
+            return pBuffer.getUint8(pBufferPointer + pBufferOffset)
         }
     }
+
 
     export enum eMotorBit {
         M0 = 0b000001,
@@ -104,6 +126,12 @@ für CalliBot, MakerKitCar, CaR4
     export function setProgramm(pBuffer: Buffer, pProgramm: eProgramm) {
         pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= 0b00111111 // AND Bit 5-4-3-2-1-0 bleiben; 7-6 auf 0 setzen
         pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (pProgramm & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf pByte setzen
+    }
+
+    //% group="Datenpaket auswerten" subcategory="Buffer"
+    //% block="Buffer[3] %pBuffer get Programm" weight=6
+    export function getProgramm(pBuffer: Buffer): eProgramm {
+        return (pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
 
 

@@ -6,9 +6,9 @@ input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
 })
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     radio.fill_sendBuffer19()
-    radio.setProgramm(radio.radio_sendBuffer19(), radio.eProgramm.p2)
+    radio.setProgramm(radio.radio_sendBuffer19(), radio.eProgramm.p3)
     radio.setMotorPower(radio.radio_sendBuffer19(), radio.eMotorBit.MAB, true)
-    basic.showString(radio.toHex([radio.getNumber(radio.radio_sendBuffer19(), NumberFormat.UInt8LE, 3)]))
+    basic.showString(radio.toHex([radio.getProgramm(radio.radio_sendBuffer19())]))
     if (radio.getMotorPower(radio.radio_sendBuffer19(), radio.eMotorBit.MC)) {
         basic.setLedColor(0x00ff00)
     } else {
