@@ -3,6 +3,25 @@ namespace radio { // eventblocks.ts
 
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
 
+    // ========== group="Bluetooth senden" subcategory="Buffer 19"
+
+    export let n_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
+
+    //% blockId=radio_get_sendBuffer19
+    //% group="Bluetooth senden" subcategory="Buffer 19"
+    //% block="sendData" weight=2
+    export function radio_get_sendBuffer19(): Buffer { return n_sendBuffer19 }
+
+
+    //% group="Bluetooth senden" subcategory="Buffer 19"
+    //% block="Buffer senden %msg" weight=1
+    //% msg.shadow="radio_get_sendBuffer19"
+    export function sendBuffer19(msg: Buffer) {
+        radio.sendBuffer(msg)
+    }
+
+
+
     // ========== Bluetooth Event radio.onReceivedBuffer behandeln ==========
 
     // deklariert die Variable mit dem Delegat-Typ '(receivedBuffer: Buffer) => void'
@@ -41,9 +60,9 @@ namespace radio { // eventblocks.ts
             onReceivedDataHandler(receivedBuffer) // Ereignis Block auslösen, nur wenn benutzt
     })
 
-    // ========== group="Bluetooth Verbindung" subcategory="Buffer 19"
+    // ========== group="Bluetooth empfangen" subcategory="Buffer 19"
 
-    // Event-Block
+    // sichtbarer Event-Block
 
     //% group="Bluetooth empfangen" subcategory="Buffer 19"
     //% block="wenn Buffer empfangen" weight=9
@@ -51,28 +70,11 @@ namespace radio { // eventblocks.ts
     export function onReceivedData(cb: (receivedData: Buffer) => void) {
         // das ist der sichtbare Ereignis Block 'wenn Buffer empfangen (receivedData)'
         // hier wird nur der Delegat-Variable eine konkrete callback function zugewiesen
+        // dieser Block speichert in der Variable, dass er beim Ereignis zurückgerufen werden soll
         onReceivedDataHandler = cb
         // aufgerufen wird beim Ereignis 'radio.onReceivedBuffer' die der Variable 'onReceivedDataHandler' zugewiesene function
         // das sind die Blöcke, die später im Ereignis Block 'wenn Buffer empfangen (receivedData)' enthalten sind
     }
 
-
-
-    // Bluetooth senden
-
-    export let n_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
-
-    //% blockId=radio_get_sendBuffer19
-    //% group="Bluetooth senden" subcategory="Buffer 19"
-    //% block="sendBuffer"
-    export function radio_get_sendBuffer19(): Buffer { return n_sendBuffer19 }
-
-
-    //% group="Bluetooth senden" subcategory="Buffer 19"
-    //% block="Buffer senden %msg"
-    //% msg.shadow="radio_get_sendBuffer19"
-    export function sendBuffer19(msg: Buffer) {
-        radio.sendBuffer(msg)
-    }
 
 } // eventblocks.ts
