@@ -22,7 +22,29 @@ für CalliBot, MakerKitCar, CaR4
         //% block="MD 16-17-18 dunkel dunkel"
         p5 = 16
     }
-    // let n_BufferPointer: eBufferPointer = eBufferPointer.p0 // n=0..5 (n*3)+1 = 1, 4, 7, 10, 13, 16
+
+    export enum eMotorBit {
+        //% block="M0 | Fernsteuerung"
+        M0 = 0b000001,
+        //% block="M1 | Ultraschall"
+        M1 = 0b000010,
+        //% block="MA | hell hell"
+        MA = 0b000100,
+        //% block="MB | hell dunkel"
+        MB = 0b001000,
+        //% block="MC | dunkel hell"
+        MC = 0b010000,
+        //% block="MD | dunkel dunkel"
+        MD = 0b100000,
+        //% block="M0 & M1"
+        M01 = 0b000011,
+        //% block="MA & MB"
+        MAB = 0b001100,
+        //% block="MC & MD"
+        MCD = 0b110000,
+        //% block="alle"
+        Malle = 0b111111
+    }
 
     export enum eBufferOffset { // 3 Byte (b0-b1-b2) ab n_BufferPointer
         //% block="0 Motor 0..128..255"
@@ -95,24 +117,10 @@ für CalliBot, MakerKitCar, CaR4
     }
 
 
-    export enum eMotorBit {
-        M0 = 0b000001,
-        M1 = 0b000010,
-        M01 = 0b000011,
-        MA = 0b000100,
-        MB = 0b001000,
-        MAB = 0b001100,
-        MC = 0b010000,
-        MD = 0b100000,
-        MCD = 0b110000,
-        //% block="alle"
-        Malle = 0b111111
-    }
-
     export enum eProgramm {
         //% block="Fernsteuerung Motoren"
         p0 = 0x00,
-        //% block="Fernsteuerung 1 Motor bis Sensor"
+        //% block="Fernsteuerung Motor M0 bis Sensor"
         p1 = 0x40,
         //% block="Programm 5 Strecken"
         p2 = 0x80,
