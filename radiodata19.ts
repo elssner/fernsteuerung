@@ -76,12 +76,15 @@ für CalliBot, MakerKitCar, CaR4
     export enum eMotorBit {
         M0 = 0b000001,
         M1 = 0b000010,
+        M01 = 0b000011,
         MA = 0b000100,
         MB = 0b001000,
+        MAB = 0b001100,
         MC = 0b010000,
         MD = 0b100000,
+        MCD = 0b110000,
         //% block="alle"
-        Malle = 0b000000
+        Malle = 0b111111
     }
 
     export enum eProgramm {
@@ -115,6 +118,14 @@ für CalliBot, MakerKitCar, CaR4
             pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= ~pMotorBit // AND Einsen bleiben, nur 0 wird gesetzt
     }
 
+    //% group="Datenpaket auswerten" subcategory="Buffer"
+    //% block="Buffer[3] %pBuffer get Motor Power %pMotorBit %pBit" weight=5
+    export function getMotorPower(pBuffer: Buffer, pMotorBit: eMotorBit) {
+        return (pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & pMotorBit) != 0
+    }
+
+
+
     //% group="Datenpaket vorbereiten" subcategory="Buffer"
     //% block="Buffer[0] %pBuffer set Bit %pBufferBit %pBit" weight=1
     //% pBuffer.shadow="radio_sendBuffer19"
@@ -133,6 +144,27 @@ für CalliBot, MakerKitCar, CaR4
     //% group="Kommentar" advanced=true
     //% block="// %text"
     export function comment(text: string): void { }
+
+
+
+
+    // ========== group="Buffer" advanced=true
+
+    //% group="Buffer" advanced=true
+    //% block="%pNumber .toHex()"
+    export function toHex(pNumber: number[]): string { return Buffer.fromArray(pNumber).toHex() }
+
+
+    //% group="Buffer" advanced=true
+    //% block="Buffer %pBuffer .getNumber(%format offset %off)"
+    //% format.defl=NumberFormat.UInt8LE
+    export function getNumber(pBuffer: Buffer, format: NumberFormat, off: number): number { return pBuffer.getNumber(format, off) }
+
+    //% group="Buffer" advanced=true
+    //% block="Buffer %pBuffer .setNumber(%format offset %off value %value)" 
+    //% format.defl=NumberFormat.UInt8LE
+    //% inlineInputMode=inline
+    export function setNumber(pBuffer: Buffer, format: NumberFormat, off: number, value: number) { pBuffer.setNumber(format, off, value) }
 
 }
 // radiodata19.ts
