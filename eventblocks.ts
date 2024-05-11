@@ -3,21 +3,24 @@ namespace radio { // eventblocks.ts
 
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
 
-    // ========== group="Bluetooth senden" subcategory="Buffer 19"
+    // ========== group="Bluetooth senden" subcategory="Buffer"
 
-    export let n_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
+    let n_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
 
-    //% blockId=radio_get_sendBuffer19
-    //% group="Bluetooth senden" subcategory="Buffer 19"
-    //% block="sendData" weight=2
-    export function radio_get_sendBuffer19(): Buffer { return n_sendBuffer19 }
+    //% blockId=radio_sendBuffer19
+    //% group="Bluetooth senden" subcategory="Buffer"
+    //% block="sendData" weight=5
+    export function radio_sendBuffer19(): Buffer { return n_sendBuffer19 }
 
+    //% group="Bluetooth senden" subcategory="Buffer"
+    //% block="sendData löschen" weight=3
+    export function fill_sendBuffer19() { n_sendBuffer19.fill(0) }
 
-    //% group="Bluetooth senden" subcategory="Buffer 19"
-    //% block="Buffer senden %msg" weight=1
-    //% msg.shadow="radio_get_sendBuffer19"
-    export function sendBuffer19(msg: Buffer) {
-        radio.sendBuffer(msg)
+    //% group="Bluetooth senden" subcategory="Buffer"
+    //% block="Buffer senden %sendBuffer" weight=1
+    //% sendBuffer.shadow="radio_sendBuffer19"
+    export function sendData(sendBuffer: Buffer) {
+        radio.sendBuffer(sendBuffer)
     }
 
 
@@ -60,11 +63,11 @@ namespace radio { // eventblocks.ts
             onReceivedDataHandler(receivedBuffer) // Ereignis Block auslösen, nur wenn benutzt
     })
 
-    // ========== group="Bluetooth empfangen" subcategory="Buffer 19"
+    // ========== group="Bluetooth empfangen" subcategory="Buffer"
 
     // sichtbarer Event-Block
 
-    //% group="Bluetooth empfangen" subcategory="Buffer 19"
+    //% group="Bluetooth empfangen" subcategory="Buffer"
     //% block="wenn Buffer empfangen" weight=9
     //% draggableParameters=reporter
     export function onReceivedData(cb: (receivedData: Buffer) => void) {
