@@ -53,7 +53,7 @@ für CalliBot, MakerKitCar, CaR4
     //% block="Buffer %pBuffer set Byte %pOffset %pByte || %pBufferPointer " weight=7
     //% pBuffer.shadow="radio_sendBuffer19"
     //% inlineInputMode=inline 
-    export function setUint8(pBuffer: Buffer, pBufferOffset: eBufferOffset, pByte: number, pBufferPointer?: eBufferPointer) {
+    export function setByte(pBuffer: Buffer, pBufferOffset: eBufferOffset, pByte: number, pBufferPointer?: eBufferPointer) {
         if (!pBufferPointer) pBufferPointer = eBufferPointer.p0  // wenn nicht angegeben internen Wert nehmen
         switch (pBufferOffset) {
             case eBufferOffset.b1_Servo:
@@ -73,8 +73,50 @@ für CalliBot, MakerKitCar, CaR4
         }
     }
 
-    //% group="Datenpaket vorbereiten" subcategory="Buffer" color=#E3008C
-    //% block="Steuer-Byte 0 %pBuffer %pBufferBit %pBit" weight=1
+    export enum eMotorBit {
+        M0 = 0b000001,
+        M1 = 0b000010,
+        MA = 0b000100,
+        MB = 0b001000,
+        MC = 0b010000,
+        MD = 0b100000,
+        //% block="alle"
+        Malle = 0b000000
+    }
+
+    export enum eProgramm {
+        //% block="Fernsteuerung Motoren"
+        p0 = 0x00,
+        //% block="Fernsteuerung 1 Motor bis Sensor"
+        p1 = 0x40,
+        //% block="Programm 5 Strecken"
+        p2 = 0x80,
+        //% block="Programm Sensoren"
+        p3 = 0xC0
+    }
+
+    //% group="Datenpaket vorbereiten" subcategory="Buffer"
+    //% block="Buffer[3] %pBuffer set Programm %pProgramm" weight=6
+    //% pBuffer.shadow="radio_sendBuffer19"
+    export function setProgramm(pBuffer: Buffer, pProgramm: eProgramm) {
+        pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= 0b00111111 // AND Bit 5-4-3-2-1-0 bleiben; 7-6 auf 0 setzen
+        pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (pProgramm & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf pByte setzen
+    }
+
+
+    //% group="Datenpaket vorbereiten" subcategory="Buffer"
+    //% block="Buffer[3] %pBuffer set Motor Power %pMotorBit %pBit" weight=5
+    //% pBuffer.shadow="radio_sendBuffer19"
+    //% pBit.shadow="toggleOnOff"
+    export function setMotorPower(pBuffer: Buffer, pMotorBit: eMotorBit, pBit: boolean) {
+        if (pBit)
+            pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= pMotorBit // OR Nullen bleiben, nur 1 wird gesetzt
+        else
+            pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= ~pMotorBit // AND Einsen bleiben, nur 0 wird gesetzt
+    }
+
+    //% group="Datenpaket vorbereiten" subcategory="Buffer"
+    //% block="Buffer[0] %pBuffer set Bit %pBufferBit %pBit" weight=1
     //% pBuffer.shadow="radio_sendBuffer19"
     //% pBit.shadow="toggleOnOff"
     export function sendBuffer0_setBit(pBuffer: Buffer, pBufferBit: eBufferBit, pBit: boolean) {
