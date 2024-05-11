@@ -7,5 +7,9 @@ für CalliBot, MakerKitCar, CaR4
 */ { // radiodata19.ts
 
 
+    //% group="Kommentar" advanced=true
+    //% block="// %text"
+    export function comment(text: string): void { }
+
 }
 // radiodata19.ts

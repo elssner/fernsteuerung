@@ -44,14 +44,20 @@ namespace radio { // eventblocks.ts
     // Bluetooth senden
 
 
-    //  export let n_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
+    export let n_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
 
-    //% group="Bluetooth Verbindung" subcategory="Buffer 19"
+
+
+    //% group="Bluetooth senden" subcategory="Buffer 19"
     //% block="Buffer senden %msg" weight=9
+    // msg.shadow="radio_sendBuffer19"
     export function sendBuffer19(msg: Buffer) {
         radio.sendBuffer(msg)
     }
 
-
+    //% blockId=radio_sendBuffer19
+    //% group="Bluetooth senden" subcategory="Buffer 19"
+    //% block="sendBuffer19"
+    export function radio_sendBuffer19(): Buffer { return n_sendBuffer19 }
 
 } // eventblocks.ts
