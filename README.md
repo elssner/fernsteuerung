@@ -14,10 +14,18 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 hex|bit|Funktion
 ---|---|---
-0x80|7|Soft-Reset
-0x40|6|Status Buffer zurück senden
+0x80|7|7 Soft-Reset
+0x40|6|6 Status Buffer zurück senden
 0x00|5-4|00 Fernsteuerung Motoren
-0x01|5-4|10 Fernsteuerung Motor M0 bis Sensor
+0x10|5-4|10 Fernsteuerung Motor M0 bis Sensor
+0x20|5-4|20 Programm 5 Strecken
+0x30|5-4|30 Programm Sensoren
+0x08|3|3 Schalter
+0x04|2|2 Schalter
+0x03|1|1 Schalter
+0x01|0|0 Hupe
+
+
 
 
 ## Blocks preview
