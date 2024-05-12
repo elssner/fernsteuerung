@@ -33,6 +33,15 @@ für CalliBot, MakerKitCar, CaR4
         // b1_3Bit = 3 // Bit 7-6-5
     }
 
+    export enum eSensor {
+        //% block="5 Stop bei schwarzer Linie"
+        b5 = 0x20,
+        //% block="6 Stop bei Ultraschall"
+        b6 = 0x40,
+        //% block="7 Encoder Impulse"
+        b7 = 0x80
+    }
+
 
 
     // ========== Steuer-Byte 0
@@ -143,7 +152,7 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 3
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %buffer set Motor Power %motorBit %bit" weight=3
+    //% block="Buffer[3] %buffer set Motor Power %motorBit %bit" weight=4
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
     export function setMotorPower(buffer: Buffer, motorBit: e3MotorBit, bit: boolean) {
@@ -154,14 +163,14 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %buffer get Motor Power %motorBit %pBit" weight=3
+    //% block="Buffer[3] %buffer get Motor Power %motorBit %pBit" weight=4
     export function getMotorPower(buffer: Buffer, motorBit: e3MotorBit) {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & motorBit) != 0
     }
 
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %buffer Ultraschall Entfernung %entfernung" weight=2
+    //% block="Buffer[3] %buffer Ultraschall Entfernung %entfernung" weight=3
     //% buffer.shadow="radio_sendBuffer19"
     export function setEntfernung(buffer: Buffer, entfernung: e3Entfernung) {
         buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= 0b00111111 // AND Bit 5-4-3-2-1-0 bleiben; 7-6 auf 0 setzen
@@ -169,7 +178,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %buffer Ultraschall Entfernung" weight=2
+    //% block="Buffer[3] %buffer Ultraschall Entfernung" weight=3
     export function getEntfernung(buffer: Buffer): e3Entfernung {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
@@ -179,7 +188,7 @@ für CalliBot, MakerKitCar, CaR4
     // ========== 3 Byte (Motor, Servo, Entfernung)
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
-    //% block="Buffer %buffer set Byte %pBufferOffset %byte || %pBufferPointer" weight=1
+    //% block="Buffer %buffer set Byte %pBufferOffset %byte || %pBufferPointer" weight=2
     //% buffer.shadow="radio_sendBuffer19"
     //% byte.min=0 byte.max=255
     //% inlineInputMode=inline 
@@ -213,7 +222,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
-    //% block="Buffer %buffer get Byte %pBufferOffset || %pBufferPointer " weight=1
+    //% block="Buffer %buffer get Byte %pBufferOffset || %pBufferPointer" weight=2
     export function getByte(buffer: Buffer, pBufferOffset: eBufferOffset, pBufferPointer?: eBufferPointer) {
         if (!pBufferPointer) pBufferPointer = eBufferPointer.p0  // wenn nicht angegeben
 
@@ -223,6 +232,23 @@ für CalliBot, MakerKitCar, CaR4
             return buffer.getUint8(pBufferPointer + pBufferOffset)
         }
     }
+
+
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    //% block="Buffer %buffer set Sensor %sensor %bit || %pBufferPointer" weight=1
+    //% buffer.shadow="radio_sendBuffer19"
+    //% bit.shadow="toggleOnOff"
+    //% inlineInputMode=inline 
+    export function setSensor(buffer: Buffer, sensor: eSensor, bit: boolean, pBufferPointer?: eBufferPointer) {
+        if (!pBufferPointer) pBufferPointer = eBufferPointer.p0  // wenn nicht angegeben
+
+        if (bit)
+            buffer[pBufferPointer + eBufferOffset.b1_Servo] |= sensor // OR Nullen bleiben, nur 1 wird gesetzt
+        else
+            buffer[pBufferPointer + eBufferOffset.b1_Servo] &= ~sensor // AND Einsen bleiben, nur 0 wird gesetzt
+    }
+
+
 
 
 
