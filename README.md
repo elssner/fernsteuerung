@@ -15,7 +15,7 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 * Byte 0 und Byte 3 sind Steuer-Bytes
 * 3 Byte (Motor, Servo, Entfernung) wiederholen sich 6 Mal im Buffer ab offset 1
 * beim 1. Block Fernsteuerung entfällt die Entfernung, stattdessen Steuer-Byte 3
-* Byte Motor: 8 Bit 0..128..255; 128 ist Stop
+* Byte Motor: 8 Bit 0..128..255; 128 ist Stop; 127..0 ist rückwärts
 * Byte Servo: 6 Bit 1..16..31; 16 und 0 ist geradeaus
 * Byte Servo: 0x20 (Bit 5) Stop bei schwarzer Linie
 * Byte Servo: 0x40 (bit 6) Stop bei Ultraschall
@@ -25,14 +25,28 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 offset|Funktion|Beschreibung
 ---|---|---
-0|Steuer-Byte 0|Betriebsart, Schalter
-1|M0 Motor|0..128..255
+0|Steuer-Byte 0|Betriebsart und Schalter
+1 Joystick|M0 Motor|0..128..255
 2|M0 Servo (6 Bit)|1..16..31 \| 0x20 Liniensensor \| 0x40 Ultraschall \| 0x80 Encoder
-3|Steuer-Byte 3|
-4|M1 Motor|0..128..255
+3|Steuer-Byte 3|Motor Power und Ultraschall Entfernung
+4 Ultraschall|M1 Motor|0..128..255
+5|M1 Servo (6 Bit)|1..16..31 \| 0x20 Liniensensor \| 0x40 Ultraschall \| 0x80 Encoder
+6|M1 Entfernung|0..255 cm oder 0..25,5 Sekunden
+7 Linie 00|MA Motor|0..128..255
+8|MA Servo (6 Bit)|1..16..31 \| 0x20 Liniensensor \| 0x40 Ultraschall \| 0x80 Encoder
+9|MA Entfernung|0..255 cm oder 0..25,5 Sekunden
+10 Linie 01|MB Motor|0..128..255
+11|MB Servo (6 Bit)|1..16..31 \| 0x20 Liniensensor \| 0x40 Ultraschall \| 0x80 Encoder
+12|MB Entfernung|0..255 cm oder 0..25,5 Sekunden
+13 Linie 10|MC Motor|0..128..255
+14|MC Servo (6 Bit)|1..16..31 \| 0x20 Liniensensor \| 0x40 Ultraschall \| 0x80 Encoder
+15|MC Entfernung|0..255 cm oder 0..25,5 Sekunden
+16 Linie 11|MD Motor|0..128..255
+17|MD Servo (6 Bit)|1..16..31 \| 0x20 Liniensensor \| 0x40 Ultraschall \| 0x80 Encoder
+18|MD Entfernung|0..255 cm oder 0..25,5 Sekunden
 
 
-### Steuer Byte 0
+### Steuer Byte 0 Betriebsart und Schalter
 
 * das erste Byte im Buffer (**receivedData** oder **sendData**)
 * die 2 Bit 5-4 steuern die Betriebsart:
