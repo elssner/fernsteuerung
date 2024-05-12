@@ -12,9 +12,10 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 ### Bluetooth Buffer Struktur (19 Byte)
 
-* Byte 0 und Byte 3 sind Steuer-Bytes
-* 3 Byte (Motor, Servo, Entfernung) wiederholen sich 6 Mal im Buffer ab offset 1
-* beim 1. Block Fernsteuerung entfällt die Entfernung, stattdessen Steuer-Byte 3
+* Byte 0 und 3 sind Steuer-Bytes
+* Byte 1 und 2 senden Position vom Joystick an Motor und Servo
+* 3 Byte (Motor, Servo, Entfernung) wiederholen sich 5 Mal im Buffer ab offset 4
+* damit kann auf Ereignisse von Sensoren reagiert werden oder bis 6 Motoren gleichzeitig gesteuert werden
 * Byte Motor: 8 Bit 0..128..255; 128 ist Stop; 127..0 ist rückwärts
 * Byte Servo: 6 Bit 1..16..31; 16 und 0 ist geradeaus
 * Byte Servo: 0x20 (Bit 5) Stop bei schwarzer Linie
