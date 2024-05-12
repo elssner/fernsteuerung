@@ -13,6 +13,11 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 ### Steuer Byte 0
 
 * das erste Byte im Buffer (**receivedData** oder **sendData**)
+* die 2 Bit 5-4 steuern die Betriebsart:
+* 0x00 die 6 Bereiche je 3 Byte können an bis 6 Motoren (und Servos) gleichzeitig Daten senden, vom Joystick
+* 0x10 mit der Fernsteuerung fahren bis zu einem Sensor-Ereignis, dann autonom weiter
+* 0x20 die 6 Bereiche je 3 Byte enthalten Teil-Strecken, die als Fahrplan autonom abgefahren werden
+* 0x30 die 6 Bereiche je 3 Byte enthalten Fahr-Strecken, um auf ein Ereignis zu reagieren
 * ist beim letzten empfangenen Buffer Bit 5 0x20 Programm gesetzt, wird kurzes timeout (1s) unterdrückt
 * danach sollen keine Buffer mehr gesendet werden, bis das Programm abgefahren ist
 
