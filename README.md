@@ -10,13 +10,15 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 * klicke auf **Erweiterungen** unter dem Zahnrad-Menü
 * nach **https://github.com/calliope-net/fernsteuerung** suchen und importieren
 
-## Dieses Projekt bearbeiten ![Build status badge](https://github.com/calliope-net/fernsteuerung/workflows/MakeCode/badge.svg)
+### Steuer Byte 0
 
-Um dieses Repository in MakeCode zu bearbeiten.
+hex|bit|Funktion
+---|---|---
+0x80|7|Soft-Reset
+0x40|6|Status Buffer zurück senden
+0x00|5-4|00 Fernsteuerung Motoren
+0x01|5-4|10 Fernsteuerung Motor M0 bis Sensor
 
-* öffne [https://makecode.calliope.cc/](https://makecode.calliope.cc/)
-* klicke auf **Importieren** und dann auf **Importiere URL**
-* füge **https://github.com/calliope-net/fernsteuerung** ein und klicke auf Importieren
 
 ## Blocks preview
 
