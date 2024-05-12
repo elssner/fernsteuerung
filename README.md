@@ -12,6 +12,10 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 ### Steuer Byte 0
 
+* das erste Byte im Buffer (**receivedData** oder **sendData**)
+* ist beim letzten empfangenen Buffer Bit 5 0x20 Programm gesetzt, wird kurzes timeout (1s) unterdrückt
+* danach sollen keine Buffer mehr gesendet werden, bis das Programm abgefahren ist
+
 hex|bit|Funktion
 ---|---|---
 0x80|7|7 Soft-Reset
@@ -29,13 +33,21 @@ hex|bit|Funktion
 
 * aktiviert die entsprechenden 3 Byte (Motor, Servo, Entfernung) im Buffer
 * sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
-* bei Strecken oder Sensor wird geschaltet, ob die Strecke bzw. das Ereignis abgearbeitet werden 
+* bei Strecken oder Sensor wird geschaltet, ob die Strecke bzw. das Ereignis abgearbeitet werden
+* d.h. die Gültigkeit der 3 Bytes im Buffer wird an oder aus geschaltet
 
-hex|bit|Funktion|offset|Beschreibung
+hex|bit|Funktion|aktiviert offset|Beschreibung
 ---|---|---|---|---
 0x01|0|M0 \| Fernsteuerung|1-2|2 Byte (Motor, Servo) für Fernsteuerung mit Joystick
 0x02|1|M1 \| Ultraschall|4-5-6|wird gefahren nachdem die Entfernung unterschritten wurde
-
+0x04|2|MA \| Spursensor hell hell|7-8-9|wird gefahren nach 'Stop bei schwarzer Linie'
+0x08|3|MB \| Spursensor hell dunkel|10-11-12|wird gefahren nach 'Stop bei schwarzer Linie'
+0x10|4|MC \| Spursensor dunkel hell|13-14-15|wird gefahren nach 'Stop bei schwarzer Linie'
+0x20|5|MD \| Spursensor dunkel dunkel|16-17-18|wird gefahren nach 'Stop bei schwarzer Linie'
+0x00|7-6|Ultraschall Entferung||Stop bei 5 cm
+0x40|7-6|Ultraschall Entferung||Stop bei 10 cm
+0x80|7-6|Ultraschall Entferung||Stop bei 15 cm
+0xC0|7-6|Ultraschall Entferung||Stop bei 20 cm
 
 
 
