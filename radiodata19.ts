@@ -48,6 +48,21 @@ für CalliBot, MakerKitCar, CaR4
         p3 = 0x30
     }
 
+    export enum e0Bit {
+        //% block="0 Hupe"
+        b0 = 0b00000001,
+        //% block="1"
+        b1 = 0b00000010,
+        //% block="2"
+        b2 = 0b00000100,
+        //% block="3"
+        b3 = 0b00001000,
+        //% block="6 Status senden"
+        b6 = 0b01000000,
+        //% block="7 zurücksetzen"
+        b7 = 0b10000000
+    }
+
 
     // ========== Steuer-Byte 3
 
@@ -86,16 +101,6 @@ für CalliBot, MakerKitCar, CaR4
     }
 
 
-    /*   export enum eBufferBit {
-          //% block="Motor Power"
-          x80_MotorPower = 0x80,
-          //% block="Hupe"
-          x40_Hupe = 0x40,
-          //% block="connected & fahren Joystick"
-          //fahrenJostick = 0x00,
-          //% block="fahren Strecke"
-          fahrenStrecke = 0x01
-      } */
 
     // ========== group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
 
@@ -149,52 +154,64 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 0
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
-    //% block="Buffer[0] %pBuffer set Programm %pProgramm" weight=6
-    //% pBuffer.shadow="radio_sendBuffer19"
-    export function setProgramm(pBuffer: Buffer, pProgramm: eProgramm) {
-        pBuffer[0] &= 0b11001111 // AND Bit 7-6-3-2-1-0 bleiben; 5-4 auf 0 setzen
-        pBuffer[0] |= (pProgramm & 0b00110000) // OR Bit 7-6-3-2-1-0 bleiben; 5-4 auf pByte setzen
+    //% block="Buffer[0] %buffer set Programm %programm" weight=6
+    //% buffer.shadow="radio_sendBuffer19"
+    export function setProgramm(buffer: Buffer, programm: eProgramm) {
+        buffer[0] &= 0b11001111 // AND Bit 7-6-3-2-1-0 bleiben; 5-4 auf 0 setzen
+        buffer[0] |= (programm & 0b00110000) // OR Bit 7-6-3-2-1-0 bleiben; 5-4 auf pByte setzen
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
-    //% block="Buffer[0] %pBuffer get Programm" weight=6
-    export function getProgramm(pBuffer: Buffer): eProgramm {
-        return (pBuffer[0] & 0b00110000)
+    //% block="Buffer[0] %buffer get Programm" weight=6
+    export function getProgramm(buffer: Buffer): eProgramm {
+        return (buffer[0] & 0b00110000)
     }
+
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    //% block="Buffer[0] %buffer set Bit %p0Bit %bit" weight=4
+    //% buffer.shadow="radio_sendBuffer19"
+    //% bit.shadow="toggleOnOff"
+    export function set0Bit(buffer: Buffer, p0Bit: e0Bit, bit: boolean) {
+        if (bit)
+            buffer[0] |= p0Bit // OR Nullen bleiben, nur 1 wird gesetzt
+        else
+            buffer[0] &= ~p0Bit // AND Einsen bleiben, nur 0 wird gesetzt
+    }
+
 
     // ========== Steuer-Byte 3
 
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %pBuffer set Motor Power %pMotorBit %pBit" weight=5
-    //% pBuffer.shadow="radio_sendBuffer19"
+    //% block="Buffer[3] %buffer set Motor Power %pMotorBit %pBit" weight=5
+    //% buffer.shadow="radio_sendBuffer19"
     //% pBit.shadow="toggleOnOff"
-    export function setMotorPower(pBuffer: Buffer, pMotorBit: eMotorBit, pBit: boolean) {
+    export function setMotorPower(buffer: Buffer, pMotorBit: eMotorBit, pBit: boolean) {
         if (pBit)
-            pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= pMotorBit // OR Nullen bleiben, nur 1 wird gesetzt
+            buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= pMotorBit // OR Nullen bleiben, nur 1 wird gesetzt
         else
-            pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= ~pMotorBit // AND Einsen bleiben, nur 0 wird gesetzt
+            buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= ~pMotorBit // AND Einsen bleiben, nur 0 wird gesetzt
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %pBuffer get Motor Power %pMotorBit %pBit" weight=5
-    export function getMotorPower(pBuffer: Buffer, pMotorBit: eMotorBit) {
-        return (pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & pMotorBit) != 0
+    //% block="Buffer[3] %buffer get Motor Power %pMotorBit %pBit" weight=5
+    export function getMotorPower(buffer: Buffer, pMotorBit: eMotorBit) {
+        return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & pMotorBit) != 0
     }
 
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %pBuffer Ultraschall Entfernung %entfernung" weight=4
-    //% pBuffer.shadow="radio_sendBuffer19"
+    //% block="Buffer[3] %buffer Ultraschall Entfernung %entfernung" weight=4
+    //% buffer.shadow="radio_sendBuffer19"
     export function setEntfernung(buffer: Buffer, entfernung: eEntfernung) {
         buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= 0b00111111 // AND Bit 5-4-3-2-1-0 bleiben; 7-6 auf 0 setzen
         buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (entfernung & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf pEntfernung setzen
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %pBuffer Ultraschall Entfernung" weight=4
-    export function getEntfernung(pBuffer: Buffer): eEntfernung {
-        return (pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
+    //% block="Buffer[3] %buffer Ultraschall Entfernung" weight=4
+    export function getEntfernung(buffer: Buffer): eEntfernung {
+        return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
 
 
