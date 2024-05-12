@@ -2,21 +2,39 @@
 namespace radio { // eventblocks.ts
 
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
+    let n_start = false
+    //  let n_connected = false // Bluetooth connected
+    let n_lastconnectedTime: number // ms seit Start
+    let n_programm = false // autonomes fahren nach Programm, kein Bluetooth timeout
 
-    // ========== group="Bluetooth senden" subcategory="Buffer"
+
+    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
+    //% block="beim Start Funkgruppe %funkgruppe" 
+    //% funkgruppe.min=0 funkgruppe.max=255 funkgruppe.defl=240
+    export function beimStart(funkgruppe: number) {
+        radio.setGroup(funkgruppe)
+        radio.setTransmitPower(7)
+        radio.setTransmitSerialNumber(true)
+        // n_connected = false
+        //  n_lastconnectedTime = input.runningTime() // Laufzeit
+        n_start = true
+    }
+
+
+    // ========== group="Bluetooth senden" subcategory="Bluetooth"
 
     let n_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
 
     //% blockId=radio_sendBuffer19
-    //% group="Bluetooth senden" subcategory="Buffer"
+    //% group="Bluetooth senden" subcategory="Bluetooth"
     //% block="sendData" weight=5
     export function radio_sendBuffer19(): Buffer { return n_sendBuffer19 }
 
-    //% group="Bluetooth senden" subcategory="Buffer"
+    //% group="Bluetooth senden" subcategory="Bluetooth"
     //% block="sendData löschen" weight=3
     export function fill_sendBuffer19() { n_sendBuffer19.fill(0) }
 
-    //% group="Bluetooth senden" subcategory="Buffer"
+    //% group="Bluetooth senden" subcategory="Bluetooth"
     //% block="Buffer senden %sendBuffer" weight=1
     //% sendBuffer.shadow="radio_sendBuffer19"
     export function sendData(sendBuffer: Buffer) {
@@ -40,34 +58,37 @@ namespace radio { // eventblocks.ts
     // als Parabeter 'cb' übergeben wird die function 'function (receivedBuffer) {}'
     // was in den Klammern {} steht, wird bei dem Ereignis 'radio.onReceivedBuffer' abgearbeitet (callback = Rückruf)
     radio.onReceivedBuffer(function (receivedBuffer: Buffer) {
-        /*    n_receivedBuffer19 = receivedBuffer
-     
-           if (carReady()) { // beim ersten Mal warten bis Motor bereit
-               if (!n_connected) {
-                   //licht(false, false) //  Licht aus und Blinken beenden
-                   //   n_MotorChipReady = false
-                   n_connected = true // wenn Start und Motor bereit, setze auch Bluetooth connected
-               }
-               n_lastconnectedTime = input.runningTime() // Connection-Timeout Zähler zurück setzen
-     
-               if (onReceivedBufferHandler)
-                   onReceivedBufferHandler(receivedBuffer) // Ereignis Block auslösen, nur wenn benutzt
-                   
-           } */
+        //  n_receivedBuffer19 = receivedBuffer
 
-        // die Variable 'onReceivedDataHandler' ist normalerweise undefined, dann passiert nichts
-        // die Variable erhält einen Wert, wenn der folgende Ereignis Block 'onReceivedData' einmal im Code vorkommt
-        // der Wert der Variable 'onReceivedDataHandler' ist die function, die bei true zurück gerufen wird
-        // die function ruft mit dem Parameter vom Typ Buffer die Blöcke auf, die im Ereignis-Block stehen
-        if (onReceivedDataHandler)
-            onReceivedDataHandler(receivedBuffer) // Ereignis Block auslösen, nur wenn benutzt
+        if (n_start && receivedBuffer.length == 19) { // beim ersten Mal warten bis Motor bereit
+
+            if (receivedBuffer[0] == 0xFF) // Bit 7 reset
+                control.reset() // Soft-Reset, Calliope zurücksetzen
+
+            n_programm = (receivedBuffer[0] & 0x20) == 0x20 // Bit 5 Programm=1 / Fernsteuerung=0
+
+            /* if (!n_connected) {
+                //licht(false, false) //  Licht aus und Blinken beenden
+                //   n_MotorChipReady = false
+                n_connected = true // wenn Start und Motor bereit, setze auch Bluetooth connected
+            } */
+            n_lastconnectedTime = input.runningTime() // Connection-Timeout Zähler zurück setzen
+
+
+            // die Variable 'onReceivedDataHandler' ist normalerweise undefined, dann passiert nichts
+            // die Variable erhält einen Wert, wenn der folgende Ereignis Block 'onReceivedData' einmal im Code vorkommt
+            // der Wert der Variable 'onReceivedDataHandler' ist die function, die bei true zurück gerufen wird
+            // die function ruft mit dem Parameter vom Typ Buffer die Blöcke auf, die im Ereignis-Block stehen
+            if (onReceivedDataHandler)
+                onReceivedDataHandler(receivedBuffer) // Ereignis Block auslösen, nur wenn benutzt
+        }
     })
 
     // ========== group="Bluetooth empfangen" subcategory="Buffer"
 
     // sichtbarer Event-Block
 
-    //% group="Bluetooth empfangen" subcategory="Buffer"
+    //% group="Bluetooth empfangen" subcategory="Bluetooth"
     //% block="wenn Buffer empfangen" weight=9
     //% draggableParameters=reporter
     export function onReceivedData(cb: (receivedData: Buffer) => void) {
@@ -78,6 +99,20 @@ namespace radio { // eventblocks.ts
         // aufgerufen wird beim Ereignis 'radio.onReceivedBuffer' die der Variable 'onReceivedDataHandler' zugewiesene function
         // das sind die Blöcke, die später im Ereignis Block 'wenn Buffer empfangen (receivedData)' enthalten sind
     }
+
+
+
+    //% group="Bluetooth empfangen" subcategory="Bluetooth"
+    //% block="wenn timeout > %ms ms || Programm-timeout %programm" weight=7
+    //% programm.shadow="toggleYesNo"
+    //% ms.defl=1000
+    export function timeout(ms: number, programm = false) {
+        if (!programm) // kurzes Fernsteuerung-timeout (1s) nur bei Joystick, nicht auslösen wenn n_programm=true
+            return !n_programm && ((input.runningTime() - n_lastconnectedTime) > ms)
+        else // längeres Programm-timeout (60s) immer auslösen falls Programm hängt (zum aus schalten)
+            return ((input.runningTime() - n_lastconnectedTime) > ms)
+    }
+
 
 
 } // eventblocks.ts

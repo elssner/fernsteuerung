@@ -3,6 +3,7 @@ input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
     radio.sendBuffer0_setBit(radio.radio_sendBuffer19(), radio.eBufferBit.x80_MotorPower, false)
     radio.setProgramm(radio.radio_sendBuffer19(), radio.eProgramm.p0)
     radio.setMotorPower(radio.radio_sendBuffer19(), radio.eMotorBit.M0, false)
+    control.reset()
 })
 input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
     radio.fill_sendBuffer19()
