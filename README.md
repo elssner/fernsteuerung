@@ -1,5 +1,5 @@
 
-> Diese Seite bei [https://calliope-net.github.io/radiodata19/](https://calliope-net.github.io/radiodata19/) öffnen
+> Diese Seite bei [https://calliope-net.github.io/fernsteuerung/](https://calliope-net.github.io/fernsteuerung/) öffnen
 
 ## Als Erweiterung verwenden
 
@@ -8,22 +8,22 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 * öffne [https://makecode.calliope.cc/](https://makecode.calliope.cc/)
 * klicke auf **Neues Projekt**
 * klicke auf **Erweiterungen** unter dem Zahnrad-Menü
-* nach **https://github.com/calliope-net/radiodata19** suchen und importieren
+* nach **https://github.com/calliope-net/fernsteuerung** suchen und importieren
 
-## Dieses Projekt bearbeiten ![Build status badge](https://github.com/calliope-net/radiodata19/workflows/MakeCode/badge.svg)
+## Dieses Projekt bearbeiten ![Build status badge](https://github.com/calliope-net/fernsteuerung/workflows/MakeCode/badge.svg)
 
 Um dieses Repository in MakeCode zu bearbeiten.
 
 * öffne [https://makecode.calliope.cc/](https://makecode.calliope.cc/)
 * klicke auf **Importieren** und dann auf **Importiere URL**
-* füge **https://github.com/calliope-net/radiodata19** ein und klicke auf Importieren
+* füge **https://github.com/calliope-net/fernsteuerung** ein und klicke auf Importieren
 
 ## Blocks preview
 
 This image shows the blocks code from the last commit in master.
 This image may take a few minutes to refresh.
 
-![A rendered view of the blocks](https://github.com/calliope-net/radiodata19/raw/master/.github/makecode/blocks.png)
+![A rendered view of the blocks](https://github.com/calliope-net/fernsteuerung/raw/master/.github/makecode/blocks.png)
 
 #### Metadaten (verwendet für Suche, Rendering)
 
