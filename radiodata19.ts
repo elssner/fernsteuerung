@@ -69,14 +69,14 @@ für CalliBot, MakerKitCar, CaR4
 
 
     export enum eProgramm {
-        //% block="Fernsteuerung Motoren"
+        //% block="00 Fernsteuerung Motoren"
         p0 = 0x00,
-        //% block="Fernsteuerung Motor M0 bis Sensor"
-        p1 = 0x40,
-        //% block="Programm 5 Strecken"
-        p2 = 0x80,
-        //% block="Programm Sensoren"
-        p3 = 0xC0
+        //% block="10 Fernsteuerung Motor M0 bis Sensor"
+        p1 = 0x10,
+        //% block="20 Programm 5 Strecken"
+        p2 = 0x20,
+        //% block="30 Programm Sensoren"
+        p3 = 0x30
     }
 
 
@@ -129,17 +129,17 @@ für CalliBot, MakerKitCar, CaR4
 
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %pBuffer set Programm %pProgramm" weight=6
+    //% block="Buffer[0] %pBuffer set Programm %pProgramm" weight=6
     //% pBuffer.shadow="radio_sendBuffer19"
     export function setProgramm(pBuffer: Buffer, pProgramm: eProgramm) {
-        pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= 0b00111111 // AND Bit 5-4-3-2-1-0 bleiben; 7-6 auf 0 setzen
-        pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (pProgramm & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf pByte setzen
+        pBuffer[0] &= 0b11001111 // AND Bit 7-6-3-2-1-0 bleiben; 5-4 auf 0 setzen
+        pBuffer[0] |= (pProgramm & 0b00110000) // OR Bit 7-6-3-2-1-0 bleiben; 5-4 auf pByte setzen
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
-    //% block="Buffer[3] %pBuffer get Programm" weight=6
+    //% block="Buffer[0] %pBuffer get Programm" weight=6
     export function getProgramm(pBuffer: Buffer): eProgramm {
-        return (pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
+        return (pBuffer[0] & 0b00110000)
     }
 
 
@@ -187,22 +187,41 @@ für CalliBot, MakerKitCar, CaR4
     // ========== group="Buffer" advanced=true
 
     //% group="Buffer" advanced=true
-    //% block="%pNumber .toHex()"
-    export function toHex(pNumber: number[]): string { return Buffer.fromArray(pNumber).toHex() }
-
-
-    //% group="Buffer" advanced=true
-    //% block="Buffer %pBuffer .getNumber(%format offset %offset)"
+    //% block="Buffer %buffer getNumber(%format offset %offset)" weight=8
     //% format.defl=NumberFormat.UInt8LE
     //% offset.min=0 offset.max=18
-    export function getNumber(pBuffer: Buffer, format: NumberFormat, offset: number): number { return pBuffer.getNumber(format, offset) }
+    export function getNumber(buffer: Buffer, format: NumberFormat, offset: number): number { return buffer.getNumber(format, offset) }
 
     //% group="Buffer" advanced=true
-    //% block="Buffer %pBuffer .setNumber(%format offset %offset value %value)"
+    //% block="Buffer %buffer setNumber(%format offset %offset value %value)" weight=7
     //% format.defl=NumberFormat.UInt8LE
     //% offset.min=0 offset.max=18
     //% inlineInputMode=inline
-    export function setNumber(pBuffer: Buffer, format: NumberFormat, offset: number, value: number) { pBuffer.setNumber(format, offset, value) }
+    export function setNumber(buffer: Buffer, format: NumberFormat, offset: number, value: number) { buffer.setNumber(format, offset, value) }
+
+    //% group="Buffer" advanced=true
+    //% block="Buffer %buffer offset %offset getBit 2** %exp" weight=4
+    //% offset.min=0 offset.max=18
+    //% exp.min=0 exp.max=7
+    export function getBit(buffer: Buffer, offset: number, exp: number): boolean {
+        return (buffer[offset] & 2 ** Math.trunc(exp)) != 0
+    }
+
+    //% group="Buffer" advanced=true
+    //% block="Buffer %buffer offset %offset setBit 2** %exp %pBit" weight=3
+    //% offset.min=0 offset.max=18
+    //% exp.min=0 exp.max=7
+    //% inlineInputMode=inline
+    export function setBit(buffer: Buffer, offset: number, exp: number, bit: boolean) {
+        if (bit)
+            buffer[offset] | 2 ** Math.trunc(exp)
+        else
+            buffer[offset] & ~(2 ** Math.trunc(exp))
+    }
+
+    //% group="Buffer" advanced=true
+    //% block="%pNumber .toHex()" weight=1
+    export function toHex(bytes: number[]): string { return Buffer.fromArray(bytes).toHex() }
 
 }
 // radiodata19.ts
