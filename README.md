@@ -22,8 +22,24 @@ hex|bit|Funktion
 0x30|5-4|30 Programm Sensoren
 0x08|3|3 Schalter
 0x04|2|2 Schalter
-0x03|1|1 Schalter
+0x02|1|1 Schalter
 0x01|0|0 Hupe
+
+### Steuer Byte 3 Motor Power und Ultraschall Entfernung
+
+* aktiviert die entsprechenden 3 Byte (Motor, Servo, Entfernung) im Buffer
+* sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
+* bei Strecken oder Sensor wird geschaltet, ob die Strecke bzw. das Ereignis abgearbeitet werden 
+
+hex|bit|Funktion|offset|Beschreibung
+---|---|---|---|---
+0x01|0|M0 \| Fernsteuerung|1-2|2 Byte (Motor, Servo) für Fernsteuerung mit Joystick
+0x02|1|M1 \| Ultraschall|4-5-6|wird gefahren nachdem die Entfernung unterschritten wurde
+
+
+
+
+
 
 
 
