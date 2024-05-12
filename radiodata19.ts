@@ -68,10 +68,21 @@ für CalliBot, MakerKitCar, CaR4
     }
 
 
+    export enum eProgramm {
+        //% block="Fernsteuerung Motoren"
+        p0 = 0x00,
+        //% block="Fernsteuerung Motor M0 bis Sensor"
+        p1 = 0x40,
+        //% block="Programm 5 Strecken"
+        p2 = 0x80,
+        //% block="Programm Sensoren"
+        p3 = 0xC0
+    }
 
-    // ========== group="Datenpaket vorbereiten" subcategory="Buffer" color=#E3008C
 
-    //% group="Datenpaket vorbereiten" subcategory="Buffer" color=#E3008C
+    // ========== group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
     //% block="Buffer %pBuffer set Byte %pOffset %pByte || %pBufferPointer " weight=7
     //% pBuffer.shadow="radio_sendBuffer19"
     //% inlineInputMode=inline 
@@ -104,7 +115,7 @@ für CalliBot, MakerKitCar, CaR4
                 } */
     }
 
-    //% group="Datenpaket auswerten" subcategory="Buffer"
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
     //% block="Buffer %pBuffer get Byte %pOffset || %pBufferPointer " weight=7
     export function getByte(pBuffer: Buffer, pBufferOffset: eBufferOffset, pBufferPointer?: eBufferPointer) {
         if (!pBufferPointer) pBufferPointer = eBufferPointer.p0  // wenn nicht angegeben
@@ -117,18 +128,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
 
-    export enum eProgramm {
-        //% block="Fernsteuerung Motoren"
-        p0 = 0x00,
-        //% block="Fernsteuerung Motor M0 bis Sensor"
-        p1 = 0x40,
-        //% block="Programm 5 Strecken"
-        p2 = 0x80,
-        //% block="Programm Sensoren"
-        p3 = 0xC0
-    }
-
-    //% group="Datenpaket vorbereiten" subcategory="Buffer"
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
     //% block="Buffer[3] %pBuffer set Programm %pProgramm" weight=6
     //% pBuffer.shadow="radio_sendBuffer19"
     export function setProgramm(pBuffer: Buffer, pProgramm: eProgramm) {
@@ -136,14 +136,14 @@ für CalliBot, MakerKitCar, CaR4
         pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (pProgramm & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf pByte setzen
     }
 
-    //% group="Datenpaket auswerten" subcategory="Buffer"
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
     //% block="Buffer[3] %pBuffer get Programm" weight=6
     export function getProgramm(pBuffer: Buffer): eProgramm {
         return (pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
 
 
-    //% group="Datenpaket vorbereiten" subcategory="Buffer"
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
     //% block="Buffer[3] %pBuffer set Motor Power %pMotorBit %pBit" weight=5
     //% pBuffer.shadow="radio_sendBuffer19"
     //% pBit.shadow="toggleOnOff"
@@ -154,7 +154,7 @@ für CalliBot, MakerKitCar, CaR4
             pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= ~pMotorBit // AND Einsen bleiben, nur 0 wird gesetzt
     }
 
-    //% group="Datenpaket auswerten" subcategory="Buffer"
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
     //% block="Buffer[3] %pBuffer get Motor Power %pMotorBit %pBit" weight=5
     export function getMotorPower(pBuffer: Buffer, pMotorBit: eMotorBit) {
         return (pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & pMotorBit) != 0
@@ -162,7 +162,7 @@ für CalliBot, MakerKitCar, CaR4
 
 
 
-    //% group="Datenpaket vorbereiten" subcategory="Buffer"
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
     //% block="Buffer[0] %pBuffer set Bit %pBufferBit %pBit" weight=1
     //% pBuffer.shadow="radio_sendBuffer19"
     //% pBit.shadow="toggleOnOff"
@@ -192,15 +192,17 @@ für CalliBot, MakerKitCar, CaR4
 
 
     //% group="Buffer" advanced=true
-    //% block="Buffer %pBuffer .getNumber(%format offset %off)"
+    //% block="Buffer %pBuffer .getNumber(%format offset %offset)"
     //% format.defl=NumberFormat.UInt8LE
-    export function getNumber(pBuffer: Buffer, format: NumberFormat, off: number): number { return pBuffer.getNumber(format, off) }
+    //% offset.min=0 offset.max=18
+    export function getNumber(pBuffer: Buffer, format: NumberFormat, offset: number): number { return pBuffer.getNumber(format, offset) }
 
     //% group="Buffer" advanced=true
-    //% block="Buffer %pBuffer .setNumber(%format offset %off value %value)" 
+    //% block="Buffer %pBuffer .setNumber(%format offset %offset value %value)"
     //% format.defl=NumberFormat.UInt8LE
+    //% offset.min=0 offset.max=18
     //% inlineInputMode=inline
-    export function setNumber(pBuffer: Buffer, format: NumberFormat, off: number, value: number) { pBuffer.setNumber(format, off, value) }
+    export function setNumber(pBuffer: Buffer, format: NumberFormat, offset: number, value: number) { pBuffer.setNumber(format, offset, value) }
 
 }
 // radiodata19.ts

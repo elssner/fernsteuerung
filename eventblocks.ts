@@ -26,15 +26,15 @@ namespace radio { // eventblocks.ts
     let n_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
 
     //% blockId=radio_sendBuffer19
-    //% group="Bluetooth senden" subcategory="Bluetooth"
+    //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
     //% block="sendData" weight=5
     export function radio_sendBuffer19(): Buffer { return n_sendBuffer19 }
 
-    //% group="Bluetooth senden" subcategory="Bluetooth"
+    //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
     //% block="sendData löschen" weight=3
     export function fill_sendBuffer19() { n_sendBuffer19.fill(0) }
 
-    //% group="Bluetooth senden" subcategory="Bluetooth"
+    //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
     //% block="Buffer senden %sendBuffer" weight=1
     //% sendBuffer.shadow="radio_sendBuffer19"
     export function sendData(sendBuffer: Buffer) {
@@ -88,7 +88,7 @@ namespace radio { // eventblocks.ts
 
     // sichtbarer Event-Block
 
-    //% group="Bluetooth empfangen" subcategory="Bluetooth"
+    //% group="Bluetooth empfangen (19 Byte)" subcategory="Bluetooth"
     //% block="wenn Buffer empfangen" weight=9
     //% draggableParameters=reporter
     export function onReceivedData(cb: (receivedData: Buffer) => void) {
@@ -102,7 +102,7 @@ namespace radio { // eventblocks.ts
 
 
 
-    //% group="Bluetooth empfangen" subcategory="Bluetooth"
+    //% group="Bluetooth empfangen (19 Byte)" subcategory="Bluetooth"
     //% block="wenn timeout > %ms ms || Programm-timeout %programm" weight=7
     //% programm.shadow="toggleYesNo"
     //% ms.defl=1000
