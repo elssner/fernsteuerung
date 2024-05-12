@@ -6,7 +6,7 @@ für CalliBot, MakerKitCar, CaR4
 240511 Lutz Elßner
 */ { // radiodata19.ts
 
-
+    // Buffer offset
 
     export enum eBufferPointer {
         //% block="M0 1-2-3 Fernsteuerung"
@@ -22,6 +22,34 @@ für CalliBot, MakerKitCar, CaR4
         //% block="MD 16-17-18 dunkel dunkel"
         p5 = 16
     }
+
+    export enum eBufferOffset { // 3 Byte (b0-b1-b2) ab n_BufferPointer
+        //% block="0 Motor 0..128..255"
+        b0_Motor = 0, // 0..128..255
+        //% block="1 Servo 0..16..31"
+        b1_Servo = 1, // Bit 4-0 (0..31)
+        //% block="2 Fahrstrecke 0..255 cm"
+        b2_Fahrstrecke = 2, // Encoder in cm max. 255cm
+        // b1_3Bit = 3 // Bit 7-6-5
+    }
+
+
+
+    // ========== Steuer-Byte 0
+
+    export enum eProgramm {
+        //% block="00 Fernsteuerung Motoren"
+        p0 = 0x00,
+        //% block="10 Fernsteuerung Motor M0 bis Sensor"
+        p1 = 0x10,
+        //% block="20 Programm 5 Strecken"
+        p2 = 0x20,
+        //% block="30 Programm Sensoren"
+        p3 = 0x30
+    }
+
+
+    // ========== Steuer-Byte 3
 
     export enum eMotorBit {
         //% block="M0 | Fernsteuerung"
@@ -46,39 +74,17 @@ für CalliBot, MakerKitCar, CaR4
         Malle = 0b111111
     }
 
-    export enum eBufferOffset { // 3 Byte (b0-b1-b2) ab n_BufferPointer
-        //% block="0 Motor 0..128..255"
-        b0_Motor = 0, // 0..128..255
-        //% block="1 Servo 0..16..31"
-        b1_Servo = 1, // Bit 4-0 (0..31)
-        //% block="2 Fahrstrecke 0..255 cm"
-        b2_Fahrstrecke = 2, // Encoder in cm max. 255cm
-        // b1_3Bit = 3 // Bit 7-6-5
-    }
 
-    export enum eBufferBit {
-        //% block="Motor Power"
-        x80_MotorPower = 0x80,
-        //% block="Hupe"
-        x40_Hupe = 0x40,
-        //% block="connected & fahren Joystick"
-        //fahrenJostick = 0x00,
-        //% block="fahren Strecke"
-        fahrenStrecke = 0x01
-    }
-
-
-    export enum eProgramm {
-        //% block="00 Fernsteuerung Motoren"
-        p0 = 0x00,
-        //% block="10 Fernsteuerung Motor M0 bis Sensor"
-        p1 = 0x10,
-        //% block="20 Programm 5 Strecken"
-        p2 = 0x20,
-        //% block="30 Programm Sensoren"
-        p3 = 0x30
-    }
-
+    /*   export enum eBufferBit {
+          //% block="Motor Power"
+          x80_MotorPower = 0x80,
+          //% block="Hupe"
+          x40_Hupe = 0x40,
+          //% block="connected & fahren Joystick"
+          //fahrenJostick = 0x00,
+          //% block="fahren Strecke"
+          fahrenStrecke = 0x01
+      } */
 
     // ========== group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
 
@@ -128,6 +134,9 @@ für CalliBot, MakerKitCar, CaR4
     }
 
 
+
+    // ========== Steuer-Byte 0
+
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
     //% block="Buffer[0] %pBuffer set Programm %pProgramm" weight=6
     //% pBuffer.shadow="radio_sendBuffer19"
@@ -141,6 +150,8 @@ für CalliBot, MakerKitCar, CaR4
     export function getProgramm(pBuffer: Buffer): eProgramm {
         return (pBuffer[0] & 0b00110000)
     }
+
+    // ========== Steuer-Byte 3
 
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
@@ -161,18 +172,18 @@ für CalliBot, MakerKitCar, CaR4
     }
 
 
-
-    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
-    //% block="Buffer[0] %pBuffer set Bit %pBufferBit %pBit" weight=1
-    //% pBuffer.shadow="radio_sendBuffer19"
-    //% pBit.shadow="toggleOnOff"
-    export function sendBuffer0_setBit(pBuffer: Buffer, pBufferBit: eBufferBit, pBit: boolean) {
-        if (pBit)
-            pBuffer[0] |= pBufferBit // OR 0b10000000 Bit auf 1 setzen
-        else
-            pBuffer[0] &= ~pBufferBit // AND 0b01111111 Bit auf 0 setzen
-    }
-
+    /* 
+        //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+        //% block="Buffer[0] %pBuffer set Bit %pBufferBit %pBit" weight=1
+        //% pBuffer.shadow="radio_sendBuffer19"
+        //% pBit.shadow="toggleOnOff"
+        export function sendBuffer0_setBit(pBuffer: Buffer, pBufferBit: eBufferBit, pBit: boolean) {
+            if (pBit)
+                pBuffer[0] |= pBufferBit // OR 0b10000000 Bit auf 1 setzen
+            else
+                pBuffer[0] &= ~pBufferBit // AND 0b01111111 Bit auf 0 setzen
+        }
+     */
 
 
 
