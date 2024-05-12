@@ -10,18 +10,24 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 * klicke auf **Erweiterungen** unter dem Zahnrad-Menü
 * nach **https://github.com/calliope-net/fernsteuerung** suchen und importieren
 
-### Bluetooth Buffer STruktur (19 Byte)
+### Bluetooth Buffer Struktur (19 Byte)
 
-* 3 Byte (Motor, Servo, Entfernung) wiederholen sich 6 Mal im Buffer
+* Byte 0 und Byte 3 sind Steuer-Bytes
+* 3 Byte (Motor, Servo, Entfernung) wiederholen sich 6 Mal im Buffer ab offset 1
+* beim 1. Block Fernsteuerung entfällt die Entfernung, stattdessen Steuer-Byte 3
+* Byte Motor: 8 Bit 0..128..255; 128 ist Stop
+* Byte Servo: 6 Bit 1..16..31; 16 und 0 ist geradeaus
+* Byte Servo: 0x20 (Bit 5) Stop bei schwarzer Linie
+* Byte Servo: 0x40 (bit 6) Stop bei Ultraschall
+* Byte Servo: 0x80 (bit 7) Encoder Auflösung (Entfernung in Impulsen anstatt cm)
+* Byte Entfernung: 0..255; bei Encodermotor 0..255 cm bzw. 0..255 Impulse
+* Byte Entfernung: 0..255; ohne Encodermotor 0..25,5 Sekunden
 
 offset|Funktion|Beschreibung
 ---|---|---
 0|Steuer-Byte 0|Betriebsart, Schalter
 1|M0 Motor|0..128..255
 2|M0 Servo (6 Bit)|1..16..31 \| 0x20 Liniensensor \| 0x40 Ultraschall \| 0x80 Encoder
-2|Events 0x20|5 Stop bei schwarzer Linie
-2|Events 0x40|6 Stop bei Ultraschall
-2|Events 0x80|7 Encoder Impulse
 3|Steuer-Byte 3|
 4|M1 Motor|0..128..255
 
