@@ -103,7 +103,7 @@ namespace radio { // eventblocks.ts
 
 
     //% group="Bluetooth empfangen (19 Byte)" subcategory="Bluetooth"
-    //% block="wenn timeout > %ms ms || Programm-timeout %programm" weight=7
+    //% block="timeout > %ms ms || Programm-timeout %programm" weight=7
     //% programm.shadow="toggleYesNo"
     //% ms.defl=1000
     export function timeout(ms: number, programm = false) {

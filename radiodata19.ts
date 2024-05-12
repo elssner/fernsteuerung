@@ -74,6 +74,17 @@ für CalliBot, MakerKitCar, CaR4
         Malle = 0b111111
     }
 
+    export enum eEntfernung {
+        //% block="5 cm"
+        u0 = 0x00,
+        //% block="10 cm"
+        u1 = 0x40,
+        //% block="15 cm"
+        u2 = 0x80,
+        //% block="20 cm"
+        u3 = 0xC0
+    }
+
 
     /*   export enum eBufferBit {
           //% block="Motor Power"
@@ -170,6 +181,22 @@ für CalliBot, MakerKitCar, CaR4
     export function getMotorPower(pBuffer: Buffer, pMotorBit: eMotorBit) {
         return (pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & pMotorBit) != 0
     }
+
+
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    //% block="Buffer[3] %pBuffer Ultraschall Entfernung %entfernung" weight=4
+    //% pBuffer.shadow="radio_sendBuffer19"
+    export function setEntfernung(buffer: Buffer, entfernung: eEntfernung) {
+        buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= 0b00111111 // AND Bit 5-4-3-2-1-0 bleiben; 7-6 auf 0 setzen
+        buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (entfernung & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf pEntfernung setzen
+    }
+
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
+    //% block="Buffer[3] %pBuffer Ultraschall Entfernung" weight=4
+    export function getEntfernung(pBuffer: Buffer): eEntfernung {
+        return (pBuffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
+    }
+
 
 
     /* 
