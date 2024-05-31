@@ -3,9 +3,14 @@
 
 ### Calliope Bluetooth Erweiterung zur Fernsteuerung und Fernprogrammierung von Modellen mit Motoren und Servo
 
-* fügt der Erweiterung **radio** neue Blöcke hinzu
+* fügt der Erweiterung **radio** neue Blöcke zum Bluetooth senden und empfangen hinzu
 * macht Funktion **radio.sendBuffer** und Ereignis **radio.onReceivedBuffer** verfügbar
 * damit kann ein Buffer bis 19 Byte Länge über Bluetooth zwischen 2 Calliope übertragen werden
+* 6 verschiedene "Fahrstrecken" je 3 Byte können gleichzeitig übertragen werden
+* in den 3 Byte stehen jeweils Daten für 1. Motor; 2. Servo; 3. Fahrstrecke
+* als Betriebsarten werden unterschieden: Fernsteuerung und Programm
+* bei Fernsteuerung müssen kontinuierlich Bluetooth Daten gesendet werden
+* bei Programm werden die Daten aus einem 19-Byte Block abgefahren, ohne dass Timeout eintritt
 * 
 
 ## Als Erweiterung verwenden
