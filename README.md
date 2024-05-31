@@ -11,8 +11,8 @@
 * als Betriebsarten werden unterschieden: Fernsteuerung und Programm
 * bei Fernsteuerung müssen kontinuierlich Bluetooth Daten gesendet werden (vom Joystick)
 * bei Programm werden die 5 "Fahrstrecken" abgefahren, ohne dass Timeout eintritt
-* entweder werden die 5 "Fahrstrecken" nacheinander abgefahren werden, dann Stop
-* oder die 5 "Fahrstrecken" werden 5 Ereignissen zugeordnet (Ultraschall Entfernung und Spursensor)
+* entweder werden die 5 "Fahrstrecken" nacheinander abgefahren, dann Stop
+* oder die 5 "Fahrstrecken" werden Ereignissen zugeordnet (Ultraschall und Spursensor)
 * 
 
 ## Als Erweiterung verwenden
