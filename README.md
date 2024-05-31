@@ -3,7 +3,10 @@
 
 ### Calliope Bluetooth Erweiterung zur Fernsteuerung und Fernprogrammierung von Modellen
 
-
+* fügt der Erweiterung **radio** neue Blöcke hinzu
+* macht Function **radio.sendBuffer** und Ereignis **radio.onReceivedBuffer** verfügbar
+* damit kann ein Buffer bis 19 Byte Länge übertragen werden
+* 
 
 ## Als Erweiterung verwenden
 
