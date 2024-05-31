@@ -19,10 +19,17 @@
 
 Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
-* öffne [https://makecode.calliope.cc/](https://makecode.calliope.cc/)
-* klicke auf **Neues Projekt**
-* klicke auf **Erweiterungen** unter dem Zahnrad-Menü
-* nach **https://github.com/calliope-net/fernsteuerung** suchen und importieren
+* öffne Makecode in der App oder die Webseite [https://makecode.calliope.cc/](https://makecode.calliope.cc/)
+* klicke auf **Neues Projekt** und gib deinem Projekt einen Namen
+* wähle die zu deinem Calliope mini passende Hardware v1, v2 oder v3
+* klicke auf **Erweiterungen**
+* schreibe die folgende **Projekt-URL**:
+* **calliope-net/fernsteuerung**
+* mit der Tastatur oben in das weiße Feld und klicke auf ENTER
+* klicke auf das Rechteck **fernsteuerung** (kann von der Tastatur verdeckt sein)
+* jetzt hat die Liste den neuen Eintrag **Funk** bekommen
+* das ist die Original Bluetooth Erweiterung mit den 2 zusätzlichen Kategorien:
+* Bluetooth (Buffer übertragen) und Fernsteuerung (Buffer vorbereiten und auslesen)
 
 ### Bluetooth Buffer Struktur (19 Byte)
 
