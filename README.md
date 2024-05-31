@@ -10,9 +10,9 @@
 * in den 3 Byte stehen jeweils Daten für 1. Motor; 2. Servo; 3. Fahrstrecke
 * als Betriebsarten werden unterschieden: Fernsteuerung und Programm
 * bei Fernsteuerung müssen kontinuierlich Bluetooth Daten gesendet werden (vom Joystick)
-* bei Programm werden die Daten aus einem 19-Byte Block abgefahren, ohne dass Timeout eintritt
-* bei Programm können 5 "Fahrstrecken" nacheinander abgefahren werden, dann Stop
-* oder die 5 "Fahrstrecken" werden jeweils einem Ereignis zugeordnet (Ultraschall Entfernung und Spursensor)
+* bei Programm werden die 5 "Fahrstrecken" abgefahren, ohne dass Timeout eintritt
+* entweder werden die 5 "Fahrstrecken" nacheinander abgefahren werden, dann Stop
+* oder die 5 "Fahrstrecken" werden 5 Ereignissen zugeordnet (Ultraschall Entfernung und Spursensor)
 * 
 
 ## Als Erweiterung verwenden
