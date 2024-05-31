@@ -13,7 +13,6 @@
 * bei Programm werden die 5 'Fahrstrecken' abgefahren, ohne dass Timeout eintritt
 * entweder werden die 5 'Fahrstrecken' nacheinander abgefahren, dann Stop
 * oder die 5 'Fahrstrecken' werden Ereignissen zugeordnet (Ultraschall und Spursensor)
-* 
 
 ## Als Erweiterung verwenden
 
@@ -30,6 +29,16 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 * jetzt hat die Liste den neuen Eintrag **Funk** bekommen
 * das ist die Original Bluetooth Erweiterung mit den 2 zusätzlichen Kategorien:
 * Bluetooth (Buffer übertragen) und Fernsteuerung (Buffer vorbereiten und auslesen)
+
+### Beschreibung der Erweiterung 'Fernsteuerung'
+
+#### Kategorie Bluetooth
+
+> a
+
+#### Kategorie Fernsteuerung
+
+> a
 
 ### Bluetooth Buffer Struktur (19 Byte)
 
