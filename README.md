@@ -123,9 +123,25 @@ hex|bit|Funktion|aktiviert offset|Beschreibung
 
 
 
+### Erweiterungen
+
+> [Upates für Erweiterungen; Erweiterungen aus einem Projekt löschen.](https://calliope-net.github.io/i2c-liste#updates)
+
+> [Alle I²C-Erweiterungen für MakeCode von calliope-net (Software).](https://calliope-net.github.io/i2c-liste#erweiterungen)
+
+#### Calliope-Apps, .hex-Dateien, Bildschirmfotos mit Blöcken
+
+> [Alle Beispiel-Projekte für MakeCode von calliope-net (Calliope-Apps).](https://calliope-net.github.io/i2c-liste#programmierbeispiele)
+
+> GitHub-Profil calliope-net: [https://github.com/calliope-net](https://github.com/calliope-net)
+
+### Bezugsquellen
+
+> [Alle I²C-Module und Bezugsquellen (Hardware).](https://calliope-net.github.io/i2c-liste#bezugsquellen)
 
 
-## Blocks preview
+
+## Blocks preview ![Build status badge](https://github.com/calliope-net/fernsteuerung/workflows/MakeCode/badge.svg)
 
 This image shows the blocks code from the last commit in master.
 This image may take a few minutes to refresh.
@@ -134,5 +150,5 @@ This image may take a few minutes to refresh.
 
 #### Metadaten (verwendet für Suche, Rendering)
 
-* for PXT/calliopemini
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
+* Calliope mini
+* Bluetooth (Buffer)
