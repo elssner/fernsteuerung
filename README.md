@@ -1,7 +1,7 @@
 
 > Diese Seite bei [https://calliope-net.github.io/fernsteuerung/](https://calliope-net.github.io/fernsteuerung/) öffnen
 
-### Calliope Bluetooth Erweiterung zur Fernsteuerung und Fernprogrammierung von Modellen mit Motoren und Servo
+### Calliope Bluetooth Erweiterung zur Fernsteuerung und Fernprogrammierung von Robotern mit Motoren und Servo
 
 * fügt der Erweiterung **radio** neue Blöcke zum Bluetooth senden und empfangen hinzu
 * macht Funktion **radio.sendBuffer** und Ereignis **radio.onReceivedBuffer** verfügbar
