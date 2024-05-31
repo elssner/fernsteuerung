@@ -1,6 +1,10 @@
 
 > Diese Seite bei [https://calliope-net.github.io/fernsteuerung/](https://calliope-net.github.io/fernsteuerung/) öffnen
 
+### Calliope Bluetooth Erweiterung zur Fernsteuerung und Fernprogrammierung von Modellen
+
+
+
 ## Als Erweiterung verwenden
 
 Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
