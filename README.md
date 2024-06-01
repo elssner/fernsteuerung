@@ -42,6 +42,17 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 ### Bluetooth Buffer Struktur (19 Byte)
 
+offset|Funktion|offset|Funktion|offset|Funktion
+---|---|---|---|---|---
+0|Steuer-Byte 0
+1|Motor M0|2|Servo|3|Steuer-Byte 3
+4|Motor M1|5|Servo|6|Entfernung
+7|Motor MA|8|Servo|9|Entfernung
+10|Motor MB|11|Servo|12|Entfernung
+13|Motor MC|14|Servo|15|Entfernung
+16|Motor MD|17|Servo|18|Entfernung
+
+
 * Byte 0 und 3 sind Steuer-Bytes
 * Byte 1 und 2 senden Position vom Joystick an Motor und Servo
 * 3 Byte (Motor, Servo, Entfernung) wiederholen sich 5 Mal im Buffer ab offset 4
