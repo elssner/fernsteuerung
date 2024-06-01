@@ -73,15 +73,15 @@ hex|bit|Funktion|Beschreibung
 
 #### Buffer-Struktur (19 Byte) Betriebsart: Fernsteuerung 6 Motoren
 
-offset|Funktion|offset|Funktion|offset|Funktion
----|---|---|---|---|---
-0|Steuer-Byte 0
-1|Motor M0|2|Servo|3|Steuer-Byte 3
-4|Motor M1|5||6
-7|Motor MA|8||9
-10|Motor MB|11||12
-13|Motor MC|14||15
-16|Motor MD|17||18
+Motor|offset|Funktion|offset|Funktion|offset|Funktion
+---|---|---|---|---|---|---
+_|0|Steuer-Byte 0
+M0|1|Motor M0|2|Servo|3|Steuer-Byte 3
+M1|4|Motor M1|5||6
+MA|7|Motor MA|8||9
+MB|10|Motor MB|11||12
+MC|13|Motor MC|14||15
+MD|16|Motor MD|17||18
 
 #### Steuer Byte 3 <code>..xxxxxx</code> (6 Bit) Betriebsart: Fernsteuerung 6 Motoren
 
