@@ -84,6 +84,10 @@ Spursensor 11|16|Motor|17|Servo|18|Entfernung
 
 ### Servo Byte 2 5 8 11 14 17 <code>...xxxxx</code> (5 Bit)
 
+Zur Übertragung wird der Wert (vom Joystick oder vom MakeCode protractorPicker) in 5 Bit (0..31) umgerechnet.
+Der Empfänger macht daraus nach der Formel **(x + 14) * 3** Winkel von 45° bis 135° in 3° Schritten.
+Servo wird mit einem Winkel von 45° bis 135° angesteuert. 90° ist geradeaus.
+
 * **1..16..31** (16 und 0 ist geradeaus 90°)
 * Formel: (x + 14) * 3
 * 1=45° 2=48° 3=51° .. 15=87° 16=90° 17=93° .. 30=132° 31=135°
@@ -104,8 +108,8 @@ hex|bit|Funktion
 * **0..255** 0,01..2,55 Meter oder 0,1..25,5 Sekunden
 * 0: Ereignis (Encoder oder Zeit) wird nicht ausgewertet
 
+<!-- 
 ### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit)
-
 
 * Byte 0 und 3 sind Steuer-Bytes
 * Byte 1 und 2 senden Position vom Joystick an Motor und Servo
@@ -141,7 +145,6 @@ offset|Ereignis|Funktion|Beschreibung
 17||MD Servo (6 Bit)|1..16..31 \| 0x20 Liniensensor \| 0x40 Ultraschall \| 0x80 Encoder
 18||MD Entfernung|0..255 cm oder 0..25,5 Sekunden
 
-
 ### Steuer Byte 0 Betriebsart und Schalter
 
 * das erste Byte im Buffer (**receivedData** oder **sendData**)
@@ -152,6 +155,7 @@ offset|Ereignis|Funktion|Beschreibung
 * 0x30 die 6 Bereiche je 3 Byte enthalten Fahr-Strecken, um auf ein Ereignis zu reagieren
 * ist beim letzten empfangenen Buffer Bit 5 0x20 Programm gesetzt, wird kurzes timeout (1s) unterdrückt
 * danach sollen keine Buffer mehr gesendet werden, bis das Programm abgefahren ist
+-->
 
 ### Steuer Byte 0 <code>..xx....</code> Betriebsart (2 Bit)
 
