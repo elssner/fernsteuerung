@@ -1,4 +1,3 @@
-// Gib deinen Code hier ein
 
 namespace radio
 /*
@@ -50,7 +49,7 @@ für CalliBot, MakerKitCar, CaR4
 
     // ========== Steuer-Byte 0
 
-    export enum e0Programm {
+    export enum e0Betriebsart {
         //% block="00 Fernsteuerung Motoren"
         p0 = 0x00,
         //% block="10 Fernsteuerung Motor M0 bis Sensor"
@@ -121,16 +120,16 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 0
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="Buffer[0] %buffer set Programm %programm" weight=6
+    //% block="%buffer Betriebsart %betriebsart" weight=6
     //% buffer.shadow="radio_sendBuffer19"
-    export function setProgramm(buffer: Buffer, programm: e0Programm) {
+    export function setBetriebsart(buffer: Buffer, betriebsart: e0Betriebsart) {
         buffer[0] &= 0b11001111 // AND Bit 7-6-3-2-1-0 bleiben; 5-4 auf 0 setzen
-        buffer[0] |= (programm & 0b00110000) // OR Bit 7-6-3-2-1-0 bleiben; 5-4 auf pByte setzen
+        buffer[0] |= (betriebsart & 0b00110000) // OR Bit 7-6-3-2-1-0 bleiben; 5-4 auf pByte setzen
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="Buffer[0] %buffer get Programm" weight=6
-    export function getProgramm(buffer: Buffer): e0Programm {
+    //% block="%buffer Betriebsart" weight=6
+    export function getBetriebsart(buffer: Buffer): e0Betriebsart {
         return (buffer[0] & 0b00110000)
     }
 

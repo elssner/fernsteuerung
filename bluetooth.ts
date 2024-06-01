@@ -27,7 +27,7 @@ namespace radio { // bluetooth.ts
 
     //% blockId=radio_sendBuffer19
     //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
-    //% block="sendData" weight=5
+    //% block="sendData" color="#7E84F7" weight=5
     export function radio_sendBuffer19(): Buffer { return n_sendBuffer19 }
 
     //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
