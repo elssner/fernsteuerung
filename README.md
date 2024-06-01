@@ -90,16 +90,16 @@ offset|Ereignis|Funktion|Beschreibung
 
 hex|bit|Funktion
 ---|---|---
-0x80|7|7 Soft-Reset
-0x40|6|6 Status Buffer zurück senden
-0x00|5-4|00 Fernsteuerung Motoren
-0x10|5-4|10 Fernsteuerung Motor M0 bis Sensor
-0x20|5-4|20 Programm 5 Strecken
-0x30|5-4|30 Programm Sensoren
-0x08|3|3 Schalter
-0x04|2|2 Schalter
-0x02|1|1 Schalter
-0x01|0|0 Hupe
+0x80|<code>1.......</code>|7 Soft-Reset
+0x40|<code>.1......</code>|6 Status Buffer zurück senden
+0x00|<code>..00....</code>|00 Fernsteuerung max. 6 Motoren <br> keine Reaktion auf Sensoren
+0x10|<code>..01....</code>|10 Fernsteuerung ein Motor M0 <br> bis Ereignis vom Sensor
+0x20|<code>..10....</code>|20 Programm 5 Strecken
+0x30|<code>..11....</code>|30 Programm Sensoren
+0x08|<code>....1...</code>|3 Schalter
+0x04|<code>.....1..</code>|2 Schalter
+0x02|<code>......1.</code>|1 Schalter
+0x01|<code>.......1</code>|0 Hupe
 
 ### Steuer Byte 3 Motor Power (6 Bit 5..0)
 
