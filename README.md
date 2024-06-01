@@ -7,7 +7,7 @@
 * macht Funktion **radio.sendBuffer** und Ereignis **radio.onReceivedBuffer** verfügbar
 * damit kann ein Buffer bis 19 Byte Länge über Bluetooth zwischen 2 Calliope übertragen werden
 * 6 verschiedene 'Fahrstrecken' je 3 Byte können gleichzeitig übertragen werden
-* in den 3 Byte stehen jeweils Daten für 1. Motor; 2. Servo; 3. Fahrstrecke
+* in den 3 Byte stehen jeweils Daten für 1. Motor; 2. Servo; 3. Entfernung
 * als Betriebsarten werden unterschieden: Fernsteuerung und Programm
 * bei Fernsteuerung müssen kontinuierlich Bluetooth Daten gesendet werden (vom Joystick)
 * bei Programm werden die 5 'Fahrstrecken' abgefahren, ohne dass Timeout eintritt
