@@ -42,7 +42,7 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 ### Daten Struktur
 
-#### Steuer Byte 0 <code>..xx....</code> Betriebsart (2 Bit)
+#### Steuer Byte 0 <code>..xx....</code> (2 Bit) Betriebsart
 
 hex|bit|Funktion|bei Ereignis von einem Sensor
 ---|---|---|---
@@ -51,7 +51,7 @@ hex|bit|Funktion|bei Ereignis von einem Sensor
 0x20|<code>..10....</code>|Programm 5 Strecken|Stop bei Hindernis
 0x30|<code>..11....</code>|Programm Sensoren|wechselt zum Ereignis-Block
 
-#### Steuer Byte 0 <code>xx..xxxx</code> Schalter (6 Bit)
+#### Steuer Byte 0 <code>xx..xxxx</code> (6 Bit) Schalter
 
 hex|bit|Funktion|Beschreibung
 ---|---|---|---
@@ -65,6 +65,12 @@ hex|bit|Funktion|Beschreibung
 
 ### Betriebsart Fernsteuerung 6 Motoren (mit Joystick)
 
+* kontinuierliche Bluetooth Übertragung der Daten vom Joystick
+* nur 1 Servo (für Fahr-Motor M0)
+* Sensoren: Stop bei Hindernis möglich
+* Encoder wird nicht ausgewertet
+* zusätzliche Motoren z.B. Gabelstapler oder Kran
+
 #### Buffer-Struktur (19 Byte) Betriebsart Fernsteuerung 6 Motoren
 
 offset|Funktion|offset|Funktion|offset|Funktion
@@ -77,7 +83,7 @@ offset|Funktion|offset|Funktion|offset|Funktion
 13|Motor MC|14||15
 16|Motor MD|17||18
 
-#### Steuer Byte 3 <code>..xxxxxx</code> Motor Power (6 Bit)
+#### Steuer Byte 3 <code>..xxxxxx</code> (6 Bit) Betriebsart Fernsteuerung 6 Motoren
 <!-- 
 * aktiviert die entsprechenden 3 Byte (Motor, Servo, Entfernung) im Buffer
 * sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
