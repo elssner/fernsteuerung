@@ -124,18 +124,25 @@ offset|Ereignis|Funktion|Beschreibung
 * ist beim letzten empfangenen Buffer Bit 5 0x20 Programm gesetzt, wird kurzes timeout (1s) unterdrückt
 * danach sollen keine Buffer mehr gesendet werden, bis das Programm abgefahren ist
 
+### Steuer Byte 0 <code>..xx....</code> Betriebsart (2 Bit)
+
 hex|bit|Funktion|bei Ereignis von einem Sensor
 ---|---|---|---
-0x80|<code>1.......</code>|Soft-Reset
-0x40|<code>.1......</code>|Status Buffer zurück senden
 0x00|<code>..00....</code>|Fernsteuerung max. 6 Motoren|Stop bei Hindernis
 0x10|<code>..01....</code>|Fernsteuerung ein Motor M0|wechselt zum *Programm Sensoren*
 0x20|<code>..10....</code>|Programm 5 Strecken|Stop bei Hindernis
 0x30|<code>..11....</code>|Programm Sensoren|wechselt zum Ereignis-Block
+
+### Steuer Byte 0 <code>xx..xxxx</code> Schalter (6 Bit)
+
+hex|bit|Funktion|Beschreibung
+---|---|---|---
+0x80|<code>1.......</code>|Soft-Reset|Calliope *zurücksetzen*
+0x40|<code>.1......</code>|Status Buffer zurück senden|Empfänger sendet Status über Bluetooth
 0x08|<code>....1...</code>|Schalter
 0x04|<code>.....1..</code>|Schalter
 0x02|<code>......1.</code>|Schalter
-0x01|<code>.......1</code>|Hupe
+0x01|<code>.......1</code>|Hupe|Buzzer; bei v3 Ton aus Lautsprecher
 
 ### Steuer Byte 3 <code>..xxxxxx</code> Motor Power (6 Bit)
 
