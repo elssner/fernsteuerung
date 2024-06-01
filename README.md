@@ -77,16 +77,24 @@ Liniensensor 01|10|Motor|11|Servo|12|Entfernung
 Liniensensor 10|13|Motor|14|Servo|15|Entfernung
 Liniensensor 11|16|Motor|17|Servo|18|Entfernung
 
-### Motor Byte 1 4 7 10 13 16
+### Motor Byte 1 4 7 10 13 16 (8 Bit)
 
-* 0..128..255; 128 ist Stop
+* **0..128..255** (128 ist Stop)
 * 0..127 rückwärts; 129..255 vorwärts
 
 ### Servo Byte 2 5 8 11 14 17 <code>...xxxxx</code> (5 Bit)
 
-* 1..16..31
-* 16 und 0 ist geradeaus (90°)
-* 1=45° 
+* **1..16..31** (16 und 0 ist geradeaus 90°)
+* Formel: (x + 14) * 3
+* 1=45° 2=48° 3=51° .. 15=87° 16=90° 17=93° .. 30=132° 31=135°
+
+### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit)
+
+hex|bit|Funktion
+---|---|---
+0x20|<code>..1.....</code>|Stop bei Liniensensor
+0x40|<code>.1......</code>|Stop bei Ultraschall
+0x80|<code>1.......</code>|Encoder Auflösung (Entfernung in Impulsen anstatt cm)
 
 ### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit)
 
