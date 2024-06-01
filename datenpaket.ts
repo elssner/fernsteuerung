@@ -6,6 +6,13 @@ für CalliBot, MakerKitCar, CaR4
 240601 Lutz Elßner
 */ { // datenpaket.ts
 
+
+    //% group="Kommentar" advanced=true
+    //% block="// %text"
+    export function comment(text: string): void { }
+
+
+
     // ========== Buffer offset
 
     export enum eBufferPointer {
@@ -49,6 +56,9 @@ für CalliBot, MakerKitCar, CaR4
 
     // ========== Steuer-Byte 0
 
+    //% group="Enums" advanced=true
+    //% block="Betriebsart %betriebsart" weight=6
+    export function radio_betriebsart(betriebsart: e0Betriebsart) { return betriebsart }
     export enum e0Betriebsart {
         //% block="00 Fernsteuerung Motoren"
         p0 = 0x00,
@@ -60,6 +70,10 @@ für CalliBot, MakerKitCar, CaR4
         p3 = 0x30
     }
 
+
+    //% group="Enums" advanced=true
+    //% block="Schalter %schalter" weight=5
+    export function radio_schalter(schalter: e0Schalter) { return schalter }
     export enum e0Schalter {
         //% block="0 Hupe"
         b0 = 0x01,
@@ -76,28 +90,32 @@ für CalliBot, MakerKitCar, CaR4
     }
 
 
+
     // ========== Steuer-Byte 3
 
+    //% group="Enums" advanced=true
+    //% block="Steuer Byte 3 %motorbit" weight=4
+    export function radio_motorbit(motorbit: e3MotorBit) { return motorbit }
     export enum e3MotorBit {
-        //% block="M0 | Fernsteuerung"
+        //% block="M0 | Joystick"
         m0 = 0x01,
-        //% block="M1 | Ultraschall"
+        //% block="M1 | 1. Strecke | Ultraschall"
         m1 = 0x02,
-        //% block="MA | hell hell"
+        //% block="MA | 2. Strecke | Spur 00"
         ma = 0x04,
-        //% block="MB | hell dunkel"
+        //% block="MB | 3. Strecke | Spur 01"
         mb = 0x08,
-        //% block="MC | dunkel hell"
+        //% block="MC | 4. Strecke | Spur 10"
         mc = 0x10,
-        //% block="MD | dunkel dunkel"
+        //% block="MD | 5. Strecke | Spur 11"
         md = 0x20,
-        //% block="M0 & M1"
+        //% block="M0 & M1 (0x03)"
         m01 = m0 + m1,
-        //% block="MA & MB"
+        //% block="MA & MB (0x0C)"
         mab = ma + mb,
-        //% block="MC & MD"
+        //% block="MC & MD (0x30)"
         mcd = mc + md,
-        //% block="alle"
+        //% block="alle (0x3F)"
         m01abcd = m01 + mab + mcd
     }
 
@@ -134,7 +152,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="Buffer[0] %buffer set Schalter %schalter %bit" weight=5
+    //% block="%buffer Schalter %schalter %bit" weight=5
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
     export function setSchalter(buffer: Buffer, schalter: e0Schalter, bit: boolean) {
@@ -145,8 +163,8 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="Buffer[0] %buffer get Schalter %schalter" weight=5
-    export function getSchalter(buffer: Buffer, schalter: e0Schalter): Boolean {
+    //% block="%buffer Schalter %schalter" weight=5
+    export function getSchalter(buffer: Buffer, schalter: e0Schalter): boolean {
         return (buffer[0] & schalter) == schalter
     }
 
@@ -155,7 +173,7 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 3
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="Buffer[3] %buffer set Motor Power %motorBit %bit" weight=4
+    //% block="%buffer set Motor Power %motorBit %bit" weight=4
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
     export function setMotorPower(buffer: Buffer, motorBit: e3MotorBit, bit: boolean) {
@@ -255,17 +273,11 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="Buffer %buffer get Sensor %sensor || %bufferPointer" weight=1
-    export function getSensor(buffer: Buffer, sensor: eSensor, bufferPointer?: eBufferPointer): Boolean {
+    export function getSensor(buffer: Buffer, sensor: eSensor, bufferPointer?: eBufferPointer): boolean {
         if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
 
         return (buffer[bufferPointer + eBufferOffset.b1_Servo] & sensor) == sensor
     }
-
-
-
-    //% group="Kommentar" advanced=true
-    //% block="// %text"
-    export function comment(text: string): void { }
 
 
 
