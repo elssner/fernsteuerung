@@ -120,11 +120,11 @@ _|0|Steuer-Byte 0
 hex|bit|offset|Strecke|Beschreibung
 ---|---|---|---|---
 0x01|<code>.......1</code>|1|(Joystick)|
-0x02|<code>......1.</code>|4|1\. Strecke|aktiviert
-0x04|<code>.....1..</code>|7|2\. Strecke|aktiviert
-0x08|<code>....1...</code>|10|3\. Strecke|aktiviert
-0x10|<code>...1....</code>|13|4\. Strecke|aktiviert
-0x20|<code>..1.....</code>|16|5\. Strecke|aktiviert
+0x02|<code>......1.</code>|4-5-6|1\. Strecke|aktiviert
+0x04|<code>.....1..</code>|7-8-9|2\. Strecke|aktiviert
+0x08|<code>....1...</code>|10-11-12|3\. Strecke|aktiviert
+0x10|<code>...1....</code>|13-14-15|4\. Strecke|aktiviert
+0x20|<code>..1.....</code>|16-17-18|5\. Strecke|aktiviert
 
 
 
