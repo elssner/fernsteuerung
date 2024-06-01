@@ -36,7 +36,7 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 > a
 
-#### Kategorie Fernsteuerung
+#### Kategorie Datenpaket
 
 > a
 
