@@ -59,10 +59,10 @@ Ereignis|offset|Funktion|offset|Funktion|offset|Funktion
 _|0|Steuer-Byte 0
 _|1|Motor|2|Servo|3|Steuer-Byte 3
 Ultraschall|4|Motor|5|Servo|6|Entfernung
-Linie 00|7|Motor|8|Servo|9|Entfernung
-Linie 01|10|Motor|11|Servo|12|Entfernung
-Linie 10|13|Motor|14|Servo|15|Entfernung
-Linie 11|16|Motor|17|Servo|18|Entfernung
+Liniensensor 00|7|Motor|8|Servo|9|Entfernung
+Liniensensor 01|10|Motor|11|Servo|12|Entfernung
+Liniensensor 10|13|Motor|14|Servo|15|Entfernung
+Liniensensor 11|16|Motor|17|Servo|18|Entfernung
 
 
 * Byte 0 und 3 sind Steuer-Bytes
