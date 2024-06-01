@@ -110,12 +110,12 @@ hex|bit|Funktion|bei Ereignis von einem Sensor
 
 hex|bit|Funktion|aktiviert offset|Beschreibung
 ---|---|---|---|---
-0x01|0|M0 <br> Fernsteuerung|1-2|2 Byte (Motor, Servo) für Fernsteuerung mit Joystick
-0x02|1|M1 <br> Ultraschall|4-5-6|wenn Ultraschall Entfernung <br> unterschritten wurde
-0x04|2|MA <br> Spursensor hell hell|7-8-9|wenn Spursensor <br> geändert
-0x08|3|MB <br> Spursensor hell dunkel|10-11-12|wenn Spursensor <br> geändert
-0x10|4|MC <br> Spursensor dunkel hell|13-14-15|wenn Spursensor <br> geändert
-0x20|5|MD <br> Spursensor dunkel dunkel|16-17-18|wenn Spursensor <br> geändert
+0x01|<code>.......1</code>|M0 <br> Fernsteuerung|1-2|2 Byte (Motor, Servo) für Fernsteuerung mit Joystick
+0x02|<code>......1.</code>|M1 <br> Ultraschall|4-5-6|wenn Ultraschall Entfernung <br> unterschritten wurde
+0x04|<code>.....1..</code>|MA <br> Spursensor hell hell|7-8-9|wenn Spursensor <br> geändert
+0x08|<code>....1...</code>|MB <br> Spursensor hell dunkel|10-11-12|wenn Spursensor <br> geändert
+0x10|<code>...1....</code>|MC <br> Spursensor dunkel hell|13-14-15|wenn Spursensor <br> geändert
+0x20|<code>..1.....</code>|MD <br> Spursensor dunkel dunkel|16-17-18|wenn Spursensor <br> geändert
 
 
 
