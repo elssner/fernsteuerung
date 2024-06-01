@@ -94,7 +94,8 @@ hex|bit|Funktion
 ---|---|---
 0x20|<code>..1.....</code>|Stop dieser Fahrstrecke bei Ereignis Spursensor
 0x40|<code>.1......</code>|Stop dieser Fahrstrecke bei Ereignis Ultraschallsensor
-0x80|<code>1.......</code>|Encoder Auflösung (Entfernung in Impulsen anstatt cm)
+0x00|<code>0.......</code>|Encoder Auflösung (Entfernung in cm)
+0x80|<code>1.......</code>|Encoder Auflösung (Entfernung in Impulsen) 1U Motor= 63,9
 
 ### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit)
 
