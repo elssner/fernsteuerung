@@ -10,8 +10,6 @@
         "main.blocks",
         "main.ts",
         "README.md",
-        "radiodata19.ts",
-        "eventblocks.ts",
         "bluetooth.ts",
         "datenpaket.ts"
     ],
