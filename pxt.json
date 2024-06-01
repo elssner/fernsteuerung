@@ -12,6 +12,7 @@
         "README.md",
         "radiodata19.ts",
         "eventblocks.ts",
+        "bluetooth.ts",
         "datenpaket.ts"
     ],
     "testFiles": [
