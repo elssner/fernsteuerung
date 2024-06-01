@@ -40,7 +40,32 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 > a
 
-### Buffer-Struktur (19 Byte) Betriebsart Fernsteuerung max. 6 Motoren
+### Daten Struktur
+
+#### Steuer Byte 0 <code>..xx....</code> Betriebsart (2 Bit)
+
+hex|bit|Funktion|bei Ereignis von einem Sensor
+---|---|---|---
+0x00|<code>..00....</code>|Fernsteuerung max. 6 Motoren|Stop bei Hindernis
+0x10|<code>..01....</code>|Fernsteuerung ein Motor M0|wechselt zum *Programm Sensoren*
+0x20|<code>..10....</code>|Programm 5 Strecken|Stop bei Hindernis
+0x30|<code>..11....</code>|Programm Sensoren|wechselt zum Ereignis-Block
+
+#### Steuer Byte 0 <code>xx..xxxx</code> Schalter (6 Bit)
+
+hex|bit|Funktion|Beschreibung
+---|---|---|---
+0x80|<code>1.......</code>|Soft-Reset|Calliope *zurücksetzen*
+0x40|<code>.1......</code>|Status senden|Empfänger sendet Status über Bluetooth
+0x08|<code>....1...</code>|Schalter
+0x04|<code>.....1..</code>|Schalter
+0x02|<code>......1.</code>|Schalter
+0x01|<code>.......1</code>|Hupe|Buzzer; bei v3 Ton aus Lautsprecher
+
+
+### Betriebsart Fernsteuerung (mit Joystick)
+
+#### Buffer-Struktur (19 Byte) Betriebsart Fernsteuerung max. 6 Motoren
 
 offset|Funktion|offset|Funktion|offset|Funktion
 ---|---|---|---|---|---
@@ -51,6 +76,29 @@ offset|Funktion|offset|Funktion|offset|Funktion
 10|Motor MB|11||12
 13|Motor MC|14||15
 16|Motor MD|17||18
+
+
+#### Steuer Byte 3 <code>..xxxxxx</code> Motor Power (6 Bit)
+<!-- 
+* aktiviert die entsprechenden 3 Byte (Motor, Servo, Entfernung) im Buffer
+* sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
+* bei Strecken oder Sensor wird geschaltet, ob die Strecke bzw. das Ereignis abgearbeitet werden
+* d.h. die Gültigkeit der 3 Bytes im Buffer wird an oder aus geschaltet
+-->
+
+hex|bit|offset|Motor|Beschreibung
+---|---|---|---|---
+0x01|<code>.......1</code>|1|M0|Motor Power
+0x02|<code>......1.</code>|4|M1|Motor Power
+0x04|<code>.....1..</code>|7|MA|Motor Power
+0x08|<code>....1...</code>|10|MB|Motor Power
+0x10|<code>...1....</code>|13|MC|Motor Power
+0x20|<code>..1.....</code>|16|MD|Motor Power
+
+
+
+
+
 
 ### Buffer-Struktur (19 Byte) Betriebsart Programm 5 Strecken
 
@@ -156,26 +204,6 @@ offset|Ereignis|Funktion|Beschreibung
 * ist beim letzten empfangenen Buffer Bit 5 0x20 Programm gesetzt, wird kurzes timeout (1s) unterdrückt
 * danach sollen keine Buffer mehr gesendet werden, bis das Programm abgefahren ist
 -->
-
-### Steuer Byte 0 <code>..xx....</code> Betriebsart (2 Bit)
-
-hex|bit|Funktion|bei Ereignis von einem Sensor
----|---|---|---
-0x00|<code>..00....</code>|Fernsteuerung max. 6 Motoren|Stop bei Hindernis
-0x10|<code>..01....</code>|Fernsteuerung ein Motor M0|wechselt zum *Programm Sensoren*
-0x20|<code>..10....</code>|Programm 5 Strecken|Stop bei Hindernis
-0x30|<code>..11....</code>|Programm Sensoren|wechselt zum Ereignis-Block
-
-### Steuer Byte 0 <code>xx..xxxx</code> Schalter (6 Bit)
-
-hex|bit|Funktion|Beschreibung
----|---|---|---
-0x80|<code>1.......</code>|Soft-Reset|Calliope *zurücksetzen*
-0x40|<code>.1......</code>|Status senden|Empfänger sendet Status über Bluetooth
-0x08|<code>....1...</code>|Schalter
-0x04|<code>.....1..</code>|Schalter
-0x02|<code>......1.</code>|Schalter
-0x01|<code>.......1</code>|Hupe|Buzzer; bei v3 Ton aus Lautsprecher
 
 ### Steuer Byte 3 <code>..xxxxxx</code> Motor Power (6 Bit)
 
