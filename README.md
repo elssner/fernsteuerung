@@ -84,12 +84,6 @@ offset|Funktion|offset|Funktion|offset|Funktion
 16|Motor MD|17||18
 
 #### Steuer Byte 3 <code>..xxxxxx</code> (6 Bit) Betriebsart: Fernsteuerung 6 Motoren
-<!-- 
-* aktiviert die entsprechenden 3 Byte (Motor, Servo, Entfernung) im Buffer
-* sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
-* bei Strecken oder Sensor wird geschaltet, ob die Strecke bzw. das Ereignis abgearbeitet werden
-* d.h. die Gültigkeit der 3 Bytes im Buffer wird an oder aus geschaltet
--->
 
 hex|bit|offset|Motor|Beschreibung
 ---|---|---|---|---
@@ -106,7 +100,7 @@ hex|bit|offset|Motor|Beschreibung
 
 * einmalige Bluetooth Übertragung, kein Timeout
 * ein Motor und Servo fährt nacheinander die Strecken
-* für jede Strecke muss *Motor Power* in *Steuer Byte 3* aktiviert sein
+* jede Strecke muss in *Steuer Byte 3* aktiviert sein
 * Stop nach der letzten Strecke
 
 #### Buffer-Struktur (19 Byte) Betriebsart: Programm 5 Strecken
@@ -121,6 +115,16 @@ _|0|Steuer-Byte 0
 4\. Strecke|13|Motor|14|Servo|15|Entfernung
 5\. Strecke|16|Motor|17|Servo|18|Entfernung
 
+#### Steuer Byte 3 <code>..xxxxxx</code> (6 Bit) Betriebsart: Programm 5 Strecken
+
+hex|bit|offset|Strecke|Beschreibung
+---|---|---|---|---
+0x01|<code>.......1</code>|1|(Joystick)|
+0x02|<code>......1.</code>|4|1\. Strecke|aktiviert
+0x04|<code>.....1..</code>|7|2\. Strecke|aktiviert
+0x08|<code>....1...</code>|10|3\. Strecke|aktiviert
+0x10|<code>...1....</code>|13|4\. Strecke|aktiviert
+0x20|<code>..1.....</code>|16|5\. Strecke|aktiviert
 
 
 ### Buffer-Struktur (19 Byte) Betriebsart Programm Sensoren
