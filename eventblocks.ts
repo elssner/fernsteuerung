@@ -1,5 +1,5 @@
 // Gib deinen Code hier ein
-namespace radio { // eventblocks.ts
+namespace radio_ { // eventblocks.ts
 
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
     let n_start = false
