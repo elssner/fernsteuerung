@@ -15,27 +15,33 @@ für CalliBot, MakerKitCar, CaR4
 
     // ========== Buffer offset
 
+    //% group="Enums" advanced=true
+    //% block="%bufferpointer" weight=8
+    export function radio_bufferpointer(bufferpointer: eBufferPointer) { return bufferpointer }
     export enum eBufferPointer {
-        //% block="M0 1-2-3 Fernsteuerung"
+        //% block="M0 | Joystick"
         p0 = 1,
-        //% block="M1 4-5-6 Ultraschall"
+        //% block="M1 | 1. Strecke | Ultraschall"
         p1 = 4,
-        //% block="MA 7-8-9 hell hell"
+        //% block="MA | 2. Strecke | Spur 00"
         p2 = 7,
-        //% block="MB 10-11-12 hell dunkel"
+        //% block="MB | 3. Strecke | Spur 01"
         p3 = 10,
-        //% block="MC 13-14-15 dunkel hell"
+        //% block="MC | 4. Strecke | Spur 10"
         p4 = 13,
-        //% block="MD 16-17-18 dunkel dunkel"
+        //% block="MD | 5. Strecke | Spur 11"
         p5 = 16
     }
 
+    //% group="Enums" advanced=true
+    //% block="%bufferoffset" weight=7
+    export function radio_bufferoffset(bufferoffset: eBufferOffset) { return bufferoffset }
     export enum eBufferOffset { // 3 Byte (b0-b1-b2) ab n_BufferPointer
         //% block="0 Motor 0..128..255"
         b0_Motor = 0, // 0..128..255
-        //% block="1 Servo 0..16..31"
+        //% block="1 Servo 1..16..31"
         b1_Servo = 1, // Bit 4-0 (0..31)
-        //% block="2 Fahrstrecke 0..255 cm"
+        //% block="2 Entfernung 0..255 cm"
         b2_Fahrstrecke = 2, // Encoder in cm max. 255cm
         // b1_3Bit = 3 // Bit 7-6-5
     }
@@ -94,7 +100,7 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 3
 
     //% group="Enums" advanced=true
-    //% block="Steuer Byte 3 %motorbit" weight=4
+    //% block="aktiviert %motorbit" weight=4
     export function radio_motorbit(motorbit: e3MotorBit) { return motorbit }
     export enum e3MotorBit {
         //% block="M0 | Joystick"
@@ -115,10 +121,13 @@ für CalliBot, MakerKitCar, CaR4
         mab = ma + mb,
         //% block="MC & MD (0x30)"
         mcd = mc + md,
-        //% block="alle (0x3F)"
+        //% block="alle 6 Bit (0x3F)"
         m01abcd = m01 + mab + mcd
     }
 
+    //% group="Enums" advanced=true
+    //% block="Entfernung %entfernung" weight=3
+    export function radio_entfernung(entfernung: e3Entfernung) { return entfernung }
     export enum e3Entfernung {
         //% block="5 cm"
         u0 = 0x00,
@@ -191,7 +200,7 @@ für CalliBot, MakerKitCar, CaR4
 
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="Buffer[3] %buffer Ultraschall Entfernung %entfernung" weight=3
+    //% block="%buffer Ultraschall Entfernung %entfernung" weight=3
     //% buffer.shadow="radio_sendBuffer19"
     export function setEntfernung(buffer: Buffer, entfernung: e3Entfernung) {
         buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= 0b00111111 // AND Bit 5-4-3-2-1-0 bleiben; 7-6 auf 0 setzen
@@ -199,7 +208,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="Buffer[3] %buffer Ultraschall Entfernung" weight=3
+    //% block="%buffer Ultraschall Entfernung" weight=3
     export function getEntfernung(buffer: Buffer): e3Entfernung {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
@@ -209,11 +218,11 @@ für CalliBot, MakerKitCar, CaR4
     // ========== 3 Byte (Motor, Servo, Entfernung)
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="Buffer %buffer set Byte %bufferOffset %byte || %bufferPointer" weight=2
+    //% block="%buffer %bufferPointer %bufferOffset %byte" weight=2
     //% buffer.shadow="radio_sendBuffer19"
     //% byte.min=0 byte.max=255
     //% inlineInputMode=inline 
-    export function setByte(buffer: Buffer, bufferOffset: eBufferOffset, byte: number, bufferPointer?: eBufferPointer) {
+    export function setByte(buffer: Buffer, bufferPointer: eBufferPointer, bufferOffset: eBufferOffset, byte: number) {
         if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
 
         if (bufferOffset == eBufferOffset.b1_Servo) {
