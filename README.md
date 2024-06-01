@@ -101,7 +101,7 @@ hex|bit|Funktion
 0x02|1|1 Schalter
 0x01|0|0 Hupe
 
-### Steuer Byte 3 Motor Power und Ultraschall Entfernung
+### Steuer Byte 3 Motor Power (6 Bit 5..0)
 
 * aktiviert die entsprechenden 3 Byte (Motor, Servo, Entfernung) im Buffer
 * sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
@@ -116,10 +116,21 @@ hex|bit|Funktion|aktiviert offset|Beschreibung
 0x08|3|MB <br> Spursensor hell dunkel|10-11-12|wenn Spursensor <br> geändert
 0x10|4|MC <br> Spursensor dunkel hell|13-14-15|wenn Spursensor <br> geändert
 0x20|5|MD <br> Spursensor dunkel dunkel|16-17-18|wenn Spursensor <br> geändert
-0x00|7-6|Ultraschall Entferung||Stop bei 5 cm
-0x40|7-6|Ultraschall Entferung||Stop bei 10 cm
-0x80|7-6|Ultraschall Entferung||Stop bei 15 cm
-0xC0|7-6|Ultraschall Entferung||Stop bei 20 cm
+
+
+
+### Steuer Byte 3 Ultraschall Entfernung (2 Bit 7..6)
+
+* 2 Bit codieren die Entfernung für das Ultraschall Ereignis
+
+hex|bit|Funktion|Beschreibung
+---|---|---|---
+0x00|7-6|Ultraschall Entferung|Stop bei 5 cm
+0x40|7-6|Ultraschall Entferung|Stop bei 10 cm
+0x80|7-6|Ultraschall Entferung|Stop bei 15 cm
+0xC0|7-6|Ultraschall Entferung|Stop bei 20 cm
+
+
 
 
 
