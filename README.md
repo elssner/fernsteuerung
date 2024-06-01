@@ -188,7 +188,7 @@ hex|bit|Funktion
 0x00|<code>0.......</code>|Encoder Auflösung (Entfernung in cm oder Zehntelsekunden)
 0x80|<code>1.......</code>|Encoder Auflösung (Entfernung in Impulsen) 1U Motor=63,9
 
-#### Entfernung Byte 6 9 12 15 18 (8 Bit) Encoder (oder Zeit) Ereignis aktiviert
+#### Entfernung Byte 6 9 12 15 18 (8 Bit) Entfernung messen aktiviert
 
 * **0**: Ereignis (Encoder oder Zeit) ist deaktiviert
 * **1..255** 0,01 .. 2,55 Meter oder 0,1 .. 25,5 Sekunden
