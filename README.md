@@ -72,10 +72,10 @@ Sensor|offset|Funktion|offset|Funktion|offset|Funktion
 _|0|Steuer-Byte 0
 (Joystick)|1|Motor|2|Servo|3|Steuer-Byte 3
 Ultraschall|4|Motor|5|Servo|6|Entfernung
-Liniensensor 00|7|Motor|8|Servo|9|Entfernung
-Liniensensor 01|10|Motor|11|Servo|12|Entfernung
-Liniensensor 10|13|Motor|14|Servo|15|Entfernung
-Liniensensor 11|16|Motor|17|Servo|18|Entfernung
+Spursensor 00|7|Motor|8|Servo|9|Entfernung
+Spursensor 01|10|Motor|11|Servo|12|Entfernung
+Spursensor 10|13|Motor|14|Servo|15|Entfernung
+Spursensor 11|16|Motor|17|Servo|18|Entfernung
 
 ### Motor Byte 1 4 7 10 13 16 (8 Bit)
 
