@@ -46,7 +46,7 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 hex|bit|Funktion|bei Ereignis von einem Sensor
 ---|---|---|---
-0x00|<code>..00....</code>|Fernsteuerung max. 6 Motoren|Stop bei Hindernis
+0x00|<code>..00....</code>|Fernsteuerung 6 Motoren|Stop bei Hindernis
 0x10|<code>..01....</code>|Fernsteuerung ein Motor M0|wechselt zum *Programm Sensoren*
 0x20|<code>..10....</code>|Programm 5 Strecken|Stop bei Hindernis
 0x30|<code>..11....</code>|Programm Sensoren|wechselt zum Ereignis-Block
@@ -63,9 +63,9 @@ hex|bit|Funktion|Beschreibung
 0x01|<code>.......1</code>|Hupe|Buzzer; bei v3 Ton aus Lautsprecher
 
 
-### Betriebsart Fernsteuerung (mit Joystick)
+### Betriebsart Fernsteuerung 6 Motoren (mit Joystick)
 
-#### Buffer-Struktur (19 Byte) Betriebsart Fernsteuerung max. 6 Motoren
+#### Buffer-Struktur (19 Byte) Betriebsart Fernsteuerung 6 Motoren
 
 offset|Funktion|offset|Funktion|offset|Funktion
 ---|---|---|---|---|---
@@ -76,7 +76,6 @@ offset|Funktion|offset|Funktion|offset|Funktion
 10|Motor MB|11||12
 13|Motor MC|14||15
 16|Motor MD|17||18
-
 
 #### Steuer Byte 3 <code>..xxxxxx</code> Motor Power (6 Bit)
 <!-- 
@@ -97,10 +96,9 @@ hex|bit|offset|Motor|Beschreibung
 
 
 
+### Betriebsart Programm 5 Strecken
 
-
-
-### Buffer-Struktur (19 Byte) Betriebsart Programm 5 Strecken
+#### Buffer-Struktur (19 Byte) Betriebsart Programm 5 Strecken
 
 Strecke|offset|Funktion|offset|Funktion|offset|Funktion
 ---|---|---|---|---|---|---
@@ -111,6 +109,7 @@ _|0|Steuer-Byte 0
 3\. Strecke|10|Motor|11|Servo|12|Entfernung
 4\. Strecke|13|Motor|14|Servo|15|Entfernung
 5\. Strecke|16|Motor|17|Servo|18|Entfernung
+
 
 
 ### Buffer-Struktur (19 Byte) Betriebsart Programm Sensoren
