@@ -127,7 +127,15 @@ hex|bit|offset|Strecke|Beschreibung
 0x20|<code>..1.....</code>|16|5\. Strecke|aktiviert
 
 
-### Buffer-Struktur (19 Byte) Betriebsart Programm Sensoren
+
+### Betriebsart: Programm Sensoren
+
+* einmalige Bluetooth Übertragung, kein Timeout
+* ein Motor und Servo fährt ereignisgesteuert die Strecken
+* jedes Ereignis muss in *Steuer Byte 3* aktiviert sein
+* Stop, wenn eine Ereignis nicht aktiviert ist
+
+#### Buffer-Struktur (19 Byte) Betriebsart: Programm Sensoren
 
 Sensor|offset|Funktion|offset|Funktion|offset|Funktion
 ---|---|---|---|---|---|---
@@ -138,6 +146,20 @@ Spursensor 00|7|Motor|8|Servo|9|Entfernung
 Spursensor 01|10|Motor|11|Servo|12|Entfernung
 Spursensor 10|13|Motor|14|Servo|15|Entfernung
 Spursensor 11|16|Motor|17|Servo|18|Entfernung
+
+#### Steuer Byte 3 <code>..xxxxxx</code> (6 Bit) Betriebsart: Programm Sensoren
+
+hex|bit|offset|Ereignis|Beschreibung
+---|---|---|---|---
+0x01|<code>.......1</code>|1|(Joystick)|
+0x02|<code>......1.</code>|4|Ultraschall|Hindernis erkannt
+0x04|<code>.....1..</code>|7|Spursensor|00 dunkel dunkel
+0x08|<code>....1...</code>|10|Spursensor|01 dunkel hell
+0x10|<code>...1....</code>|13|Spursensor|10 hell dunkel
+0x20|<code>..1.....</code>|16|Spursensor|11 hell hell
+
+
+
 
 ### Motor Byte 1 4 7 10 13 16 (8 Bit)
 
