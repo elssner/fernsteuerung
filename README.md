@@ -111,7 +111,7 @@ hex|bit|Funktion
 hex|bit|Funktion|aktiviert offset|Beschreibung
 ---|---|---|---|---
 0x01|0|M0 <br> Fernsteuerung|1-2|2 Byte (Motor, Servo) für Fernsteuerung mit Joystick
-0x02|1|M1 \| Ultraschall|4-5-6|wenn Ultraschall Entfernung unterschritten wurde
+0x02|1|M1<br/>Ultraschall|4-5-6|wenn Ultraschall Entfernung unterschritten wurde
 0x04|2|MA \| Spursensor hell hell|7-8-9|wenn Spursensor geändert
 0x08|3|MB \| Spursensor hell dunkel|10-11-12|wenn Spursensor geändert
 0x10|4|MC \| Spursensor dunkel hell|13-14-15|wenn Spursensor geändert
