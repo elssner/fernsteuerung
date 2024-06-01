@@ -92,8 +92,8 @@ Liniensensor 11|16|Motor|17|Servo|18|Entfernung
 
 hex|bit|Funktion
 ---|---|---
-0x20|<code>..1.....</code>|Stop bei Liniensensor
-0x40|<code>.1......</code>|Stop bei Ultraschall
+0x20|<code>..1.....</code>|Stop dieser Fahrstrecke bei Änderung Spursensor
+0x40|<code>.1......</code>|Stop dieser Fahrstrecke bei Ultraschall
 0x80|<code>1.......</code>|Encoder Auflösung (Entfernung in Impulsen anstatt cm)
 
 ### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit)
