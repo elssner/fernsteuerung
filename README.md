@@ -40,24 +40,37 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 > a
 
-### Bluetooth Buffer (19 Byte) Betriebsart Fernsteuerung
+### Buffer-Struktur (19 Byte) Betriebsart Fernsteuerung max. 6 Motoren
 
-offset|Funktion|offset|Funktion|offset|Funktion|Ereignis
----|---|---|---|---|---|---
+offset|Funktion|offset|Funktion|offset|Funktion
+---|---|---|---|---|---
 0|Steuer-Byte 0
 1|Motor M0|2|Servo|3|Steuer-Byte 3
-4|Motor M1|5|Servo|6|Entfernung|Ultraschall
-7|Motor MA|8|Servo|9|Entfernung|Linie 00
-10|Motor MB|11|Servo|12|Entfernung|Linie 01
-13|Motor MC|14|Servo|15|Entfernung|Linie 10
-16|Motor MD|17|Servo|18|Entfernung|Linie 11
+4|Motor M1|5||6
+7|Motor MA|8||9
+10|Motor MB|11||12
+13|Motor MC|14||15
+16|Motor MD|17||18
 
-### Bluetooth Buffer (19 Byte) Betriebsart Programm
+### Buffer-Struktur (19 Byte) Betriebsart Programm 5 Strecken
 
-Ereignis|offset|Funktion|offset|Funktion|offset|Funktion
+Strecke|offset|Funktion|offset|Funktion|offset|Funktion
 ---|---|---|---|---|---|---
 _|0|Steuer-Byte 0
-_|1|Motor|2|Servo|3|Steuer-Byte 3
+(Joystick)|1|Motor|2|Servo|3|Steuer-Byte 3
+1\. Strecke|4|Motor|5|Servo|6|Entfernung
+2\. Strecke|7|Motor|8|Servo|9|Entfernung
+3\. Strecke|10|Motor|11|Servo|12|Entfernung
+4\. Strecke|13|Motor|14|Servo|15|Entfernung
+5\. Strecke|16|Motor|17|Servo|18|Entfernung
+
+
+### Buffer-Struktur (19 Byte) Betriebsart Programm Sensoren
+
+Sensor|offset|Funktion|offset|Funktion|offset|Funktion
+---|---|---|---|---|---|---
+_|0|Steuer-Byte 0
+(Joystick)|1|Motor|2|Servo|3|Steuer-Byte 3
 Ultraschall|4|Motor|5|Servo|6|Entfernung
 Liniensensor 00|7|Motor|8|Servo|9|Entfernung
 Liniensensor 01|10|Motor|11|Servo|12|Entfernung
