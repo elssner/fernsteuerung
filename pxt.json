@@ -11,7 +11,8 @@
         "main.ts",
         "README.md",
         "radiodata19.ts",
-        "eventblocks.ts"
+        "eventblocks.ts",
+        "datenpaket.ts"
     ],
     "testFiles": [
         "test.ts"
