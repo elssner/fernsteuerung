@@ -160,13 +160,14 @@ hex|bit|offset|Ereignis|Beschreibung
 
 
 
+### Konfiguration für alle Betriebsarten
 
-### Motor Byte 1 4 7 10 13 16 (8 Bit)
+#### Motor Byte 1 4 7 10 13 16 (8 Bit)
 
 * **0..128..255** (128 ist Stop)
 * 0..127 rückwärts; 129..255 vorwärts
 
-### Servo Byte 2 5 8 11 14 17 <code>...xxxxx</code> (5 Bit)
+#### Servo Byte 2 5 8 11 14 17 <code>...xxxxx</code> (5 Bit)
 
 Zur Übertragung wird der Wert (vom Joystick oder vom MakeCode protractorPicker) in 5 Bit (0..31) umgerechnet.
 Der Empfänger macht daraus nach der Formel **(x + 14) * 3** Winkel von 45° bis 135° in 3° Schritten.
@@ -176,7 +177,7 @@ Servo wird mit einem Winkel von 45° bis 135° angesteuert. 90° ist geradeaus.
 * Formel: (x + 14) * 3
 * 1=45° 2=48° 3=51° .. 15=87° 16=90° 17=93° .. 30=132° 31=135°
 
-### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit)
+#### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit)
 
 hex|bit|Funktion
 ---|---|---
@@ -185,7 +186,7 @@ hex|bit|Funktion
 0x00|<code>0.......</code>|Encoder Auflösung (Entfernung in cm oder Zehntelsekunden)
 0x80|<code>1.......</code>|Encoder Auflösung (Entfernung in Impulsen) 1U Motor= 63,9
 
-### Entfernung Byte 6 9 12 15 18 (8 Bit)
+#### Entfernung Byte 6 9 12 15 18 (8 Bit)
 
 * mit Encodermotor werden Impulse ausgewertet
 * ohne Encodermotor wird die Fahrzeit (Zehntelsekunden) ausgewertet
@@ -239,7 +240,6 @@ offset|Ereignis|Funktion|Beschreibung
 * 0x30 die 6 Bereiche je 3 Byte enthalten Fahr-Strecken, um auf ein Ereignis zu reagieren
 * ist beim letzten empfangenen Buffer Bit 5 0x20 Programm gesetzt, wird kurzes timeout (1s) unterdrückt
 * danach sollen keine Buffer mehr gesendet werden, bis das Programm abgefahren ist
--->
 
 ### Steuer Byte 3 <code>..xxxxxx</code> Motor Power (6 Bit)
 
@@ -247,6 +247,7 @@ offset|Ereignis|Funktion|Beschreibung
 * sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
 * bei Strecken oder Sensor wird geschaltet, ob die Strecke bzw. das Ereignis abgearbeitet werden
 * d.h. die Gültigkeit der 3 Bytes im Buffer wird an oder aus geschaltet
+-->
 
 hex|bit|Funktion|aktiviert offset|Beschreibung
 ---|---|---|---|---
@@ -259,7 +260,7 @@ hex|bit|Funktion|aktiviert offset|Beschreibung
 
 
 
-### Steuer Byte 3 <code>xx......</code> Ultraschall Entfernung (2 Bit)
+#### Steuer Byte 3 <code>xx......</code>(2 Bit) Ultraschall Entfernung
 
 * 2 Bit codieren die Entfernung für das Ultraschall Ereignis
 
