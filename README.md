@@ -77,6 +77,19 @@ Liniensensor 01|10|Motor|11|Servo|12|Entfernung
 Liniensensor 10|13|Motor|14|Servo|15|Entfernung
 Liniensensor 11|16|Motor|17|Servo|18|Entfernung
 
+### Motor Byte 1 4 7 10 13 16
+
+* 0..128..255; 128 ist Stop
+* 0..127 rückwärts; 129..255 vorwärts
+
+### Servo Byte 2 5 8 11 14 17 <code>...xxxxx</code> (5 Bit)
+
+* 1..16..31
+* 16 und 0 ist geradeaus (90°)
+* 1=45° 
+
+### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit)
+
 
 * Byte 0 und 3 sind Steuer-Bytes
 * Byte 1 und 2 senden Position vom Joystick an Motor und Servo
