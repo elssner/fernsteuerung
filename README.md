@@ -164,12 +164,12 @@ hex|bit|offset|Ereignis|Beschreibung
 
 ### Konfiguration für alle Betriebsarten
 
-#### Motor Byte 1 4 7 10 13 16 (8 Bit)
+#### Motor Byte 1 4 7 10 13 16 (8 Bit) Motor Drehzahl
 
 * **0..128..255** (128 ist Stop)
 * 0..127 rückwärts; 129..255 vorwärts
 
-#### Servo Byte 2 5 8 11 14 17 <code>...xxxxx</code> (5 Bit)
+#### Servo Byte 2 5 8 11 14 17 <code>...xxxxx</code> (5 Bit) Servo Winkel
 
 Zur Übertragung wird der Wert (vom Joystick oder vom MakeCode protractorPicker) in 5 Bit (0..31) umgerechnet.
 Der Empfänger macht daraus nach der Formel **(x + 14) * 3** Winkel von 45° bis 135° in 3° Schritten.
@@ -179,7 +179,7 @@ Servo wird mit einem Winkel von 45° bis 135° angesteuert. 90° ist geradeaus.
 * Formel: (x + 14) * 3
 * 1=45° 2=48° 3=51° .. 15=87° 16=90° 17=93° .. 30=132° 31=135°
 
-#### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit)
+#### Servo Byte 2 5 8 11 14 17 <code>xxx.....</code> (3 Bit) Sensor Ereignis aktiviert
 
 hex|bit|Funktion
 ---|---|---
@@ -188,7 +188,7 @@ hex|bit|Funktion
 0x00|<code>0.......</code>|Encoder Auflösung (Entfernung in cm oder Zehntelsekunden)
 0x80|<code>1.......</code>|Encoder Auflösung (Entfernung in Impulsen) 1U Motor=63,9
 
-#### Entfernung Byte 6 9 12 15 18 (8 Bit)
+#### Entfernung Byte 6 9 12 15 18 (8 Bit) Encoder (oder Zeit) Ereignis aktiviert
 
 * **0**: Ereignis (Encoder oder Zeit) ist deaktiviert
 * **1..255** 0,01 .. 2,55 Meter oder 0,1 .. 25,5 Sekunden
