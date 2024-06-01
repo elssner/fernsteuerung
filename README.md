@@ -262,7 +262,7 @@ hex|bit|Funktion|aktiviert offset|Beschreibung
 
 
 
-#### Steuer Byte 3 <code>xx......</code> (2 Bit) Ultraschall Entfernung
+#### Steuer Byte 3 <code>xx......</code> (2 Bit) Wert für Ultraschall Entfernung
 
 * 2 Bit codieren die Entfernung für das Ultraschall Ereignis
 
