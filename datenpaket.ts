@@ -50,11 +50,11 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Servo Bits 7-6-5
 
     export enum eSensor {
-        //% block="5 Stop bei schwarzer Linie"
+        //% block="Stop bei Spursensor"
         b5 = 0x20,
-        //% block="6 Stop bei Ultraschall"
+        //% block="Stop bei Ultraschallsensor"
         b6 = 0x40,
-        //% block="7 Encoder Impulse"
+        //% block="Encoder Impulse"
         b7 = 0x80
     }
 
@@ -101,8 +101,8 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Enums" advanced=true
     //% block="aktiviert %motorbit" weight=4
-    export function radio_motorbit(motorbit: e3MotorBit) { return motorbit }
-    export enum e3MotorBit {
+    export function radio_aktiviert(motorbit: e3aktiviert) { return motorbit }
+    export enum e3aktiviert {
         //% block="M0 | Joystick"
         m0 = 0x01,
         //% block="M1 | 1. Strecke | Ultraschall"
@@ -182,10 +182,10 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 3
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="%buffer set Motor Power %motorBit %bit" weight=4
+    //% block="%buffer %motorBit aktiviert %bit" weight=4
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
-    export function setMotorPower(buffer: Buffer, motorBit: e3MotorBit, bit: boolean) {
+    export function setaktiviert(buffer: Buffer, motorBit: e3aktiviert, bit: boolean) {
         if (bit)
             buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= motorBit // OR Nullen bleiben, nur 1 wird gesetzt
         else
@@ -193,8 +193,8 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="Buffer[3] %buffer get Motor Power %motorBit %pBit" weight=4
-    export function getMotorPower(buffer: Buffer, motorBit: e3MotorBit) {
+    //% block="%buffer %motorBit aktiviert" weight=4
+    export function getaktiviert(buffer: Buffer, motorBit: e3aktiviert) {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & motorBit) != 0
     }
 
@@ -218,12 +218,12 @@ für CalliBot, MakerKitCar, CaR4
     // ========== 3 Byte (Motor, Servo, Entfernung)
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="%buffer %bufferPointer %bufferOffset %byte" weight=2
+    //% block="%buffer %bufferPointer %bufferOffset Byte %byte" weight=2
     //% buffer.shadow="radio_sendBuffer19"
     //% byte.min=0 byte.max=255
     //% inlineInputMode=inline 
     export function setByte(buffer: Buffer, bufferPointer: eBufferPointer, bufferOffset: eBufferOffset, byte: number) {
-        if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
+        //if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
 
         if (bufferOffset == eBufferOffset.b1_Servo) {
             buffer[bufferPointer + bufferOffset] &= 0b11100000 // AND Bit 7-6-5 bleiben; 4-3-2-1-0 auf 0 setzen
@@ -254,9 +254,9 @@ für CalliBot, MakerKitCar, CaR4
 
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="Buffer %buffer get Byte %bufferOffset || %bufferPointer" weight=2
-    export function getByte(buffer: Buffer, bufferOffset: eBufferOffset, bufferPointer?: eBufferPointer) {
-        if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
+    //% block="%buffer %bufferPointer %bufferOffset Byte" weight=2
+    export function getByte(buffer: Buffer, bufferPointer: eBufferPointer, bufferOffset: eBufferOffset) {
+        //if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
 
         if (bufferOffset == eBufferOffset.b1_Servo) {
             return buffer[bufferPointer + eBufferOffset.b1_Servo] & 0b00011111 // AND Bit 7-6-5 löschen
@@ -267,12 +267,12 @@ für CalliBot, MakerKitCar, CaR4
 
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="Buffer %buffer set Sensor %sensor %bit || %bufferPointer" weight=1
+    //% block="%buffer %bufferPointer %sensor %bit" weight=1
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
     //% inlineInputMode=inline 
-    export function setSensor(buffer: Buffer, sensor: eSensor, bit: boolean, bufferPointer?: eBufferPointer) {
-        if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
+    export function setSensor(buffer: Buffer, bufferPointer: eBufferPointer, sensor: eSensor, bit: boolean) {
+        //if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
 
         if (bit)
             buffer[bufferPointer + eBufferOffset.b1_Servo] |= sensor // OR Nullen bleiben, nur 1 wird gesetzt
@@ -281,9 +281,9 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="Buffer %buffer get Sensor %sensor || %bufferPointer" weight=1
-    export function getSensor(buffer: Buffer, sensor: eSensor, bufferPointer?: eBufferPointer): boolean {
-        if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
+    //% block="%buffer %bufferPointer %sensor" weight=1
+    export function getSensor(buffer: Buffer, bufferPointer: eBufferPointer, sensor: eSensor): boolean {
+        //if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
 
         return (buffer[bufferPointer + eBufferOffset.b1_Servo] & sensor) == sensor
     }
