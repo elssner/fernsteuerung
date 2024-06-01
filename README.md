@@ -101,7 +101,7 @@ hex|bit|Funktion|bei Ereignis von einem Sensor
 0x02|<code>......1.</code>|Schalter
 0x01|<code>.......1</code>|Hupe
 
-### Steuer Byte 3 Motor Power (6 Bit 5..0)
+### Steuer Byte 3 <code>..xxxxxx</code> Motor Power (6 Bit)
 
 * aktiviert die entsprechenden 3 Byte (Motor, Servo, Entfernung) im Buffer
 * sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
@@ -119,7 +119,7 @@ hex|bit|Funktion|aktiviert offset|Beschreibung
 
 
 
-### Steuer Byte 3 Ultraschall Entfernung (2 Bit 7..6)
+### Steuer Byte 3 <code>xx......</code> Ultraschall Entfernung (2 Bit)
 
 * 2 Bit codieren die Entfernung für das Ultraschall Ereignis
 
