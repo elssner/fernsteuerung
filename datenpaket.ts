@@ -115,12 +115,12 @@ für CalliBot, MakerKitCar, CaR4
 
 
 
-    // ========== group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    // ========== group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
 
 
     // ========== Steuer-Byte 0
 
-    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
     //% block="Buffer[0] %buffer set Programm %programm" weight=6
     //% buffer.shadow="radio_sendBuffer19"
     export function setProgramm(buffer: Buffer, programm: e0Programm) {
@@ -128,13 +128,13 @@ für CalliBot, MakerKitCar, CaR4
         buffer[0] |= (programm & 0b00110000) // OR Bit 7-6-3-2-1-0 bleiben; 5-4 auf pByte setzen
     }
 
-    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="Buffer[0] %buffer get Programm" weight=6
     export function getProgramm(buffer: Buffer): e0Programm {
         return (buffer[0] & 0b00110000)
     }
 
-    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
     //% block="Buffer[0] %buffer set Schalter %schalter %bit" weight=5
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
@@ -145,7 +145,7 @@ für CalliBot, MakerKitCar, CaR4
             buffer[0] &= ~schalter // AND Einsen bleiben, nur 0 wird gesetzt
     }
 
-    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="Buffer[0] %buffer get Schalter %schalter" weight=5
     export function getSchalter(buffer: Buffer, schalter: e0Schalter): Boolean {
         return (buffer[0] & schalter) == schalter
@@ -155,7 +155,7 @@ für CalliBot, MakerKitCar, CaR4
 
     // ========== Steuer-Byte 3
 
-    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
     //% block="Buffer[3] %buffer set Motor Power %motorBit %bit" weight=4
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
@@ -166,14 +166,14 @@ für CalliBot, MakerKitCar, CaR4
             buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= ~motorBit // AND Einsen bleiben, nur 0 wird gesetzt
     }
 
-    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="Buffer[3] %buffer get Motor Power %motorBit %pBit" weight=4
     export function getMotorPower(buffer: Buffer, motorBit: e3MotorBit) {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & motorBit) != 0
     }
 
 
-    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
     //% block="Buffer[3] %buffer Ultraschall Entfernung %entfernung" weight=3
     //% buffer.shadow="radio_sendBuffer19"
     export function setEntfernung(buffer: Buffer, entfernung: e3Entfernung) {
@@ -181,7 +181,7 @@ für CalliBot, MakerKitCar, CaR4
         buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (entfernung & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf pEntfernung setzen
     }
 
-    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="Buffer[3] %buffer Ultraschall Entfernung" weight=3
     export function getEntfernung(buffer: Buffer): e3Entfernung {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
@@ -191,7 +191,7 @@ für CalliBot, MakerKitCar, CaR4
 
     // ========== 3 Byte (Motor, Servo, Entfernung)
 
-    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
     //% block="Buffer %buffer set Byte %bufferOffset %byte || %bufferPointer" weight=2
     //% buffer.shadow="radio_sendBuffer19"
     //% byte.min=0 byte.max=255
@@ -227,7 +227,7 @@ für CalliBot, MakerKitCar, CaR4
 
 
 
-    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="Buffer %buffer get Byte %bufferOffset || %bufferPointer" weight=2
     export function getByte(buffer: Buffer, bufferOffset: eBufferOffset, bufferPointer?: eBufferPointer) {
         if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
@@ -240,7 +240,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
 
-    //% group="Datenpaket zum Senden vorbereiten" subcategory="Fernsteuerung"
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
     //% block="Buffer %buffer set Sensor %sensor %bit || %bufferPointer" weight=1
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
@@ -254,7 +254,7 @@ für CalliBot, MakerKitCar, CaR4
             buffer[bufferPointer + eBufferOffset.b1_Servo] &= ~sensor // AND Einsen bleiben, nur 0 wird gesetzt
     }
 
-    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Fernsteuerung"
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="Buffer %buffer get Sensor %sensor || %bufferPointer" weight=1
     export function getSensor(buffer: Buffer, sensor: eSensor, bufferPointer?: eBufferPointer): Boolean {
         if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
