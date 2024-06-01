@@ -249,7 +249,6 @@ offset|Ereignis|Funktion|Beschreibung
 * sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
 * bei Strecken oder Sensor wird geschaltet, ob die Strecke bzw. das Ereignis abgearbeitet werden
 * d.h. die Gültigkeit der 3 Bytes im Buffer wird an oder aus geschaltet
--->
 
 hex|bit|Funktion|aktiviert offset|Beschreibung
 ---|---|---|---|---
@@ -259,6 +258,7 @@ hex|bit|Funktion|aktiviert offset|Beschreibung
 0x08|<code>....1...</code>|MB <br> Spursensor hell dunkel|10-11-12|wenn Spursensor <br> geändert
 0x10|<code>...1....</code>|MC <br> Spursensor dunkel hell|13-14-15|wenn Spursensor <br> geändert
 0x20|<code>..1.....</code>|MD <br> Spursensor dunkel dunkel|16-17-18|wenn Spursensor <br> geändert
+-->
 
 
 
