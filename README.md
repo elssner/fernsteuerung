@@ -191,7 +191,7 @@ hex|bit|Funktion
 #### Entfernung Byte 6 9 12 15 18 (8 Bit)
 
 * **0**: Ereignis (Encoder oder Zeit) ist deaktiviert
-* **1..255** 0,01..2,55 Meter oder 0,1..25,5 Sekunden
+* **1..255** 0,01 .. 2,55 Meter oder 0,1 .. 25,5 Sekunden
 * mit Encodermotor werden Impulse ausgewertet
 * ohne Encodermotor wird die Fahrzeit (Zehntelsekunden) ausgewertet
 
