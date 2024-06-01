@@ -63,15 +63,15 @@ hex|bit|Funktion|Beschreibung
 0x01|<code>.......1</code>|Hupe|Buzzer; bei v3 Ton aus Lautsprecher
 
 
-### Betriebsart Fernsteuerung 6 Motoren (mit Joystick)
+### Betriebsart: Fernsteuerung 6 Motoren (mit Joystick)
 
 * kontinuierliche Bluetooth Übertragung der Daten vom Joystick
 * nur 1 Servo (für Fahr-Motor M0)
-* Sensoren: Stop bei Hindernis möglich
+* Sensoren: Stop bei Hindernis wenn in *Servo Byte 2* aktiviert
 * Encoder wird nicht ausgewertet
 * zusätzliche Motoren z.B. Gabelstapler oder Kran
 
-#### Buffer-Struktur (19 Byte) Betriebsart Fernsteuerung 6 Motoren
+#### Buffer-Struktur (19 Byte) Betriebsart: Fernsteuerung 6 Motoren
 
 offset|Funktion|offset|Funktion|offset|Funktion
 ---|---|---|---|---|---
@@ -83,7 +83,7 @@ offset|Funktion|offset|Funktion|offset|Funktion
 13|Motor MC|14||15
 16|Motor MD|17||18
 
-#### Steuer Byte 3 <code>..xxxxxx</code> (6 Bit) Betriebsart Fernsteuerung 6 Motoren
+#### Steuer Byte 3 <code>..xxxxxx</code> (6 Bit) Betriebsart: Fernsteuerung 6 Motoren
 <!-- 
 * aktiviert die entsprechenden 3 Byte (Motor, Servo, Entfernung) im Buffer
 * sind Motoren angeschlossen '00 Fernsteuerung Motoren', wird damit Motor Power geschaltet
@@ -102,9 +102,14 @@ hex|bit|offset|Motor|Beschreibung
 
 
 
-### Betriebsart Programm 5 Strecken
+### Betriebsart: Programm 5 Strecken
 
-#### Buffer-Struktur (19 Byte) Betriebsart Programm 5 Strecken
+* einmalige Bluetooth Übertragung, kein Timeout
+* ein Motor und Servo fährt nacheinander die Strecken
+* für jede Strecke muss *Motor Power* in *Steuer Byte 3* aktiviert sein
+* Stop nach der letzten Strecke
+
+#### Buffer-Struktur (19 Byte) Betriebsart: Programm 5 Strecken
 
 Strecke|offset|Funktion|offset|Funktion|offset|Funktion
 ---|---|---|---|---|---|---
