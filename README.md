@@ -111,11 +111,11 @@ hex|bit|Funktion
 hex|bit|Funktion|aktiviert offset|Beschreibung
 ---|---|---|---|---
 0x01|0|M0 \| Fernsteuerung|1-2|2 Byte (Motor, Servo) für Fernsteuerung mit Joystick
-0x02|1|M1 \| Ultraschall|4-5-6|wird gefahren nachdem die Entfernung unterschritten wurde
-0x04|2|MA \| Spursensor hell hell|7-8-9|wird gefahren nach 'Stop bei schwarzer Linie'
-0x08|3|MB \| Spursensor hell dunkel|10-11-12|wird gefahren nach 'Stop bei schwarzer Linie'
-0x10|4|MC \| Spursensor dunkel hell|13-14-15|wird gefahren nach 'Stop bei schwarzer Linie'
-0x20|5|MD \| Spursensor dunkel dunkel|16-17-18|wird gefahren nach 'Stop bei schwarzer Linie'
+0x02|1|M1 \| Ultraschall|4-5-6|wenn Ultraschall Entfernung unterschritten wurde
+0x04|2|MA \| Spursensor hell hell|7-8-9|wenn Spursensor geändert
+0x08|3|MB \| Spursensor hell dunkel|10-11-12|wenn Spursensor geändert
+0x10|4|MC \| Spursensor dunkel hell|13-14-15|wenn Spursensor geändert
+0x20|5|MD \| Spursensor dunkel dunkel|16-17-18|wenn Spursensor geändert
 0x00|7-6|Ultraschall Entferung||Stop bei 5 cm
 0x40|7-6|Ultraschall Entferung||Stop bei 10 cm
 0x80|7-6|Ultraschall Entferung||Stop bei 15 cm
@@ -127,11 +127,11 @@ hex|bit|Funktion|aktiviert offset|Beschreibung
 
 > [Upates für Erweiterungen; Erweiterungen aus einem Projekt löschen.](https://calliope-net.github.io/i2c-liste#updates)
 
-> [Alle I²C-Erweiterungen für MakeCode von calliope-net (Software).](https://calliope-net.github.io/i2c-liste#erweiterungen)
+> [Alle I²C-Erweiterungen von calliope-net (MakeCode-Blöcke).](https://calliope-net.github.io/i2c-liste#erweiterungen)
 
 #### Calliope-Apps, .hex-Dateien, Bildschirmfotos mit Blöcken
 
-> [Alle Beispiel-Projekte für MakeCode von calliope-net (Calliope-Apps).](https://calliope-net.github.io/i2c-liste#programmierbeispiele)
+> [Alle MakeCode-Projekte von calliope-net (Programmierbeispiele).](https://calliope-net.github.io/i2c-liste#programmierbeispiele)
 
 > GitHub-Profil calliope-net: [https://github.com/calliope-net](https://github.com/calliope-net)
 
