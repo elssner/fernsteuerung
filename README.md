@@ -125,10 +125,10 @@ hex|bit|Funktion|aktiviert offset|Beschreibung
 
 hex|bit|Funktion|Beschreibung
 ---|---|---|---
-0x00|7-6|Ultraschall Entferung|Stop bei 5 cm
-0x40|7-6|Ultraschall Entferung|Stop bei 10 cm
-0x80|7-6|Ultraschall Entferung|Stop bei 15 cm
-0xC0|7-6|Ultraschall Entferung|Stop bei 20 cm
+0x00|<code>00......</code>|Ultraschall Entferung|Stop bei 5 cm
+0x40|<code>01......</code>|Ultraschall Entferung|Stop bei 10 cm
+0x80|<code>10......</code>|Ultraschall Entferung|Stop bei 15 cm
+0xC0|<code>11......</code>|Ultraschall Entferung|Stop bei 20 cm
 
 
 
