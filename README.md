@@ -138,7 +138,7 @@ hex|bit|Funktion|bei Ereignis von einem Sensor
 hex|bit|Funktion|Beschreibung
 ---|---|---|---
 0x80|<code>1.......</code>|Soft-Reset|Calliope *zurücksetzen*
-0x40|<code>.1......</code>|Status Buffer zurück senden|Empfänger sendet Status über Bluetooth
+0x40|<code>.1......</code>|Status senden|Empfänger sendet Status über Bluetooth
 0x08|<code>....1...</code>|Schalter
 0x04|<code>.....1..</code>|Schalter
 0x02|<code>......1.</code>|Schalter
