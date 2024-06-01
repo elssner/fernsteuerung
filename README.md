@@ -87,7 +87,7 @@ offset|Funktion|offset|Funktion|offset|Funktion
 
 hex|bit|offset|Motor|Beschreibung
 ---|---|---|---|---
-0x01|<code>.......1</code>|1|M0|Motor Power
+0x01|<code>.......1</code>|1-2|M0|Motor Power
 0x02|<code>......1.</code>|4|M1|Motor Power
 0x04|<code>.....1..</code>|7|MA|Motor Power
 0x08|<code>....1...</code>|10|MB|Motor Power
@@ -133,7 +133,9 @@ hex|bit|offset|Strecke|Beschreibung
 * einmalige Bluetooth Übertragung, kein Timeout
 * ein Motor und Servo fährt ereignisgesteuert die Strecken
 * jedes Ereignis muss in *Steuer Byte 3* aktiviert sein
-* Stop, wenn eine Ereignis nicht aktiviert ist
+* Strecke endet, wenn aktiviertes Ereignis von Sensor eintritt
+* Stop Ereignisse: Ultraschallsensor, Spursensor, Encoder
+* Fortsetzung mit dem zum Ereignis passenden Block 1 bis 5
 
 #### Buffer-Struktur (19 Byte) Betriebsart: Programm Sensoren
 
@@ -184,7 +186,7 @@ hex|bit|Funktion
 0x20|<code>..1.....</code>|Stop dieser Fahrstrecke bei Ereignis Spursensor
 0x40|<code>.1......</code>|Stop dieser Fahrstrecke bei Ereignis Ultraschallsensor
 0x00|<code>0.......</code>|Encoder Auflösung (Entfernung in cm oder Zehntelsekunden)
-0x80|<code>1.......</code>|Encoder Auflösung (Entfernung in Impulsen) 1U Motor= 63,9
+0x80|<code>1.......</code>|Encoder Auflösung (Entfernung in Impulsen) 1U Motor=63,9
 
 #### Entfernung Byte 6 9 12 15 18 (8 Bit)
 
