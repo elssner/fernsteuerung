@@ -40,17 +40,29 @@ Dieses Repository kann als **Erweiterung** in MakeCode hinzugefügt werden.
 
 > a
 
-### Bluetooth Buffer Struktur (19 Byte)
+### Bluetooth Buffer (19 Byte) Betriebsart Fernsteuerung
 
-offset|Funktion|offset|Funktion|offset|Funktion
----|---|---|---|---|---
+offset|Funktion|offset|Funktion|offset|Funktion|Ereignis
+---|---|---|---|---|---|---
 0|Steuer-Byte 0
 1|Motor M0|2|Servo|3|Steuer-Byte 3
-4|Motor M1|5|Servo|6|Entfernung
-7|Motor MA|8|Servo|9|Entfernung
-10|Motor MB|11|Servo|12|Entfernung
-13|Motor MC|14|Servo|15|Entfernung
-16|Motor MD|17|Servo|18|Entfernung
+4|Motor M1|5|Servo|6|Entfernung|Ultraschall
+7|Motor MA|8|Servo|9|Entfernung|Linie 00
+10|Motor MB|11|Servo|12|Entfernung|Linie 01
+13|Motor MC|14|Servo|15|Entfernung|Linie 10
+16|Motor MD|17|Servo|18|Entfernung|Linie 11
+
+### Bluetooth Buffer (19 Byte) Betriebsart Programm
+
+Ereignis|offset|Funktion|offset|Funktion|offset|Funktion
+---|---|---|---|---|---|---
+_|0|Steuer-Byte 0
+_|1|Motor|2|Servo|3|Steuer-Byte 3
+Ultraschall|4|Motor|5|Servo|6|Entfernung
+Linie 00|7|Motor|8|Servo|9|Entfernung
+Linie 01|10|Motor|11|Servo|12|Entfernung
+Linie 10|13|Motor|14|Servo|15|Entfernung
+Linie 11|16|Motor|17|Servo|18|Entfernung
 
 
 * Byte 0 und 3 sind Steuer-Bytes
