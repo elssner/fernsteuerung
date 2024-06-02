@@ -7,12 +7,6 @@ für CalliBot, MakerKitCar, CaR4
 */ { // datenpaket.ts
 
 
-    //% group="Kommentar" advanced=true
-    //% block="// %text"
-    export function comment(text: string): void { }
-
-
-
     // ========== Buffer offset
 
     //% group="Enums" advanced=true
@@ -287,6 +281,23 @@ für CalliBot, MakerKitCar, CaR4
 
 
 
+    // ========== group="Kommentar" advanced=true
+
+    //% group="Kommentar" advanced=true
+    //% block="// %text"
+    export function comment(text: string): void { }
+
+
+
+    // ========== group="Logik" advanced=true
+
+    //% group="Logik" advanced=true
+    //% block="%i0 zwischen %i1 und %i2" weight=1
+    export function between(i0: number, i1: number, i2: number): boolean {
+        return (i0 >= i1 && i0 <= i2)
+    }
+
+
 
     // ========== group="Buffer" advanced=true
 
@@ -326,6 +337,7 @@ für CalliBot, MakerKitCar, CaR4
     //% group="Buffer" advanced=true
     //% block="%pNumber .toHex()" weight=1
     export function toHex(bytes: number[]): string { return Buffer.fromArray(bytes).toHex() }
+
 
 }
 // datenpaket.ts
