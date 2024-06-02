@@ -7,59 +7,6 @@ für CalliBot, MakerKitCar, CaR4
 */ { // datenpaket.ts
 
 
-
-    // ========== Servo Bits 7-6-5
-
-    export enum eSensor {
-        //% block="Stop bei Spursensor"
-        b5 = 0x20,
-        //% block="Stop bei Ultraschallsensor"
-        b6 = 0x40,
-        //% block="Encoder Impulse"
-        b7 = 0x80
-    }
-
-
-
-    // ========== Steuer-Byte 0
-
-    //% group="Enums" advanced=true
-    //% block="[0] Betriebsart %betriebsart" weight=6
-    function radio_betriebsart(betriebsart: e0Betriebsart) { return betriebsart }
-    export enum e0Betriebsart {
-        //% block="00 Fernsteuerung Motoren"
-        p0 = 0x00,
-        //% block="10 Fernsteuerung Motor M0 bis Sensor"
-        p1 = 0x10,
-        //% block="20 Programm 5 Strecken"
-        p2 = 0x20,
-        //% block="30 Programm Sensoren"
-        p3 = 0x30
-    }
-
-
-    //% group="Enums" advanced=true
-    //% block="[0] Schalter %schalter" weight=5
-    function radio_schalter(schalter: e0Schalter) { return schalter }
-    export enum e0Schalter {
-        //% block="0 Hupe"
-        b0 = 0x01,
-        //% block="1"
-        b1 = 0x02,
-        //% block="2"
-        b2 = 0x04,
-        //% block="3"
-        b3 = 0x08,
-        //% block="6 Status senden"
-        b6 = 0x40,
-        //% block="7 zurücksetzen"
-        b7 = 0x80
-    }
-
-
-
-
-
     // ========== group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
 
 
@@ -203,65 +150,6 @@ für CalliBot, MakerKitCar, CaR4
             return buffer.getUint8(bufferPointer + bufferOffset)
         }
     }
-
-
-
-    // ========== group="Kommentar" advanced=true
-
-    //% group="Kommentar" advanced=true
-    //% block="// %text"
-    export function comment(text: string): void { }
-
-
-
-    // ========== group="Logik" advanced=true
-
-    //% group="Logik" advanced=true
-    //% block="%i0 zwischen %i1 und %i2" weight=1
-    export function between(i0: number, i1: number, i2: number): boolean {
-        return (i0 >= i1 && i0 <= i2)
-    }
-
-
-
-    // ========== group="Buffer" advanced=true
-
-    //% group="Buffer" advanced=true
-    //% block="Buffer %buffer getNumber(%format offset %offset)" weight=8
-    //% format.defl=NumberFormat.UInt8LE
-    //% offset.min=0 offset.max=18
-    export function getNumber(buffer: Buffer, format: NumberFormat, offset: number): number { return buffer.getNumber(format, offset) }
-
-    //% group="Buffer" advanced=true
-    //% block="Buffer %buffer setNumber(%format offset %offset value %value)" weight=7
-    //% format.defl=NumberFormat.UInt8LE
-    //% offset.min=0 offset.max=18
-    //% inlineInputMode=inline
-    export function setNumber(buffer: Buffer, format: NumberFormat, offset: number, value: number) { buffer.setNumber(format, offset, value) }
-
-    //% group="Buffer" advanced=true
-    //% block="Buffer %buffer offset %offset getBit 2** %exp" weight=4
-    //% offset.min=0 offset.max=18
-    //% exp.min=0 exp.max=7
-    export function getBit(buffer: Buffer, offset: number, exp: number): boolean {
-        return (buffer[offset] & 2 ** Math.trunc(exp)) != 0
-    }
-
-    //% group="Buffer" advanced=true
-    //% block="Buffer %buffer offset %offset setBit 2** %exp %pBit" weight=3
-    //% offset.min=0 offset.max=18
-    //% exp.min=0 exp.max=7
-    //% inlineInputMode=inline
-    export function setBit(buffer: Buffer, offset: number, exp: number, bit: boolean) {
-        if (bit)
-            buffer[offset] | 2 ** Math.trunc(exp)
-        else
-            buffer[offset] & ~(2 ** Math.trunc(exp))
-    }
-
-    //% group="Buffer" advanced=true
-    //% block="%pNumber .toHex()" weight=1
-    export function toHex(bytes: number[]): string { return Buffer.fromArray(bytes).toHex() }
 
 
 }

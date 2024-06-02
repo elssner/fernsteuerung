@@ -12,7 +12,8 @@
         "README.md",
         "bluetooth.ts",
         "datenpaket.ts",
-        "enums.ts"
+        "enums.ts",
+        "advanced.ts"
     ],
     "testFiles": [
         "test.ts"

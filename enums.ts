@@ -143,4 +143,54 @@ namespace radio { // enums.ts
     }
 
 
+
+    // ========== Servo Bits 7-6-5
+
+    export enum eSensor {
+        //% block="Stop bei Spursensor"
+        b5 = 0x20,
+        //% block="Stop bei Ultraschallsensor"
+        b6 = 0x40,
+        //% block="Encoder Impulse"
+        b7 = 0x80
+    }
+
+
+
+    // ========== Steuer-Byte 0
+
+    //% group="Enums" advanced=true
+    //% block="[0] Betriebsart %betriebsart" weight=6
+    function radio_betriebsart(betriebsart: e0Betriebsart) { return betriebsart }
+    export enum e0Betriebsart {
+        //% block="00 Fernsteuerung Motoren"
+        p0 = 0x00,
+        //% block="10 Fernsteuerung Motor M0 bis Sensor"
+        p1 = 0x10,
+        //% block="20 Programm 5 Strecken"
+        p2 = 0x20,
+        //% block="30 Programm Sensoren"
+        p3 = 0x30
+    }
+
+
+    //% group="Enums" advanced=true
+    //% block="[0] Schalter %schalter" weight=5
+    function radio_schalter(schalter: e0Schalter) { return schalter }
+    export enum e0Schalter {
+        //% block="0 Hupe"
+        b0 = 0x01,
+        //% block="1"
+        b1 = 0x02,
+        //% block="2"
+        b2 = 0x04,
+        //% block="3"
+        b3 = 0x08,
+        //% block="6 Status senden"
+        b6 = 0x40,
+        //% block="7 zurücksetzen"
+        b7 = 0x80
+    }
+
+
 } // enums.ts
