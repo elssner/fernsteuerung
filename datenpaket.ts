@@ -147,7 +147,7 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 0
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="%buffer Betriebsart %betriebsart" weight=6
+    //% block="%buffer [0] Betriebsart %betriebsart" weight=6
     //% buffer.shadow="radio_sendBuffer19"
     export function setBetriebsart(buffer: Buffer, betriebsart: e0Betriebsart) {
         buffer[0] &= 0b11001111 // AND Bit 7-6-3-2-1-0 bleiben; 5-4 auf 0 setzen
@@ -155,13 +155,13 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="%buffer Betriebsart" weight=6
+    //% block="%buffer [0] Betriebsart" weight=6
     export function getBetriebsart(buffer: Buffer): e0Betriebsart {
         return (buffer[0] & 0b00110000)
     }
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="%buffer Schalter %schalter %bit" weight=5
+    //% block="%buffer [0] Schalter %schalter %bit" weight=5
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
     export function setSchalter(buffer: Buffer, schalter: e0Schalter, bit: boolean) {
@@ -172,7 +172,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="%buffer Schalter %schalter" weight=5
+    //% block="%buffer [0] Schalter %schalter" weight=5
     export function getSchalter(buffer: Buffer, schalter: e0Schalter): boolean {
         return (buffer[0] & schalter) == schalter
     }
@@ -182,7 +182,7 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 3
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="%buffer %motorBit aktiviert %bit" weight=4
+    //% block="%buffer [3] %motorBit aktiviert %bit" weight=4
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
     export function setaktiviert(buffer: Buffer, motorBit: e3aktiviert, bit: boolean) {
@@ -193,14 +193,14 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="%buffer %motorBit aktiviert" weight=4
+    //% block="%buffer [3] %motorBit aktiviert" weight=4
     export function getaktiviert(buffer: Buffer, motorBit: e3aktiviert) {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & motorBit) != 0
     }
 
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="%buffer Ultraschall Entfernung %entfernung" weight=3
+    //% block="%buffer [3] Ultraschall Entfernung %entfernung" weight=3
     //% buffer.shadow="radio_sendBuffer19"
     export function setEntfernung(buffer: Buffer, entfernung: e3Entfernung) {
         buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= 0b00111111 // AND Bit 5-4-3-2-1-0 bleiben; 7-6 auf 0 setzen
@@ -208,7 +208,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="%buffer Ultraschall Entfernung" weight=3
+    //% block="%buffer [3] Ultraschall Entfernung" weight=3
     export function getEntfernung(buffer: Buffer): e3Entfernung {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
