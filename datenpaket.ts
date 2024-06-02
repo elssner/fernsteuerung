@@ -13,6 +13,20 @@ für CalliBot, MakerKitCar, CaR4
     //% block="%bufferpointer" weight=2
     function radio_bufferpointer(bufferpointer: eBufferPointer) { return bufferpointer }
     export enum eBufferPointer {
+        //% block="[1] Motor M0"
+        m0 = 1,
+        //% block="[4] Motor M1"
+        m1 = 4,
+        //% block="[7] Motor MA"
+        ma = 7,
+        //% block="[10] Motor MB"
+        mb = 10,
+        //% block="[13] Motor MC"
+        mc = 13,
+        //% block="[16] Motor MD"
+        md = 16,
+
+
         //% block="M0 | Joystick"
         p0 = 1,
         //% block="M1 | 1. Strecke | Ultraschall"
