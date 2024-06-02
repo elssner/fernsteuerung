@@ -26,6 +26,28 @@ für CalliBot, MakerKitCar, CaR4
         //% block="[16] Motor MD"
         md = 16,
 
+        //% block="[4] 1. Strecke"
+        f1 = 4,
+        //% block="[7] 2. Strecke"
+        f2 = 7,
+        //% block="[10] 3. Strecke"
+        f3 = 10,
+        //% block="[13] 4. Strecke"
+        f4 = 13,
+        //% block="[16] 5. Strecke"
+        f5 = 16,
+
+        //% block="[4] Ultraschallsensor"
+        ue = 4,
+        //% block="[7] Spursensor 00"
+        s00 = 7,
+        //% block="[10] Spursensor 01"
+        s01 = 10,
+        //% block="[13] Spursensor 10"
+        s10 = 13,
+        //% block="[16] Spursensor 11"
+        s11 = 16,
+
 
         //% block="M0 | Joystick"
         p0 = 1,
