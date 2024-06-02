@@ -24,7 +24,7 @@ namespace radio { // joystick.ts
     }
 
 
-    //% group="Joystick" subcategory="Joystick"
+    //% group="Joystick" subcategory="Joystick" color=#007F00
     //% block="Qwiic Joystick einlesen" weight=9
     export function joystickQwiic() {
         if (pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) != 0)
@@ -62,7 +62,7 @@ namespace radio { // joystick.ts
         }
     }
 
-    //% group="Joystick" subcategory="Joystick"
+    //% group="Joystick" subcategory="Joystick" color=#007F00
     //% block="Joystick %pJoystickValue || 128 ± %p128 max ± %pmax" weight=8
     //% p128.min=0 p128.max=8 
     //% pmax.min=0 pmax.max=20
