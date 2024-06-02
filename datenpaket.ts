@@ -16,7 +16,7 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Buffer offset
 
     //% group="Enums" advanced=true
-    //% block="%bufferpointer" weight=8
+    //% block="%bufferpointer" weight=2
     export function radio_bufferpointer(bufferpointer: eBufferPointer) { return bufferpointer }
     export enum eBufferPointer {
         //% block="M0 | Joystick"
@@ -34,7 +34,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Enums" advanced=true
-    //% block="%bufferoffset" weight=7
+    //% block="%bufferoffset" weight=1
     export function radio_bufferoffset(bufferoffset: eBufferOffset) { return bufferoffset }
     export enum eBufferOffset { // 3 Byte (b0-b1-b2) ab n_BufferPointer
         //% block="0 Motor 0..128..255"
@@ -63,7 +63,7 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 0
 
     //% group="Enums" advanced=true
-    //% block="Betriebsart %betriebsart" weight=6
+    //% block="[0] Betriebsart %betriebsart" weight=6
     export function radio_betriebsart(betriebsart: e0Betriebsart) { return betriebsart }
     export enum e0Betriebsart {
         //% block="00 Fernsteuerung Motoren"
@@ -78,7 +78,7 @@ für CalliBot, MakerKitCar, CaR4
 
 
     //% group="Enums" advanced=true
-    //% block="Schalter %schalter" weight=5
+    //% block="[0] Schalter %schalter" weight=5
     export function radio_schalter(schalter: e0Schalter) { return schalter }
     export enum e0Schalter {
         //% block="0 Hupe"
@@ -100,7 +100,7 @@ für CalliBot, MakerKitCar, CaR4
     // ========== Steuer-Byte 3
 
     //% group="Enums" advanced=true
-    //% block="aktiviert %motorbit" weight=4
+    //% block="[3] %motorbit aktiviert" weight=4
     export function radio_aktiviert(motorbit: e3aktiviert) { return motorbit }
     export enum e3aktiviert {
         //% block="M0 | Joystick"
@@ -126,7 +126,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Enums" advanced=true
-    //% block="Entfernung %entfernung" weight=3
+    //% block="[3] Ultraschall Entfernung %entfernung" weight=3
     export function radio_entfernung(entfernung: e3Entfernung) { return entfernung }
     export enum e3Entfernung {
         //% block="5 cm"
@@ -215,59 +215,10 @@ für CalliBot, MakerKitCar, CaR4
 
 
 
-    // ========== 3 Byte (Motor, Servo, Entfernung)
+    // ========== Servo Byte (3 Bit) Sensor Ereignis aktiviert
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="%buffer %bufferPointer %bufferOffset Byte %byte" weight=2
-    //% buffer.shadow="radio_sendBuffer19"
-    //% byte.min=0 byte.max=255
-    //% inlineInputMode=inline 
-    export function setByte(buffer: Buffer, bufferPointer: eBufferPointer, bufferOffset: eBufferOffset, byte: number) {
-        //if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
-
-        if (bufferOffset == eBufferOffset.b1_Servo) {
-            buffer[bufferPointer + bufferOffset] &= 0b11100000 // AND Bit 7-6-5 bleiben; 4-3-2-1-0 auf 0 setzen
-            buffer[bufferPointer + bufferOffset] |= (byte & 0b00011111) // OR Bit 7-6-5 bleiben; 4-3-2-1-0 auf pByte setzen
-        } else {
-            buffer.setUint8(bufferPointer + bufferOffset, byte)
-        }
-
-        /* 
-                switch (pBufferOffset) {
-                    case eBufferOffset.b1_Servo:
-                        pBuffer[pBufferPointer + pBufferOffset] &= 0b11100000 // AND Bit 7-6-5 bleiben; 4-3-2-1-0 auf 0 setzen
-                        pBuffer[pBufferPointer + pBufferOffset] |= (pByte & 0b00011111) // OR Bit 7-6-5 bleiben; 4-3-2-1-0 auf pByte setzen
-                        //pBuffer[pBufferPointer + eBufferOffset.b1_Servo] |= (Math.round(pByte / 3 - 14) & 0b00011111) // OR Bit 7-6-5 bleiben; 4-3-2-1-0 auf Ergebnis setzen
-        
-                        //n_sendBuffer19.setUint8(pBufferPointer + pBufferOffset, Math.round(pByte / 3 - 14) & 0b00011111)
-                        break
-                    //case eBufferOffset.b1_3Bit:
-                    //    pBuffer[pBufferPointer + eBufferOffset.b1_Servo] &= 0b00011111 // AND Bit 4-3-2-1-0 bleiben; 7-6-5 auf 0 setzen
-                    //    pBuffer[pBufferPointer + eBufferOffset.b1_Servo] |= (pByte << 5) // OR Bit 4-3-2-1-0 bleiben
-                    //    break
-                    default: // b0_Motor und b2_Fahrstrecke 0..255
-                        pBuffer.setUint8(pBufferPointer + pBufferOffset, pByte)
-                        break
-                } */
-    }
-
-
-
-    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="%buffer %bufferPointer %bufferOffset Byte" weight=2
-    export function getByte(buffer: Buffer, bufferPointer: eBufferPointer, bufferOffset: eBufferOffset) {
-        //if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
-
-        if (bufferOffset == eBufferOffset.b1_Servo) {
-            return buffer[bufferPointer + eBufferOffset.b1_Servo] & 0b00011111 // AND Bit 7-6-5 löschen
-        } else {
-            return buffer.getUint8(bufferPointer + bufferOffset)
-        }
-    }
-
-
-    //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="%buffer %bufferPointer %sensor %bit" weight=1
+    //% block="%buffer %bufferPointer %sensor %bit" weight=2
     //% buffer.shadow="radio_sendBuffer19"
     //% bit.shadow="toggleOnOff"
     //% inlineInputMode=inline 
@@ -281,11 +232,42 @@ für CalliBot, MakerKitCar, CaR4
     }
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="%buffer %bufferPointer %sensor" weight=1
+    //% block="%buffer %bufferPointer %sensor" weight=2
     export function getSensor(buffer: Buffer, bufferPointer: eBufferPointer, sensor: eSensor): boolean {
         //if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
 
         return (buffer[bufferPointer + eBufferOffset.b1_Servo] & sensor) == sensor
+    }
+
+
+    // ========== 3 Byte (Motor, Servo, Entfernung)
+
+    //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
+    //% block="%buffer %bufferPointer %bufferOffset Byte %byte" weight=1
+    //% buffer.shadow="radio_sendBuffer19"
+    //% byte.min=0 byte.max=255
+    //% inlineInputMode=inline 
+    export function setByte(buffer: Buffer, bufferPointer: eBufferPointer, bufferOffset: eBufferOffset, byte: number) {
+        //if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
+
+        if (bufferOffset == eBufferOffset.b1_Servo) {
+            buffer[bufferPointer + bufferOffset] &= 0b11100000 // AND Bit 7-6-5 bleiben; 4-3-2-1-0 auf 0 setzen
+            buffer[bufferPointer + bufferOffset] |= (byte & 0b00011111) // OR Bit 7-6-5 bleiben; 4-3-2-1-0 auf pByte setzen
+        } else {
+            buffer.setUint8(bufferPointer + bufferOffset, byte)
+        }
+    }
+
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
+    //% block="%buffer %bufferPointer %bufferOffset Byte" weight=1
+    export function getByte(buffer: Buffer, bufferPointer: eBufferPointer, bufferOffset: eBufferOffset) {
+        //if (!bufferPointer) bufferPointer = eBufferPointer.p0  // wenn nicht angegeben
+
+        if (bufferOffset == eBufferOffset.b1_Servo) {
+            return buffer[bufferPointer + eBufferOffset.b1_Servo] & 0b00011111 // AND Bit 7-6-5 löschen
+        } else {
+            return buffer.getUint8(bufferPointer + bufferOffset)
+        }
     }
 
 
