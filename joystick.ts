@@ -100,7 +100,7 @@ namespace radio { // joystick.ts
                 return yServo // (45° ↖ 90° ↗ 135°)
             }
             case eJoystickValue.servo16: {
-                return Math.idiv(joystickValue(n_y, p128, pmax), 3) - 14
+                return Math.idiv(joystickValue(eJoystickValue.servo90, p128, pmax), 3) - 14
             }
 
             //case eJoystickValue.servo90: return n_yServo // 45°..90°..135°
