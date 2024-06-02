@@ -17,7 +17,7 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Enums" advanced=true
     //% block="%bufferpointer" weight=2
-    export function radio_bufferpointer(bufferpointer: eBufferPointer) { return bufferpointer }
+    function radio_bufferpointer(bufferpointer: eBufferPointer) { return bufferpointer }
     export enum eBufferPointer {
         //% block="M0 | Joystick"
         p0 = 1,
@@ -35,7 +35,7 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Enums" advanced=true
     //% block="%bufferoffset" weight=1
-    export function radio_bufferoffset(bufferoffset: eBufferOffset) { return bufferoffset }
+    function radio_bufferoffset(bufferoffset: eBufferOffset) { return bufferoffset }
     export enum eBufferOffset { // 3 Byte (b0-b1-b2) ab n_BufferPointer
         //% block="0 Motor 0..128..255"
         b0_Motor = 0, // 0..128..255
@@ -64,7 +64,7 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Enums" advanced=true
     //% block="[0] Betriebsart %betriebsart" weight=6
-    export function radio_betriebsart(betriebsart: e0Betriebsart) { return betriebsart }
+    function radio_betriebsart(betriebsart: e0Betriebsart) { return betriebsart }
     export enum e0Betriebsart {
         //% block="00 Fernsteuerung Motoren"
         p0 = 0x00,
@@ -79,7 +79,7 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Enums" advanced=true
     //% block="[0] Schalter %schalter" weight=5
-    export function radio_schalter(schalter: e0Schalter) { return schalter }
+    function radio_schalter(schalter: e0Schalter) { return schalter }
     export enum e0Schalter {
         //% block="0 Hupe"
         b0 = 0x01,
@@ -101,7 +101,7 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Enums" advanced=true
     //% block="[3] %motorbit aktiviert" weight=4
-    export function radio_aktiviert(motorbit: e3aktiviert) { return motorbit }
+    function radio_aktiviert(motorbit: e3aktiviert) { return motorbit }
     export enum e3aktiviert {
         //% block="M0 | Joystick"
         m0 = 0x01,
@@ -127,7 +127,7 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Enums" advanced=true
     //% block="[3] Ultraschall Entfernung %entfernung" weight=3
-    export function radio_entfernung(entfernung: e3Entfernung) { return entfernung }
+    function radio_entfernung(entfernung: e3Entfernung) { return entfernung }
     export enum e3Entfernung {
         //% block="5 cm"
         u0 = 0x00,
@@ -156,9 +156,17 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="%buffer [0] Betriebsart" weight=6
-    export function getBetriebsart(buffer: Buffer): e0Betriebsart {
+    function getBetriebsart(buffer: Buffer): e0Betriebsart {
         return (buffer[0] & 0b00110000)
     }
+
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
+    //% block="%buffer [0] Betriebsart == %betriebsart" weight=6
+    export function isBetriebsart(buffer: Buffer, betriebsart: e0Betriebsart): boolean {
+        return (buffer[0] & 0b00110000) == betriebsart
+    }
+
+
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
     //% block="%buffer [0] Schalter %schalter %bit" weight=5
@@ -195,7 +203,8 @@ für CalliBot, MakerKitCar, CaR4
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="%buffer [3] %motorBit aktiviert" weight=4
     export function getaktiviert(buffer: Buffer, motorBit: e3aktiviert) {
-        return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & motorBit) != 0
+        //return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & motorBit) != 0
+        return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & motorBit) == motorBit
     }
 
 
@@ -209,8 +218,14 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="%buffer [3] Ultraschall Entfernung" weight=3
-    export function getEntfernung(buffer: Buffer): e3Entfernung {
+    function getEntfernung(buffer: Buffer): e3Entfernung {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
+    }
+
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
+    //% block="%buffer [3] Ultraschall Entfernung == %entfernung" weight=3
+    export function isEntfernung(buffer: Buffer, entfernung: e3Entfernung): boolean {
+        return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000) == entfernung
     }
 
 

@@ -57,7 +57,7 @@ namespace radio { // bluetooth.ts
     // der Parameter 'cb' hat den Typ '(receivedBuffer: Buffer) => void'
     // als Parabeter 'cb' übergeben wird die function 'function (receivedBuffer) {}'
     // was in den Klammern {} steht, wird bei dem Ereignis 'radio.onReceivedBuffer' abgearbeitet (callback = Rückruf)
-    radio.onReceivedBuffer(function (receivedBuffer: Buffer) {
+    /* radio.onReceivedBuffer(function (receivedBuffer: Buffer) {
         //  n_receivedBuffer19 = receivedBuffer
 
         if (n_start && receivedBuffer.length == 19) { // beim ersten Mal warten bis Motor bereit
@@ -67,11 +67,11 @@ namespace radio { // bluetooth.ts
 
             n_programm = (receivedBuffer[0] & 0x20) == 0x20 // Bit 5 Programm=1 / Fernsteuerung=0
 
-            /* if (!n_connected) {
+            //if (!n_connected) {
                 //licht(false, false) //  Licht aus und Blinken beenden
                 //   n_MotorChipReady = false
-                n_connected = true // wenn Start und Motor bereit, setze auch Bluetooth connected
-            } */
+            //    n_connected = true // wenn Start und Motor bereit, setze auch Bluetooth connected
+            //}
             n_lastconnectedTime = input.runningTime() // Connection-Timeout Zähler zurück setzen
 
 
@@ -82,7 +82,7 @@ namespace radio { // bluetooth.ts
             if (onReceivedDataHandler)
                 onReceivedDataHandler(receivedBuffer) // Ereignis Block auslösen, nur wenn benutzt
         }
-    })
+    }) */
 
     // ========== group="Bluetooth empfangen" subcategory="Buffer"
 
