@@ -11,7 +11,8 @@
         "main.ts",
         "README.md",
         "bluetooth.ts",
-        "datenpaket.ts"
+        "datenpaket.ts",
+        "enums.ts"
     ],
     "testFiles": [
         "test.ts"
