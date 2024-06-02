@@ -13,7 +13,8 @@
         "bluetooth.ts",
         "datenpaket.ts",
         "enums.ts",
-        "advanced.ts"
+        "advanced.ts",
+        "joystick.ts"
     ],
     "testFiles": [
         "test.ts"
