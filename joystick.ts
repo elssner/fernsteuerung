@@ -15,11 +15,13 @@ namespace radio { // joystick.ts
         x,
         //% block="y 0..128..255"
         y,
-        //% block="Motor (1 ↓ 128 ↑ 255)"
+        //% block="x Motor (1 ↓ 128 ↑ 255)"
         motor,
-        //% block="Servo (45° ↖ 90° ↗ 135°)"
+        //% block="y Motor (1 ↓ 128 ↑ 255)"
+        ymotor,
+        //% block="y Servo (45° ↖ 90° ↗ 135°)"
         servo90,
-        //% block="Servo (1 ↖ 16 ↗ 31)"
+        //% block="y Servo (1 ↖ 16 ↗ 31)"
         servo16
     }
 
@@ -79,13 +81,23 @@ namespace radio { // joystick.ts
                     xMotor = 1
                 else if (between(n_x, 128 - p128, 128 + p128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
                     xMotor = 128
-                else if (n_x < (0 + pmax)) // Werte < 0 + pmax wie 0 behandeln (max vorwärts)
-                    xMotor = 1
-                else if (n_x > (255 - pmax)) // Werte > 235 wie 255 behandeln (max rückwärts)
-                    xMotor = 255
+                //else if (n_x < (0 + pmax)) // Werte < 0 + pmax wie 0 behandeln (max vorwärts)
+                //    xMotor = 1
+                //else if (n_x > (255 - pmax)) // Werte > 235 wie 255 behandeln (max rückwärts)
+                //    xMotor = 255
 
                 return xMotor
             }
+            case eJoystickValue.ymotor: {
+                let yMotor = n_y
+                if (n_y == 0)
+                    yMotor = 1
+                else if (between(n_y, 128 - p128, 128 + p128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
+                    yMotor = 128
+
+                return yMotor
+            }
+
             case eJoystickValue.servo90: {
                 let yServo = 90
                 if (between(n_y, 128 - p128, 128 + p128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
