@@ -10,12 +10,21 @@ namespace radio { // advanced.ts
 
 
 
-    // ========== group="Logik" advanced=true
+    // ========== group="Funktionen" advanced=true
 
-    //% group="Logik" advanced=true
-    //% block="%i0 zwischen %i1 und %i2" weight=1
+    //% group="Funktionen" advanced=true
+    //% block="%i0 zwischen %i1 und %i2" weight=5
     export function between(i0: number, i1: number, i2: number): boolean {
         return (i0 >= i1 && i0 <= i2)
+    }
+
+
+    //% group="Funktionen" advanced=true
+    //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=4
+    //% inlineInputMode=inline
+    export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
+        // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
+        return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
     }
 
 
