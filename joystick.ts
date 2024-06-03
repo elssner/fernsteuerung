@@ -67,7 +67,7 @@ namespace radio { // joystick.ts
     //% p128.min=0 p128.max=8 
     //% pmax.min=0 pmax.max=20
     export function joystickValue(pJoystickValue: eJoystickValue, p128 = 0, pmax = 0): number {
-        if (!between(p128, 0, 8)) p128 = 0
+        if (!between(p128, 0, 8)) p128 = 0 //  return (i0 >= i1 && i0 <= i2)
         if (!between(pmax, 0, 20)) pmax = 0
 
         switch (pJoystickValue) {
@@ -94,9 +94,10 @@ namespace radio { // joystick.ts
                     yServo = 45
                 else if (n_y > (255 - pmax)) // Werte > 235 wie 255 behandeln (max rechts)
                     yServo = 135
-                else
-                    yServo = Math.round(Math.map(n_y, 0 + pmax, 255 - pmax, 46, 134))
-
+                else {
+                    //yServo = Math.round(Math.map(n_y, 0 + pmax, 255 - pmax, 46, 134))
+                    yServo = mapInt32(n_y, 0 + pmax, 255 - pmax, 45, 135)
+                }
                 return yServo // (45° ↖ 90° ↗ 135°)
             }
             case eJoystickValue.servo16: {
