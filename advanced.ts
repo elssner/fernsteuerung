@@ -22,10 +22,10 @@ namespace radio { // advanced.ts
     //% group="Funktionen" advanced=true
     //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=4
     //% inlineInputMode=inline
-    export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
+    /* export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
         // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
         return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
-    }
+    } */
 
 
 

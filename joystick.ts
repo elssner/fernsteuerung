@@ -26,8 +26,8 @@ namespace radio { // joystick.ts
     }
 
 
-    //% group="Joystick" subcategory="Joystick" color=#007F00
-    //% block="Qwiic Joystick einlesen" weight=9
+    //% group="Qwiic Joystick" subcategory="Joystick" color=#007F00
+    //% block="Joystick einlesen" weight=9
     export function joystickQwiic() {
         if (pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) != 0)
             return false
@@ -64,7 +64,7 @@ namespace radio { // joystick.ts
         }
     }
 
-    //% group="Joystick" subcategory="Joystick" color=#007F00
+    //% group="Qwiic Joystick" subcategory="Joystick" color=#007F00
     //% block="Joystick %pJoystickValue || 128 ± %p128 max ± %pmax" weight=8
     //% p128.min=0 p128.max=8 
     //% pmax.min=0 pmax.max=20
@@ -124,18 +124,21 @@ namespace radio { // joystick.ts
 
     }
 
-    //% group="Joystick" subcategory="Joystick"
-    //% block="Joystick %pJoystickValue" weight=8
-    /* export function joystickValues(pJoystickValue: eJoystickValue) {
-        switch (pJoystickValue) {
-            case eJoystickValue.x: return n_x
-            case eJoystickValue.y: return n_y
-            case eJoystickValue.motor: return n_xMotor
-            case eJoystickValue.servo90: return n_yServo // 45°..90°..135°
-            //case eJoystickValue.servo16: return Math.round(n_yServo / 3 - 14)// 45°=1 90°=16 135°=31 
-            case eJoystickValue.servo16: return Math.idiv(n_yServo, 3) - 14 // Math.round(n_yServo / 3 - 14)// 45°=1 90°=16 135°=31 
-            default: return 0
-        }
-    } */
+
+    //% group="Funktionen" subcategory="Joystick" color=#007F00
+    //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=4
+    //% inlineInputMode=inline
+    export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
+        // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
+        return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
+    }
+
+    //% group="Funktionen" subcategory="Joystick" color=#007F00
+    //% block="Motor langsamer Joystick %value max %prozent"
+    //% value.min=1 value.max=255 value.defl=128
+    //% prozent.min=10 prozent.max=127 prozent.defl=127
+    export function motorProzent(value: number, prozent: number) {
+        return mapInt32(value, 1, 255, 128 - prozent, 128 + prozent)
+    }
 
 } // joystick.ts
