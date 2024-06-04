@@ -134,11 +134,23 @@ namespace radio { // joystick.ts
     }
 
     //% group="Funktionen" subcategory="Joystick" color=#007F00
-    //% block="Motor langsamer Joystick %value max %prozent"
+    //% block="motorProzent1 %value max %prozent"
     //% value.min=1 value.max=255 value.defl=128
     //% prozent.min=10 prozent.max=127 prozent.defl=127
-    export function motorProzent(value: number, prozent: number) {
+    export function motorProzent1(value: number, prozent: number) {
         return mapInt32(value, 1, 255, 128 - prozent, 128 + prozent)
     }
+
+    //% group="Funktionen" subcategory="Joystick" color=#007F00
+    //% block="(1 ↓ 128 ↑ 255) %value * %prozent \\%"
+    //% value.min=1 value.max=255 value.defl=128
+    //% prozent.min=10 prozent.max=100 prozent.defl=100
+    export function motorProzent(value: number, prozent: number) {
+
+        return Math.idiv((value - 128) * prozent , 100) + 128
+
+        //return mapInt32(value, 1, 255, 128 - prozent, 128 + prozent)
+    }
+
 
 } // joystick.ts

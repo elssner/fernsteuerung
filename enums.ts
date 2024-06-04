@@ -8,17 +8,17 @@ namespace radio { // enums.ts
     //% block="%bufferpointer" weight=2
     function radio_bufferpointer(bufferpointer: eBufferPointer) { return bufferpointer }
     export enum eBufferPointer {
-        //% block="[1] Motor M0"
+        //% block="[1] M0"
         m0 = 1,
-        //% block="[4] Motor M1"
+        //% block="[4] M1"
         m1 = 4,
-        //% block="[7] Motor MA"
+        //% block="[7] MA"
         ma = 7,
-        //% block="[10] Motor MB"
+        //% block="[10] MB"
         mb = 10,
-        //% block="[13] Motor MC"
+        //% block="[13] MC"
         mc = 13,
-        //% block="[16] Motor MD"
+        //% block="[16] MD"
         md = 16,
 
         //% block="[4] 1. Strecke"
