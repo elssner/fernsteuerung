@@ -180,7 +180,7 @@ namespace radio { // enums.ts
     export enum e0Schalter {
         //% block="0 Hupe"
         b0 = 0x01,
-        //% block="1"
+        //% block="1 Magnet"
         b1 = 0x02,
         //% block="2"
         b2 = 0x04,
