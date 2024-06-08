@@ -4,7 +4,7 @@ namespace radio { // bluetooth.ts
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
     let n_start = false
     //  let n_connected = false // Bluetooth connected
-    let n_lastconnectedTime: number // ms seit Start
+    let n_lastconnectedTime = input.runningTime()  // ms seit Start
     let n_programm = false // autonomes fahren nach Programm, kein Bluetooth timeout
 
 
@@ -16,7 +16,7 @@ namespace radio { // bluetooth.ts
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
         // n_connected = false
-        //  n_lastconnectedTime = input.runningTime() // Laufzeit
+        // n_lastconnectedTime = input.runningTime() // Laufzeit
         n_start = true
     }
 
@@ -67,8 +67,8 @@ namespace radio { // bluetooth.ts
             n_programm = (receivedBuffer[0] & 0x20) == 0x20 // Bit 5 Programm=1 / Fernsteuerung=0
 
             //if (!n_connected) {
-                //licht(false, false) //  Licht aus und Blinken beenden
-                //   n_MotorChipReady = false
+            //licht(false, false) //  Licht aus und Blinken beenden
+            //   n_MotorChipReady = false
             //    n_connected = true // wenn Start und Motor bereit, setze auch Bluetooth connected
             //}
             n_lastconnectedTime = input.runningTime() // Connection-Timeout Zähler zurück setzen
