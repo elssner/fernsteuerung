@@ -5,14 +5,17 @@ namespace radio { // multiswitch.ts
     const i2c_CMD_GET_DEV_EVENT = 0x01	// gets device event status
 
     export enum eStatus {
-        //% block="Fahren und Lenken"
+        //% block="[5] Fahren und Lenken"
         fahren = 5,
-        //% block="Seilrolle und Drehkranz"
+        //% block="[1] Seilrolle und Drehkranz"
         drehen = 1,
-        //% block="Zahnstange und Drehkranz"
+        //% block="[3] Zahnstange und Drehkranz"
         zahnstange = 3,
+        //% block="[2] Magnet aus"
         links = 2,
+        //% block="[4] Magnet an"
         rechts = 4,
+        //% block="[0] Fehler"
         fehler = 0
     }
 
@@ -21,7 +24,7 @@ namespace radio { // multiswitch.ts
     let n_Status = eStatus.fehler
     let n_Magnet = false
 
-    //% group="Schalter" subcategory="Sender" color=#003F7F
+    //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
     //% block="Schalter einlesen" weight=8
     export function readSwitch(): boolean {
         if (pins.i2cWriteBuffer(i2cgroveMultiswitch_x03, Buffer.fromArray([i2c_CMD_GET_DEV_EVENT])) != 0) {
@@ -62,7 +65,7 @@ namespace radio { // multiswitch.ts
     }
 
 
-    //% group="Schalter" subcategory="Sender" color=#003F7F
+    //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
     //% block="Schalter Änderung" weight=6
     export function chSwitch(): boolean {
         //if (n_Magnet)
@@ -72,19 +75,19 @@ namespace radio { // multiswitch.ts
         return n_Status_changed
     }
 
-    //% group="Schalter" subcategory="Sender" color=#003F7F
+    //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
     //% block="Schalter %pStatus" weight=5
     export function isSwitch(pStatus: eStatus): boolean { return pStatus == n_Status }
 
-    //% group="Schalter" subcategory="Sender" color=#003F7F
-    //% block="Schalter" weight=4
+    //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
+    //% block="Schalter 0 1 3 5" weight=4
     export function getSwitch(): eStatus { return n_Status }
 
-    //% group="Schalter" subcategory="Sender" color=#003F7F
+    //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
     //% block="Magnet" weight=3
     export function getMagnet() { return n_Magnet }
 
-    // group="Schalter" subcategory="Sender" color=#003F7F
+    // group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
     // block="RGB" weight=3
     //export function getRGB() { return n_rgb }
 

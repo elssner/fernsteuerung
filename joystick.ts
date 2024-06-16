@@ -27,7 +27,7 @@ namespace radio { // joystick.ts
     }
 
 
-    //% group="Qwiic Joystick" subcategory="Sender" color=#BF3F7F
+    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
     //% block="Joystick einlesen" weight=9
     export function joystickQwiic() {
         if (pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) != 0)
@@ -41,7 +41,7 @@ namespace radio { // joystick.ts
         }
     }
 
-    //% group="Qwiic Joystick" subcategory="Sender" color=#BF3F7F
+    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
     //% block="Joystick %pJoystickValue || 128 ± %p128 max ± %pmax" weight=8
     //% p128.min=0 p128.max=8 
     //% pmax.min=0 pmax.max=20
@@ -101,7 +101,7 @@ namespace radio { // joystick.ts
 
     }
 
-    //% group="Qwiic Joystick" subcategory="Sender" color=#BF3F7F
+    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
     //% block="Button war gedrückt || Status löschen %clear" weight=6
     //% clear.shadow="toggleOnOff" clear.defl=1
     export function buttonStatus(clear = true): boolean {
