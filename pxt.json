@@ -14,7 +14,8 @@
         "datenpaket.ts",
         "enums.ts",
         "advanced.ts",
-        "joystick.ts"
+        "joystick.ts",
+        "multiswitch.ts"
     ],
     "testFiles": [
         "test.ts"

@@ -13,11 +13,35 @@ namespace radio { // advanced.ts
     // ========== group="Funktionen" advanced=true
 
     //% group="Funktionen" advanced=true
-    //% block="%i0 zwischen %i1 und %i2" weight=5
+    //% block="%i0 zwischen %i1 und %i2" weight=8
     export function between(i0: number, i1: number, i2: number): boolean {
         return (i0 >= i1 && i0 <= i2)
     }
 
+    //% group="Funktionen" advanced=true
+    //% block="Prozent (1 ↓ 128 ↑ 255) %value * %prozent \\%" weight=6
+    //% value.min=1 value.max=255 value.defl=128
+    //% prozent.min=10 prozent.max=100 prozent.defl=100
+    export function motorProzent(value: number, prozent: number) {
+        return Math.idiv((value - 128) * prozent, 100) + 128
+    }
+
+    //% group="Funktionen" advanced=true
+    //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=4
+    //% inlineInputMode=inline
+    export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
+        // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
+        return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
+    }
+
+
+    //% group="Funktionen" advanced=true deprecated=true
+    //% block="motorProzent1 %value max %prozent"
+    //% value.min=1 value.max=255 value.defl=128
+    //% prozent.min=10 prozent.max=127 prozent.defl=127
+    export function motorProzent1(value: number, prozent: number) {
+        return mapInt32(value, 1, 255, 128 - prozent, 128 + prozent)
+    }
 
     //% group="Funktionen" advanced=true
     //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=4
@@ -26,6 +50,7 @@ namespace radio { // advanced.ts
         // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
         return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
     } */
+
 
 
 
