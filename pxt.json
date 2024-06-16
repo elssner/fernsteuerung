@@ -16,7 +16,8 @@
         "advanced.ts",
         "joystick.ts",
         "multiswitch.ts",
-        "led5x5.ts"
+        "led5x5.ts",
+        "buttonevents.ts"
     ],
     "testFiles": [
         "test.ts"

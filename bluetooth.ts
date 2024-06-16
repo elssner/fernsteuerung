@@ -2,6 +2,7 @@
 namespace radio { // bluetooth.ts
 
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
+    export let n_funkgruppe = 240
     let n_start = false
     //  let n_connected = false // Bluetooth connected
     let n_lastconnectedTime = input.runningTime()  // ms seit Start
@@ -12,7 +13,8 @@ namespace radio { // bluetooth.ts
     //% block="beim Start Funkgruppe %funkgruppe" 
     //% funkgruppe.min=0 funkgruppe.max=255 funkgruppe.defl=240
     export function beimStart(funkgruppe: number) {
-        radio.setGroup(funkgruppe)
+        n_funkgruppe = funkgruppe
+        radio.setGroup(n_funkgruppe)
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
         // n_connected = false
