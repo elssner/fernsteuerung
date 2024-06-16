@@ -15,7 +15,8 @@
         "enums.ts",
         "advanced.ts",
         "joystick.ts",
-        "multiswitch.ts"
+        "multiswitch.ts",
+        "led5x5.ts"
     ],
     "testFiles": [
         "test.ts"
