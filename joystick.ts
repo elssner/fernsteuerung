@@ -5,7 +5,8 @@ namespace radio { // joystick.ts
 
     //export const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
 
-    export let n_x: number, n_y: number //, n_xMotor: number, n_yServo: number
+    let n_x: number, n_y: number //, n_xMotor: number, n_yServo: number
+    let n_b = false
 
     // ========== group="Joystick"
 
@@ -32,34 +33,10 @@ namespace radio { // joystick.ts
         if (pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) != 0)
             return false
         else {
-            let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 3)
-            n_x = bu.getUint8(0)
-            n_y = bu.getUint8(2)
-            // Motor
-            /*   if (between(n_x, 124, 132))
-                  n_xMotor = 128
-              else if (n_x == 0)
-                  n_xMotor = 1
-              else
-                  n_xMotor = n_x
-              // Servo
-              if (between(n_y, 122, 134)) // geradeaus 90°
-                  n_yServo = 90
-              else if (n_y < 20) // Werte < 20 wie 0 behandeln (max links)
-                  n_yServo = 45
-              else if (n_y > 235) // Werte > 235 wie 255 behandeln (max rechts)
-                  n_yServo = 135
-              else
-                  n_yServo = Math.round(Math.map(n_y, 20, 235, 46, 134))
-   */
-            /* 
-                        if (radio.between(n_y, 122, 134)) n_yServo = 90 // Ruhestellung soll 128 ist auf 128 = 90° anpassen
-                        else if (n_y < 20) n_yServo = 135 // Werte < 20 wie 0 behandeln (max links)
-                        else if (n_y > 235) n_yServo = 45 // Werte > 235 wie 255 behandeln (max rechts)
-                        else n_yServo = Math.map(n_y, 20, 235, 134, 46) // Werte von 32 bis 991 auf 46° bis 134° verteilen
-                        n_yServo = Math.round(n_yServo)
-                        //n_yservo = Math.round(n_yservo / 3 - 14) // 0=31 90=16 135=1
-            */
+            let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
+            n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
+            n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
+            n_b = bu[5] == 1 // STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
             return true
         }
     }
@@ -124,6 +101,15 @@ namespace radio { // joystick.ts
 
     }
 
+    //% group="Qwiic Joystick" subcategory="Joystick" color=#007F00
+    //% block="Button war gedrückt || Status löschen %clear" weight=6
+    //% clear.shadow="toggleOnOff" clear.defl=1
+    export function buttonStatus(clear = true): boolean {
+        if (n_b && clear)
+            pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
+        return n_b
+    }
+
 
     //% group="Funktionen" subcategory="Joystick" color=#007F00
     //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=4
@@ -133,7 +119,7 @@ namespace radio { // joystick.ts
         return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
     }
 
-    //% group="Funktionen" subcategory="Joystick" color=#007F00
+    //% group="Funktionen" subcategory="Joystick" color=#007F00 deprecated=true
     //% block="motorProzent1 %value max %prozent"
     //% value.min=1 value.max=255 value.defl=128
     //% prozent.min=10 prozent.max=127 prozent.defl=127
@@ -142,12 +128,12 @@ namespace radio { // joystick.ts
     }
 
     //% group="Funktionen" subcategory="Joystick" color=#007F00
-    //% block="(1 ↓ 128 ↑ 255) %value * %prozent \\%"
+    //% block="Prozent (1 ↓ 128 ↑ 255) %value * %prozent \\%"
     //% value.min=1 value.max=255 value.defl=128
     //% prozent.min=10 prozent.max=100 prozent.defl=100
     export function motorProzent(value: number, prozent: number) {
 
-        return Math.idiv((value - 128) * prozent , 100) + 128
+        return Math.idiv((value - 128) * prozent, 100) + 128
 
         //return mapInt32(value, 1, 255, 128 - prozent, 128 + prozent)
     }
