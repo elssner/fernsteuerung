@@ -61,7 +61,7 @@ namespace radio { // bluetooth.ts
 
         if (n_start && receivedBuffer.length == 19) { // beim ersten Mal warten bis Motor bereit
 
-            if (receivedBuffer[0] == 0xFF) // Bit 7 reset
+            if ((receivedBuffer[0] & 0x80) == 0x80) // Bit 7 reset
                 control.reset() // Soft-Reset, Calliope zurücksetzen
 
             n_programm = (receivedBuffer[0] & 0x20) == 0x20 // Bit 5 Programm=1 / Fernsteuerung=0

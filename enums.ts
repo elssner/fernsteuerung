@@ -4,9 +4,9 @@ namespace radio { // enums.ts
 
     // ========== Buffer offset
 
-    //% group="Enums" advanced=true
-    //% block="%bufferpointer" weight=2
-    function radio_bufferpointer(bufferpointer: eBufferPointer) { return bufferpointer }
+    // group="Enums" advanced=true
+    // block="%bufferpointer" weight=2
+    //function radio_bufferpointer(bufferpointer: eBufferPointer) { return bufferpointer }
     export enum eBufferPointer {
         //% block="[1] M0"
         m0 = 1,
@@ -58,9 +58,9 @@ namespace radio { // enums.ts
         p5 = 16
     }
 
-    //% group="Enums" advanced=true
-    //% block="%bufferoffset" weight=1
-    function radio_bufferoffset(bufferoffset: eBufferOffset) { return bufferoffset }
+    // group="Enums" advanced=true
+    // block="%bufferoffset" weight=1
+    //function radio_bufferoffset(bufferoffset: eBufferOffset) { return bufferoffset }
     export enum eBufferOffset { // 3 Byte (b0-b1-b2) ab n_BufferPointer
         //% block="Motor (1 ↓ 128 ↑ 255)"
         b0_Motor = 0, // 1..128..255
@@ -75,9 +75,9 @@ namespace radio { // enums.ts
 
     // ========== Steuer-Byte 3
 
-    //% group="Enums" advanced=true
-    //% block="[3] %motorbit aktiviert" weight=4
-    function radio_aktiviert(motorbit: e3aktiviert) { return motorbit }
+    // group="Enums" advanced=true
+    // block="[3] %motorbit aktiviert" weight=4
+    //function radio_aktiviert(motorbit: e3aktiviert) { return motorbit }
     export enum e3aktiviert {
 
         //% block="Motor M0"
@@ -128,9 +128,9 @@ namespace radio { // enums.ts
         //  m01abcd = m01 + mab + mcd
     }
 
-    //% group="Enums" advanced=true
-    //% block="[3] Ultraschall Entfernung %entfernung" weight=3
-    function radio_entfernung(entfernung: e3Entfernung) { return entfernung }
+    // group="Enums" advanced=true
+    // block="[3] Ultraschall Entfernung %entfernung" weight=3
+    //function radio_entfernung(entfernung: e3Entfernung) { return entfernung }
     export enum e3Entfernung {
         //% block="5 cm"
         u0 = 0x00,
@@ -159,9 +159,9 @@ namespace radio { // enums.ts
 
     // ========== Steuer-Byte 0
 
-    //% group="Enums" advanced=true
-    //% block="[0] Betriebsart %betriebsart" weight=6
-    function radio_betriebsart(betriebsart: e0Betriebsart) { return betriebsart }
+    // group="Enums" advanced=true
+    // block="[0] Betriebsart %betriebsart" weight=6
+    //function radio_betriebsart(betriebsart: e0Betriebsart) { return betriebsart }
     export enum e0Betriebsart {
         //% block="00 Fernsteuerung Motoren"
         p0 = 0x00,
@@ -174,9 +174,9 @@ namespace radio { // enums.ts
     }
 
 
-    //% group="Enums" advanced=true
-    //% block="[0] Schalter %schalter" weight=5
-    function radio_schalter(schalter: e0Schalter) { return schalter }
+    // group="Enums" advanced=true
+    // block="[0] Schalter %schalter" weight=5
+    //function radio_schalter(schalter: e0Schalter) { return schalter }
     export enum e0Schalter {
         //% block="0 Hupe"
         b0 = 0x01,
