@@ -37,8 +37,15 @@ namespace radio { // advanced.ts
 
 
     //% group="Funktionen" advanced=true
-    //% block="Simulator"  weight=3
+    //% block="Simulator" weight=3
     export function simulator() { return "€".charCodeAt(0) == 8364 }
+
+
+    //% group="Funktionen" advanced=true
+    //% block="Funkgruppe" weight=2
+    export function funkgruppe() { return n_funkgruppe }
+
+
 
 
 

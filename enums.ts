@@ -186,7 +186,7 @@ namespace radio { // enums.ts
         b2 = 0x04,
         //% block="3"
         b3 = 0x08,
-        //% block="6 Status senden"
+        //% block="6 Status zurück senden"
         b6 = 0x40,
         //% block="7 zurücksetzen"
         b7 = 0x80

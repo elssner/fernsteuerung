@@ -3,7 +3,7 @@ namespace radio { // led5x5.ts
 
     // zeigt Funkgruppe oder i²C Adresse im 5x5 Display binär an
 
-    //% group="25 LED" subcategory="Bluetooth"
+    //% group="25 LED" advanced=true
     //% block="BCD Zahl %int anzeigen ←x %x" weight=6
     //% x.min=0 x.max=4 x.defl=4
     export function plotBCD(int: number, x: number) {
@@ -15,7 +15,7 @@ namespace radio { // led5x5.ts
         }
     }
 
-    //% group="25 LED" subcategory="Bluetooth"
+    //% group="25 LED" advanced=true
     //% block="HEX Zahl %int anzeigen ←x %x" weight=6
     //% x.min=0 x.max=4 x.defl=4
     export function plotHEX(int: number, x: number) {
@@ -27,7 +27,7 @@ namespace radio { // led5x5.ts
         }
     }
 
-    //% group="25 LED" subcategory="Bluetooth"
+    //% group="25 LED" advanced=true
     //% block="BIN 0..31 %int anzeigen x %x" weight=2
     //% x.min=0 x.max=4 x.defl=4
     export function plotBIN(int: number, x: number) {
