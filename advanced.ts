@@ -4,8 +4,8 @@ namespace radio { // advanced.ts
 
     // ========== group="Kommentar" advanced=true
 
-    //% group="Kommentar" advanced=true
-    //% block="// %text"
+    //% group="Funktionen" advanced=true
+    //% block="// %text" weight=9
     export function comment(text: string): void { }
 
 
@@ -33,6 +33,13 @@ namespace radio { // advanced.ts
         // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
         return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
     }
+
+
+
+    //% group="Funktionen" advanced=true
+    //% block="Simulator"  weight=3
+    export function simulator() { return "€".charCodeAt(0) == 8364 }
+
 
 
     //% group="Funktionen" advanced=true deprecated=true

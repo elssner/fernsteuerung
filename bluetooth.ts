@@ -114,4 +114,31 @@ namespace radio { // bluetooth.ts
 
 
 
+
+    // ========== wenn Text empfangen (Bluetooth Status zurück senden)
+
+    let n_receivedString = ""
+    let n_receivedStringChanged = false
+
+    radio.onReceivedString(function (receivedString) {
+        n_receivedStringChanged = n_receivedString != receivedString
+        if (n_receivedStringChanged) {
+            n_receivedString = receivedString
+        }
+    })
+
+
+
+    // ========== group="Kran Status" subcategory="Status empfangen"
+
+    //% group="Bluetooth empfangen (Text)" subcategory="Sender"
+    //% block="Status empfangen Änderung" weight=4
+    export function receivedStringChanged() { return n_receivedStringChanged }
+
+    //% group="Bluetooth empfangen (Text)" subcategory="Sender"
+    //% block="Status empfangen Text" weight=3
+    export function receivedStringText() { return n_receivedString.substr(2) }
+
+
+
 } // bluetooth.ts
