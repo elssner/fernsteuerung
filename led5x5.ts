@@ -9,7 +9,7 @@ namespace radio { // led5x5.ts
     export function plotBCD(int: number, x: number) {
         int = Math.imul(int, 1) // 32 bit signed integer
         while (int > 0 && between(x, 0, 4)) {
-            plot25LED(int % 10, x)
+            plotBIN(int % 10, x)
             int = Math.idiv(int, 10) // 32 bit signed integer
             x--
         }
@@ -21,7 +21,7 @@ namespace radio { // led5x5.ts
     export function plotHEX(int: number, x: number) {
         int = Math.imul(int, 1) // 32 bit signed integer
         while (int > 0 && between(x, 0, 4)) {
-            plot25LED(int % 16, x)
+            plotBIN(int % 16, x)
             int = int >> 4 // bitweise Division durch 16
             x--
         }
@@ -30,7 +30,7 @@ namespace radio { // led5x5.ts
     //% group="25 LED" subcategory="Bluetooth"
     //% block="BIN 0..31 %int anzeigen x %x" weight=2
     //% x.min=0 x.max=4 x.defl=4
-    export function plot25LED(int: number, x: number) {
+    export function plotBIN(int: number, x: number) {
         int = Math.imul(int, 1) // 32 bit signed integer
         if (between(x, 0, 4)) {
             for (let y = 4; y >= 0; y--) {

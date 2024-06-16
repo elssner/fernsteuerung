@@ -10,10 +10,14 @@ namespace radio { // bluetooth.ts
 
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
-    //% block="beim Start Funkgruppe %funkgruppe" 
+    //% block="beim Start Funkgruppe %funkgruppe || mit 'Button A B' Reset senden %bSendReset Funkgruppe ändern %bFunkgruppe"
     //% funkgruppe.min=0 funkgruppe.max=255 funkgruppe.defl=240
-    export function beimStart(funkgruppe: number) {
+    //% bFunkgruppe.shadow="toggleYesNo"
+    //% bSendReset.shadow="toggleYesNo"
+    export function beimStart(funkgruppe: number, bSendReset = false, bFunkgruppe = false) {
         n_funkgruppe = funkgruppe
+        n_enableButtonSendReset = bSendReset
+        n_enableButtonFunkgruppe = bFunkgruppe
         radio.setGroup(n_funkgruppe)
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
@@ -21,6 +25,10 @@ namespace radio { // bluetooth.ts
         // n_lastconnectedTime = input.runningTime() // Laufzeit
         n_start = true
     }
+
+
+
+
 
 
     // ========== group="Bluetooth senden" subcategory="Bluetooth"
@@ -40,6 +48,10 @@ namespace radio { // bluetooth.ts
     //% block="Buffer senden %sendBuffer" weight=1
     //% sendBuffer.shadow="radio_sendBuffer19"
     export function sendData(sendBuffer: Buffer) {
+        if (n_sendReset) {
+            setSchalter(sendBuffer, e0Schalter.b7, true)
+            n_sendReset = false
+        }
         radio.sendBuffer(sendBuffer)
     }
 
