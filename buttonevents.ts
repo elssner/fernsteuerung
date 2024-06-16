@@ -24,7 +24,7 @@ namespace radio { // buttonevents.ts
             if (!between(n_funkgruppe, 0xA1, 0xBF))
                 n_funkgruppe = 0xA2
             radio.setGroup(--n_funkgruppe)
-            plotBIN(n_funkgruppe - 0xA0, 1)
+            plotBIN(n_funkgruppe - 0xA0, 0)
         }
     })
 
@@ -34,7 +34,7 @@ namespace radio { // buttonevents.ts
             if (!between(n_funkgruppe, 0xA0, 0xBE))
                 n_funkgruppe = 0xBE
             radio.setGroup(++n_funkgruppe)
-            plotBIN(n_funkgruppe - 0xA0, 1)
+            plotBIN(n_funkgruppe - 0xA0, 0)
         }
     })
 

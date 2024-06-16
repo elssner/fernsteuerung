@@ -2,7 +2,7 @@
 namespace radio { // bluetooth.ts
 
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
-    export let n_funkgruppe = 240
+    export let n_funkgruppe = 0xBF
     let n_start = false
     //  let n_connected = false // Bluetooth connected
     let n_lastconnectedTime = input.runningTime()  // ms seit Start
@@ -11,10 +11,10 @@ namespace radio { // bluetooth.ts
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
     //% block="beim Start Funkgruppe %funkgruppe || mit 'A+B halten' Reset senden %bSendReset"
-    //% funkgruppe.min=0 funkgruppe.max=255 funkgruppe.defl=240
+    //% funkgruppe.min=0 funkgruppe.max=255 funkgruppe.defl=191
     //% bFunkgruppe.shadow="toggleYesNo"
     //% bSendReset.shadow="toggleYesNo"
-    export function beimStart(funkgruppe: number, bSendReset = false, bFunkgruppe = false) {
+    export function beimStart(funkgruppe: number, bSendReset = false) {
         n_funkgruppe = funkgruppe
         n_enableButtonSendReset = bSendReset
         // n_enableButtonFunkgruppe = bFunkgruppe
