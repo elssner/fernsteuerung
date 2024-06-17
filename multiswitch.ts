@@ -16,13 +16,13 @@ namespace radio { // multiswitch.ts
         //% block="[2] Magnet aus"
         links = 2,
         //% block="[4] Magnet an"
-        rechts = 4,
-        fehler
+        rechts = 4
+        //fehler
     }
 
     //let n_rgb = basic.rgb(7, 7, 7)
     let n_Status_changed = false
-    let n_Status: eStatus // NaN = eStatus.fehler
+    let n_Status: eStatus // NaN 
     let n_Magnet = false
 
     //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
