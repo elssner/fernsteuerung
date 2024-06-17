@@ -9,8 +9,8 @@ namespace radio { // led5x5.ts
     export function zeigeStatus5x5() {
         if (joystickButtonOn() || getSwitch135())
             n_enableButtonFunkgruppe = false
-        if (n_enableButtonFunkgruppe)
-            zeigeBIN(n_funkgruppe, ePlot.bin, 1)
+        if (n_enableButtonFunkgruppe || getSwitch() == eStatus.nicht_angeschlossen)
+            zeigeBIN(n_funkgruppe, ePlot.hex, 1)
         else
             zeigeText(getSwitch())
     }
