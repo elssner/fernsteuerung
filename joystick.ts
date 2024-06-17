@@ -24,21 +24,26 @@ namespace radio { // joystick.ts
         //% block="y Servo (45° ↖ 90° ↗ 135°)"
         servo90,
         //% block="y Servo (1 ↖ 16 ↗ 31)"
-        servo16,
-        motor
+        servo16
     }
 
 
     //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
     //% block="Joystick einlesen" weight=9
     export function joystickQwiic() {
-        if (pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) != 0)
+        if (pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) != 0) {
+            basic.showString(Buffer.fromArray([i2cqwiicJoystick_x20]).toString())
             return false
-        else {
+        } else {
             let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
             n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
             n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
-            n_ButtonStatus = bu[5] == 1 // STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
+            n_ButtonStatus = (bu[5] == 1) // STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
+            /* if (n_ButtonStatus)
+                basic.showNumber(1)
+            else
+                basic.showNumber(0)
+            */    
             return true
         }
     }
@@ -103,25 +108,33 @@ namespace radio { // joystick.ts
 
     }
 
-    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F deprecated=true
+
+    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
+    //% block="Joystick Button On || Status löschen %clear" weight=5
+    //% clear.shadow="toggleOnOff" clear.defl=1
+    export function buttonOnOff(clear = true) {
+        if (n_ButtonStatus) {
+            n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
+            if (clear)
+                pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
+            n_enableButtonFunkgruppe = false
+        }
+        //if (buttonStatus(true)) // wenn 'Button war gedrückt'
+        //    n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
+        return n_ButtonOnOff
+    }
+
+
+    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F 
     //% block="Joystick Button war gedrückt || Status löschen %clear" weight=6
     //% clear.shadow="toggleOnOff" clear.defl=1
-    export function buttonStatus(clear = true): boolean {
+    /* export function buttonStatus(clear = true): boolean {
         if (n_ButtonStatus && clear) {
             pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
             n_enableButtonFunkgruppe = false
         }
         return n_ButtonStatus
-    }
-
-
-    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
-    //% block="Joystick Button On" weight=5
-    export function buttonOnOff() {
-        if (buttonStatus(true)) // wenn 'Button war gedrückt'
-            n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
-        return n_ButtonOnOff
-    }
+    } */
 
 
 } // joystick.ts
