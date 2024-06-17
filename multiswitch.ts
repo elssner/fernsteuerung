@@ -5,18 +5,19 @@ namespace radio { // multiswitch.ts
     const i2c_CMD_GET_DEV_EVENT = 0x01	// gets device event status
 
     export enum eStatus {
+        //% block="[0] nicht angeschlossen"
+        fehler = 0,
         //% block="[5] Fahren und Lenken"
         fahren = 5,
         //% block="[1] Seilrolle und Drehkranz"
-        drehen = 1,
+        seilrolle = 1,
         //% block="[3] Zahnstange und Drehkranz"
         zahnstange = 3,
         //% block="[2] Magnet aus"
         links = 2,
         //% block="[4] Magnet an"
         rechts = 4,
-        //% block="[0] Fehler"
-        fehler = 0
+        drehen
     }
 
     //let n_rgb = basic.rgb(7, 7, 7)
@@ -32,6 +33,7 @@ namespace radio { // multiswitch.ts
             n_Status = eStatus.fehler
             return false // i2c Fehler
         } else {
+            n_enableButtonFunkgruppe = false
             n_Status_changed = false // wird nur bei Änderung true
 
             let bu = pins.i2cReadBuffer(i2cgroveMultiswitch_x03, 10)
