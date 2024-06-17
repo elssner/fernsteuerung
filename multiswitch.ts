@@ -37,6 +37,8 @@ namespace radio { // multiswitch.ts
                 // Byte 4-9: 00000001:Schalter OFF; 00000000:Schalter ON; Bit 1-7 löschen & 0x01
                 // Richtung N = 1, W = 2, S = 3, O = 4, M = 5
                 // ON=00000000 OFF=00000001
+                
+                n_Status_changed = false // wird nur bei Änderung true
 
                 if (bu[3 + eStatus.fahren] == 0) {
                     n_Status_changed = (n_Status != eStatus.fahren)
@@ -61,7 +63,7 @@ namespace radio { // multiswitch.ts
 
     //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F deprecated=true
     //% block="Schalter einlesen0" weight=8
-    export function readSwitch(): boolean {
+    /* export function readSwitch(): boolean {
         if (n_Status == eStatus.fehler)
             return true
         else if (pins.i2cWriteBuffer(i2cGroveMultiswitch_x03, Buffer.fromArray([i2c_CMD_GET_DEV_EVENT])) != 0) {
@@ -100,18 +102,12 @@ namespace radio { // multiswitch.ts
             }
             return true
         }
-    }
+    } */
 
 
     //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
     //% block="Schalter Änderung" weight=6
-    export function chSwitch(): boolean {
-        //if (n_Magnet)
-        //    n_rgb = basic.rgb(7, 0, 0)
-        //else
-        //    n_rgb = basic.rgb(0, 7, 0)
-        return n_Status_changed
-    }
+    export function chSwitch(): boolean { return n_Status_changed }
 
     //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
     //% block="Schalter %pStatus" weight=5
