@@ -26,7 +26,7 @@ namespace radio { // multiswitch.ts
     let n_Magnet = false
 
     //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
-    //% block="Schalter einlesen" weight=8
+    //% block="Schalter einlesen und 1\\|3\\|5" weight=8
     export function i2cReadSwitch() {
         if (n_Status != eStatus.nicht_angeschlossen) {
             if (pins.i2cWriteBuffer(i2cGroveMultiswitch_x03, Buffer.fromArray([i2c_CMD_GET_DEV_EVENT])) != 0) {
@@ -55,7 +55,7 @@ namespace radio { // multiswitch.ts
                     n_Magnet = true
                 }
             }
-        } else { } // nicht_angeschlossen nichts machen
+        } //else { } // nicht_angeschlossen nichts machen
 
         return (n_Status == eStatus.fahren) || (n_Status == eStatus.seilrolle) || (n_Status == eStatus.zahnstange)
     }
