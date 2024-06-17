@@ -37,7 +37,7 @@ namespace radio { // multiswitch.ts
                 // Byte 4-9: 00000001:Schalter OFF; 00000000:Schalter ON; Bit 1-7 löschen & 0x01
                 // Richtung N = 1, W = 2, S = 3, O = 4, M = 5
                 // ON=00000000 OFF=00000001
-                
+
                 n_Status_changed = false // wird nur bei Änderung true
 
                 if (bu[3 + eStatus.fahren] == 0) {
@@ -57,6 +57,7 @@ namespace radio { // multiswitch.ts
             }
         } else { } // nicht_angeschlossen nichts machen
 
+        return (n_Status == eStatus.fahren) || (n_Status == eStatus.seilrolle) || (n_Status == eStatus.zahnstange)
     }
 
 
