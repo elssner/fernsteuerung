@@ -116,7 +116,7 @@ namespace radio { // joystick.ts
 
 
     //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
-    //% block="Joystick Button An Aus" weight=5
+    //% block="Joystick Button On" weight=5
     export function buttonOnOff() {
         if (buttonStatus(true)) // wenn 'Button war gedrückt'
             n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
