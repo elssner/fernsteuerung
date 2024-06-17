@@ -16,7 +16,7 @@ namespace radio { // buttonevents.ts
             if (!between(n_funkgruppe, 0xA1, 0xBF))
                 n_funkgruppe = 0xA2
             radio.setGroup(--n_funkgruppe)
-            zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
+            //zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
         }
     })
 
@@ -26,7 +26,7 @@ namespace radio { // buttonevents.ts
             if (!between(n_funkgruppe, 0xA0, 0xBE))
                 n_funkgruppe = 0xBE
             radio.setGroup(++n_funkgruppe)
-            zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
+            //zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
         }
     })
 
