@@ -4,7 +4,7 @@ namespace radio { // led5x5.ts
 
     let n_showString = ""
 
-    //% group="25 LED" advanced=true color=#54C9C9
+    //% group="25 LED" subcategory="Sender" color=#54C9C9
     //% block="5x5 zeige Funkgruppe und 1\\|3\\|5" weight=7
     //% n.defl=0
     export function zeigeStatus5x5() {
