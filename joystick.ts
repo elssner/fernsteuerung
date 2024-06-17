@@ -103,7 +103,7 @@ namespace radio { // joystick.ts
 
     }
 
-    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
+    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F deprecated=true
     //% block="Joystick Button war gedrückt || Status löschen %clear" weight=6
     //% clear.shadow="toggleOnOff" clear.defl=1
     export function buttonStatus(clear = true): boolean {
@@ -118,7 +118,7 @@ namespace radio { // joystick.ts
     //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
     //% block="Joystick Button An Aus" weight=5
     export function buttonOnOff() {
-        if (buttonStatus()) // wenn 'Button war gedrückt'
+        if (buttonStatus(true)) // wenn 'Button war gedrückt'
             n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
         return n_ButtonOnOff
     }

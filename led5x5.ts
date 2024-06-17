@@ -40,5 +40,18 @@ namespace radio { // led5x5.ts
         }
     }
 
+    let n_showString = ""
+
+    //% group="25 LED" advanced=true
+    //% block="zeige Text wenn geändert %text" weight=1
+    export function zeigeText(text: any) {
+        let tx = convertToText(text)
+        if (tx != n_showString) {
+            n_showString = tx
+            basic.showString(tx)
+        }
+    }
+
+
 
 } // led5x5.ts
