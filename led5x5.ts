@@ -28,6 +28,7 @@ namespace radio { // led5x5.ts
 
     //% group="25 LED" advanced=true color=#54C9C9
     //% block="zeige binär %int %format ←x %x" weight=1
+    //% x.min=0 x.max=4 x.defl=4
     export function zeigeBIN(int: number, format: ePlot, x: number) {
         int = Math.imul(int, 1) // 32 bit signed integer
 
@@ -39,10 +40,10 @@ namespace radio { // led5x5.ts
         } else {
             while (int > 0 && between(x, 0, 4)) {
                 if (format == ePlot.bcd) {
-                    plotBIN(int % 10, x)
+                    zeigeBIN(int % 10, ePlot.bin, x) // Ziffer 0..9
                     int = Math.idiv(int, 10) // 32 bit signed integer
                 } else if (format == ePlot.hex) {
-                    plotBIN(int % 16, x)
+                    zeigeBIN(int % 16, ePlot.bin, x) // Ziffer 0..15
                     int = int >> 4 // bitweise Division durch 16
                 }
                 x--
@@ -50,44 +51,44 @@ namespace radio { // led5x5.ts
         }
     }
 
-
-    //% group="25 LED" advanced=true
-    //% block="BCD Zahl %int anzeigen ←x %x" weight=6
-    //% x.min=0 x.max=4 x.defl=4
-    export function plotBCD(int: number, x: number) {
-        int = Math.imul(int, 1) // 32 bit signed integer
-        while (int > 0 && between(x, 0, 4)) {
-            plotBIN(int % 10, x)
-            int = Math.idiv(int, 10) // 32 bit signed integer
-            x--
-        }
-    }
-
-    //% group="25 LED" advanced=true
-    //% block="HEX Zahl %int anzeigen ←x %x" weight=6
-    //% x.min=0 x.max=4 x.defl=4
-    export function plotHEX(int: number, x: number) {
-        int = Math.imul(int, 1) // 32 bit signed integer
-        while (int > 0 && between(x, 0, 4)) {
-            plotBIN(int % 16, x)
-            int = int >> 4 // bitweise Division durch 16
-            x--
-        }
-    }
-
-    //% group="25 LED" advanced=true
-    //% block="BIN 0..31 %int anzeigen x %x" weight=2
-    //% x.min=0 x.max=4 x.defl=4
-    export function plotBIN(int: number, x: number) {
-        int = Math.imul(int, 1) // 32 bit signed integer
-        if (between(x, 0, 4)) {
-            for (let y = 4; y >= 0; y--) {
-                if ((int % 2) == 1) { led.plot(x, y) } else { led.unplot(x, y) }
-                int = int >> 1 // bitweise Division durch 2
+    /* 
+        //% group="25 LED" advanced=true
+        //% block="BCD Zahl %int anzeigen ←x %x" weight=6
+        //% x.min=0 x.max=4 x.defl=4
+        export function plotBCD(int: number, x: number) {
+            int = Math.imul(int, 1) // 32 bit signed integer
+            while (int > 0 && between(x, 0, 4)) {
+                plotBIN(int % 10, x)
+                int = Math.idiv(int, 10) // 32 bit signed integer
+                x--
             }
         }
-    }
-
+    
+        //% group="25 LED" advanced=true
+        //% block="HEX Zahl %int anzeigen ←x %x" weight=6
+        //% x.min=0 x.max=4 x.defl=4
+        export function plotHEX(int: number, x: number) {
+            int = Math.imul(int, 1) // 32 bit signed integer
+            while (int > 0 && between(x, 0, 4)) {
+                plotBIN(int % 16, x)
+                int = int >> 4 // bitweise Division durch 16
+                x--
+            }
+        }
+    
+        //% group="25 LED" advanced=true
+        //% block="BIN 0..31 %int anzeigen x %x" weight=2
+        //% x.min=0 x.max=4 x.defl=4
+        export function plotBIN(int: number, x: number) {
+            int = Math.imul(int, 1) // 32 bit signed integer
+            if (between(x, 0, 4)) {
+                for (let y = 4; y >= 0; y--) {
+                    if ((int % 2) == 1) { led.plot(x, y) } else { led.unplot(x, y) }
+                    int = int >> 1 // bitweise Division durch 2
+                }
+            }
+        }
+     */
 
 
 
