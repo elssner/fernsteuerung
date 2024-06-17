@@ -6,8 +6,8 @@ namespace radio { // joystick.ts
     //export const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
 
     let n_x: number, n_y: number //, n_xMotor: number, n_yServo: number
-    let n_ButtonStatus = false
-    let n_ButtonOnOff = false
+    let n_ButtonStatus = false   // von I²C gelesener Wert 1=true
+    let n_ButtonOnOff = false   // wechselt bei jedem Drücken
 
     // ========== group="Joystick"
 
@@ -43,7 +43,7 @@ namespace radio { // joystick.ts
                 basic.showNumber(1)
             else
                 basic.showNumber(0)
-            */    
+            */
             return true
         }
     }
@@ -112,7 +112,7 @@ namespace radio { // joystick.ts
     //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
     //% block="Joystick Button On || Status löschen %clear" weight=5
     //% clear.shadow="toggleOnOff" clear.defl=1
-    export function buttonOnOff(clear = true) {
+    export function joystickButtonOn(clear = true) {
         if (n_ButtonStatus) {
             n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
             if (clear)

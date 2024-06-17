@@ -16,7 +16,7 @@ namespace radio { // bluetooth.ts
     export function beimStart(funkgruppe: number, bFunkgruppe = false) {
         n_funkgruppe = funkgruppe
         //n_enableButtonSendReset = bSendReset
-        n_enableButtonFunkgruppe = bFunkgruppe
+        n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
         radio.setGroup(n_funkgruppe)
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
@@ -27,7 +27,7 @@ namespace radio { // bluetooth.ts
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
     //% block="mit 'A- B+ halten' Funkgruppe ändern %enable" weight=7
     //% enable.shadow="toggleYesNo"
-    export function enableButtonFunkgruppe(enable: boolean) { n_enableButtonFunkgruppe = enable } // buttonevents.ts
+    //export function enableButtonFunkgruppe(enable: boolean) { n_enableButtonFunkgruppe = enable } // buttonevents.ts
 
 
 

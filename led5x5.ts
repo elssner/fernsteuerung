@@ -5,7 +5,19 @@ namespace radio { // led5x5.ts
     let n_showString = ""
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="zeige Text wenn geändert %text" weight=1
+    //% block="5x5 zeige Status" weight=7
+    export function zeigeStatus5x5() {
+        if (joystickButtonOn())
+            n_enableButtonFunkgruppe = false
+        if (n_enableButtonFunkgruppe)
+            zeigeBIN(n_funkgruppe, ePlot.bin, 1)
+        else
+            zeigeText(getSwitch())
+    }
+
+
+    //% group="25 LED" advanced=true color=#54C9C9
+    //% block="5x5 zeige Text wenn geändert %text" weight=5
     export function zeigeText(text: any) {
         let tx = convertToText(text)
         if (tx != n_showString) {
@@ -13,7 +25,6 @@ namespace radio { // led5x5.ts
             basic.showString(tx)
         }
     }
-
 
     // zeigt Funkgruppe oder i²C Adresse im 5x5 Display binär an
 
@@ -27,7 +38,7 @@ namespace radio { // led5x5.ts
     }
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="zeige binär %int %format ←x %x" weight=1
+    //% block="5x5 zeige binär %int %format ←x %x" weight=1
     //% x.min=0 x.max=4 x.defl=4
     export function zeigeBIN(int: number, format: ePlot, x: number) {
         int = Math.imul(int, 1) // 32 bit signed integer
