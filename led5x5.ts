@@ -5,14 +5,15 @@ namespace radio { // led5x5.ts
     let n_showString = ""
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="5x5 zeige Status" weight=7
-    export function zeigeStatus5x5() {
+    //% block="5x5 zeige Funkgruppe und 1\\|3\\|5 || %n" weight=7
+    //% n.defl=0
+    export function zeigeStatus5x5(n = 0) {
         if (joystickButtonOn() || getSwitch135())
             n_enableButtonFunkgruppe = false
-        if (n_enableButtonFunkgruppe || getSwitch() == eStatus.nicht_angeschlossen)
+        if (n_enableButtonFunkgruppe || n == 0)
             zeigeBIN(n_funkgruppe, ePlot.hex, 1)
         else
-            zeigeText(getSwitch())
+            zeigeText(n)
     }
 
 
