@@ -16,8 +16,7 @@ namespace radio { // multiswitch.ts
         //% block="[2] Magnet aus"
         links = 2,
         //% block="[4] Magnet an"
-        rechts = 4,
-        drehen
+        rechts = 4
     }
 
     //let n_rgb = basic.rgb(7, 7, 7)

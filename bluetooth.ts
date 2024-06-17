@@ -4,22 +4,23 @@ namespace radio { // bluetooth.ts
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
     export let n_funkgruppe = 0xBF
     let n_start = false
-  
+
     let n_lastconnectedTime = input.runningTime()  // ms seit Start
     let n_programm = false // autonomes fahren nach Programm, kein Bluetooth timeout
 
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
-    //% block="beim Start Funkgruppe %funkgruppe"
+    //% block="beim Start Funkgruppe %funkgruppe || mit 'A- B+ halten' Funkgruppe ändern %bFunkgruppe"
     //% funkgruppe.min=0 funkgruppe.max=255 funkgruppe.defl=191
-    export function beimStart(funkgruppe: number) {
+    //% bFunkgruppe.shadow="toggleYesNo"
+    export function beimStart(funkgruppe: number, bFunkgruppe = false) {
         n_funkgruppe = funkgruppe
         //n_enableButtonSendReset = bSendReset
-        // n_enableButtonFunkgruppe = bFunkgruppe
+        n_enableButtonFunkgruppe = bFunkgruppe
         radio.setGroup(n_funkgruppe)
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
-      
+
         n_start = true
     }
 
@@ -128,40 +129,40 @@ namespace radio { // bluetooth.ts
 
 
 
-/* 
-
-    // ========== wenn Text empfangen (Bluetooth Status zurück senden)
-
-    let n_receivedString = ""
-    let n_receivedStringChanged = false
-
-    radio.onReceivedString(function (receivedString) {
-        n_receivedStringChanged = n_receivedString != receivedString
-        if (n_receivedStringChanged) {
-            n_receivedString = receivedString
-        }
-    })
-
-
-    //% group="Bluetooth empfangen (Text)" subcategory="Sender"
-
-    //% group="Bluetooth empfangen (Text)" subcategory="Sender"
-    //% block="Status empfangen Änderung" weight=4
-    export function receivedStringChanged() { return n_receivedStringChanged }
-
-    //% group="Bluetooth empfangen (Text)" subcategory="Sender"
-    //% block="Status empfangen Text" weight=3
-    export function receivedStringText() { return n_receivedString.substr(2) }
-
-
-
-// ========== group="Button A+B" subcategory="Sender"
-
-    //% group="Button A+B" subcategory="Sender"
-    //% block="mit 'A+B halten' Reset senden %enable" weight=6
-    //% enable.shadow="toggleYesNo"
-    export function enableButtonSendReset(enable: boolean) { n_enableButtonSendReset = enable } // buttonevents.ts
-
- */
+    /* 
+    
+        // ========== wenn Text empfangen (Bluetooth Status zurück senden)
+    
+        let n_receivedString = ""
+        let n_receivedStringChanged = false
+    
+        radio.onReceivedString(function (receivedString) {
+            n_receivedStringChanged = n_receivedString != receivedString
+            if (n_receivedStringChanged) {
+                n_receivedString = receivedString
+            }
+        })
+    
+    
+        //% group="Bluetooth empfangen (Text)" subcategory="Sender"
+    
+        //% group="Bluetooth empfangen (Text)" subcategory="Sender"
+        //% block="Status empfangen Änderung" weight=4
+        export function receivedStringChanged() { return n_receivedStringChanged }
+    
+        //% group="Bluetooth empfangen (Text)" subcategory="Sender"
+        //% block="Status empfangen Text" weight=3
+        export function receivedStringText() { return n_receivedString.substr(2) }
+    
+    
+    
+    // ========== group="Button A+B" subcategory="Sender"
+    
+        //% group="Button A+B" subcategory="Sender"
+        //% block="mit 'A+B halten' Reset senden %enable" weight=6
+        //% enable.shadow="toggleYesNo"
+        export function enableButtonSendReset(enable: boolean) { n_enableButtonSendReset = enable } // buttonevents.ts
+    
+     */
 
 } // bluetooth.ts
