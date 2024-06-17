@@ -54,7 +54,7 @@ namespace radio { // joystick.ts
         switch (pJoystickValue) {
             case eJoystickValue.x: return n_x
             case eJoystickValue.y: return n_y
-            case eJoystickValue.motor: {
+            case eJoystickValue.xmotor: {
                 let xMotor = n_x
                 if (n_x == 0)
                     xMotor = 1
