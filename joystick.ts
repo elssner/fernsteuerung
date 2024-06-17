@@ -17,13 +17,14 @@ namespace radio { // joystick.ts
         //% block="y 0..128..255"
         y,
         //% block="x Motor (1 ↓ 128 ↑ 255)"
-        motor,
+        xmotor,
         //% block="y Motor (1 ↓ 128 ↑ 255)"
         ymotor,
         //% block="y Servo (45° ↖ 90° ↗ 135°)"
         servo90,
         //% block="y Servo (1 ↖ 16 ↗ 31)"
-        servo16
+        servo16,
+        motor
     }
 
 
