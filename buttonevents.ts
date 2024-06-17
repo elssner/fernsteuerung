@@ -36,4 +36,42 @@ namespace radio { // buttonevents.ts
             n_sendReset = true
     })
 
+
+
+
+
+    // ========== wenn Text empfangen (Bluetooth Status zurück senden)
+
+    let n_receivedString = ""
+    let n_receivedStringChanged = false
+
+    radio.onReceivedString(function (receivedString) {
+        n_receivedStringChanged = n_receivedString != receivedString
+        if (n_receivedStringChanged) {
+            n_receivedString = receivedString
+        }
+    })
+
+
+    //% group="Bluetooth empfangen (Text)" subcategory="Sender"
+
+    //% group="Bluetooth empfangen (Text)" subcategory="Sender"
+    //% block="Status empfangen Änderung" weight=4
+    export function receivedStringChanged() { return n_receivedStringChanged }
+
+    //% group="Bluetooth empfangen (Text)" subcategory="Sender"
+    //% block="Status empfangen Text" weight=3
+    export function receivedStringText() { return n_receivedString.substr(2) }
+
+
+
+    // ========== group="Button A+B" subcategory="Sender"
+
+    //% group="Button A+B" subcategory="Sender"
+    //% block="mit 'A+B halten' Reset senden %enable" weight=6
+    //% enable.shadow="toggleYesNo"
+    export function enableButtonSendReset(enable: boolean) { n_enableButtonSendReset = enable } // buttonevents.ts
+
+
+
 } // buttonevents.ts

@@ -128,7 +128,7 @@ namespace radio { // bluetooth.ts
 
 
 
-
+/* 
 
     // ========== wenn Text empfangen (Bluetooth Status zurück senden)
 
@@ -162,6 +162,6 @@ namespace radio { // bluetooth.ts
     //% enable.shadow="toggleYesNo"
     export function enableButtonSendReset(enable: boolean) { n_enableButtonSendReset = enable } // buttonevents.ts
 
-
+ */
 
 } // bluetooth.ts
