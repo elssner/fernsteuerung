@@ -56,11 +56,14 @@ namespace radio { // multiswitch.ts
                 }
             }
         } //else { } // nicht_angeschlossen nichts machen
+        return getSwitch135()
 
-        return (n_Status == eStatus.fahren) || (n_Status == eStatus.seilrolle) || (n_Status == eStatus.zahnstange)
+        //return (n_Status == eStatus.fahren) || (n_Status == eStatus.seilrolle) || (n_Status == eStatus.zahnstange)
     }
 
-
+    export function getSwitch135() {
+        return (n_Status == eStatus.fahren) || (n_Status == eStatus.seilrolle) || (n_Status == eStatus.zahnstange)
+    }
 
     //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F deprecated=true
     //% block="Schalter einlesen0" weight=8

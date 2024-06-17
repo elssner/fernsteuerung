@@ -7,7 +7,7 @@ namespace radio { // led5x5.ts
     //% group="25 LED" advanced=true color=#54C9C9
     //% block="5x5 zeige Status" weight=7
     export function zeigeStatus5x5() {
-        if (joystickButtonOn())
+        if (joystickButtonOn() || getSwitch135())
             n_enableButtonFunkgruppe = false
         if (n_enableButtonFunkgruppe)
             zeigeBIN(n_funkgruppe, ePlot.bin, 1)
