@@ -39,6 +39,12 @@ namespace radio { // joystick.ts
             n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
             n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
             n_ButtonStatus = (bu[5] == 1) // STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
+
+            if (bu[5] == 1) {
+                n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
+                pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
+            }
+
             /* if (n_ButtonStatus)
                 basic.showNumber(1)
             else
@@ -113,12 +119,12 @@ namespace radio { // joystick.ts
     //% block="Joystick Button On || Status löschen %clear" weight=5
     //% clear.shadow="toggleOnOff" clear.defl=1
     export function joystickButtonOn(clear = true) {
-        if (n_ButtonStatus) {
+        /* if (n_ButtonStatus) {
             n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
             if (clear)
                 pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
             n_enableButtonFunkgruppe = false
-        }
+        } */
         //if (buttonStatus(true)) // wenn 'Button war gedrückt'
         //    n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
         return n_ButtonOnOff
