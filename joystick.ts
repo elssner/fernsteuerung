@@ -103,9 +103,9 @@ namespace radio { // joystick.ts
             }
 
             //case eJoystickValue.motor16: {
-                //return Math.idiv(joystickValue(eJoystickValue.xmotor), 8)
+            //return Math.idiv(joystickValue(eJoystickValue.xmotor), 8)
             //    return mapInt32(joystickValue(eJoystickValue.xmotor), 1, 255, 1, 31)
-                // return Math.idiv(joystickValue(eJoystickValue.servo90, p128, pmax), 3) - 14
+            // return Math.idiv(joystickValue(eJoystickValue.servo90, p128, pmax), 3) - 14
             //}
 
             //case eJoystickValue.servo90: return n_yServo // 45°..90°..135°
@@ -118,7 +118,7 @@ namespace radio { // joystick.ts
 
 
     //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
-    //% block="Joystick Button On" weight=5
+    //% block="Joystick Button On\\|Off" weight=5
     export function joystickButtonOn() {
         /* if (n_ButtonStatus) {
             n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
@@ -130,6 +130,12 @@ namespace radio { // joystick.ts
         //    n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
         return n_ButtonOnOff
     }
+
+    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
+    //% block="Joystick Button ist gedrückt" weight=4
+    export function joystickButtonPosition() { return n_ButtonPosition }
+
+
 
 
     //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F 

@@ -73,7 +73,7 @@ namespace radio { // buttonevents.ts
 
 
     //% group="Button A+B" subcategory="Sender"
-    //% block="mit 'A+B A- B+ geklickt' M0\\|1 (Gabelstapler) %enable" weight=5
+    //% block="mit 'A+B A- B+ geklickt' M0\\|M1 (Gabelstapler) %enable" weight=5
     //% enable.shadow="toggleYesNo"
     export function enableButtonMotor1(enable: boolean) { n_enableButtonGabelstapler = enable } 
 
