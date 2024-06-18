@@ -122,7 +122,7 @@ namespace radio { // multiswitch.ts
     export function getSwitch(): eStatus { return n_Status }
 
     //% group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F
-    //% block="Magnet" weight=3
+    //% block="Magnet 2 4" weight=3
     export function getMagnet() { return n_Magnet }
 
     // group="Grove Multiswitch 0x03" subcategory="Sender" color=#003F7F

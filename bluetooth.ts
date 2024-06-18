@@ -24,10 +24,11 @@ namespace radio { // bluetooth.ts
         n_start = true
     }
 
-    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
-    //% block="mit 'A- B+ halten' Funkgruppe ändern %enable" weight=7
-    //% enable.shadow="toggleYesNo"
+    // group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
+    // block="mit 'A- B+ halten' Funkgruppe ändern %enable" weight=7
+    // enable.shadow="toggleYesNo"
     //export function enableButtonFunkgruppe(enable: boolean) { n_enableButtonFunkgruppe = enable } // buttonevents.ts
+
 
 
 

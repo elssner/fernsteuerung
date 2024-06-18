@@ -14,10 +14,10 @@
         "datenpaket.ts",
         "enums.ts",
         "advanced.ts",
+        "buttonevents.ts",
         "joystick.ts",
         "multiswitch.ts",
-        "led5x5.ts",
-        "buttonevents.ts"
+        "led5x5.ts"
     ],
     "testFiles": [
         "test.ts"

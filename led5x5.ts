@@ -41,7 +41,7 @@ namespace radio { // led5x5.ts
               */
         }
 
-        if (!x3 && n5x5_x3 != buffer[1]) {
+        if (!x3 && n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
             n5x5_x3 = buffer[1]
             if (n5x5_x3 == 0)
                 zeigeBIN(0, ePlot.bin, 3)
@@ -51,7 +51,7 @@ namespace radio { // led5x5.ts
             zeigeBIN(x3, ePlot.bin, 3)
         }
 
-        if (!x4 && n5x5_x4 != buffer[2]) {
+        if (!x4 && n5x5_x4 != buffer[2]) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
             n5x5_x4 = buffer[2]
             zeigeBIN(n5x5_x4 & 0x1F, ePlot.bin, 4)
         } else if (x4 && n5x5_x4 != x4) {

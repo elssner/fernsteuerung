@@ -6,8 +6,8 @@ namespace radio { // joystick.ts
     //export const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
 
     let n_x: number, n_y: number //, n_xMotor: number, n_yServo: number
-    // let n_ButtonStatus = false   // von I²C gelesener Wert 1=true
-    let n_ButtonOnOff = false   // wechselt bei jedem Drücken
+    let n_ButtonPosition = false // Button ist gedrückt
+    let n_ButtonOnOff = false    // wechselt bei jedem Drücken
 
     // ========== group="Joystick"
 
@@ -40,18 +40,12 @@ namespace radio { // joystick.ts
             let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
             n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
             n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
-            // n_ButtonStatus = (bu[5] == 1) // STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
+            n_ButtonPosition = (bu[4] == 0)    // Current Button Position BUTTON 0:ist gedrückt
 
-            if (bu[5] == 1) {
+            if (bu[5] == 1) {// STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
                 n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
                 pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
             }
-
-            /* if (n_ButtonStatus)
-                basic.showNumber(1)
-            else
-                basic.showNumber(0)
-            */
             return true
         }
     }
@@ -124,9 +118,8 @@ namespace radio { // joystick.ts
 
 
     //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
-    //% block="Joystick Button On || Status löschen %clear" weight=5
-    //% clear.shadow="toggleOnOff" clear.defl=1
-    export function joystickButtonOn(clear = true) {
+    //% block="Joystick Button On" weight=5
+    export function joystickButtonOn() {
         /* if (n_ButtonStatus) {
             n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
             if (clear)
