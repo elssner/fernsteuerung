@@ -26,7 +26,7 @@ namespace radio { // joystick.ts
         //% block="y Servo (1 ↖ 16 ↗ 31)"
         servo16,
         //% block="x Motor (1 ↓ 16 ↑ 31)"
-        motor16
+        //motor16
     }
 
 
@@ -108,11 +108,11 @@ namespace radio { // joystick.ts
                 return Math.idiv(joystickValue(eJoystickValue.servo90, p128, pmax), 3) - 14
             }
 
-            case eJoystickValue.motor16: {
+            //case eJoystickValue.motor16: {
                 //return Math.idiv(joystickValue(eJoystickValue.xmotor), 8)
-                return mapInt32(joystickValue(eJoystickValue.xmotor), 1, 255, 1, 31)
+            //    return mapInt32(joystickValue(eJoystickValue.xmotor), 1, 255, 1, 31)
                 // return Math.idiv(joystickValue(eJoystickValue.servo90, p128, pmax), 3) - 14
-            }
+            //}
 
             //case eJoystickValue.servo90: return n_yServo // 45°..90°..135°
             //case eJoystickValue.servo16: return Math.round(n_yServo / 3 - 14)// 45°=1 90°=16 135°=31 
