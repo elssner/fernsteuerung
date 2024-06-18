@@ -50,7 +50,7 @@ namespace radio { // led5x5.ts
 
         if (!x4 && n5x5_x4 != buffer[2]) {
             n5x5_x4 = buffer[2]
-            zeigeBIN(n5x5_x4 & 0x1F, ePlot.bin, 3)
+            zeigeBIN(n5x5_x4 & 0x1F, ePlot.bin, 4)
         } else if (x4 && n5x5_x4 != x4) {
             zeigeBIN(x4, ePlot.bin, 4)
         }
