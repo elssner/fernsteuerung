@@ -11,7 +11,7 @@ namespace radio { // led5x5.ts
     let n5x5_x4 = 0 // Servo 1..16..31
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="5x5 zeige Status %buffer [0][3] || %x3" weight=7
+    //% block="5x5 zeige Status %buffer [0][3] || x3 %x3 x4 %x4" weight=7
     //% buffer.shadow="radio_sendBuffer19"
     export function zeige5x5Status(buffer: Buffer, x3?: number, x4?: number) {
         if (n5x5_funkgruppe != n_funkgruppe || n5x5_Buffer0 != (buffer[0] & 0x30)) {
