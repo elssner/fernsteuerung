@@ -5,7 +5,7 @@ namespace radio { // led5x5.ts
     let n_showString = ""
 
     let n5x5_funkgruppe = 0
-    let n5x5_Byte3 = 0
+    let n5x5_Buffer3 = 0
 
     //% group="25 LED" advanced=true color=#54C9C9
     //% block="5x5 zeige Status %buffer [3]" weight=7
@@ -16,14 +16,22 @@ namespace radio { // led5x5.ts
             zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1
         }
 
-        if (n5x5_Byte3 != buffer[3]) {
-            n5x5_Byte3 = buffer[3]
-            let x2 = ((n5x5_Byte3 & e3aktiviert.m1) == e3aktiviert.m1 ? 16 : 0)
-                + ((n5x5_Byte3 & e3aktiviert.ma) == e3aktiviert.ma ? 8 : 0)
-                + ((n5x5_Byte3 & e3aktiviert.mb) == e3aktiviert.mb ? 4 : 0)
-                + ((n5x5_Byte3 & e3aktiviert.mc) == e3aktiviert.mc ? 2 : 0)
-                + ((n5x5_Byte3 & e3aktiviert.md) == e3aktiviert.md ? 1 : 0)
-            zeigeBIN(n_funkgruppe, ePlot.bin, 2) // 5x5 x=2
+        if (n5x5_Buffer3 != buffer[3]) {
+            n5x5_Buffer3 = buffer[3]
+            let x = 2 // 5x5 x=2 
+            if ((n5x5_Buffer3 & e3aktiviert.m1) == e3aktiviert.m1) { led.plot(x, 0) } else { led.unplot(x, 0) }
+            if ((n5x5_Buffer3 & e3aktiviert.ma) == e3aktiviert.ma) { led.plot(x, 1) } else { led.unplot(x, 1) }
+            if ((n5x5_Buffer3 & e3aktiviert.mb) == e3aktiviert.mb) { led.plot(x, 2) } else { led.unplot(x, 2) }
+            if ((n5x5_Buffer3 & e3aktiviert.mc) == e3aktiviert.mc) { led.plot(x, 3) } else { led.unplot(x, 3) }
+            if ((n5x5_Buffer3 & e3aktiviert.md) == e3aktiviert.md) { led.plot(x, 4) } else { led.unplot(x, 4) }
+
+            /*   let x2 = ((n5x5_Buffer3 & e3aktiviert.m1) == e3aktiviert.m1 ? 16 : 0)
+                  + ((n5x5_Buffer3 & e3aktiviert.ma) == e3aktiviert.ma ? 8 : 0)
+                  + ((n5x5_Buffer3 & e3aktiviert.mb) == e3aktiviert.mb ? 4 : 0)
+                  + ((n5x5_Buffer3 & e3aktiviert.mc) == e3aktiviert.mc ? 2 : 0)
+                  + ((n5x5_Buffer3 & e3aktiviert.md) == e3aktiviert.md ? 1 : 0)
+              zeigeBIN(x2, ePlot.bin, 2) // 5x5 x=2 
+              */
         }
 
 
