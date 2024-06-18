@@ -4,6 +4,37 @@ namespace radio { // led5x5.ts
 
     let n_showString = ""
 
+    let n5x5_funkgruppe = 0
+    let n5x5_Byte3 = 0
+
+    //% group="25 LED" advanced=true color=#54C9C9
+    //% block="5x5 zeige Status %buffer [3]" weight=7
+    //% buffer.shadow="radio_sendBuffer19"
+    export function zeige5x5Status(buffer: Buffer) {
+        if (n5x5_funkgruppe != n_funkgruppe) {
+            n5x5_funkgruppe = n_funkgruppe
+            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1
+        }
+
+        if (n5x5_Byte3 != buffer[3]) {
+            n5x5_Byte3 = buffer[3]
+            let x2 = ((n5x5_Byte3 & e3aktiviert.m1) == e3aktiviert.m1 ? 16 : 0)
+                + ((n5x5_Byte3 & e3aktiviert.ma) == e3aktiviert.ma ? 8 : 0)
+                + ((n5x5_Byte3 & e3aktiviert.mb) == e3aktiviert.mb ? 4 : 0)
+                + ((n5x5_Byte3 & e3aktiviert.mc) == e3aktiviert.mc ? 2 : 0)
+                + ((n5x5_Byte3 & e3aktiviert.md) == e3aktiviert.md ? 1 : 0)
+            zeigeBIN(n_funkgruppe, ePlot.bin, 2) // 5x5 x=2
+        }
+
+
+        /* if (bit)
+            buffer[offset] | 2 ** Math.trunc(exp)
+        else
+            buffer[offset] & ~(2 ** Math.trunc(exp)) */
+    }
+
+
+
     //% group="25 LED" subcategory="Sender" color=#54C9C9
     //% block="5x5 zeige Funkgruppe und 1\\|3\\|5" weight=7
     //% n.defl=0
@@ -43,6 +74,7 @@ namespace radio { // led5x5.ts
     //% x.min=0 x.max=4 x.defl=4
     export function zeigeBIN(int: number, format: ePlot, x: number) {
         int = Math.imul(int, 1) // 32 bit signed integer
+        x = Math.imul(x, 1) // entfernt mögliche Kommastellen
 
         if (format == ePlot.bin && between(x, 0, 4)) {
             for (let y = 4; y >= 0; y--) {
