@@ -4,12 +4,12 @@ namespace radio { // buttonevents.ts
     export let n_enableButtonFunkgruppe = false
     // n_funkgruppe in bluetooth.ts
 
-    export let n_enableButtonSendReset = false
+    let n_enableButtonSendReset = false
     export let n_sendReset = false // wird mit A+B halten true gesetzt; bei (bluetooth.ts) sendData false
 
-    export let n_enableButtonGabelstapler = false
-    export let n_Gabelstapler = false // wird mit A+B geklickt umgeschaltet, wenn n_enableButtonGabelstapler = true
-    export let n_ServoGabelstapler = 0 // 1..16..31 mit A- B+ ändern
+    let n_enableButtonGabelstapler = false
+    let n_Gabelstapler = false // wird mit A+B geklickt umgeschaltet, wenn n_enableButtonGabelstapler = true
+    let n_ServoGabelstapler = 0 // 1..16..31 mit A- B+ ändern
 
     // ========== BUTTON EVENTS "halten"
 
@@ -69,22 +69,22 @@ namespace radio { // buttonevents.ts
     //% group="Button A+B" subcategory="Sender" color=#C90072
     //% block="mit 'A+B halten' Reset senden %enable" weight=6
     //% enable.shadow="toggleYesNo"
-    export function enableButtonSendReset(enable: boolean) { n_enableButtonSendReset = enable } 
+    export function enableButtonSendReset(enable: boolean) { n_enableButtonSendReset = enable }
 
 
     //% group="Button A+B" subcategory="Sender" color=#C90072
     //% block="mit 'A+B A- B+ geklickt' M0\\|M1 (Gabelstapler) %enable" weight=5
     //% enable.shadow="toggleYesNo"
-    export function enableButtonMotor1(enable: boolean) { n_enableButtonGabelstapler = enable } 
+    export function enableButtonMotor1(enable: boolean) { n_enableButtonGabelstapler = enable }
 
     //% group="Button A+B" subcategory="Sender" color=#C90072
     //% block="M0 Fahren und Lenken \\| M1 Gabelstapler" weight=4
-    export function getGabelstapler(enable: boolean) { return n_Gabelstapler } 
+    export function getGabelstapler() { return n_Gabelstapler }
 
 
     //% group="Button A+B" subcategory="Sender" color=#C90072
     //% block="Gabelstapler A- B+ (1 ↖ 16 ↗ 31)" weight=3
-    export function getServoGabelstapler(enable: boolean) { return n_ServoGabelstapler } 
+    export function getServoGabelstapler() { return n_ServoGabelstapler }
 
 
 

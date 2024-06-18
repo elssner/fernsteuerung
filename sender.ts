@@ -25,7 +25,7 @@ namespace radio { // sender.ts
         setBetriebsart(radio.radio_sendBuffer19(), radio.e0Betriebsart.p0)
         setByte(radio_sendBuffer19(), eBufferPointer.m0, eBufferOffset.b0_Motor, motorProzent(joystickValue(eJoystickValue.xmotor, p128), prozent))
         setByte(radio_sendBuffer19(), eBufferPointer.m1, eBufferOffset.b0_Motor, joystickValue(eJoystickValue.ymotor, p128))
-        setByte(radio_sendBuffer19(), eBufferPointer.m0, eBufferOffset.b1_Servo, n_ServoGabelstapler)
+        setByte(radio_sendBuffer19(), eBufferPointer.m0, eBufferOffset.b1_Servo, getServoGabelstapler())
         setaktiviert(radio_sendBuffer19(), e3aktiviert.m0, true)
         setaktiviert(radio_sendBuffer19(), e3aktiviert.m1, true)
     }
