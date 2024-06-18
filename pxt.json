@@ -15,6 +15,7 @@
         "enums.ts",
         "advanced.ts",
         "buttonevents.ts",
+        "sender.ts",
         "joystick.ts",
         "multiswitch.ts",
         "led5x5.ts"
