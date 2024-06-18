@@ -5,15 +5,20 @@ namespace radio { // led5x5.ts
     let n_showString = ""
 
     let n5x5_funkgruppe = 0
+    let n5x5_Buffer0 = 0
     let n5x5_Buffer3 = 0
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="5x5 zeige Status %buffer [3]" weight=7
+    //% block="5x5 zeige Status %buffer [0][3]" weight=7
     //% buffer.shadow="radio_sendBuffer19"
     export function zeige5x5Status(buffer: Buffer) {
-        if (n5x5_funkgruppe != n_funkgruppe) {
+        if (n5x5_funkgruppe != n_funkgruppe || n5x5_Buffer0 != (buffer[0] & 0x30)) {
             n5x5_funkgruppe = n_funkgruppe
             zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1
+
+            n5x5_Buffer0 = (buffer[0] & 0x30)
+            if ((n5x5_Buffer0 & 0x20) == 0x20) { led.plot(0, 0) } else { led.unplot(0, 0) }
+            if ((n5x5_Buffer0 & 0x10) == 0x10) { led.plot(1, 0) } else { led.unplot(1, 0) }
         }
 
         if (n5x5_Buffer3 != buffer[3]) {
@@ -35,10 +40,7 @@ namespace radio { // led5x5.ts
         }
 
 
-        /* if (bit)
-            buffer[offset] | 2 ** Math.trunc(exp)
-        else
-            buffer[offset] & ~(2 ** Math.trunc(exp)) */
+      
     }
 
 
