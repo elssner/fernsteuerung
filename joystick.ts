@@ -6,7 +6,7 @@ namespace radio { // joystick.ts
     //export const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
 
     let n_x: number, n_y: number //, n_xMotor: number, n_yServo: number
-   // let n_ButtonStatus = false   // von I²C gelesener Wert 1=true
+    // let n_ButtonStatus = false   // von I²C gelesener Wert 1=true
     let n_ButtonOnOff = false   // wechselt bei jedem Drücken
 
     // ========== group="Joystick"
@@ -24,7 +24,9 @@ namespace radio { // joystick.ts
         //% block="y Servo (45° ↖ 90° ↗ 135°)"
         servo90,
         //% block="y Servo (1 ↖ 16 ↗ 31)"
-        servo16
+        servo16,
+        //% block="x Motor (1 ↓ 16 ↑ 31)"
+        motor16
     }
 
 
@@ -38,7 +40,7 @@ namespace radio { // joystick.ts
             let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
             n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
             n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
-          // n_ButtonStatus = (bu[5] == 1) // STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
+            // n_ButtonStatus = (bu[5] == 1) // STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
 
             if (bu[5] == 1) {
                 n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
@@ -104,6 +106,12 @@ namespace radio { // joystick.ts
             }
             case eJoystickValue.servo16: {
                 return Math.idiv(joystickValue(eJoystickValue.servo90, p128, pmax), 3) - 14
+            }
+
+            case eJoystickValue.motor16: {
+                //return Math.idiv(joystickValue(eJoystickValue.xmotor), 8)
+                return mapInt32(joystickValue(eJoystickValue.xmotor), 1, 255, 1, 31)
+                // return Math.idiv(joystickValue(eJoystickValue.servo90, p128, pmax), 3) - 14
             }
 
             //case eJoystickValue.servo90: return n_yServo // 45°..90°..135°
