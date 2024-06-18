@@ -54,7 +54,7 @@ namespace radio { // buttonevents.ts
     })
 
     // wenn Knopf B geklickt
-    input.onButtonEvent(Button.A, input.buttonEventClick(), function () {
+    input.onButtonEvent(Button.B, input.buttonEventClick(), function () {
         if (n_enableButtonGabelstapler && n_Gabelstapler && n_ServoGabelstapler < 31)
             n_ServoGabelstapler++
     })
