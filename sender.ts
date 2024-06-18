@@ -10,6 +10,7 @@ namespace radio { // sender.ts
     //% p128.min=0 p128.max=8 
     //% pmax.min=0 pmax.max=20
     export function sendM0(buffer: Buffer, p128 = 0, pmax = 0) {
+        setBetriebsart(radio.radio_sendBuffer19(), radio.e0Betriebsart.p0)
         setByte(radio_sendBuffer19(), eBufferPointer.m0, eBufferOffset.b0_Motor, joystickValue(eJoystickValue.xmotor, p128))
         setByte(radio_sendBuffer19(), eBufferPointer.m0, eBufferOffset.b1_Servo, joystickValue(eJoystickValue.servo16, p128, pmax))
         setaktiviert(radio_sendBuffer19(), e3aktiviert.m0, true)
@@ -21,6 +22,7 @@ namespace radio { // sender.ts
     //% p128.min=0 p128.max=8 
     //% prozent.min=10 prozent.max=100 prozent.defl=100
     export function sendM01(buffer: Buffer, p128 = 0, prozent = 0) {
+        setBetriebsart(radio.radio_sendBuffer19(), radio.e0Betriebsart.p0)
         setByte(radio_sendBuffer19(), eBufferPointer.m0, eBufferOffset.b0_Motor, motorProzent(joystickValue(eJoystickValue.xmotor, p128), prozent))
         setByte(radio_sendBuffer19(), eBufferPointer.m1, eBufferOffset.b0_Motor, joystickValue(eJoystickValue.ymotor, p128))
         setByte(radio_sendBuffer19(), eBufferPointer.m0, eBufferOffset.b1_Servo, n_ServoGabelstapler)
@@ -33,6 +35,7 @@ namespace radio { // sender.ts
     //% buffer.shadow="radio_sendBuffer19"
     //% p128.min=0 p128.max=8 
     export function sendMAB(buffer: Buffer, p128 = 0) {
+        setBetriebsart(radio.radio_sendBuffer19(), radio.e0Betriebsart.p0)
         setByte(radio_sendBuffer19(), eBufferPointer.ma, eBufferOffset.b0_Motor, joystickValue(eJoystickValue.xmotor, p128))
         setByte(radio_sendBuffer19(), eBufferPointer.mb, eBufferOffset.b0_Motor, joystickValue(eJoystickValue.ymotor, p128))
         setaktiviert(radio_sendBuffer19(), e3aktiviert.ma, true)
@@ -44,6 +47,7 @@ namespace radio { // sender.ts
     //% buffer.shadow="radio_sendBuffer19"
     //% p128.min=0 p128.max=8 
     export function sendMCB(buffer: Buffer, p128 = 0) {
+        setBetriebsart(radio.radio_sendBuffer19(), radio.e0Betriebsart.p0)
         setByte(radio_sendBuffer19(), eBufferPointer.mc, eBufferOffset.b0_Motor, joystickValue(eJoystickValue.xmotor, p128))
         setByte(radio_sendBuffer19(), eBufferPointer.mb, eBufferOffset.b0_Motor, joystickValue(eJoystickValue.ymotor, p128))
         setaktiviert(radio_sendBuffer19(), e3aktiviert.mc, true)
