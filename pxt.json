@@ -21,11 +21,16 @@
         "s-multiswitch.ts",
         "r-receiver.ts",
         "r-qwiicmotor.ts",
-        "r-aktoren.ts"
+        "r-aktoren.ts",
+        "r-aktoren-v3.ts"
     ],
     "testFiles": [
         "test.ts"
     ],
+    "fileDependencies": {
+        "r-aktoren-v1.ts": "v1 || v2",
+        "r-aktoren-v3.ts": "v3"
+    },
     "targetVersions": {
         "target": "4.0.29",
         "targetId": "calliopemini"
