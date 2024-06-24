@@ -30,7 +30,7 @@ namespace sender { // s-qwiicjoystick.ts
     }
 
 
-    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
+    //% group="Qwiic Joystick 0x20"
     //% block="Joystick einlesen" weight=9
     export function joystickQwiic() {
         if (pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) != 0) {
@@ -50,7 +50,7 @@ namespace sender { // s-qwiicjoystick.ts
         }
     }
 
-    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
+    //% group="Qwiic Joystick 0x20"
     //% block="Joystick %pJoystickValue || 128 ± %p128 max ± %pmax" weight=8
     //% p128.min=0 p128.max=8 
     //% pmax.min=0 pmax.max=20
@@ -117,7 +117,7 @@ namespace sender { // s-qwiicjoystick.ts
     }
 
 
-    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
+    //% group="Qwiic Joystick 0x20"
     //% block="Joystick Button On\\|Off" weight=5
     export function joystickButtonOn() {
         /* if (n_ButtonStatus) {
@@ -131,14 +131,14 @@ namespace sender { // s-qwiicjoystick.ts
         return n_ButtonOnOff
     }
 
-    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F
+    //% group="Qwiic Joystick 0x20"
     //% block="Joystick Button ist gedrückt" weight=4
     export function joystickButtonPosition() { return n_ButtonPosition }
 
 
 
 
-    //% group="Qwiic Joystick 0x20" subcategory="Sender" color=#BF3F7F 
+    //% group="Qwiic Joystick 0x20"
     //% block="Joystick Button war gedrückt || Status löschen %clear" weight=6
     //% clear.shadow="toggleOnOff" clear.defl=1
     /* export function buttonStatus(clear = true): boolean {
