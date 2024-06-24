@@ -1,6 +1,10 @@
 
 namespace receiver { // r-aktoren-v3.ts
 
+
+
+
+/* 
     let n_rgbled = [0, 0, 0]
 
     //% group="Licht" subcategory="Aktoren"
@@ -24,5 +28,5 @@ namespace receiver { // r-aktoren-v3.ts
 
         basic.setLedColors(n_rgbled[0], n_rgbled[1], n_rgbled[2])
     }
-
+ */
 }

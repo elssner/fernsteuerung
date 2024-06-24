@@ -8,7 +8,7 @@ namespace receiver { // r-aktoren.ts
     // ein Delegat ist die Signatur einer function mit den selben Parametern
     // es wird kein Wert zurück gegeben (void)
     // die Variable ist noch undefined, also keiner konkreten Funktion zugeordnet
-    let onSetLedColorsHandler: (color1: number, color2: number, c: number) => void
+    let onSetLedColorsHandler: (color1: number, color2: number, color3: number) => void
 
 
 
