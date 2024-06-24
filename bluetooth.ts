@@ -16,7 +16,7 @@ namespace radio { // bluetooth.ts
     export function beimStart(funkgruppe: number, bFunkgruppe = false) {
         n_funkgruppe = funkgruppe
         //n_enableButtonSendReset = bSendReset
-        n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
+        sender.n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
         radio.setGroup(n_funkgruppe)
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
@@ -49,9 +49,9 @@ namespace radio { // bluetooth.ts
     //% block="Buffer senden %sendBuffer" weight=1
     //% sendBuffer.shadow="radio_sendBuffer19"
     export function sendData(sendBuffer: Buffer) {
-        if (n_sendReset) {
+        if (sender.n_sendReset) {
             setSchalter(sendBuffer, e0Schalter.b7, true)
-            n_sendReset = false
+            sender.n_sendReset = false
         }
         radio.sendBuffer(sendBuffer)
     }
