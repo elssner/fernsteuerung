@@ -89,16 +89,16 @@ enum Motor{M0,M1,M0_M1}
 
             if (motor == Motor.M0 && speed != n_Motor0) {
                 n_Motor0 = speed
-    //            motors.dualMotorPower(motor, duty_percent)
+                motors.dualMotorPower(<number>motor, duty_percent)
             }
             else if (motor == Motor.M1 && speed != n_Motor1) {
                 n_Motor1 = speed
-    //            motors.dualMotorPower(motor, duty_percent)
+                motors.dualMotorPower(<number>motor, duty_percent)
             }
             else if (motor == Motor.M0_M1 && (speed != n_Motor0 || speed != n_Motor1)) {
                 n_Motor0 = speed
                 n_Motor1 = speed
-    //            motors.dualMotorPower(motor, duty_percent)
+                motors.dualMotorPower(<number>motor, duty_percent)
             }
         } else { // n_MotorPower false oder speed=0
             motor255(motor, c_MotorStop) // 128

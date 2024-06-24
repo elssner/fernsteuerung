@@ -11,8 +11,6 @@ namespace receiver { // r-aktoren.ts
     let onSetLedColorsHandler: (color1: number, color2: number, color3: number) => void
 
 
-
-
     // sichtbarer Event-Block
 
     //% group="RGB" subcategory="Aktoren"
@@ -28,8 +26,13 @@ namespace receiver { // r-aktoren.ts
     }
 
 
-
-
+/* 
+    let onDualMotorPowerHandler: (motor: number, duty_percent: number) => void
+    
+    export function onDualMotorPower(cb: (motor: number, duty_percent: number) => void) {
+        onDualMotorPowerHandler = cb
+    }
+ */
 
 
     export enum eRGBled { a, b, c }

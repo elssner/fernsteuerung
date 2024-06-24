@@ -2,7 +2,13 @@
 namespace receiver { // r-aktoren-v3.ts
 
 
+    receiver.onSetLedColors(function (a, b, c) {
+        basic.setLedColors(a, b, c)
+    })
 
+    /* receiver.onDualMotorPower(function (motor, duty_percent) {
+        motors.dualMotorPower(motor, duty_percent)
+    }) */
 
 /* 
     let n_rgbled = [0, 0, 0]
