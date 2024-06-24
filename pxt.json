@@ -19,7 +19,9 @@
         "joystick.ts",
         "multiswitch.ts",
         "led5x5.ts",
-        "r-receiver.ts"
+        "r-receiver.ts",
+        "s-sender.ts",
+        "s-qwiicjoystick.ts"
     ],
     "testFiles": [
         "test.ts"
