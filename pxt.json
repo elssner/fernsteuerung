@@ -28,7 +28,7 @@
         "test.ts"
     ],
     "fileDependencies": {
-        "r-aktoren-v1.ts": "!v3",
+        "r-aktoren.ts": "!v3",
         "r-aktoren-v3.ts": "v3"
     },
     "targetVersions": {
