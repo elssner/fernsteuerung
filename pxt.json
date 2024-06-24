@@ -19,11 +19,11 @@
         "joystick.ts",
         "multiswitch.ts",
         "led5x5.ts",
-        "r-receiver.ts",
         "s-sender.ts",
+        "s-buttonevents.ts",
         "s-qwiicjoystick.ts",
         "s-multiswitch.ts",
-        "s-buttonevents.ts"
+        "r-receiver.ts"
     ],
     "testFiles": [
         "test.ts"
