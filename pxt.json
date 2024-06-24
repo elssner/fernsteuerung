@@ -20,7 +20,8 @@
         "s-qwiicjoystick.ts",
         "s-multiswitch.ts",
         "r-receiver.ts",
-        "r-qwiicmotor.ts"
+        "r-qwiicmotor.ts",
+        "r-aktoren.ts"
     ],
     "testFiles": [
         "test.ts"
