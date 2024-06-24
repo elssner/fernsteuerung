@@ -5,7 +5,7 @@ namespace sender {
     // BF3F7F
     // ========== group="Button A+B" subcategory="Sender"
 
-    //% group="Sender" subcategory="Sender"
+    //% group="00 Sender" subcategory="Sender"
     //% block="%buffer M0 Fahren und Lenken || 128 ± %p128 max ± %pmax" weight=5
     //% buffer.shadow="radio_sendBuffer19"
     //% p128.min=0 p128.max=8 
@@ -17,7 +17,7 @@ namespace sender {
         radio.setaktiviert(radio.radio_sendBuffer19(), radio.e3aktiviert.m0, true)
     }
 
-    //% group="radio.Sender" subcategory="Sender"
+    //% group="00 Sender" subcategory="Sender"
     //% block="%buffer M0 Fahren M1 Gabelstapler A- B+ Lenken || 128 ± %p128 * %prozent \\%" weight=4
     //% buffer.shadow="radio_sendBuffer19"
     //% p128.min=0 p128.max=8 
@@ -31,7 +31,7 @@ namespace sender {
         radio.setaktiviert(radio.radio_sendBuffer19(), radio.e3aktiviert.m1, true)
     }
 
-    //% group="radio.Sender" subcategory="Sender"
+    //% group="00 Sender" subcategory="Sender"
     //% block="%buffer MA Seilrolle MB Drehkranz || 128 ± %p128" weight=3
     //% buffer.shadow="radio_sendBuffer19"
     //% p128.min=0 p128.max=8 
@@ -43,7 +43,7 @@ namespace sender {
         radio.setaktiviert(radio.radio_sendBuffer19(), radio.e3aktiviert.mb, true)
     }
 
-    //% group="radio.Sender" subcategory="Sender"
+    //% group="00 Sender" subcategory="Sender"
     //% block="%buffer MC Zahnstange MB Drehkranz || 128 ± %p128" weight=2
     //% buffer.shadow="radio_sendBuffer19"
     //% p128.min=0 p128.max=8 

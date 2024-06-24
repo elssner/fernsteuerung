@@ -22,7 +22,8 @@
         "r-receiver.ts",
         "s-sender.ts",
         "s-qwiicjoystick.ts",
-        "s-multiswitch.ts"
+        "s-multiswitch.ts",
+        "s-buttonevents.ts"
     ],
     "testFiles": [
         "test.ts"
