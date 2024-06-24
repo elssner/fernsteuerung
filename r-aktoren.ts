@@ -2,6 +2,36 @@
 
 namespace receiver { // r-aktoren.ts
 
+
+
+    // deklariert die Variable mit dem Delegat-Typ '(receivedBuffer: Buffer) => void'
+    // ein Delegat ist die Signatur einer function mit den selben Parametern
+    // es wird kein Wert zurück gegeben (void)
+    // die Variable ist noch undefined, also keiner konkreten Funktion zugeordnet
+    let onSetLedColorsHandler: (color1: number, color2: number, c: number) => void
+
+
+
+
+    // sichtbarer Event-Block
+
+    //% group="RGB" subcategory="Aktoren"
+    //% block="SetLedColors" weight=9
+    //% draggableParameters=reporter
+    export function onSetLedColors(cb: (a: number, b: number, c: number) => void) {
+        // das ist der sichtbare Ereignis Block 'wenn Buffer empfangen (receivedData)'
+        // hier wird nur der Delegat-Variable eine konkrete callback function zugewiesen
+        // dieser Block speichert in der Variable, dass er beim Ereignis zurückgerufen werden soll
+        onSetLedColorsHandler = cb
+        // aufgerufen wird beim Ereignis 'radio.onReceivedBuffer' die der Variable 'onReceivedDataHandler' zugewiesene function
+        // das sind die Blöcke, die später im Ereignis Block 'wenn Buffer empfangen (receivedData)' enthalten sind
+    }
+
+
+
+
+
+
     export enum eRGBled { a, b, c }
 
     let n_rgbled = [0, 0, 0]
@@ -41,7 +71,7 @@ namespace receiver { // r-aktoren.ts
     export function rgbLEDon(led: eRGBled, color: number, on: boolean) {
         rgbLEDs(led, (on ? color : 0), false)
     }
- 
+
     //% group="Licht" subcategory="Aktoren"
     //% block="RGB LEDs %led %color blinken %blinken" weight=5
     //% color.shadow="colorNumberPicker"
@@ -53,6 +83,13 @@ namespace receiver { // r-aktoren.ts
             n_rgbled[led] = color
 
         //basic.setLedColors(n_rgbled[0], n_rgbled[1], n_rgbled[2])
+
+        // die Variable 'onReceivedDataHandler' ist normalerweise undefined, dann passiert nichts
+        // die Variable erhält einen Wert, wenn der folgende Ereignis Block 'onReceivedData' einmal im Code vorkommt
+        // der Wert der Variable 'onReceivedDataHandler' ist die function, die bei true zurück gerufen wird
+        // die function ruft mit dem Parameter vom Typ Buffer die Blöcke auf, die im Ereignis-Block stehen
+        if (onSetLedColorsHandler)
+            onSetLedColorsHandler(n_rgbled[0], n_rgbled[1], n_rgbled[2]) // Ereignis Block auslösen, nur wenn benutzt
     }
 
 
