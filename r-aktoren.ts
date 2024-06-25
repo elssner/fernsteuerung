@@ -1,4 +1,3 @@
-// Gib deinen Code hier ein
 
 namespace receiver { // r-aktoren.ts
 
@@ -11,14 +10,12 @@ namespace receiver { // r-aktoren.ts
 
 
 
+    // ========== group="RGB LEDs (v3)" subcategory="Aktoren"
 
     export enum eRGBled { a, b, c } // Index im Array
     let n_rgbled = [0, 0, 0] // speichert 3 LEDs, wenn nur eine geändert wird
     let n_rgbledtimer = input.runningTime() // ms seit Start, zwischen zwei Aufrufen ist eine Pause erforderlich
 
-
-
-    // ========== group="RGB LEDs (v3)" subcategory="Aktoren"
 
     // deklariert die Variable mit dem Delegat-Typ '(color1: number, color2: number, color3: number, brightness: number) => void'
     // ein Delegat ist die Signatur einer function mit den selben Parametern
@@ -96,8 +93,8 @@ namespace receiver { // r-aktoren.ts
      */
 
 
-    // ========== group="Relais" subcategory="Aktoren"
 
+    // ========== group="Relais" subcategory="Aktoren"
 
     //% group="Relais C9" subcategory="Aktoren"
     //% block="Stromversorgung 9V %pON"
@@ -106,19 +103,12 @@ namespace receiver { // r-aktoren.ts
         pins.digitalWritePin(c_pinRelay, pON ? 1 : 0)
     }
 
-
     //% group="Pin C12" subcategory="Aktoren"
-    //% block="digitaler Pin %pON"
+    //% block="digitaler Pin C12 %pON"
     //% pON.shadow="toggleOnOff"
     export function pinGPIO(pON: boolean) {
         pins.digitalWritePin(c_pinC12, pON ? 1 : 0)
     }
-
-
-
-
-
-
 
 
 
@@ -127,7 +117,7 @@ namespace receiver { // r-aktoren.ts
     let n_ringTone = false
 
     //% group="Klingelton P0" subcategory="Aktoren"
-    //% block="Ton %pON"
+    //% block="Ton P0 %pON"
     //% pON.shadow="toggleOnOff"
     export function ringTone(pON: boolean) {
         if (n_ringTone !== pON) { // XOR
@@ -143,7 +133,7 @@ namespace receiver { // r-aktoren.ts
     //% group="Hupe" subcategory="Aktoren" deprecated=true
     //% block="Hupe %pON"
     //% pON.shadow="toggleOnOff"
-    export function hupe(pON: boolean) {
+     function hupe(pON: boolean) {
         if (n_ringTone !== pON) {
             n_ringTone = pON
             if (n_ringTone)
@@ -171,7 +161,7 @@ namespace receiver { // r-aktoren.ts
     //% group="SparkFun Qwiic Single Relay 0x19" subcategory="Aktoren" deprecated=true
     //% block="Kran Magnet %pOn"
     //% pOn.shadow="toggleOnOff"
-    export function turnRelay(pOn: boolean) {
+     function turnRelay(pOn: boolean) {
         pins.i2cWriteBuffer(i2cRelay, Buffer.fromArray([pOn ? SINGLE_ON : SINGLE_OFF]))
     }
 
