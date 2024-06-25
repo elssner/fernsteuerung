@@ -90,9 +90,12 @@ namespace receiver { // r-aktoren.ts
         else
             n_rgbled[led] = color
 
-        while (input.runningTime() < n_rgbledtimer + 10) // mindestens 1ms seit letztem basic.setLedColors warten
+        let i = 0
+        while (input.runningTime() < (n_rgbledtimer + 10)) { // mindestens 1 ms seit letztem basic.setLedColors warten
             control.waitMicros(100)
-
+            i++
+        }
+        basic.showNumber(i)
         n_rgbledtimer = input.runningTime()  // ms seit Start
 
 
