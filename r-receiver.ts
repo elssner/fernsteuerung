@@ -33,7 +33,7 @@ enum Motor{M0,M1,M0_M1}
     export function beimStart(funkgruppe: number, servoGeradeaus: number) {
         n_ready = false // CaR4 ist nicht bereit: Schleifen werden nicht abgearbeitet
 
-        relay(true) // Relais an schalten
+        pinRelay(true) // Relais an schalten
 
         n_ServoGeradeaus = servoGeradeaus // Parameter
         pins.servoWritePin(pinServo, n_ServoGeradeaus)
