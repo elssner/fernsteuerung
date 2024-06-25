@@ -38,6 +38,7 @@ namespace receiver { // r-aktoren.ts
     export enum eRGBled { a, b, c }
 
     let n_rgbled = [0, 0, 0]
+    let n_rgbledtimer = input.runningTime()  // ms seit Start
     let n_hupe = false
 
 
@@ -88,6 +89,12 @@ namespace receiver { // r-aktoren.ts
             n_rgbled[led] = 0
         else
             n_rgbled[led] = color
+
+        while (input.runningTime() < n_rgbledtimer + 1) // mindestens 1ms seit letztem basic.setLedColors warten
+            control.waitMicros(100)
+
+        n_rgbledtimer = input.runningTime()  // ms seit Start
+
 
         //basic.setLedColors(n_rgbled[0], n_rgbled[1], n_rgbled[2])
 
