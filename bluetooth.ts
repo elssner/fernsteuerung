@@ -73,7 +73,7 @@ namespace radio { // bluetooth.ts
     // als Parabeter 'cb' übergeben wird die function 'function (receivedBuffer) {}'
     // was in den Klammern {} steht, wird bei dem Ereignis 'radio.onReceivedBuffer' abgearbeitet (callback = Rückruf)
     radio.onReceivedBuffer(function (receivedBuffer: Buffer) {
-        basic.showNumber(receivedBuffer.length )
+       
         if (n_start && receivedBuffer.length == 19) { // beim ersten Mal warten bis Motor bereit
 
             if ((receivedBuffer[0] & 0x80) == 0x80) // Bit 7 reset
