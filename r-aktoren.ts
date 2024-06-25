@@ -90,7 +90,7 @@ namespace receiver { // r-aktoren.ts
         else
             n_rgbled[led] = color
 
-        while (input.runningTime() < n_rgbledtimer + 1) // mindestens 1ms seit letztem basic.setLedColors warten
+        while (input.runningTime() < n_rgbledtimer + 10) // mindestens 1ms seit letztem basic.setLedColors warten
             control.waitMicros(100)
 
         n_rgbledtimer = input.runningTime()  // ms seit Start
