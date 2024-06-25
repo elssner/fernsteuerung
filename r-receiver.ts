@@ -51,6 +51,7 @@ namespace receiver { // r-receiver.ts
         // in Erweiterung fernsteuerung bluetooth.ts:
         radio.beimStart(funkgruppe, bFunkgruppe) // setzt auch n_start true
 
+        radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
         //  addStatus(n_ready)
     }
 

@@ -12,20 +12,20 @@ namespace sender {
     //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=175
     //% bFunkgruppe.shadow="toggleYesNo"
     //% inlineInputMode=inline
-    export function beimStart( funkgruppe = 175, bFunkgruppe = false) {
+    export function beimStart(funkgruppe = 175, bFunkgruppe = false) {
         // n_ready = false // CaR4 ist nicht bereit: Schleifen werden nicht abgearbeitet
-/* 
-        pinRelay(true) // Relais an schalten
-
-        n_ServoGeradeaus = servoGeradeaus // Parameter
-        pins.servoWritePin(c_pinServo, n_ServoGeradeaus)
-
-        pins.setPull(c_pinEncoder, PinPullMode.PullUp) // Encoder PIN Eingang PullUp
-
-        //  n_ready = motorReset(ei2cMotor.i2cMotorAB) && motorReset(ei2cMotor.i2cMotorCD)
-        //if (qMotorReset())
-        qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
- */
+        /* 
+                pinRelay(true) // Relais an schalten
+        
+                n_ServoGeradeaus = servoGeradeaus // Parameter
+                pins.servoWritePin(c_pinServo, n_ServoGeradeaus)
+        
+                pins.setPull(c_pinEncoder, PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+        
+                //  n_ready = motorReset(ei2cMotor.i2cMotorAB) && motorReset(ei2cMotor.i2cMotorCD)
+                //if (qMotorReset())
+                qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
+         */
         // in Erweiterung fernsteuerung bluetooth.ts:
         radio.beimStart(funkgruppe, bFunkgruppe) // setzt auch n_start true
 
