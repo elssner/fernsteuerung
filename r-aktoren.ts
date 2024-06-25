@@ -72,7 +72,7 @@ namespace receiver { // r-aktoren.ts
     //% block="RGB LEDs %led %color %on || Helligkeit %helligkeit \\%" weight=6
     //% color.shadow="colorNumberPicker"
     //% on.shadow="toggleOnOff"
-    //% helligkeit.min=20 helligkeit.max=100 helligkeit.defl=20
+    //% helligkeit.min=5 helligkeit.max=100 helligkeit.defl=20
     //% inlineInputMode=inline 
     export function rgbLEDon(led: eRGBled, color: number, on: boolean, helligkeit = 20) {
         rgbLEDs(led, (on ? color : 0), false, helligkeit)
@@ -82,7 +82,7 @@ namespace receiver { // r-aktoren.ts
     //% block="RGB LEDs %led %color blinken %blinken || Helligkeit %helligkeit \\%" weight=5
     //% color.shadow="colorNumberPicker"
     //% blinken.shadow="toggleYesNo"
-    //% helligkeit.min=20 helligkeit.max=100 helligkeit.defl=20
+    //% helligkeit.min=5 helligkeit.max=100 helligkeit.defl=20
     //% inlineInputMode=inline 
     export function rgbLEDs(led: eRGBled, color: number, blinken: boolean, helligkeit = 20) {
         if (blinken && n_rgbled[led] != 0)
@@ -91,7 +91,7 @@ namespace receiver { // r-aktoren.ts
             n_rgbled[led] = color
 
         let i = 0
-        while (input.runningTime() < (n_rgbledtimer + 1)) { // mindestens 1 ms seit letztem basic.setLedColors warten
+        while (input.runningTime() < (n_rgbledtimer + 2)) { // mindestens 1 ms seit letztem basic.setLedColors warten
             control.waitMicros(100)
             i++
         }
