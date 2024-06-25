@@ -2,16 +2,16 @@
 namespace radio { // bluetooth.ts
 
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
-    export let n_funkgruppe = 0xBF
+    export let n_funkgruppe = 0xA0
     let n_start = false
 
     let n_lastconnectedTime = input.runningTime()  // ms seit Start
     let n_programm = false // autonomes fahren nach Programm, kein Bluetooth timeout
 
 
-    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
+    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" deprecated=true
     //% block="beim Start Funkgruppe %funkgruppe || mit 'A- B+ halten' Funkgruppe ändern %bFunkgruppe"
-    //% funkgruppe.min=0 funkgruppe.max=255 funkgruppe.defl=191
+    //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=160
     //% bFunkgruppe.shadow="toggleYesNo"
     export function beimStart(funkgruppe: number, bFunkgruppe = false) {
         n_funkgruppe = funkgruppe

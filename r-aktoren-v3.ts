@@ -46,6 +46,7 @@ So kann getestet werden, ob das Ereignis einen Handler hat:
     https://github.com/microsoft/pxt-jacdac/blob/78e2c68b85363e580cc4c757fdce89a032e990f9/pxt.json#L73
     */
 
+    export const c_pinServov3 = AnalogPin.C8
 
     receiver.onSetLedColors(function (a, b, c, brightness: number) {
         basic.setLedColors(a, b, c, brightness) // gibt es nur bei v3, sonst any

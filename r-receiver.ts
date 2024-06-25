@@ -1,15 +1,18 @@
 //% color=#008272 icon="\uf012" block="Empfänger" weight=94
 namespace receiver { // r-receiver.ts
-//radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
+    //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
-enum Motor{M0,M1,M0_M1}
+    // PINs
+    const c_pinServo = 108 // v3 AnalogPin.C8 GPIO1 // 5V fischertechnik 132292 Servo
+    //const c_pinServo = c_pinServov3// <AnalogPin><number>DigitalPin.C8
+    const c_pinEncoder = DigitalPin.P2        // 5V fischertechnik 186175 Encodermotor Competition
+
+    export enum eMotor01 { M0, M1, M0_M1 } // muss mit v3 identisch sein
 
 
-    export const pinServo = AnalogPin.P1           // 5V fischertechnik 132292 Servo
-    export const pinEncoder = DigitalPin.P2        // 5V fischertechnik 186175 Encodermotor Competition
 
     //const c_Simulator: boolean = ("€".charCodeAt(0) == 8364)
-    let n_ready = false
+    // let n_ready = false
     //   let n_StatusChanged = false
     let n_StatusString = ""
 
@@ -25,27 +28,30 @@ enum Motor{M0,M1,M0_M1}
 
 
 
-    //% group="calliope-net.github.io/mkc-63"
-    //% block="beim Start Funkgruppe %funkgruppe Servo ↑ %servoGeradeaus °" weight=8
-    //% funkgruppe.min=0 funkgruppe.max=255 funkgruppe.defl=239
+    //% group="calliope-net.github.io/fernsteuerung"
+    //% block="beim Start Servo ↑ %servoGeradeaus ° || Funkgruppe %funkgruppe mit 'A- B+ halten' Funkgruppe ändern %bFunkgruppe" weight=8
     //% servoGeradeaus.min=81 servoGeradeaus.max=99 servoGeradeaus.defl=90
-    //% inlineInputMode=inline 
-    export function beimStart(funkgruppe: number, servoGeradeaus: number) {
-        n_ready = false // CaR4 ist nicht bereit: Schleifen werden nicht abgearbeitet
+    //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=175
+    //% bFunkgruppe.shadow="toggleYesNo"
+    //% inlineInputMode=inline
+    export function beimStart(servoGeradeaus: number, funkgruppe = 175, bFunkgruppe = false) {
+        // n_ready = false // CaR4 ist nicht bereit: Schleifen werden nicht abgearbeitet
 
         pinRelay(true) // Relais an schalten
 
         n_ServoGeradeaus = servoGeradeaus // Parameter
-        pins.servoWritePin(pinServo, n_ServoGeradeaus)
+        pins.servoWritePin(c_pinServo, n_ServoGeradeaus)
 
-        pins.setPull(pinEncoder, PinPullMode.PullUp) // Encoder PIN Eingang PullUp
-
-        // in Erweiterung fernsteuerung bluetooth.ts:
-        radio.beimStart(funkgruppe)
+        pins.setPull(c_pinEncoder, PinPullMode.PullUp) // Encoder PIN Eingang PullUp
 
         //  n_ready = motorReset(ei2cMotor.i2cMotorAB) && motorReset(ei2cMotor.i2cMotorCD)
-        n_ready = qMotorReset()
-        addStatus(n_ready)
+        //if (qMotorReset())
+        qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
+
+        // in Erweiterung fernsteuerung bluetooth.ts:
+        radio.beimStart(funkgruppe, bFunkgruppe) // setzt auch n_start true
+
+        //  addStatus(n_ready)
     }
 
 
@@ -79,7 +85,7 @@ enum Motor{M0,M1,M0_M1}
     //% group="Motor"
     //% block="Motor %motor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=6
     //% speed.min=0 speed.max=255 speed.defl=128
-    export function motor255(motor: Motor, speed: number) { // sendet nur an MotorChip, wenn der Wert sich ändert
+    export function motor255(motor: eMotor01, speed: number) { // sendet nur an MotorChip, wenn der Wert sich ändert
         //  if (n_MotorPower) {
         if (radio.between(speed, 1, 255)) {
             //let duty_percent = (speed == c_MotorStop ? 0 : Math.map(speed, 1, 255, -100, 100))
@@ -87,15 +93,15 @@ enum Motor{M0,M1,M0_M1}
             let duty_percent = radio.mapInt32(speed, 1, 255, -100, 100)
             //n_StatusString = duty_percent.toString()
 
-            if (motor == Motor.M0 && speed != n_Motor0) {
+            if (motor == eMotor01.M0 && speed != n_Motor0) {
                 n_Motor0 = speed
                 motors.dualMotorPower(<number>motor, duty_percent)
             }
-            else if (motor == Motor.M1 && speed != n_Motor1) {
+            else if (motor == eMotor01.M1 && speed != n_Motor1) {
                 n_Motor1 = speed
                 motors.dualMotorPower(<number>motor, duty_percent)
             }
-            else if (motor == Motor.M0_M1 && (speed != n_Motor0 || speed != n_Motor1)) {
+            else if (motor == eMotor01.M0_M1 && (speed != n_Motor0 || speed != n_Motor1)) {
                 n_Motor0 = speed
                 n_Motor1 = speed
                 motors.dualMotorPower(<number>motor, duty_percent)
@@ -112,8 +118,8 @@ enum Motor{M0,M1,M0_M1}
 
     // group="Motor"
     // block="Motor %motor (1 ↓ 128 ↑ 255)" weight=3
-    export function motor_get(motor: Motor) {
-        if (motor == Motor.M1)
+    export function motor_get(motor: eMotor01) {
+        if (motor == eMotor01.M1)
             return n_Motor1
         else
             return n_Motor0
@@ -130,7 +136,7 @@ enum Motor{M0,M1,M0_M1}
         // (0+14)*3=42 keine Änderung, gültige Werte im Buffer 1-31  (1+14)*3=45  (16+14)*3=90  (31+14)*3=135
         if (radio.between(winkel, 45, 135) && n_ServoWinkel != winkel) {
             n_ServoWinkel = winkel
-            pins.servoWritePin(pinServo, winkel + n_ServoGeradeaus - c_Servo_geradeaus)
+            pins.servoWritePin(c_pinServo, winkel + n_ServoGeradeaus - c_Servo_geradeaus)
         }
     }
 

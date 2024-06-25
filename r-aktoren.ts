@@ -130,20 +130,6 @@ namespace receiver { // r-aktoren.ts
         }
     }
 
-    //% group="Hupe" subcategory="Aktoren" deprecated=true
-    //% block="Hupe %pON"
-    //% pON.shadow="toggleOnOff"
-     function hupe(pON: boolean) {
-        if (n_ringTone !== pON) {
-            n_ringTone = pON
-            if (n_ringTone)
-                music.ringTone(262)
-            else
-                music.stopAllSounds()
-            // pins.digitalWritePin(pinBuzzer, n_buzzer ? 1 : 0)
-        }
-    }
-
 
 
     // ========== group="SparkFun Qwiic Single Relay 0x19" subcategory="Aktoren"
@@ -158,11 +144,5 @@ namespace receiver { // r-aktoren.ts
         pins.i2cWriteBuffer(i2cRelay, Buffer.fromArray([pOn ? SINGLE_ON : SINGLE_OFF]))
     }
 
-    //% group="SparkFun Qwiic Single Relay 0x19" subcategory="Aktoren" deprecated=true
-    //% block="Kran Magnet %pOn"
-    //% pOn.shadow="toggleOnOff"
-     function turnRelay(pOn: boolean) {
-        pins.i2cWriteBuffer(i2cRelay, Buffer.fromArray([pOn ? SINGLE_ON : SINGLE_OFF]))
-    }
 
 } // r-aktoren.ts

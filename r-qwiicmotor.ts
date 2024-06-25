@@ -111,7 +111,7 @@ namespace receiver { // r-qwiicmotor.ts
 
         n_MotorChipReady = [false, false]
 
-        control.waitMicros(2000000) // 2 s lange Wartezeit
+        control.waitMicros(2000000) // 2 s lange Wartezeit nach Power on
 
         let a = qMotorChipReset(i2cMotorAB, eMotorChip.ab)
 
