@@ -12,12 +12,13 @@ namespace receiver { // r-receiver.ts
     }
 
     export let n_Hardware = eHardware.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
-    let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
+    
+    export  let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
     let a_PinServo: AnalogPin[] = [108, AnalogPin.C4]       // 0:AnalogPin.C8 GPIO1
-    let a_PinGPIO4: DigitalPin[] = [112, DigitalPin.P3]    // 0:DigitalPin.C12 GPIO4
+    export  let a_PinGPIO4: DigitalPin[] = [112, DigitalPin.P3]    // 0:DigitalPin.C12 GPIO4
     let a_PinEncoder: DigitalPin[] = [114, DigitalPin.P2]   // 0:DigitalPin.C14 SPI
-    let a_PinSpurrechts: DigitalPin[] = [113, DigitalPin.C9]// 0:DigitalPin.C13 SPI
-    let a_PinSpurlinks: DigitalPin[] = [115, DigitalPin.C11]// 0:DigitalPin.C15 SPI
+    export  let a_PinSpurrechts: DigitalPin[] = [113, DigitalPin.C9]// 0:DigitalPin.C13 SPI
+    export let a_PinSpurlinks: DigitalPin[] = [115, DigitalPin.C11]// 0:DigitalPin.C15 SPI
 
     // CaR 4 Pins
     //export const pinRelay = DigitalPin.P0          // 5V Grove Relay
@@ -116,7 +117,7 @@ namespace receiver { // r-receiver.ts
 
 
 
-    //% group="Motor"
+    //% group="Motor (Calliope v3)"
     //% block="Motor %motor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=6
     //% speed.min=0 speed.max=255 speed.defl=128
     export function motor255(motor: eMotor01, speed: number) { // sendet nur an MotorChip, wenn der Wert sich ändert
@@ -230,7 +231,7 @@ namespace receiver { // r-receiver.ts
     // sichtbarer Event-Block; deprecated=true
     // wird bei v3 automatisch im Code r-aktoren-v3.ts aufgerufen und deshalb nicht als Block angezeigt
 
-    //% group="RGB LEDs (v3)" deprecated=true
+    //% group="RGB LEDs (Calliope v3)" deprecated=true
     //% block="SetLedColors" weight=9
     //% draggableParameters=reporter
     export function onSetLedColors(cb: (a: number, b: number, c: number, brightness: number) => void) {
@@ -244,7 +245,7 @@ namespace receiver { // r-receiver.ts
 
 
 
-    //% group="RGB LEDs (v3)"
+    //% group="RGB LEDs (Calliope v3)"
     //% block="RGB LEDs %led %color %on || Helligkeit %helligkeit \\%" weight=6
     //% color.shadow="colorNumberPicker"
     //% on.shadow="toggleOnOff"
@@ -254,7 +255,7 @@ namespace receiver { // r-receiver.ts
         rgbLEDs(led, (on ? color : 0), false, helligkeit)
     }
 
-    //% group="RGB LEDs (v3)"
+    //% group="RGB LEDs (Calliope v3)"
     //% block="RGB LEDs %led %color blinken %blinken || Helligkeit %helligkeit \\%" weight=5
     //% color.shadow="colorNumberPicker"
     //% blinken.shadow="toggleYesNo"

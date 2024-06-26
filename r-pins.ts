@@ -2,25 +2,28 @@
 namespace receiver { // r-pins.ts
 
     // PINs
-    const c_pinRelay = DigitalPin.C9 // Relais auf der Leiterplatte schaltet 9V Akku für eigene Stromversorgung an VM+
-    const c_pinC12 = DigitalPin.C12 // GPIO für Grove (5V) Licht oder Buzzer
+    //  const c_pinRelay = DigitalPin.C9 
+    //  const c_pinC12 = DigitalPin.C12 
 
 
 
     // ========== group="Relais" subcategory="Pins"
+    // Relais auf der Leiterplatte schaltet 9V Akku für eigene Stromversorgung an VM+
 
-    //% group="Relais C9" subcategory="Pins"
+    //% group="Relais" subcategory="Pins"
     //% block="Stromversorgung 9V %pON"
     //% pON.shadow="toggleOnOff"
     export function pinRelay(pON: boolean) {
-        pins.digitalWritePin(c_pinRelay, pON ? 1 : 0)
+        pins.digitalWritePin(a_PinRelay[n_Hardware], pON ? 1 : 0)
     }
 
-    //% group="Pin C12" subcategory="Pins"
-    //% block="digitaler Pin C12 %pON"
+    // GPIO für Grove (5V) Licht oder Buzzer
+
+    //% group="Pin GPIO" subcategory="Pins"
+    //% block="Hupe %pON"
     //% pON.shadow="toggleOnOff"
-    export function pinGPIO(pON: boolean) {
-        pins.digitalWritePin(c_pinC12, pON ? 1 : 0)
+    export function pinGPIO4(pON: boolean) {
+        pins.digitalWritePin(a_PinGPIO4[n_Hardware], pON ? 1 : 0)
     }
 
 
