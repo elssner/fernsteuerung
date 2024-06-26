@@ -52,7 +52,7 @@ So kann getestet werden, ob das Ereignis einen Handler hat:
         basic.setLedColors(a, b, c, brightness) // gibt es nur bei v3, sonst any
     })
 
-    receiver.onDualMotorPower(function (motor, duty_percent) {
+    receiver.onDualMotorPower(function (motor: Motor, duty_percent) {
         motors.dualMotorPower(motor, duty_percent)
     })
 
