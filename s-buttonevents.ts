@@ -12,6 +12,23 @@ namespace sender { // s-buttonevents.ts
     let n_ServoGabelstapler = 0 // 1..16..31 mit A- B+ ändern
 
     // ========== BUTTON EVENTS "halten"
+/* 
+    function aHold() {
+
+        let a = 0
+
+        // wenn Knopf A halten
+        input.onButtonEvent(Button.A, ButtonEvent.Hold, function () {
+            if (n_enableButtonFunkgruppe && !(input.buttonIsPressed(Button.B))) {
+                if (!radio.between(radio.n_funkgruppe, 0xA1, 0xBF))
+                    radio.n_funkgruppe = 0xA2
+                radio.setGroup(--radio.n_funkgruppe)
+                //zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
+             if(a==0){}
+            }
+        })
+    }
+ */
 
     // wenn Knopf A halten
     input.onButtonEvent(Button.A, ButtonEvent.Hold, function () {
@@ -103,7 +120,7 @@ namespace sender { // s-buttonevents.ts
     })
 
 
-  
+
 
     //% group="Bluetooth empfangen (Text)" advanced=true
     //% block="Status empfangen Änderung" weight=4

@@ -3,7 +3,7 @@ namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
     // PINs
-    const c_pinServo = 108 // v3 AnalogPin.C8 GPIO1 // 5V fischertechnik 132292 Servo
+    const c_pinServo: AnalogPin = 108 // v3 AnalogPin.C8 GPIO1 // 5V fischertechnik 132292 Servo
     //const c_pinServo = c_pinServov3// <AnalogPin><number>DigitalPin.C8
     const c_pinEncoder = DigitalPin.P2        // 5V fischertechnik 186175 Encodermotor Competition
 
