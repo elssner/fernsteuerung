@@ -4,19 +4,29 @@ namespace radio { // led5x5.ts
 
     let n_showString = ""
 
-    let n5x5_funkgruppe = 0 // 0..255 als 2 HEX Ziffern in x=0-1 y=1-2-3-4
+    //let n5x5_funkgruppe = 0 // 0..255 als 2 HEX Ziffern in x=0-1 y=1-2-3-4
     let n5x5_Buffer0 = 0 // Bit 5-4 Betriebsart in x=0-1 y=0
     let n5x5_Buffer3 = 0 // Bit 5-4-3-2-1 Motor Power in x=2
     let n5x5_x3 = 0 // Motor 1..16..31
     let n5x5_x4 = 0 // Servo 1..16..31
 
     //% group="25 LED" advanced=true color=#54C9C9
+    //% block="5x5 zeige Funkgruppe" weight=8
+    export function zeige5x5Funkgruppe() {
+        //if (n5x5_funkgruppe != n_funkgruppe) {
+        //    n5x5_funkgruppe = n_funkgruppe
+            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+        //}
+    }
+
+
+    //% group="25 LED" advanced=true color=#54C9C9
     //% block="5x5 zeige Status %buffer [0][3] || x3 %x3 x4 %x4" weight=7
     //% buffer.shadow="radio_sendBuffer19"
     export function zeige5x5Status(buffer: Buffer, x3?: number, x4?: number) {
-        if (n5x5_funkgruppe != n_funkgruppe || n5x5_Buffer0 != (buffer[0] & 0x30)) {
-            n5x5_funkgruppe = n_funkgruppe
-            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+        if (n5x5_Buffer0 != (buffer[0] & 0x30)) {
+            //    n5x5_funkgruppe = n_funkgruppe
+            //    zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
 
             n5x5_Buffer0 = (buffer[0] & 0x30) // Betriebsart 00 01 10 11 (x=0-1 y=0)
             if ((n5x5_Buffer0 & 0x20) == 0x20) { led.plot(0, 0) } else { led.unplot(0, 0) }

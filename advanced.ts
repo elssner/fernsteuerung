@@ -42,28 +42,19 @@ namespace radio { // advanced.ts
 
 
     //% group="Funktionen" advanced=true
-    //% block="Funkgruppe" weight=2
-    export function funkgruppe() { return n_funkgruppe }
-
-
-
-
-
-    //% group="Funktionen" advanced=true deprecated=true
-    //% block="motorProzent1 %value max %prozent"
-    //% value.min=1 value.max=255 value.defl=128
-    //% prozent.min=10 prozent.max=127 prozent.defl=127
-    export function motorProzent1(value: number, prozent: number) {
-        return mapInt32(value, 1, 255, 128 - prozent, 128 + prozent)
+    //% block="Funkgruppe || ändern %i und anzeigen" weight=2
+    //% i.min=-1 i.max=1
+    export function getFunkgruppe(i: number) {
+        if (i) {
+            if (i != 0)
+                n_funkgruppe += i
+            zeige5x5Funkgruppe()
+        }
+        return n_funkgruppe
     }
 
-    //% group="Funktionen" advanced=true
-    //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=4
-    //% inlineInputMode=inline
-    /* export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
-        // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
-        return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
-    } */
+
+
 
 
 
