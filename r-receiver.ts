@@ -86,8 +86,8 @@ namespace receiver { // r-receiver.ts
         //if (qMotorReset())
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
-        // in Erweiterung fernsteuerung bluetooth.ts:
-        radio.beimStart(funkgruppe) // setzt auch n_start true
+       
+        radio.beimStart(funkgruppe) // setzt auch n_start true, muss deshalb zuletzt stehen
 
         //radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
         //  addStatus(n_ready)
