@@ -63,17 +63,19 @@ namespace receiver { // r-receiver.ts
 
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start %hardware Servo ↑ %servoGeradeaus ° || mit 'A- B+ halten' Funkgruppe ändern %bFunkgruppe %funkgruppe" weight=8
+    //% block="beim Start %hardware Servo ↑ %servoGeradeaus ° || Funkgruppe %funkgruppe" weight=8
     //% servoGeradeaus.min=81 servoGeradeaus.max=99 servoGeradeaus.defl=90
     //% bFunkgruppe.shadow="toggleYesNo" bFunkgruppe.defl=1
     //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=175
     //% inlineInputMode=inline
-    export function beimStart(hardware: eHardware, servoGeradeaus: number, bFunkgruppe = true, funkgruppe = 175) {
-        // n_ready = false // CaR4 ist nicht bereit: Schleifen werden nicht abgearbeitet
-
-        pinRelay(true) // Relais an schalten
+    export function beimStart(hardware: eHardware, servoGeradeaus: number,  funkgruppe = 175) {
         n_Hardware = hardware
         n_ServoGeradeaus = servoGeradeaus // Parameter
+
+        pinRelay(true) // Relais an schalten (braucht gültiges n_Hardware, um den Pin zu finden)
+
+        radio.zeige5x5Funkgruppe()
+
         pins.servoWritePin(a_PinServo[n_Hardware], n_ServoGeradeaus)
 
         pins.setPull(a_PinEncoder[n_Hardware], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
@@ -83,7 +85,7 @@ namespace receiver { // r-receiver.ts
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
         // in Erweiterung fernsteuerung bluetooth.ts:
-        radio.beimStart(funkgruppe, bFunkgruppe) // setzt auch n_start true
+        radio.beimStart(funkgruppe) // setzt auch n_start true
 
         //radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
         //  addStatus(n_ready)

@@ -117,11 +117,11 @@ namespace radio { // bluetooth.ts
 
 
     //% group="Bluetooth empfangen (19 Byte)" subcategory="Bluetooth"
-    //% block="timeout > %ms ms || Programm-timeout %programm" weight=7
+    //% block="timeout > %ms ms || abschalten %abschalten" weight=7
     //% programm.shadow="toggleYesNo"
     //% ms.defl=1000
-    export function timeout(ms: number, programm = false) {
-        if (!programm) // kurzes Fernsteuerung-timeout (1s) nur bei Joystick, nicht auslösen wenn n_programm=true
+    export function timeout(ms: number, abschalten = false) {
+        if (!abschalten) // kurzes Fernsteuerung-timeout (1s) nur bei Joystick, nicht auslösen wenn n_programm=true
             return !n_programm && ((input.runningTime() - n_lastconnectedTime) > ms)
         else // längeres Programm-timeout (60s) immer auslösen falls Programm hängt (zum aus schalten)
             return ((input.runningTime() - n_lastconnectedTime) > ms)
