@@ -129,16 +129,16 @@ namespace receiver { // r-receiver.ts
 
             if (motor == eMotor01.M0 && speed != n_Motor0) {
                 n_Motor0 = speed
-                motors.dualMotorPower(<number>motor, duty_percent)
+                dualMotorPower(motor, duty_percent)
             }
             else if (motor == eMotor01.M1 && speed != n_Motor1) {
                 n_Motor1 = speed
-                motors.dualMotorPower(<number>motor, duty_percent)
+                dualMotorPower(motor, duty_percent)
             }
             else if (motor == eMotor01.M0_M1 && (speed != n_Motor0 || speed != n_Motor1)) {
                 n_Motor0 = speed
                 n_Motor1 = speed
-                motors.dualMotorPower(<number>motor, duty_percent)
+                dualMotorPower(motor, duty_percent)
             }
         } else { // n_MotorPower false oder speed=0
             motor255(motor, c_MotorStop) // 128
@@ -147,6 +147,21 @@ namespace receiver { // r-receiver.ts
             //n_Motor1 = c_MotorStop
             //motors.dualMotorPower(Motor.M0_M1, 0)
         }
+    }
+
+
+    let onDualMotorPowerHandler: (motor: eMotor01, duty_percent: number) => void
+
+    export function onDualMotorPower(cb: (motor: eMotor01, duty_percent: number) => void) {
+        onDualMotorPowerHandler = cb
+    }
+
+
+    function dualMotorPower(motor: eMotor01, duty_percent: number) {
+        if (onDualMotorPowerHandler)
+            onDualMotorPowerHandler(motor, duty_percent) // v3 Ereignis Block auslösen, nur wenn benutzt
+        //else
+        //     basic.setLedColor(n_rgbled[0]) // v1 v2
     }
 
 

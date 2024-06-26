@@ -84,14 +84,6 @@ namespace receiver { // r-aktoren.ts
 
 
 
-    /* 
-        let onDualMotorPowerHandler: (motor: number, duty_percent: number) => void
-        
-        export function onDualMotorPower(cb: (motor: number, duty_percent: number) => void) {
-            onDualMotorPowerHandler = cb
-        }
-     */
-
 
 
     // ========== group="Relais" subcategory="Aktoren"
