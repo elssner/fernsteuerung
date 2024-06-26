@@ -10,13 +10,13 @@ namespace radio { // bluetooth.ts
 
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" deprecated=true
-    //% block="beim Start Funkgruppe %funkgruppe || mit 'A- B+ halten' Funkgruppe ändern %bFunkgruppe"
+    //% block="beim Start Funkgruppe %funkgruppe"
     //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=160
     //% bFunkgruppe.shadow="toggleYesNo"
-    export function beimStart(funkgruppe: number, bFunkgruppe = false) {
+    export function beimStart(funkgruppe: number) {
         n_funkgruppe = funkgruppe
         //n_enableButtonSendReset = bSendReset
-        sender.n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
+     //   sender.n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
         radio.setGroup(n_funkgruppe)
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)

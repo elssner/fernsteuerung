@@ -19,7 +19,9 @@ namespace radio { // advanced.ts
     //% i.min=-1 i.max=1
     export function getFunkgruppe(i: number) {
         if (i) {
-            if (i != 0)
+            if (i < 0 && n_funkgruppe + i > 0xA0)
+                n_funkgruppe += i
+            else if (i > 0 && n_funkgruppe + i < 0xBF)
                 n_funkgruppe += i
             zeige5x5Funkgruppe()
         }

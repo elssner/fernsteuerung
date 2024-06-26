@@ -1,7 +1,7 @@
 
 namespace sender { // s-buttonevents.ts
 
-    export let n_enableButtonFunkgruppe = false
+    //export let n_enableButtonFunkgruppe = false
     // n_funkgruppe in bluetooth.ts
 
     let n_enableButtonSendReset = false
@@ -29,7 +29,7 @@ namespace sender { // s-buttonevents.ts
         })
     }
  */
-
+/* 
     // wenn Knopf A halten
     input.onButtonEvent(Button.A, ButtonEvent.Hold, function () {
         if (n_enableButtonFunkgruppe && !(input.buttonIsPressed(Button.B))) {
@@ -49,7 +49,7 @@ namespace sender { // s-buttonevents.ts
             //zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
         }
     })
-
+ */
     // wenn Knopf A+B halten
     input.onButtonEvent(Button.AB, ButtonEvent.Hold, function () {
         if (n_enableButtonSendReset)

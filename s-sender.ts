@@ -8,11 +8,11 @@ namespace sender {
 
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start || Funkgruppe %funkgruppe mit 'A- B+ halten' Funkgruppe ändern %bFunkgruppe" weight=8
+    //% block="beim Start || Funkgruppe %funkgruppe" weight=8
     //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=175
     //% bFunkgruppe.shadow="toggleYesNo"
     //% inlineInputMode=inline
-    export function beimStart(funkgruppe = 175, bFunkgruppe = false) {
+    export function beimStart(funkgruppe = 175) {
         // n_ready = false // CaR4 ist nicht bereit: Schleifen werden nicht abgearbeitet
         /* 
                 pinRelay(true) // Relais an schalten
@@ -27,7 +27,7 @@ namespace sender {
                 qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
          */
         // in Erweiterung fernsteuerung bluetooth.ts:
-        radio.beimStart(funkgruppe, bFunkgruppe) // setzt auch n_start true
+        radio.beimStart(funkgruppe) // setzt auch n_start true
 
         //  addStatus(n_ready)
     }
