@@ -12,12 +12,12 @@ namespace receiver { // r-receiver.ts
     }
 
     export let n_Hardware = eHardware.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
-    
-    export  let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
+
+    export let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
     let a_PinServo: AnalogPin[] = [108, AnalogPin.C4]       // 0:AnalogPin.C8 GPIO1
-    export  let a_PinGPIO4: DigitalPin[] = [112, DigitalPin.P3]    // 0:DigitalPin.C12 GPIO4
+    export let a_PinGPIO4: DigitalPin[] = [112, DigitalPin.P3]    // 0:DigitalPin.C12 GPIO4
     let a_PinEncoder: DigitalPin[] = [114, DigitalPin.P2]   // 0:DigitalPin.C14 SPI
-    export  let a_PinSpurrechts: DigitalPin[] = [113, DigitalPin.C9]// 0:DigitalPin.C13 SPI
+    export let a_PinSpurrechts: DigitalPin[] = [113, DigitalPin.C9]// 0:DigitalPin.C13 SPI
     export let a_PinSpurlinks: DigitalPin[] = [115, DigitalPin.C11]// 0:DigitalPin.C15 SPI
 
     // CaR 4 Pins
@@ -48,7 +48,7 @@ namespace receiver { // r-receiver.ts
     //const c_Simulator: boolean = ("€".charCodeAt(0) == 8364)
     // let n_ready = false
     //   let n_StatusChanged = false
-   // let n_StatusString = ""
+    // let n_StatusString = ""
 
     const c_MotorStop = 128
     // export let n_MotorChipReady = false
