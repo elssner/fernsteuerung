@@ -36,9 +36,9 @@ namespace receiver { // r-receiver.ts
 
 
     // PINs
-    const c_pinServo: AnalogPin = 108 // v3 AnalogPin.C8 GPIO1 // 5V fischertechnik 132292 Servo
+    //const c_pinServo: AnalogPin = 108 // v3 AnalogPin.C8 GPIO1 // 5V fischertechnik 132292 Servo
     //const c_pinServo = c_pinServov3// <AnalogPin><number>DigitalPin.C8
-    const c_pinEncoder = DigitalPin.P2        // 5V fischertechnik 186175 Encodermotor Competition
+    //const c_pinEncoder = DigitalPin.P2        // 5V fischertechnik 186175 Encodermotor Competition
 
     export enum eMotor01 { M0, M1, M0_M1 } // muss mit v3 identisch sein
 
@@ -73,9 +73,9 @@ namespace receiver { // r-receiver.ts
         pinRelay(true) // Relais an schalten
         n_Hardware = hardware
         n_ServoGeradeaus = servoGeradeaus // Parameter
-        pins.servoWritePin(c_pinServo, n_ServoGeradeaus)
+        pins.servoWritePin(a_PinServo[n_Hardware], n_ServoGeradeaus)
 
-        pins.setPull(c_pinEncoder, PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+        pins.setPull(a_PinEncoder[n_Hardware], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
 
         //  n_ready = motorReset(ei2cMotor.i2cMotorAB) && motorReset(ei2cMotor.i2cMotorCD)
         //if (qMotorReset())
@@ -170,7 +170,7 @@ namespace receiver { // r-receiver.ts
         // (0+14)*3=42 keine Änderung, gültige Werte im Buffer 1-31  (1+14)*3=45  (16+14)*3=90  (31+14)*3=135
         if (radio.between(winkel, 45, 135) && n_ServoWinkel != winkel) {
             n_ServoWinkel = winkel
-            pins.servoWritePin(c_pinServo, winkel + n_ServoGeradeaus - c_Servo_geradeaus)
+            pins.servoWritePin(a_PinServo[n_Hardware], winkel + n_ServoGeradeaus - c_Servo_geradeaus)
         }
     }
 
