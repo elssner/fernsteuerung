@@ -19,13 +19,12 @@
         "s-buttonevents.ts",
         "s-qwiicjoystick.ts",
         "s-multiswitch.ts",
+        "s-advanced.ts",
         "r-receiver.ts",
         "r-qwiicmotor.ts",
-        "r-aktoren.ts",
         "r-aktoren-v3.ts",
-        "s-advanced.ts",
-        "r-advanced.ts",
-        "r-pins.ts"
+        "r-pins.ts",
+        "r-advanced.ts"
     ],
     "testFiles": [
         "test.ts"
