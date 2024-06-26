@@ -181,7 +181,7 @@ namespace receiver { // r-qwiicmotor.ts
         */
     }
 
-    //% group="Motor" subcategory="Qwiic"
+    //% group="Motor A B C D (I²C)" subcategory="Qwiic"
     //% block="Motor Chip %pMotorChip Power %pON" weight=3
     //% pON.shadow="toggleOnOff"
     export function qMotorChipPower(pMotorChip: eMotorChip, pON: boolean) {
@@ -213,7 +213,7 @@ namespace receiver { // r-qwiicmotor.ts
         }
     } */
 
-    //% group="Motor" subcategory="Qwiic"
+    //% group="Motor A B C D (I²C)" subcategory="Qwiic"
     //% block="Motor %pMotor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=2
     //% speed.min=0 speed.max=255 speed.defl=128
     export function qMotor255(pMotor: eMotor, speed: number) {

@@ -117,7 +117,7 @@ namespace receiver { // r-receiver.ts
 
 
 
-    //% group="Motor (Calliope v3)"
+    //% group="Motor 0 1 (Calliope v3)"
     //% block="Motor %motor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=6
     //% speed.min=0 speed.max=255 speed.defl=128
     export function motor255(motor: eMotor01, speed: number) { // sendet nur an MotorChip, wenn der Wert sich ändert
