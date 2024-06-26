@@ -157,7 +157,7 @@ namespace receiver { // r-receiver.ts
     }
 
 
-    function dualMotorPower(motor: eMotor01, duty_percent: number) {
+    function dualMotorPower(motor: number, duty_percent: number) {
         if (onDualMotorPowerHandler)
             onDualMotorPowerHandler(motor, duty_percent) // v3 Ereignis Block auslösen, nur wenn benutzt
         //else
