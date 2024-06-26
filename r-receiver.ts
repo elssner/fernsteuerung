@@ -47,7 +47,7 @@ namespace receiver { // r-receiver.ts
     //const c_Simulator: boolean = ("€".charCodeAt(0) == 8364)
     // let n_ready = false
     //   let n_StatusChanged = false
-    let n_StatusString = ""
+   // let n_StatusString = ""
 
     const c_MotorStop = 128
     // export let n_MotorChipReady = false
@@ -209,37 +209,6 @@ namespace receiver { // r-receiver.ts
     // group="Servo"
     // block="Servo (135° ↖ 90° ↗ 45°)" weight=2
     function servo_get() { return n_ServoWinkel }
-
-
-
-    // ========== group="Status zurück senden"
-
-    //% group="Status zurück senden"
-    //% block="Status += any %pStatus" weight=6
-    export function addStatus(pStatus: any) {
-        n_StatusString += " " + convertToText(pStatus)
-    }
-
-    //% group="Status zurück senden"
-    //% block="Status += hex %pStatus" weight=5
-    export function addStatusHEX(pStatus: number) {
-        n_StatusString += " " + Buffer.fromArray([pStatus]).toHex()
-    }
-
-    //% group="Status zurück senden"
-    //% block="Status Änderung" weight=4
-    export function chStatus(): boolean { return n_StatusString.length > 0 }
-
-    //% group="Status zurück senden"
-    //% block="Status Text || löschen %clear" weight=3
-    //% clear.shadow="toggleYesNo"
-    //% clear.defl=1
-    export function getStatus(clear = true) {
-        let s = n_StatusString
-        if (clear)
-            n_StatusString = ""
-        return "1" + s
-    }
 
 
 

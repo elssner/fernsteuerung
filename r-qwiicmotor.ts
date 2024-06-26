@@ -2,9 +2,11 @@
 namespace receiver { // r-qwiicmotor.ts
 
 
-    // I²C Adresse Motor Modul
-    const i2cMotorAB = 0x5D
-    const i2cMotorCD = 0x5E
+    // I²C Adressen Qwiic
+    const i2cMotorAB = 0x5D // SparkFun Qwiic Motor Driver
+    const i2cMotorCD = 0x5E // SparkFun Qwiic Motor Driver
+    const i2cRelay = 0x19   // SparkFun Qwiic Single Relay (Kran Elektromagnet)
+
 
     export enum eMotor {
         //% block="A"
@@ -179,7 +181,7 @@ namespace receiver { // r-qwiicmotor.ts
         */
     }
 
-    //% group="Motor"
+    //% group="Motor" subcategory="Qwiic"
     //% block="Motor Chip %pMotorChip Power %pON" weight=3
     //% pON.shadow="toggleOnOff"
     export function qMotorChipPower(pMotorChip: eMotorChip, pON: boolean) {
@@ -193,7 +195,7 @@ namespace receiver { // r-qwiicmotor.ts
         }
     }
 
-    // group="Motor"
+    // group="Motor" subcategory="Qwiic"
     // block="Motor %pMotor Power %pON" weight=3
     // pON.shadow="toggleOnOff"
     /* export function qMotorPower(pMotor: eMotor, pON: boolean) { // sendet nur wenn der Wert sich ändert
@@ -211,7 +213,7 @@ namespace receiver { // r-qwiicmotor.ts
         }
     } */
 
-    //% group="Motor"
+    //% group="Motor" subcategory="Qwiic"
     //% block="Motor %pMotor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=2
     //% speed.min=0 speed.max=255 speed.defl=128
     export function qMotor255(pMotor: eMotor, speed: number) {
@@ -252,6 +254,20 @@ namespace receiver { // r-qwiicmotor.ts
 
     function i2cReadBuffer(pMotorChip: eMotorChip, size: number): Buffer {
         return pins.i2cReadBuffer(pMotorChip == eMotorChip.cd ? i2cMotorCD : i2cMotorAB, size)
+    }
+
+
+
+    // ========== group="SparkFun Qwiic Single Relay 0x19" subcategory="Aktoren"
+
+    const SINGLE_OFF = 0x00
+    const SINGLE_ON = 0x01
+
+    //% group="SparkFun Qwiic Single Relay 0x19" subcategory="Qwiic"
+    //% block="Kran Magnet %pOn"
+    //% pOn.shadow="toggleOnOff"
+    export function qwiicRelay(pOn: boolean) {
+        pins.i2cWriteBuffer(i2cRelay, Buffer.fromArray([pOn ? SINGLE_ON : SINGLE_OFF]))
     }
 
 

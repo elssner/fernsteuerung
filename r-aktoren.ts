@@ -5,10 +5,6 @@ namespace receiver { // r-aktoren.ts
     const c_pinRelay = DigitalPin.C9 // Relais auf der Leiterplatte schaltet 9V Akku für eigene Stromversorgung an VM+
     const c_pinC12 = DigitalPin.C12 // GPIO für Grove (5V) Licht oder Buzzer
 
-    // I2C Adressen
-    const i2cRelay = 0x19  // I²C Adresse Single Relay (Kran Elektromagnet)
-
-
 
     // ========== group="RGB LEDs (v3)" subcategory="Aktoren"
 
@@ -86,16 +82,16 @@ namespace receiver { // r-aktoren.ts
 
 
 
-    // ========== group="Relais" subcategory="Aktoren"
+    // ========== group="Relais" subcategory="Pins"
 
-    //% group="Relais C9" subcategory="Aktoren"
+    //% group="Relais C9" subcategory="Pins"
     //% block="Stromversorgung 9V %pON"
     //% pON.shadow="toggleOnOff"
     export function pinRelay(pON: boolean) {
         pins.digitalWritePin(c_pinRelay, pON ? 1 : 0)
     }
 
-    //% group="Pin C12" subcategory="Aktoren"
+    //% group="Pin C12" subcategory="Pins"
     //% block="digitaler Pin C12 %pON"
     //% pON.shadow="toggleOnOff"
     export function pinGPIO(pON: boolean) {
@@ -104,11 +100,11 @@ namespace receiver { // r-aktoren.ts
 
 
 
-    // ========== group="Klingelton P0" subcategory="Aktoren"
+    // ========== group="Klingelton P0" subcategory="Pins"
 
     let n_ringTone = false
 
-    //% group="Klingelton P0" subcategory="Aktoren"
+    //% group="Klingelton P0" subcategory="Pins"
     //% block="Ton P0 %pON"
     //% pON.shadow="toggleOnOff"
     export function ringTone(pON: boolean) {
@@ -120,20 +116,6 @@ namespace receiver { // r-aktoren.ts
                 music.stopAllSounds()
             // pins.digitalWritePin(pinBuzzer, n_buzzer ? 1 : 0)
         }
-    }
-
-
-
-    // ========== group="SparkFun Qwiic Single Relay 0x19" subcategory="Aktoren"
-
-    const SINGLE_OFF = 0x00
-    const SINGLE_ON = 0x01
-
-    //% group="SparkFun Qwiic Single Relay 0x19" subcategory="Aktoren"
-    //% block="Kran Magnet %pOn"
-    //% pOn.shadow="toggleOnOff"
-    export function qwiicRelay(pOn: boolean) {
-        pins.i2cWriteBuffer(i2cRelay, Buffer.fromArray([pOn ? SINGLE_ON : SINGLE_OFF]))
     }
 
 
