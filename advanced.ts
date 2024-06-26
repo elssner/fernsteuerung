@@ -27,7 +27,8 @@ namespace radio { // advanced.ts
                 n_funkgruppe += i
                 radio.setGroup(n_funkgruppe)
             }
-            zeige5x5Funkgruppe()
+            //zeige5x5Funkgruppe()
+            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
         }
         return n_funkgruppe
     }
@@ -72,7 +73,7 @@ namespace radio { // advanced.ts
     let n5x5_x2 = 0 // Bit 5-4-3-2-1 Motor Power in x=2
     let n5x5_x3 = 0 // Motor 1..16..31
     let n5x5_x4 = 0 // Servo 1..16..31
-
+/* 
     //% group="25 LED Display" advanced=true color=#54C9C9
     //% block="zeige ↓↓... Funkgruppe" weight=9
     export function zeige5x5Funkgruppe() {
@@ -81,7 +82,7 @@ namespace radio { // advanced.ts
         zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
         //}
     }
-
+ */
 
 
     //% group="25 LED Display" advanced=true color=#54C9C9

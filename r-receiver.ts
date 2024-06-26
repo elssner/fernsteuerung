@@ -68,13 +68,15 @@ namespace receiver { // r-receiver.ts
     //% bFunkgruppe.shadow="toggleYesNo" bFunkgruppe.defl=1
     //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=175
     //% inlineInputMode=inline
-    export function beimStart(hardware: eHardware, servoGeradeaus: number,  funkgruppe = 175) {
+    export function beimStart(hardware: eHardware, servoGeradeaus: number, funkgruppe = 175) {
         n_Hardware = hardware
         n_ServoGeradeaus = servoGeradeaus // Parameter
+        // radio.n_funkgruppe = funkgruppe
 
         pinRelay(true) // Relais an schalten (braucht gültiges n_Hardware, um den Pin zu finden)
 
-        radio.zeige5x5Funkgruppe()
+        //radio.zeige5x5Funkgruppe()
+        radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
 
         pins.servoWritePin(a_PinServo[n_Hardware], n_ServoGeradeaus)
 

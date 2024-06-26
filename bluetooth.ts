@@ -14,9 +14,12 @@ namespace radio { // bluetooth.ts
     //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=160
     //% bFunkgruppe.shadow="toggleYesNo"
     export function beimStart(funkgruppe: number) {
-        n_funkgruppe = funkgruppe
+        if (between(funkgruppe, 1, 255))
+            n_funkgruppe = funkgruppe
+        else
+            n_funkgruppe = 175
         //n_enableButtonSendReset = bSendReset
-     //   sender.n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
+        //   sender.n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
         radio.setGroup(n_funkgruppe)
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
@@ -73,7 +76,7 @@ namespace radio { // bluetooth.ts
     // als Parabeter 'cb' übergeben wird die function 'function (receivedBuffer) {}'
     // was in den Klammern {} steht, wird bei dem Ereignis 'radio.onReceivedBuffer' abgearbeitet (callback = Rückruf)
     radio.onReceivedBuffer(function (receivedBuffer: Buffer) {
-       
+
         if (n_start && receivedBuffer.length == 19) { // beim ersten Mal warten bis Motor bereit
 
             if ((receivedBuffer[0] & 0x80) == 0x80) // Bit 7 reset
