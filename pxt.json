@@ -24,7 +24,8 @@
         "r-aktoren.ts",
         "r-aktoren-v3.ts",
         "s-advanced.ts",
-        "r-advanced.ts"
+        "r-advanced.ts",
+        "r-pins.ts"
     ],
     "testFiles": [
         "test.ts"
