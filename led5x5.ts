@@ -3,15 +3,15 @@ namespace radio { // led5x5.ts
 
 
     let n_showString = ""
-
+/* 
     //let n5x5_funkgruppe = 0 // 0..255 als 2 HEX Ziffern in x=0-1 y=1-2-3-4
     let n5x5_x01y0 = 0 // Bit 5-4 Betriebsart in x=0-1 y=0
     let n5x5_x2 = 0 // Bit 5-4-3-2-1 Motor Power in x=2
     let n5x5_x3 = 0 // Motor 1..16..31
     let n5x5_x4 = 0 // Servo 1..16..31
 
-    //% group="25 LED" advanced=true color=#54C9C9
-    //% block="zeige Funkgruppe" weight=8
+    //% group="25 LED Display" advanced=true color=#54C9C9
+    //% block="zeige ↓↓... Funkgruppe" weight=9
     export function zeige5x5Funkgruppe() {
         //if (n5x5_funkgruppe != n_funkgruppe) {
         //    n5x5_funkgruppe = n_funkgruppe
@@ -19,9 +19,27 @@ namespace radio { // led5x5.ts
         //}
     }
 
+    //% group="25 LED Display" advanced=true color=#54C9C9
+    //% block="zeige ...↕↕ Joystick %buffer" weight=8
+    //% buffer.shadow="radio_sendBuffer19"
+    export function zeige5x5Joystick(buffer: Buffer) {
+        if (n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
+            n5x5_x3 = buffer[1]
+            if (n5x5_x3 == 0)
+                zeigeBIN(0, ePlot.bin, 3)
+            else
+                zeigeBIN(mapInt32(n5x5_x3, 1, 255, 1, 31), ePlot.bin, 3)
+        }
 
-    //% group="25 LED" advanced=true color=#54C9C9
-    //% block="zeige aktive Motoren %buffer [0][3]" weight=7
+        if (n5x5_x4 != buffer[2]) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
+            n5x5_x4 = buffer[2]
+            zeigeBIN(n5x5_x4 & 0x1F, ePlot.bin, 4)
+        }
+    }
+
+
+    //% group="25 LED Display" advanced=true color=#54C9C9
+    //% block="zeige ↑↑↕.. aktive Motoren %buffer" weight=7
     //% buffer.shadow="radio_sendBuffer19"
     export function zeige5x5Buffer(buffer: Buffer) {
         // 2 Bit oben links Betriebsart, die sind bei Funkgruppe frei
@@ -41,12 +59,12 @@ namespace radio { // led5x5.ts
             if ((n5x5_x2 & e3aktiviert.mc) == e3aktiviert.mc) { led.plot(x, 3) } else { led.unplot(x, 3) }
             if ((n5x5_x2 & e3aktiviert.md) == e3aktiviert.md) { led.plot(x, 4) } else { led.unplot(x, 4) }
         }
-    }
-
-    //% group="25 LED" advanced=true color=#54C9C9 deprecated=true
+    } */
+/* 
+    //% group="25 LED" advanced=true color=#54C9C9 
     //% block="5x5 zeige Motor Power %buffer [0][3] || x3 %x3 x4 %x4" weight=7
     //% buffer.shadow="radio_sendBuffer19"
-    export function zeige5x5Status(buffer: Buffer, x3?: number, x4?: number) {
+    function zeige5x5Status(buffer: Buffer, x3?: number, x4?: number) {
         if (n5x5_x01y0 != (buffer[0] & 0x30)) {
             //    n5x5_funkgruppe = n_funkgruppe
             //    zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
@@ -65,13 +83,6 @@ namespace radio { // led5x5.ts
             if ((n5x5_x2 & e3aktiviert.mc) == e3aktiviert.mc) { led.plot(x, 3) } else { led.unplot(x, 3) }
             if ((n5x5_x2 & e3aktiviert.md) == e3aktiviert.md) { led.plot(x, 4) } else { led.unplot(x, 4) }
 
-            /*   let x2 = ((n5x5_Buffer3 & e3aktiviert.m1) == e3aktiviert.m1 ? 16 : 0)
-                  + ((n5x5_Buffer3 & e3aktiviert.ma) == e3aktiviert.ma ? 8 : 0)
-                  + ((n5x5_Buffer3 & e3aktiviert.mb) == e3aktiviert.mb ? 4 : 0)
-                  + ((n5x5_Buffer3 & e3aktiviert.mc) == e3aktiviert.mc ? 2 : 0)
-                  + ((n5x5_Buffer3 & e3aktiviert.md) == e3aktiviert.md ? 1 : 0)
-              zeigeBIN(x2, ePlot.bin, 2) // 5x5 x=2 
-              */
         }
 
         if (!x3 && n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
@@ -91,25 +102,8 @@ namespace radio { // led5x5.ts
             zeigeBIN(x4, ePlot.bin, 4)
         }
     }
-
-    //% group="25 LED" advanced=true color=#54C9C9
-    //% block="zeige Joystick %buffer [1][2]" weight=5
-    //% buffer.shadow="radio_sendBuffer19"
-    export function zeige5x5Joystick(buffer: Buffer) {
-        if (n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
-            n5x5_x3 = buffer[1]
-            if (n5x5_x3 == 0)
-                zeigeBIN(0, ePlot.bin, 3)
-            else
-                zeigeBIN(mapInt32(n5x5_x3, 1, 255, 1, 31), ePlot.bin, 3)
-        }
-
-        if (n5x5_x4 != buffer[2]) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
-            n5x5_x4 = buffer[2]
-            zeigeBIN(n5x5_x4 & 0x1F, ePlot.bin, 4)
-        }
-    }
-
+ */
+   
     // group="25 LED" subcategory="Sender" color=#54C9C9
     // block="5x5 zeige Funkgruppe und 1\\|3\\|5" weight=7
     // n.defl=0
@@ -122,8 +116,8 @@ namespace radio { // led5x5.ts
             zeigeText(getSwitch())
     } */
 
-
-    //% group="25 LED" advanced=true color=#54C9C9
+/* 
+    //% group="25 LED Display" advanced=true color=#54C9C9
     //% block="zeige Text wenn geändert %text" weight=2
     export function zeigeText(text: any) {
         let tx = convertToText(text)
@@ -144,7 +138,7 @@ namespace radio { // led5x5.ts
         bcd
     }
 
-    //% group="25 LED" advanced=true color=#54C9C9
+    //% group="25 LED Display" advanced=true color=#54C9C9
     //% block="zeige binär %int %format ←x %x" weight=1
     //% x.min=0 x.max=4 x.defl=4
     export function zeigeBIN(int: number, format: ePlot, x: number) {
@@ -169,6 +163,6 @@ namespace radio { // led5x5.ts
             }
         }
     }
-
+ */
 
 } // led5x5.ts
