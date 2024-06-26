@@ -150,9 +150,9 @@ namespace receiver { // r-receiver.ts
     }
 
 
-    let onDualMotorPowerHandler: (motor: eMotor01, duty_percent: number) => void
+    let onDualMotorPowerHandler: (motor: number, duty_percent: number) => void
 
-    export function onDualMotorPower(cb: (motor: eMotor01, duty_percent: number) => void) {
+    export function onDualMotorPower(cb: (motor: number, duty_percent: number) => void) {
         onDualMotorPowerHandler = cb
     }
 
