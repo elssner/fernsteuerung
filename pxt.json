@@ -4,8 +4,7 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "radio": "*",
-        "storage": "github:calliope-edu/pxt-storage#a34aec53d1c15fe4d8dbdb96737b3bf059260565"
+        "radio": "*"
     },
     "files": [
         "main.blocks",
