@@ -11,7 +11,7 @@ namespace radio { // led5x5.ts
     let n5x5_x4 = 0 // Servo 1..16..31
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="5x5 Funkgruppe" weight=8
+    //% block="zeige Funkgruppe" weight=8
     export function zeige5x5Funkgruppe() {
         //if (n5x5_funkgruppe != n_funkgruppe) {
         //    n5x5_funkgruppe = n_funkgruppe
@@ -21,7 +21,7 @@ namespace radio { // led5x5.ts
 
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="5x5 aktive Motoren %buffer [0][3]" weight=7
+    //% block="zeige aktive Motoren %buffer [0][3]" weight=7
     //% buffer.shadow="radio_sendBuffer19"
     export function zeige5x5Buffer(buffer: Buffer) {
         // 2 Bit oben links Betriebsart, die sind bei Funkgruppe frei
@@ -93,7 +93,7 @@ namespace radio { // led5x5.ts
     }
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="5x5 Joystick %buffer [1][2]" weight=5
+    //% block="zeige Joystick %buffer [1][2]" weight=5
     //% buffer.shadow="radio_sendBuffer19"
     export function zeige5x5Joystick(buffer: Buffer) {
         if (n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
@@ -124,7 +124,7 @@ namespace radio { // led5x5.ts
 
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="5x5 zeige Text wenn geändert %text" weight=2
+    //% block="zeige Text wenn geändert %text" weight=2
     export function zeigeText(text: any) {
         let tx = convertToText(text)
         if (tx != n_showString) {
@@ -145,7 +145,7 @@ namespace radio { // led5x5.ts
     }
 
     //% group="25 LED" advanced=true color=#54C9C9
-    //% block="5x5 zeige binär %int %format ←x %x" weight=1
+    //% block="zeige binär %int %format ←x %x" weight=1
     //% x.min=0 x.max=4 x.defl=4
     export function zeigeBIN(int: number, format: ePlot, x: number) {
         int = Math.imul(int, 1) // 32 bit signed integer
