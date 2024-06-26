@@ -2,22 +2,22 @@
 namespace radio { // bluetooth.ts
 
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
-    export let n_funkgruppe = 0xA0
+    let n_funkgruppe = 0xA0
     let n_start = false
 
     let n_lastconnectedTime = input.runningTime()  // ms seit Start
     let n_programm = false // autonomes fahren nach Programm, kein Bluetooth timeout
 
 
-    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" deprecated=true
-    //% block="beim Start Funkgruppe %funkgruppe"
+    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
+    //% block="beim Start Funkgruppe %funkgruppe" weight=9
     //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=160
     //% bFunkgruppe.shadow="toggleYesNo"
     export function beimStart(funkgruppe: number) {
-        if (between(funkgruppe, 1, 255))
+        if (between(funkgruppe, 0xA0, 0xBF))
             n_funkgruppe = funkgruppe
         else
-            n_funkgruppe = 175
+            n_funkgruppe = 0xAF
         //n_enableButtonSendReset = bSendReset
         //   sender.n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
         radio.setGroup(n_funkgruppe)
@@ -27,10 +27,25 @@ namespace radio { // bluetooth.ts
         n_start = true
     }
 
-    // group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
-    // block="mit 'A- B+ halten' Funkgruppe ändern %enable" weight=7
-    // enable.shadow="toggleYesNo"
-    //export function enableButtonFunkgruppe(enable: boolean) { n_enableButtonFunkgruppe = enable } // buttonevents.ts
+
+    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
+    //% block="Funkgruppe || ändern %i und anzeigen" weight=8
+    //% i.min=-1 i.max=1
+    export function getFunkgruppe(i?: number): number {
+        if (i != undefined) {
+            if (i < 0 && n_funkgruppe + i > 0xA0) {
+                n_funkgruppe += i
+                radio.setGroup(n_funkgruppe)
+            }
+            else if (i > 0 && n_funkgruppe + i < 0xBF) {
+                n_funkgruppe += i
+                radio.setGroup(n_funkgruppe)
+            }
+            //zeige5x5Funkgruppe()
+            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+        }
+        return n_funkgruppe
+    }
 
 
 

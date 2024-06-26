@@ -12,7 +12,7 @@ namespace radio { // advanced.ts
 
     // ========== group="Funktionen" advanced=true
 
-
+/* 
 
     //% group="Funktionen" advanced=true
     //% block="Funkgruppe || ändern %i und anzeigen" weight=8
@@ -32,7 +32,7 @@ namespace radio { // advanced.ts
         }
         return n_funkgruppe
     }
-
+ */
 
 
     //% group="Funktionen" advanced=true
