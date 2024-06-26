@@ -17,12 +17,16 @@ namespace radio { // advanced.ts
     //% group="Funktionen" advanced=true
     //% block="Funkgruppe || ändern %i und anzeigen" weight=8
     //% i.min=-1 i.max=1
-    export function getFunkgruppe(i: number) {
+    export function getFunkgruppe(i?: number): number {
         if (i) {
-            if (i < 0 && n_funkgruppe + i > 0xA0)
+            if (i < 0 && n_funkgruppe + i > 0xA0) {
                 n_funkgruppe += i
-            else if (i > 0 && n_funkgruppe + i < 0xBF)
+                radio.setGroup(n_funkgruppe)
+            }
+            else if (i > 0 && n_funkgruppe + i < 0xBF) {
                 n_funkgruppe += i
+                radio.setGroup(n_funkgruppe)
+            }
             zeige5x5Funkgruppe()
         }
         return n_funkgruppe
