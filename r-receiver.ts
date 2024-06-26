@@ -2,6 +2,39 @@
 namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
+    export enum eHardware {
+        //% block="Controller v3"
+        v3 = 0,     // Index in Arrays
+        //% block="CaR 4"
+        car4 = 1,   // Index in Arrays
+        //% block="Calli:Bot 2"
+        calli2bot = 2
+    }
+
+    export let n_Hardware = eHardware.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
+    let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
+    let a_PinServo: AnalogPin[] = [108, AnalogPin.C4]       // 0:AnalogPin.C8 GPIO1
+    let a_PinGPIO4: DigitalPin[] = [112, DigitalPin.P3]    // 0:DigitalPin.C12 GPIO4
+    let a_PinEncoder: DigitalPin[] = [114, DigitalPin.P2]   // 0:DigitalPin.C14 SPI
+    let a_PinSpurrechts: DigitalPin[] = [113, DigitalPin.C9]// 0:DigitalPin.C13 SPI
+    let a_PinSpurlinks: DigitalPin[] = [115, DigitalPin.C11]// 0:DigitalPin.C15 SPI
+
+    // CaR 4 Pins
+    //export const pinRelay = DigitalPin.P0          // 5V Grove Relay
+    export const pinFototransistor = AnalogPin.P1  // GND fischertechnik 36134 Fototransistor
+    //export const pinEncoder = DigitalPin.P2        // 5V fischertechnik 186175 Encodermotor Competition
+    //export const pinBuzzer = DigitalPin.P3         // 5V Grove Buzzer
+    //export const pinServo = AnalogPin.C4           // 5V fischertechnik 132292 Servo
+    //const pin5 = DigitalPin.C5              // Draht blau
+    //const pin6 = DigitalPin.C6              // Draht gelb
+    export const pinLicht = DigitalPin.C7          // 5V Licht
+    export const pinUltraschall = DigitalPin.C8    // 5V Grove Ultrasonic
+    //export const pinSpurrechts = DigitalPin.C9     // 9V fischertechnik 128598 IR-Spursensor
+    //const pin10 = DigitalPin.C10
+    //export const pinSpurlinks = DigitalPin.C11     // 9V fischertechnik 128598 IR-Spursensor
+
+
+
     // PINs
     const c_pinServo: AnalogPin = 108 // v3 AnalogPin.C8 GPIO1 // 5V fischertechnik 132292 Servo
     //const c_pinServo = c_pinServov3// <AnalogPin><number>DigitalPin.C8
@@ -29,16 +62,16 @@ namespace receiver { // r-receiver.ts
 
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start Servo ↑ %servoGeradeaus ° || Funkgruppe %funkgruppe mit 'A- B+ halten' Funkgruppe ändern %bFunkgruppe" weight=8
+    //% block="beim Start %hardware Servo ↑ %servoGeradeaus ° || mit 'A- B+ halten' Funkgruppe ändern %bFunkgruppe %funkgruppe" weight=8
     //% servoGeradeaus.min=81 servoGeradeaus.max=99 servoGeradeaus.defl=90
+    //% bFunkgruppe.shadow="toggleYesNo" bFunkgruppe.defl=1
     //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=175
-    //% bFunkgruppe.shadow="toggleYesNo"
     //% inlineInputMode=inline
-    export function beimStart(servoGeradeaus: number, funkgruppe = 175, bFunkgruppe = false) {
+    export function beimStart(hardware: eHardware, servoGeradeaus: number, bFunkgruppe = true, funkgruppe = 175) {
         // n_ready = false // CaR4 ist nicht bereit: Schleifen werden nicht abgearbeitet
 
         pinRelay(true) // Relais an schalten
-
+        n_Hardware = hardware
         n_ServoGeradeaus = servoGeradeaus // Parameter
         pins.servoWritePin(c_pinServo, n_ServoGeradeaus)
 
