@@ -5,7 +5,7 @@ namespace receiver { // r-aktoren.ts
     const c_pinRelay = DigitalPin.C9 // Relais auf der Leiterplatte schaltet 9V Akku für eigene Stromversorgung an VM+
     const c_pinC12 = DigitalPin.C12 // GPIO für Grove (5V) Licht oder Buzzer
 
-
+/* 
     // ========== group="RGB LEDs (v3)" subcategory="Aktoren"
 
     export enum eRGBled { a, b, c } // Index im Array
@@ -78,7 +78,7 @@ namespace receiver { // r-aktoren.ts
 
 
 
-
+ */
 
 
 
