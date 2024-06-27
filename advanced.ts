@@ -12,27 +12,27 @@ namespace radio { // advanced.ts
 
     // ========== group="Funktionen" advanced=true
 
-/* 
-
-    //% group="Funktionen" advanced=true
-    //% block="Funkgruppe || ändern %i und anzeigen" weight=8
-    //% i.min=-1 i.max=1
-    export function getFunkgruppe(i?: number): number {
-        if (i != undefined) {
-            if (i < 0 && n_funkgruppe + i > 0xA0) {
-                n_funkgruppe += i
-                radio.setGroup(n_funkgruppe)
+    /* 
+    
+        //% group="Funktionen" advanced=true
+        //% block="Funkgruppe || ändern %i und anzeigen" weight=8
+        //% i.min=-1 i.max=1
+        export function getFunkgruppe(i?: number): number {
+            if (i != undefined) {
+                if (i < 0 && n_funkgruppe + i > 0xA0) {
+                    n_funkgruppe += i
+                    radio.setGroup(n_funkgruppe)
+                }
+                else if (i > 0 && n_funkgruppe + i < 0xBF) {
+                    n_funkgruppe += i
+                    radio.setGroup(n_funkgruppe)
+                }
+                //zeige5x5Funkgruppe()
+                zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
             }
-            else if (i > 0 && n_funkgruppe + i < 0xBF) {
-                n_funkgruppe += i
-                radio.setGroup(n_funkgruppe)
-            }
-            //zeige5x5Funkgruppe()
-            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+            return n_funkgruppe
         }
-        return n_funkgruppe
-    }
- */
+     */
 
 
     //% group="Funktionen" advanced=true
@@ -113,20 +113,41 @@ namespace radio { // advanced.ts
     //% block="zeige ...↕↕ Joystick %buffer" weight=7
     //% buffer.shadow="radio_sendBuffer19"
     export function zeige5x5Joystick(buffer: Buffer) {
-        if (n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
-            n5x5_x3 = buffer[1]
-            if (n5x5_x3 == 0)
+        zeigeBINMotor(buffer[1])
+        zeigeBINServo(buffer[2] & 0x1F)
+        /* 
+                if (n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
+                    n5x5_x3 = buffer[1]
+                    if (n5x5_x3 == 0)
+                        zeigeBIN(0, ePlot.bin, 3)
+                    else
+                        zeigeBIN(mapInt32(n5x5_x3, 1, 255, 1, 31), ePlot.bin, 3)
+                }
+        
+                if (n5x5_x4 != buffer[2]) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
+                    n5x5_x4 = buffer[2]
+                    zeigeBIN(n5x5_x4 & 0x1F, ePlot.bin, 4)
+                }
+         */
+    }
+
+    function zeigeBINMotor(x3: number) {
+        if (n5x5_x3 != x3) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
+            n5x5_x3 = x3
+            if (x3 == 0)
                 zeigeBIN(0, ePlot.bin, 3)
             else
-                zeigeBIN(mapInt32(n5x5_x3, 1, 255, 1, 31), ePlot.bin, 3)
-        }
-
-        if (n5x5_x4 != buffer[2]) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
-            n5x5_x4 = buffer[2]
-            zeigeBIN(n5x5_x4 & 0x1F, ePlot.bin, 4)
+                zeigeBIN(mapInt32(x3, 1, 255, 1, 31), ePlot.bin, 3) // 8 Bit auf 5 Bit verteilen
         }
     }
 
+    function zeigeBINServo(x4: number) {
+        if (n5x5_x4 != x4) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
+            n5x5_x4 = x4
+            zeigeBIN(x4, ePlot.bin, 4)
+            //zeigeBIN(x4 & 0x1F, ePlot.bin, 4)
+        }
+    }
     // ==========
 
     // zeigt Funkgruppe oder i²C Adresse im 5x5 Display binär an
