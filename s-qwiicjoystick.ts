@@ -2,7 +2,7 @@
 namespace sender { // s-qwiicjoystick.ts
 
     const i2cqwiicJoystick_x20 = 0x20
-
+    let n_qwiicJoystick = true // Antwort von i2cWriteBuffer == 0 wenn angeschlossen
     //export const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
 
     let n_x: number, n_y: number //, n_xMotor: number, n_yServo: number
@@ -33,21 +33,23 @@ namespace sender { // s-qwiicjoystick.ts
     //% group="Qwiic Joystick 0x20"
     //% block="Joystick einlesen" weight=9
     export function joystickQwiic() {
-        if (pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) != 0) {
-            basic.showString(Buffer.fromArray([i2cqwiicJoystick_x20]).toString())
-            return false
-        } else {
-            let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
-            n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
-            n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
-            n_ButtonPosition = (bu[4] == 0)    // Current Button Position BUTTON 0:ist gedrückt
+        if (n_qwiicJoystick)
+            n_qwiicJoystick = pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) == 0
 
-            if (bu[5] == 1) {// STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
-                n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
-                pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
+        if (n_qwiicJoystick) {
+            {
+                let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
+                n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
+                n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
+                n_ButtonPosition = (bu[4] == 0)    // Current Button Position BUTTON 0:ist gedrückt
+
+                if (bu[5] == 1) {// STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
+                    n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
+                    pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
+                }
             }
-            return true
-        }
+        } 
+        //return n_qwiicJoystick
     }
 
     //% group="Qwiic Joystick 0x20"
