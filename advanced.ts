@@ -1,44 +1,17 @@
 
 namespace radio { // advanced.ts
 
-
-    // ========== group="Kommentar" advanced=true
+    // ========== group="Funktionen" advanced=true
 
     //% group="Funktionen" advanced=true
     //% block="// %text" weight=9
     export function comment(text: string): void { }
 
-
-
-    // ========== group="Funktionen" advanced=true
-
-    /* 
-    
-        //% group="Funktionen" advanced=true
-        //% block="Funkgruppe || ändern %i und anzeigen" weight=8
-        //% i.min=-1 i.max=1
-        export function getFunkgruppe(i?: number): number {
-            if (i != undefined) {
-                if (i < 0 && n_funkgruppe + i > 0xA0) {
-                    n_funkgruppe += i
-                    radio.setGroup(n_funkgruppe)
-                }
-                else if (i > 0 && n_funkgruppe + i < 0xBF) {
-                    n_funkgruppe += i
-                    radio.setGroup(n_funkgruppe)
-                }
-                //zeige5x5Funkgruppe()
-                zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-            }
-            return n_funkgruppe
-        }
-     */
-
-
     //% group="Funktionen" advanced=true
     //% block="Simulator" weight=7
-    export function simulator() { return "€".charCodeAt(0) == 8364 }
-
+    export function simulator() {
+        return "€".charCodeAt(0) == 8364
+    }
 
     //% group="Funktionen" advanced=true
     //% block="%i0 zwischen %i1 und %i2" weight=6
@@ -64,25 +37,13 @@ namespace radio { // advanced.ts
 
 
 
+    // ========== group="25 LED Display" advanced=true color=#54C9C9
 
 
-
-
-    //let n5x5_funkgruppe = 0 // 0..255 als 2 HEX Ziffern in x=0-1 y=1-2-3-4
     let n5x5_x01y0 = 0 // Bit 5-4 Betriebsart in x=0-1 y=0
     let n5x5_x2 = 0 // Bit 5-4-3-2-1 Motor Power in x=2
     let n5x5_x3 = 0 // Motor 1..16..31
     let n5x5_x4 = 0 // Servo 1..16..31
-    /* 
-        //% group="25 LED Display" advanced=true color=#54C9C9
-        //% block="zeige ↓↓... Funkgruppe" weight=9
-        export function zeige5x5Funkgruppe() {
-            //if (n5x5_funkgruppe != n_funkgruppe) {
-            //    n5x5_funkgruppe = n_funkgruppe
-            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-            //}
-        }
-     */
 
 
     //% group="25 LED Display" advanced=true color=#54C9C9
@@ -146,23 +107,9 @@ namespace radio { // advanced.ts
             }
         } else {
             // andere Betriebsarten als '00 Fernsteuerung Motoren'
-            zeigeBINx3Motor(buffer[1])
-            zeigeBINx4Servo(buffer[2] & 0x1F)
+            zeigeBINx3Motor(buffer[eBufferPointer.m0])
+            zeigeBINx4Servo(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
         }
-        /* 
-                if (n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
-                    n5x5_x3 = buffer[1]
-                    if (n5x5_x3 == 0)
-                        zeigeBIN(0, ePlot.bin, 3)
-                    else
-                        zeigeBIN(mapInt32(n5x5_x3, 1, 255, 1, 31), ePlot.bin, 3)
-                }
-        
-                if (n5x5_x4 != buffer[2]) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
-                    n5x5_x4 = buffer[2]
-                    zeigeBIN(n5x5_x4 & 0x1F, ePlot.bin, 4)
-                }
-         */
     }
 
     function zeigeBINx3Motor(x3: number) {
@@ -174,6 +121,7 @@ namespace radio { // advanced.ts
                 zeigeBIN(mapInt32(x3, 1, 255, 1, 31), ePlot.bin, 3) // 8 Bit auf 5 Bit verteilen
         }
     }
+
     function zeigeBINx4Motor(x4: number) {
         if (n5x5_x4 != x4) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=4)
             n5x5_x4 = x4
@@ -184,7 +132,6 @@ namespace radio { // advanced.ts
         }
     }
 
-
     function zeigeBINx4Servo(x4: number) {
         if (n5x5_x4 != x4) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
             n5x5_x4 = x4
@@ -192,7 +139,10 @@ namespace radio { // advanced.ts
             //zeigeBIN(x4 & 0x1F, ePlot.bin, 4)
         }
     }
-    // ==========
+
+
+
+
 
     // zeigt Funkgruppe oder i²C Adresse im 5x5 Display binär an
 
@@ -224,7 +174,7 @@ namespace radio { // advanced.ts
                     int = Math.idiv(int, 10) // 32 bit signed integer
                 } else if (format == ePlot.hex) {
                     zeigeBIN(int % 16, ePlot.bin, xLed) // Ziffer 0..15
-                    int = int >> 4 // bitweise Division durch 16
+                    int = int >>> 4 // bitweise Division durch 16
                 }
                 xLed--
             }
@@ -253,14 +203,18 @@ namespace radio { // advanced.ts
     //% block="Buffer %buffer getNumber(%format offset %offset)" weight=8
     //% format.defl=NumberFormat.UInt8LE
     //% offset.min=0 offset.max=18
-    export function getNumber(buffer: Buffer, format: NumberFormat, offset: number): number { return buffer.getNumber(format, offset) }
+    export function getNumber(buffer: Buffer, format: NumberFormat, offset: number): number {
+        return buffer.getNumber(format, offset)
+    }
 
     //% group="Buffer" advanced=true
     //% block="Buffer %buffer setNumber(%format offset %offset value %value)" weight=7
     //% format.defl=NumberFormat.UInt8LE
     //% offset.min=0 offset.max=18
     //% inlineInputMode=inline
-    export function setNumber(buffer: Buffer, format: NumberFormat, offset: number, value: number) { buffer.setNumber(format, offset, value) }
+    export function setNumber(buffer: Buffer, format: NumberFormat, offset: number, value: number) {
+        buffer.setNumber(format, offset, value)
+    }
 
     //% group="Buffer" advanced=true
     //% block="Buffer %buffer offset %offset getBit 2** %exp" weight=4
@@ -283,8 +237,10 @@ namespace radio { // advanced.ts
     }
 
     //% group="Buffer" advanced=true
-    //% block="%pNumber .toHex()" weight=1
-    export function toHex(bytes: number[]): string { return Buffer.fromArray(bytes).toHex() }
+    //% block="%bytes .toHex()" weight=1
+    export function toHex(bytes: number[]): string {
+        return Buffer.fromArray(bytes).toHex()
+    }
 
 
 } // advanced.ts
