@@ -3,9 +3,12 @@ namespace sender { // s-qwiicjoystick.ts
 
     const i2cqwiicJoystick_x20 = 0x20
     let n_qwiicJoystick = true // Antwort von i2cWriteBuffer == 0 wenn angeschlossen
-    //export const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
+    let n_128 = 3 // Korrektur Joystick Nullstellung 128-3 .. 128+3 ist 128
+    let n_max = 0 // Korrektur Joystick Endstellung nur beim Servo
 
-    let n_x: number, n_y: number //, n_xMotor: number, n_yServo: number
+    // speichert die vom Joystick gelesenen Werte
+    let n_x: number // Current Horizontal Position (MSB)
+    let n_y: number // Current Vertical Position (MSB)
     let n_ButtonPosition = false // Button ist gedrückt
     let n_ButtonOnOff = false    // wechselt bei jedem Drücken
 
@@ -31,23 +34,27 @@ namespace sender { // s-qwiicjoystick.ts
 
 
     //% group="Qwiic Joystick 0x20"
-    //% block="Joystick einlesen" weight=9
-    export function joystickQwiic() {
+    //% block="Joystick einlesen || 128 ± %p128 max ± %pmax" weight=9
+    //% p128.min=0 p128.max=8 p128.defl=3
+    //% pmax.min=0 pmax.max=20
+    export function joystickQwiic(p128 = 3, pmax = 0) {
         if (n_qwiicJoystick) {
             n_qwiicJoystick = pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) == 0
 
             if (n_qwiicJoystick) {
-                {
-                    let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
-                    n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
-                    n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
-                    n_ButtonPosition = (bu[4] == 0)    // Current Button Position BUTTON 0:ist gedrückt
+                n_128 = radio.between(p128, 0, 8) ? p128 : 0
+                n_max = radio.between(pmax, 0, 20) ? pmax : 0
 
-                    if (bu[5] == 1) {// STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
-                        n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
-                        pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
-                    }
+                let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
+                n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
+                n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
+                n_ButtonPosition = (bu[4] == 0)    // Current Button Position BUTTON 0:ist gedrückt
+
+                if (bu[5] == 1) {// STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
+                    n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
+                    pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
                 }
+
             }
         }
         return n_qwiicJoystick
@@ -57,9 +64,9 @@ namespace sender { // s-qwiicjoystick.ts
     //% block="Joystick %pJoystickValue || 128 ± %p128 max ± %pmax" weight=8
     //% p128.min=0 p128.max=8 
     //% pmax.min=0 pmax.max=20
-    export function joystickValue(pJoystickValue: eJoystickValue, p128 = 0, pmax = 0): number {
-        if (!radio.between(p128, 0, 8)) p128 = 0 //  return (i0 >= i1 && i0 <= i2)
-        if (!radio.between(pmax, 0, 20)) pmax = 0
+    export function joystickValue(pJoystickValue: eJoystickValue): number {
+        //if (!radio.between(p128, 0, 8)) p128 = 0 //  return (i0 >= i1 && i0 <= i2)
+        //if (!radio.between(pmax, 0, 20)) pmax = 0
 
         switch (pJoystickValue) {
             case eJoystickValue.x: return n_x
@@ -68,7 +75,7 @@ namespace sender { // s-qwiicjoystick.ts
                 let xMotor = n_x
                 if (n_x == 0)
                     xMotor = 1
-                else if (radio.between(n_x, 128 - p128, 128 + p128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
+                else if (radio.between(n_x, 128 - n_128, 128 + n_128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
                     xMotor = 128
                 //else if (n_x < (0 + pmax)) // Werte < 0 + pmax wie 0 behandeln (max vorwärts)
                 //    xMotor = 1
@@ -81,7 +88,7 @@ namespace sender { // s-qwiicjoystick.ts
                 let yMotor = n_y
                 if (n_y == 0)
                     yMotor = 1
-                else if (radio.between(n_y, 128 - p128, 128 + p128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
+                else if (radio.between(n_y, 128 - n_128, 128 + n_128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
                     yMotor = 128
 
                 return yMotor
@@ -89,20 +96,20 @@ namespace sender { // s-qwiicjoystick.ts
 
             case eJoystickValue.servo90: {
                 let yServo = 90
-                if (radio.between(n_y, 128 - p128, 128 + p128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
+                if (radio.between(n_y, 128 - n_128, 128 + n_128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
                     yServo = 90 // geradeaus 90°
-                else if (n_y < (0 + pmax)) // Werte < 0 + pmax wie 0 behandeln (max links)
+                else if (n_y < (0 + n_max)) // Werte < 0 + pmax wie 0 behandeln (max links)
                     yServo = 45
-                else if (n_y > (255 - pmax)) // Werte > 235 wie 255 behandeln (max rechts)
+                else if (n_y > (255 - n_max)) // Werte > 235 wie 255 behandeln (max rechts)
                     yServo = 135
                 else {
                     //yServo = Math.round(Math.map(n_y, 0 + pmax, 255 - pmax, 46, 134))
-                    yServo = radio.mapInt32(n_y, 0 + pmax, 255 - pmax, 45, 135)
+                    yServo = radio.mapInt32(n_y, 0 + n_max, 255 - n_max, 45, 135)
                 }
                 return yServo // (45° ↖ 90° ↗ 135°)
             }
             case eJoystickValue.servo16: {
-                return Math.idiv(joystickValue(eJoystickValue.servo90, p128, pmax), 3) - 14
+                return Math.idiv(joystickValue(eJoystickValue.servo90), 3) - 14
             }
 
             //case eJoystickValue.motor16: {
