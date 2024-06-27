@@ -27,26 +27,31 @@ namespace sender { // s-advanced.ts
     export function receivedStringText() { return n_receivedString.substr(2) }
 
 
-    // ========== 
 
-    export enum ePlusMinus {
+    // ========== group="lenken mit Tasten A:links B:rechts" advanced=true
+
+    export enum eServoButton {
         //% block="nur lesen"
-        anzeigen,
-        //% block="+1"
-        plus,
-        //% block="-1"
-        minus
+        lesen,
+        //% block="links"
+        links,
+        //% block="rechts"
+        rechts,
+        //% block="gerade"
+        gerade
     }
 
     let n_ServoWinkel = 16
 
     //% group="lenken mit Tasten A:links B:rechts" advanced=true
     //% block="Servo Winkel %i" weight=8
-    export function getFunkgruppe(i: ePlusMinus): number {
-        if (i == ePlusMinus.minus && n_ServoWinkel > 1)
+    export function setServoButton(i: eServoButton): number {
+        if (i == eServoButton.links && n_ServoWinkel > 1)
             n_ServoWinkel--
-        else if (i == ePlusMinus.plus && n_ServoWinkel < 31)
+        else if (i == eServoButton.rechts && n_ServoWinkel < 31)
             n_ServoWinkel++
+        else if (i == eServoButton.gerade)
+            n_ServoWinkel = 16
 
         return n_ServoWinkel
     }
