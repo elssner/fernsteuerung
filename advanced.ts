@@ -118,8 +118,8 @@ namespace radio { // advanced.ts
 
             if (getaktiviert(buffer, e3aktiviert.m0)) {
                 // fahren und lenken mit Servo
-                zeigeBINMotor(buffer[eBufferPointer.m0], 3)
-                zeigeBINServo(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F, 4)
+                zeigeBINx3Motor(buffer[eBufferPointer.m0])
+                zeigeBINx4Servo(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
 
             } else {
                 // die ersten 2 aktivierten Motoren ohne Servo
@@ -140,14 +140,14 @@ namespace radio { // advanced.ts
                     bin.push(buffer[eBufferPointer.md]) // Motor MD
 
                 if (bin.length >= 1)
-                    zeigeBINMotor(bin[0], 3) // in 5x5 LED Matrix x=3
+                    zeigeBINx3Motor(bin[0]) // in 5x5 LED Matrix x=3
                 if (bin.length >= 2)
-                    zeigeBINMotor(bin[1], 4) // in 5x5 LED Matrix x=4
+                    zeigeBINx4Motor(bin[1]) // in 5x5 LED Matrix x=4
             }
         } else {
             // andere Betriebsarten als '00 Fernsteuerung Motoren'
-            zeigeBINMotor(buffer[1], 3)
-            zeigeBINServo(buffer[2] & 0x1F, 4)
+            zeigeBINx3Motor(buffer[1])
+            zeigeBINx4Servo(buffer[2] & 0x1F)
         }
         /* 
                 if (n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
@@ -165,20 +165,30 @@ namespace radio { // advanced.ts
          */
     }
 
-    function zeigeBINMotor(x3: number, xLed: number) {
+    function zeigeBINx3Motor(x3: number) {
         if (n5x5_x3 != x3) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
             n5x5_x3 = x3
             if (x3 == 0)
-                zeigeBIN(0, ePlot.bin, xLed)
+                zeigeBIN(0, ePlot.bin, 3)
             else
-                zeigeBIN(mapInt32(x3, 1, 255, 1, 31), ePlot.bin, xLed) // 8 Bit auf 5 Bit verteilen
+                zeigeBIN(mapInt32(x3, 1, 255, 1, 31), ePlot.bin, 3) // 8 Bit auf 5 Bit verteilen
+        }
+    }
+    function zeigeBINx4Motor(x4: number) {
+        if (n5x5_x4 != x4) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=4)
+            n5x5_x4 = x4
+            if (x4 == 0)
+                zeigeBIN(0, ePlot.bin, 4)
+            else
+                zeigeBIN(mapInt32(x4, 1, 255, 1, 31), ePlot.bin, 4) // 8 Bit auf 5 Bit verteilen
         }
     }
 
-    function zeigeBINServo(x4: number, xLed: number) {
+
+    function zeigeBINx4Servo(x4: number) {
         if (n5x5_x4 != x4) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
             n5x5_x4 = x4
-            zeigeBIN(x4, ePlot.bin, xLed)
+            zeigeBIN(x4, ePlot.bin, 4)
             //zeigeBIN(x4 & 0x1F, ePlot.bin, 4)
         }
     }
