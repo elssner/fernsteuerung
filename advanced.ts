@@ -3,9 +3,13 @@ namespace radio { // advanced.ts
 
     // ========== group="Funktionen" advanced=true
 
+    //% blockId=radio_text block="%s" blockHidden=true
+    export function radio_text(s: string): string { return s }
+
     //% group="Funktionen" advanced=true
     //% block="// %text" weight=9
-    export function comment(text: string): void { }
+    //% text.shadow="radio_text"
+    export function comment(text: any): void { }
 
     //% group="Funktionen" advanced=true
     //% block="Simulator" weight=7

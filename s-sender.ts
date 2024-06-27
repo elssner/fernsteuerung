@@ -32,7 +32,7 @@ namespace sender {
     }
 
     //% group="00 Sender" subcategory="Sender"
-    //% block="%buffer M0 Fahren M1 Gabelstapler A- B+ Lenken || * %prozent \\%" weight=4
+    //% block="%buffer M0 Fahren M1 Gabelstapler || * %prozent \\%" weight=4
     //% buffer.shadow="radio_sendBuffer19"
     //% prozent.min=10 prozent.max=100 prozent.defl=100
     export function sendM01(buffer: Buffer, prozent = 100) {
