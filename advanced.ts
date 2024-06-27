@@ -113,8 +113,42 @@ namespace radio { // advanced.ts
     //% block="zeige ...↕↕ Joystick %buffer" weight=7
     //% buffer.shadow="radio_sendBuffer19"
     export function zeige5x5Joystick(buffer: Buffer) {
-        zeigeBINMotor(buffer[1])
-        zeigeBINServo(buffer[2] & 0x1F)
+        if (isBetriebsart(buffer, e0Betriebsart.p0)) {
+            // Betriebsart: 00 Fernsteuerung Motoren
+
+            if (getaktiviert(buffer, e3aktiviert.m0)) {
+                // fahren und lenken mit Servo
+                zeigeBINMotor(buffer[eBufferPointer.m0], 3)
+                zeigeBINServo(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F, 4)
+
+            } else {
+                // die ersten 2 aktivierten Motoren ohne Servo
+                let bin: number[] = []
+                if (bin.length < 2 && getaktiviert(buffer, e3aktiviert.m1))
+                    bin.push(buffer[eBufferPointer.m1]) // Motor M1
+
+                if (bin.length < 2 && getaktiviert(buffer, e3aktiviert.ma))
+                    bin.push(buffer[eBufferPointer.ma]) // Motor MA
+
+                if (bin.length < 2 && getaktiviert(buffer, e3aktiviert.mb))
+                    bin.push(buffer[eBufferPointer.mb]) // Motor MB
+
+                if (bin.length < 2 && getaktiviert(buffer, e3aktiviert.mc))
+                    bin.push(buffer[eBufferPointer.mc]) // Motor MC
+
+                if (bin.length < 2 && getaktiviert(buffer, e3aktiviert.md))
+                    bin.push(buffer[eBufferPointer.md]) // Motor MD
+
+                if (bin.length >= 1)
+                    zeigeBINMotor(bin[0], 3) // in 5x5 LED Matrix x=3
+                if (bin.length >= 2)
+                    zeigeBINMotor(bin[1], 4) // in 5x5 LED Matrix x=4
+            }
+        } else {
+            // andere Betriebsarten als '00 Fernsteuerung Motoren'
+            zeigeBINMotor(buffer[1], 3)
+            zeigeBINServo(buffer[2] & 0x1F, 4)
+        }
         /* 
                 if (n5x5_x3 != buffer[1]) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
                     n5x5_x3 = buffer[1]
@@ -131,20 +165,20 @@ namespace radio { // advanced.ts
          */
     }
 
-    function zeigeBINMotor(x3: number) {
+    function zeigeBINMotor(x3: number, xLed: number) {
         if (n5x5_x3 != x3) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
             n5x5_x3 = x3
             if (x3 == 0)
-                zeigeBIN(0, ePlot.bin, 3)
+                zeigeBIN(0, ePlot.bin, xLed)
             else
-                zeigeBIN(mapInt32(x3, 1, 255, 1, 31), ePlot.bin, 3) // 8 Bit auf 5 Bit verteilen
+                zeigeBIN(mapInt32(x3, 1, 255, 1, 31), ePlot.bin, xLed) // 8 Bit auf 5 Bit verteilen
         }
     }
 
-    function zeigeBINServo(x4: number) {
+    function zeigeBINServo(x4: number, xLed: number) {
         if (n5x5_x4 != x4) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
             n5x5_x4 = x4
-            zeigeBIN(x4, ePlot.bin, 4)
+            zeigeBIN(x4, ePlot.bin, xLed)
             //zeigeBIN(x4 & 0x1F, ePlot.bin, 4)
         }
     }
@@ -164,25 +198,25 @@ namespace radio { // advanced.ts
     //% group="25 LED Display" advanced=true color=#54C9C9
     //% block="zeige ↕↕↕↕↕ %int %format ←x %x" weight=2
     //% x.min=0 x.max=4 x.defl=4
-    export function zeigeBIN(int: number, format: ePlot, x: number) {
+    export function zeigeBIN(int: number, format: ePlot, xLed: number) {
         int = Math.imul(int, 1) // 32 bit signed integer
-        x = Math.imul(x, 1) // entfernt mögliche Kommastellen
+        xLed = Math.imul(xLed, 1) // entfernt mögliche Kommastellen
 
-        if (format == ePlot.bin && between(x, 0, 4)) {
+        if (format == ePlot.bin && between(xLed, 0, 4)) {
             for (let y = 4; y >= 0; y--) {
-                if ((int % 2) == 1) { led.plot(x, y) } else { led.unplot(x, y) }
+                if ((int % 2) == 1) { led.plot(xLed, y) } else { led.unplot(xLed, y) }
                 int = int >> 1 // bitweise Division durch 2
             }
         } else {
-            while (int > 0 && between(x, 0, 4)) {
+            while (int > 0 && between(xLed, 0, 4)) {
                 if (format == ePlot.bcd) {
-                    zeigeBIN(int % 10, ePlot.bin, x) // Ziffer 0..9
+                    zeigeBIN(int % 10, ePlot.bin, xLed) // Ziffer 0..9
                     int = Math.idiv(int, 10) // 32 bit signed integer
                 } else if (format == ePlot.hex) {
-                    zeigeBIN(int % 16, ePlot.bin, x) // Ziffer 0..15
+                    zeigeBIN(int % 16, ePlot.bin, xLed) // Ziffer 0..15
                     int = int >> 4 // bitweise Division durch 16
                 }
-                x--
+                xLed--
             }
         }
     }
