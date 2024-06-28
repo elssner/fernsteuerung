@@ -2,7 +2,7 @@
 namespace sender { // s-qwiicjoystick.ts
 
     const i2cqwiicJoystick_x20 = 0x20
-    let n_qwiicJoystick = true // Antwort von i2cWriteBuffer == 0 wenn angeschlossen
+    let n_qwiicJoystickConnected = true // Antwort von i2cWriteBuffer == 0 wenn angeschlossen
     let n_128 = 3 // Korrektur Joystick Nullstellung 128-3 .. 128+3 ist 128
     let n_max = 0 // Korrektur Joystick Endstellung nur beim Servo
 
@@ -38,10 +38,10 @@ namespace sender { // s-qwiicjoystick.ts
     //% p128.min=0 p128.max=8 p128.defl=3
     //% pmax.min=0 pmax.max=20
     export function joystickQwiic(p128 = 3, pmax = 0) {
-        if (n_qwiicJoystick) {
-            n_qwiicJoystick = pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) == 0
+        if (n_qwiicJoystickConnected) {
+            n_qwiicJoystickConnected = pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) == 0
 
-            if (n_qwiicJoystick) {
+            if (n_qwiicJoystickConnected) {
                 n_128 = radio.between(p128, 0, 8) ? p128 : 0
                 n_max = radio.between(pmax, 0, 20) ? pmax : 0
 
@@ -57,7 +57,7 @@ namespace sender { // s-qwiicjoystick.ts
 
             }
         }
-        return n_qwiicJoystick
+        return n_qwiicJoystickConnected
     }
 
     //% group="Qwiic Joystick 0x20"

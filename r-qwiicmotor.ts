@@ -3,44 +3,20 @@ namespace receiver { // r-qwiicmotor.ts
 
 
     // I²C Adressen Qwiic
-    const i2cMotorAB = 0x5D // SparkFun Qwiic Motor Driver
-    const i2cMotorCD = 0x5E // SparkFun Qwiic Motor Driver
-    const i2cRelay = 0x19   // SparkFun Qwiic Single Relay (Kran Elektromagnet)
+    const i2cRelay = 0x19 // SparkFun Qwiic Single Relay (Kran Elektromagnet)
+    let a_i2cMotor = [0x5D, 0x5E] // SparkFun Qwiic Motor Driver
+    //const i2cMotorAB = 0x5D // SparkFun Qwiic Motor Driver
+    //const i2cMotorCD = 0x5E // SparkFun Qwiic Motor Driver
+
+    const c_MotorStop = 128
+    // let a_RGBLed = [eRGBled.b, eRGBled.c] // Index eMotorChip
+    let a_MotorChipConnected = [false, false] // Index eMotorChip
+    let a_MotorChipReady = [false, false] // Index eMotorChip
+    let a_MotorChipPower = [false, false] // Index eMotorChip
+    let a_MotorSpeed = [c_MotorStop, c_MotorStop, c_MotorStop, c_MotorStop] // Index eMotor
 
 
-    export enum eMotor {
-        //% block="A"
-        ma = 0,
-        //% block="B"
-        mb = 1,
-        //% block="C"
-        mc = 2,
-        //% block="D"
-        md = 3,
-    }
-
-    export enum eMotorChip {
-        //% block="A B"
-        ab,
-        //% block="C D"
-        cd
-    }
-
-    function chip(pMotor: eMotor): eMotorChip {
-        if (pMotor == eMotor.mc || pMotor == eMotor.md)
-            return eMotorChip.cd // 1
-        else
-            return eMotorChip.ab // 0
-    }
-
-    function led(pMotorChip: eMotorChip): eRGBled {
-        if (pMotorChip == eMotorChip.cd)
-            return eRGBled.c // 2
-        else
-            return eRGBled.b // 1
-    }
-
-    // Register
+    // I²C Register Motor Chip
     const ID = 0x01 // Reports hard-coded ID byte of 0xA9
     const MA_DRIVE = 0x20 // 0x00..0xFF Default 0x80
     const MB_DRIVE = 0x21
@@ -50,16 +26,54 @@ namespace receiver { // r-qwiicmotor.ts
     const STATUS_1 = 0x77 // This register uses bits to show status. Currently, only b0 is used.
     const CONTROL_1 = 0x78 // 0x01: Reset the processor now.
 
-    const c_MotorStop = 128
-    let n_MotorChipReady = [false, false]
-    let n_MotorChipPower = [false, false]
-    let n_MotorSpeed = [c_MotorStop, c_MotorStop, c_MotorStop, c_MotorStop]
-
-
 
     //  let n_MotorReady = false
     //  let n_MotorON = false       // aktueller Wert im Chip
     //  let n_MotorA = c_MotorStop  // aktueller Wert im Chip
+
+    export enum eMotor {
+        //% block="A"
+        ma,
+        //% block="B"
+        mb,
+        //% block="C"
+        mc,
+        //% block="D"
+        md,
+    }
+
+    export enum eMotorChip {
+        //% block="A B"
+        ab,
+        //% block="C D"
+        cd
+    }
+
+    enum eRGBColorMotor {
+        off = Colors.Off,
+        notconnected_red = Colors.Red,
+        notready_orange = Colors.Orange,
+        poweroff_violet = Colors.Violet,
+        poweron_blue = Colors.Blue
+    }
+    function rgbLEDMotor(pMotorChip: eMotorChip, color: eRGBColorMotor) {
+        rgbLEDon(pMotorChip == eMotorChip.cd ? eRGBled.c : eRGBled.b, color, true)
+    }
+
+
+    /* function chip(pMotor: eMotor): eMotorChip {
+        if (pMotor == eMotor.mc || pMotor == eMotor.md)
+            return eMotorChip.cd // 1
+        else
+            return eMotorChip.ab // 0
+    } */
+
+    /* function led(pMotorChip: eMotorChip): eRGBled {
+        if (pMotorChip == eMotorChip.cd)
+            return eRGBled.c // 2
+        else
+            return eRGBled.b // 1
+    } */
 
     // group="Motor"
     // block="Motor Reset %i2cMotor" weight=9
@@ -111,62 +125,124 @@ namespace receiver { // r-qwiicmotor.ts
 
     export function qMotorReset() { // aufgerufen beim Start
 
-        n_MotorChipReady = [false, false]
+        a_MotorChipReady = [false, false]
 
         control.waitMicros(2000000) // 2 s lange Wartezeit nach Power on
 
-        let a = qMotorChipReset(i2cMotorAB, eMotorChip.ab)
+        a_MotorChipConnected[eMotorChip.ab] = qMotorChipReset(eMotorChip.ab)
 
         control.waitMicros(200)
 
-        let c = qMotorChipReset(i2cMotorCD, eMotorChip.cd)
+        a_MotorChipConnected[eMotorChip.cd] = qMotorChipReset(eMotorChip.cd)
 
-        return a && c
+        // return a && c
     }
 
 
-    function qMotorChipReset(i2c: number, pMotorChip: eMotorChip) {
-        rgbLEDon(led(pMotorChip), Colors.Red, true)
+    function qMotorChipReset(pMotorChip: eMotorChip) {
+        // Test Start, LED rot
+        rgbLEDMotor(pMotorChip, eRGBColorMotor.notconnected_red)
+        //rgbLEDon(a_RGBLed[pMotorChip], Colors.Red, true)
 
-        if (!i2cWriteBuffer(pMotorChip, [ID], true)) {
-            basic.showString(Buffer.fromArray([i2c]).toHex())
-            //addStatusHEX(i2cMotorAB) // Modul reagiert nicht
+        if (i2cWriteBuffer(pMotorChip, [ID], true)) { // write Register Nummer ID
+
+            if (i2cReadBuffer(pMotorChip, 1)[0] == 0xA9) { // Reports hard-coded ID byte of 0xA9
+
+                if (i2cWriteBuffer(pMotorChip, [CONTROL_1, 1])) { // Reset the processor now.
+                    // true 
+                    rgbLEDMotor(pMotorChip, eRGBColorMotor.notready_orange)
+                    //rgbLEDon(a_RGBLed[pMotorChip], Colors.Orange, true)
+                    return true
+                } else {
+                    // bei false bleibt LED rot
+                    return false
+                }
+            } else {
+                // bei false bleibt LED rot
+                return false
+            }
+        } else {
+            // false I²C Modul nicht vorhanden, LED aus
+            rgbLEDMotor(pMotorChip, eRGBColorMotor.off)
+            //rgbLEDon(a_RGBLed[pMotorChip], Colors.Off, false)
             return false
         }
 
-        rgbLEDon(led(pMotorChip), Colors.Orange, true)
-
-        if (!(i2cReadBuffer(pMotorChip, 1)[0] == 0xA9)) { // Reports hard-coded ID byte of 0xA9
-            return false
-        }
-
-        rgbLEDon(led(pMotorChip), Colors.Yellow, true)
-
-        if (!i2cWriteBuffer(pMotorChip, [CONTROL_1, 1])) { // Reset the processor now.
-            return false
-        }
-
-        rgbLEDon(led(pMotorChip), Colors.Green, true)
-
-        return true
+        /* 
+                a_MotorChipConnected[pMotorChip] = i2cWriteBuffer(pMotorChip, [ID], true) // write Register Nummer ID
+        
+                if (!a_MotorChipConnected[pMotorChip]) {
+                    // false I²C Modul reagiert nicht, LED aus
+                    rgbLEDon(a_RGBLed[pMotorChip], Colors.Off, false)
+                } else {
+                    // true write Register Nummer ID erfolgreich, jetzt Register lesen
+                    a_MotorChipConnected[pMotorChip] = i2cReadBuffer(pMotorChip, 1)[0] == 0xA9 // Reports hard-coded ID byte of 0xA9
+                    // bei false bleibt LED rot
+        
+                    if (a_MotorChipConnected[pMotorChip]) {
+                        // true 0xA9 richtig gelesenen, jetzt Reset senden an Register Nummer CONTROL_1
+                        a_MotorChipConnected[pMotorChip] = i2cWriteBuffer(pMotorChip, [CONTROL_1, 1])
+                        // bei false bleibt LED rot
+        
+                        if (a_MotorChipConnected[pMotorChip]) {
+                            // true 
+                            rgbLEDon(a_RGBLed[pMotorChip], Colors.Violet, true)
+                        }
+        
+                    }
+                } */
+        /* 
+                //rgbLEDon(led(pMotorChip), Colors.Orange, true)
+        
+                if (!(i2cReadBuffer(pMotorChip, 1)[0] == 0xA9)) { // Reports hard-coded ID byte of 0xA9
+                    // return false // ID ist nicht 0xA9, LED bleibt rot
+                }
+        
+                //rgbLEDon(led(pMotorChip), Colors.Yellow, true)
+        
+                if (!i2cWriteBuffer(pMotorChip, [CONTROL_1, 1])) { // Reset the processor now.
+                    //  return false
+                }
+        
+                rgbLEDon(led(pMotorChip), Colors.Green, true)
+        
+                //  return true */
     }
 
 
 
     function qMotorChipReady(pMotorChip: eMotorChip) { // fragt den I²C Status ab wenn false
 
-        if (n_MotorChipReady[pMotorChip])
+        if (a_MotorChipReady[pMotorChip])
+            // wenn Ready nichts weiter testen
             return true
-        else {
-            if (!i2cWriteBuffer(pMotorChip, [STATUS_1]))  // kann I²C Bus Fehler haben
-                rgbLEDon(led(pMotorChip), Colors.Violet, true)
+        else if (a_MotorChipConnected[pMotorChip]) {
+            // nur wenn Modul Connected Status Ready testen
+            if (i2cWriteBuffer(pMotorChip, [STATUS_1])) {
 
-            if ((i2cReadBuffer(pMotorChip, 1)[0] & 0x01) == 1) {
-                rgbLEDon(led(pMotorChip), Colors.Off, true)
-                n_MotorChipReady[pMotorChip] = true
-                // n_MotorChipReady[pMotor] = true
+                if ((i2cReadBuffer(pMotorChip, 1)[0] & 0x01) == 1) {
+                    a_MotorChipReady[pMotorChip] = true
+                    rgbLEDMotor(pMotorChip, eRGBColorMotor.poweroff_violet)
+                    //rgbLEDon(a_RGBLed[pMotorChip], Colors.Violet, true)
+                } else {
+                    // bei false bleibt LED Orange
+                }
+            } else {
+                // bei false bleibt LED Orange
             }
-            return n_MotorChipReady[pMotorChip]
+
+            /*  if (!i2cWriteBuffer(pMotorChip, [STATUS_1]))  // kann I²C Bus Fehler haben
+                 rgbLEDon(led(pMotorChip), Colors.Violet, true)
+ 
+             if ((i2cReadBuffer(pMotorChip, 1)[0] & 0x01) == 1) {
+                 rgbLEDon(led(pMotorChip), Colors.Off, true)
+                 a_MotorChipReady[pMotorChip] = true
+                 // n_MotorChipReady[pMotor] = true 
+             }*/
+            return a_MotorChipReady[pMotorChip]
+        } else {
+            // I²C Modul nicht angeschlossen
+            return false
         }
         /*
         bool ready( void );
@@ -185,12 +261,16 @@ namespace receiver { // r-qwiicmotor.ts
     //% block="Motor Chip %pMotorChip Power %pON" weight=3
     //% pON.shadow="toggleOnOff"
     export function qMotorChipPower(pMotorChip: eMotorChip, pON: boolean) {
-        if (qMotorChipReady(pMotorChip) && pON !== n_MotorChipPower[pMotorChip]) {
-            n_MotorChipPower[pMotorChip] = pON
-            if (!i2cWriteBuffer(pMotorChip, [DRIVER_ENABLE, n_MotorChipPower[pMotorChip] ? 0x01 : 0x00])) {
-                rgbLEDon(led(pMotorChip), Colors.Purple, true) // Fehler
+        if (qMotorChipReady(pMotorChip) && pON !== a_MotorChipPower[pMotorChip]) {
+            a_MotorChipPower[pMotorChip] = pON
+            if (i2cWriteBuffer(pMotorChip, [DRIVER_ENABLE, a_MotorChipPower[pMotorChip] ? 0x01 : 0x00])) {
+                // true Motor ON blau, OFF Violet
+                rgbLEDMotor(pMotorChip, a_MotorChipPower[pMotorChip] ? eRGBColorMotor.poweron_blue : eRGBColorMotor.poweroff_violet)
+                // rgbLEDon(a_RGBLed[pMotorChip], a_MotorChipPower[pMotorChip] ? Colors.Blue : Colors.Violet, true)
             } else {
-                rgbLEDon(led(pMotorChip), n_MotorChipPower[pMotorChip] ? Colors.Blue : 64, true) // kein Fehler blau Helligkeit dunkler bei Motor OFF
+                // false
+                rgbLEDMotor(pMotorChip, eRGBColorMotor.notready_orange)
+                // rgbLEDon(a_RGBLed[pMotorChip], Colors.Purple, true) // Fehler
             }
         }
     }
@@ -220,19 +300,23 @@ namespace receiver { // r-qwiicmotor.ts
         let e = false
         // addStatusHEX(speed)
         if (radio.between(speed, 1, 255)) {
-            if (speed != n_MotorSpeed[pMotor]) { // sendet nur, wenn der Wert sich ändert
-                n_MotorSpeed[pMotor] = speed
+            if (speed != a_MotorSpeed[pMotor]) { // sendet nur, wenn der Wert sich ändert
+                a_MotorSpeed[pMotor] = speed
+
+                let chip: eMotorChip = (pMotor == eMotor.mc || pMotor == eMotor.md) ? eMotorChip.cd : eMotorChip.ab
+
                 //qMotorWriteRegister(pMotor, n_MotorSpeed[pMotor])
 
-                if (qMotorChipReady(chip(pMotor)) && n_MotorChipPower[chip(pMotor)]) {
+                if (qMotorChipReady(chip) && a_MotorChipPower[chip]) {
 
                     if (pMotor == eMotor.ma || pMotor == eMotor.mc)
-                        e = i2cWriteBuffer(chip(pMotor), [MA_DRIVE, speed])
+                        e = i2cWriteBuffer(chip, [MA_DRIVE, speed])
                     else if (pMotor == eMotor.mb || pMotor == eMotor.md)
-                        e = i2cWriteBuffer(chip(pMotor), [MB_DRIVE, speed])
+                        e = i2cWriteBuffer(chip, [MB_DRIVE, speed])
 
                     if (!e)
-                        rgbLEDon(led(chip(pMotor)), Colors.White, true)
+                        rgbLEDMotor(chip, eRGBColorMotor.notready_orange)
+                    //  rgbLEDon(a_RGBLed[chip(pMotor)], Colors.White, true)
                 }
             }
 
@@ -249,11 +333,13 @@ namespace receiver { // r-qwiicmotor.ts
 
 
     function i2cWriteBuffer(pMotorChip: eMotorChip, bytes: number[], repeat = false) {
-        return pins.i2cWriteBuffer(pMotorChip == eMotorChip.cd ? i2cMotorCD : i2cMotorAB, Buffer.fromArray(bytes), repeat) == 0
+        //return pins.i2cWriteBuffer(pMotorChip == eMotorChip.cd ? i2cMotorCD : i2cMotorAB, Buffer.fromArray(bytes), repeat) == 0
+        return pins.i2cWriteBuffer(a_i2cMotor[pMotorChip], Buffer.fromArray(bytes), repeat) == 0
     }
 
     function i2cReadBuffer(pMotorChip: eMotorChip, size: number): Buffer {
-        return pins.i2cReadBuffer(pMotorChip == eMotorChip.cd ? i2cMotorCD : i2cMotorAB, size)
+        //return pins.i2cReadBuffer(pMotorChip == eMotorChip.cd ? i2cMotorCD : i2cMotorAB, size)
+        return pins.i2cReadBuffer(a_i2cMotor[pMotorChip], size)
     }
 
 
