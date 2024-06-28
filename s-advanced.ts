@@ -31,29 +31,29 @@ namespace sender { // s-advanced.ts
     // ========== group="lenken mit Tasten A:links B:rechts" advanced=true
 
     export enum eServoButton {
-        //% block="nur lesen"
+        //% block="lesen"
         lesen,
-        //% block="links"
+        //% block="3° links"
         links,
-        //% block="rechts"
+        //% block="3° rechts"
         rechts,
-        //% block="gerade"
+        //% block="90° gerade"
         gerade
     }
 
-    let n_ServoWinkel = 16
+    let n_ServoButton = 16
 
     //% group="lenken mit Tasten A:links B:rechts" advanced=true
     //% block="Servo Winkel %i" weight=8
     export function setServoButton(i: eServoButton): number {
-        if (i == eServoButton.links && n_ServoWinkel > 1)
-            n_ServoWinkel--
-        else if (i == eServoButton.rechts && n_ServoWinkel < 31)
-            n_ServoWinkel++
+        if (i == eServoButton.links && n_ServoButton > 1)
+            n_ServoButton--
+        else if (i == eServoButton.rechts && n_ServoButton < 31)
+            n_ServoButton++
         else if (i == eServoButton.gerade)
-            n_ServoWinkel = 16
+            n_ServoButton = 16
 
-        return n_ServoWinkel
+        return n_ServoButton
     }
 
 
