@@ -52,12 +52,12 @@ namespace receiver { // r-qwiicmotor.ts
     enum eRGBColorMotor {
         off = Colors.Off,
         notconnected_red = Colors.Red,
-        notready_orange = Colors.Orange,
+        notready_orange = Colors.Orange, // i2cWriteBuffer!=0 Fehler
         poweroff_violet = Colors.Violet,
         poweron_blue = Colors.Blue
     }
     function rgbLEDMotor(pMotorChip: eMotorChip, color: eRGBColorMotor) {
-        rgbLEDon(pMotorChip == eMotorChip.cd ? eRGBled.c : eRGBled.b, color, true)
+        rgbLEDs(pMotorChip == eMotorChip.cd ? eRGBled.c : eRGBled.b, color, false)
     }
 
 
@@ -319,7 +319,6 @@ namespace receiver { // r-qwiicmotor.ts
                     //  rgbLEDon(a_RGBLed[chip(pMotor)], Colors.White, true)
                 }
             }
-
         }
         else
             qMotor255(pMotor, c_MotorStop)
