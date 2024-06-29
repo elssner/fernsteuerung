@@ -53,11 +53,22 @@ namespace sender { // s-auswahl.ts
     export function buttonA() {
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
-            if (a_StorageBuffer[eStorageBuffer.modell] > 0) 
+            if (a_StorageBuffer[eStorageBuffer.modell] > 0)
                 a_StorageBuffer[eStorageBuffer.modell]--
             a_ModellImages[getModell()].showImage(0)
         }
+        else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
+        }
+        else if (n_Funktion == eFunktion.m0_m1_s0) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+            setServoButton(eServoButton.links)
+        }
+        else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
+
+        }
+        else if (n_Funktion == eFunktion.mc_mb) { // MC und MB (Zahnstange und Drehkranz)
+
+        }
     }
 
 
@@ -66,17 +77,47 @@ namespace sender { // s-auswahl.ts
     export function buttonB() {
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
-            if (a_StorageBuffer[eStorageBuffer.modell] < a_ModellImages.length - 1) 
+            if (a_StorageBuffer[eStorageBuffer.modell] < a_ModellImages.length - 1)
                 a_StorageBuffer[eStorageBuffer.modell]++
             a_ModellImages[getModell()].showImage(0)
+        }
+        else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
+
+        }
+        else if (n_Funktion == eFunktion.m0_m1_s0) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+            setServoButton(eServoButton.rechts)
+        }
+        else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
+
+        }
+        else if (n_Funktion == eFunktion.mc_mb) {
+
         }
     }
 
     //% group="Auswahl Modell" subcategory="Auswahl"
     //% block="Knopf A+B geklickt"
     export function buttonAB() {
-        n_Funktion == eFunktion.m0_s0 // startet immer mit Fahren und Lenken
+        // wenn einmal A+B geklickt, wird n_Funktion nie wieder ng (nicht gestartet)
+        if (n_Funktion == eFunktion.ng) // beim ersten Mal (nach Reset)
+            n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
 
+        // Maker Kit Car ohne und mit Gabelstapler
+        else if (getModell() == eModell.mkcg && n_Funktion == eFunktion.m0_s0)
+            n_Funktion = eFunktion.m0_m1_s0
+        //else if (getModell() == eModell.mkcg && n_Funktion == eFunktion.m0_m1_s0)
+        //    n_Funktion = eFunktion.m0_s0
+
+        // Maker Kit Car mit Kran
+        else if (getModell() == eModell.mkck && n_Funktion == eFunktion.m0_s0)
+            n_Funktion = eFunktion.ma_mb
+        else if (getModell() == eModell.mkck && n_Funktion == eFunktion.ma_mb)
+            n_Funktion = eFunktion.mc_mb
+        //else if (getModell() == eModell.mkck && n_Funktion == eFunktion.mc_mb)
+        //    n_Funktion = eFunktion.m0_s0
+
+        else
+            n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
     }
 
 
