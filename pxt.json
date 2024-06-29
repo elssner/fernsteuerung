@@ -23,7 +23,8 @@
         "r-qwiicmotor.ts",
         "r-pins.ts",
         "r-advanced.ts",
-        "r-calliope-v3.ts"
+        "r-calliope-v3.ts",
+        "s-auswahl.ts"
     ],
     "testFiles": [
         "test.ts"
