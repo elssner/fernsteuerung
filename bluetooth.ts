@@ -8,7 +8,7 @@ namespace radio { // bluetooth.ts
     let n_lastconnectedTime = input.runningTime()  // ms seit Start
     let n_programm = false // autonomes fahren nach Programm, kein Bluetooth timeout
 
-    let n_sendReset = false
+    export let n_sendReset = false
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
     //% block="beim Start Funkgruppe %funkgruppe" weight=9
@@ -27,6 +27,7 @@ namespace radio { // bluetooth.ts
 
         n_start = true
     }
+
 
 
     export enum eFunkgruppeButton {
@@ -99,6 +100,15 @@ namespace radio { // bluetooth.ts
     //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
     //% block="sendData löschen" weight=3
     export function fill_sendBuffer19() { n_sendBuffer19.fill(0) }
+
+    /* 
+        //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
+        //% block="setSendReset %reset" weight=2
+        //% reset.shadow="toggleYesNo"
+        export function setSendReset(reset = false) {
+            n_sendReset = reset
+        }
+     */
 
     //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
     //% block="Buffer senden %sendBuffer" weight=1
@@ -173,7 +183,7 @@ namespace radio { // bluetooth.ts
 
     //% group="Bluetooth empfangen (19 Byte)" subcategory="Bluetooth"
     //% block="timeout > %ms ms || abschalten %abschalten" weight=7
-    //% programm.shadow="toggleYesNo"
+    //% abschalten.shadow="toggleYesNo"
     //% ms.defl=1000
     export function timeout(ms: number, abschalten = false) {
         if (!abschalten) // kurzes Fernsteuerung-timeout (1s) nur bei Joystick, nicht auslösen wenn n_programm=true

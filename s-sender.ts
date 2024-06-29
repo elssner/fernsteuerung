@@ -25,6 +25,16 @@ namespace sender {
 
 
 
+    //% group="calliope-net.github.io/fernsteuerung"
+    //% block="setSendReset %reset" weight=2
+    //% reset.shadow="toggleYesNo"
+    export function setSendReset(reset = false) {
+        if (isFunktion(sender.eFunktion.ng)) // nicht nicht gestartet
+            radio.n_sendReset = reset
+    }
+
+
+
     // ========== group="Button A+B" subcategory="Sender"
 
     //% group="00 Sender" subcategory="Sender"
