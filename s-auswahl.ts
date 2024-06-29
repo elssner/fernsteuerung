@@ -136,6 +136,11 @@ namespace sender { // s-auswahl.ts
             return pFunktion == n_Funktion
     }
 
+    //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
+    //% block="Magnet" weight=2
+    export function getMagnet() { return n_Magnet }
+
+
 
     // ========== group="Storage (Flash)" color=#FFBB00
 
