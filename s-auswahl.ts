@@ -10,8 +10,8 @@ namespace sender { // s-auswahl.ts
 
     //% group="Storage (Flash)"
     //% block="Flash einlesen %i32" weight=9
-    //% i32.shadow=storage_get_number
     export function storageBufferSet(i32: number) {
+    // i32.shadow=storage_get_number
         n_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
     }
 
