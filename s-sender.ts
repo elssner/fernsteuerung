@@ -12,14 +12,15 @@ namespace sender {
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     //% inlineInputMode=inline
     export function beimStart(storagei32 = 175) {
-        let funkgruppe = startAuswahl(storagei32) // s-auswahl.ts
+        if (!radio.simulator()) {
+            let funkgruppe = startAuswahl(storagei32) // s-auswahl.ts
 
-        radio.beimStart(funkgruppe) // setzt auch n_start true, muss deshalb zuletzt stehen
+            radio.beimStart(funkgruppe) // setzt auch n_start true, muss deshalb zuletzt stehen
 
-      //  basic.pause(1500)
-        //basic.clearScreen()
-        radio.setFunkgruppeButton(radio.eFunkgruppeButton.anzeigen)
-
+            //  basic.pause(1500)
+            //basic.clearScreen()
+            radio.setFunkgruppeButton(radio.eFunkgruppeButton.anzeigen)  // Funkgruppe in 5x5 anzeigen
+        }
     }
 
 
