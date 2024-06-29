@@ -38,8 +38,8 @@ namespace sender { // s-auswahl.ts
     //% group="Auswahl Modell" subcategory="Auswahl"
     //% block="%pFunktion"
     export function isFunktion(pFunktion: eFunktion) {
-        if (pFunktion == eFunktion.ng && n_Funktion != eFunktion.ng)
-            return true // wenn nicht nicht gestartet
+        if (pFunktion == eFunktion.ng)
+            return n_Funktion != eFunktion.ng // wenn nicht nicht gestartet
         else
             return pFunktion == n_Funktion
     }
