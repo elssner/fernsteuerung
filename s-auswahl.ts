@@ -21,15 +21,28 @@ namespace sender { // s-auswahl.ts
 
     // Funktion: wird je nach Modell mit Tasten geändert, steht nicht im Flash
 
-    enum eFunktion {
+    export enum eFunktion {
+        //% block="gestartet"
         ng, // nicht gestartet
+        //% block="Fahren und Lenken"
         m0_s0,      // Joystick steuert M0 und Servo (Fahren und Lenken)
+        //% block="Gabelstapler"
         m0_m1_s0,   // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+        //% block="Seilrolle und Drehkranz"
         ma_mb,      // MA und MB (Seilrolle und Drehkranz)
+        //% block="Zahnstange und Drehkranz"
         mc_mb       // MC und MB (Zahnstange und Drehkranz)
     }
     let n_Funktion = eFunktion.ng // aktuell ausgewählte Funktion
 
+    //% group="Auswahl Modell" subcategory="Auswahl"
+    //% block="%pFunktion"
+    export function isFunktion(pFunktion: eFunktion) {
+        if (pFunktion == eFunktion.ng && n_Funktion != eFunktion.ng)
+            return true // wenn nicht nicht gestartet
+        else
+            return pFunktion == n_Funktion
+    }
 
 
 
