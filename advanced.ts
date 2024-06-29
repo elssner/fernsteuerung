@@ -43,6 +43,7 @@ namespace radio { // advanced.ts
 
     // ========== group="25 LED Display" advanced=true color=#54C9C9
 
+    let n5x5_clearScreen = true
 
     let n5x5_x01y0 = 0 // Bit 5-4 Betriebsart in x=0-1 y=0
     let n5x5_x2 = 0 // Bit 5-4-3-2-1 Motor Power in x=2
@@ -167,6 +168,10 @@ namespace radio { // advanced.ts
         xLed = Math.imul(xLed, 1) // entfernt mögliche Kommastellen
 
         if (format == ePlot.bin && between(xLed, 0, 4)) {
+            if (n5x5_clearScreen) {
+                basic.clearScreen()
+                n5x5_clearScreen = false
+            }
             for (let y = 4; y >= 0; y--) {
                 if ((int % 2) == 1) { led.plot(xLed, y) } else { led.unplot(xLed, y) }
                 int = int >> 1 // bitweise Division durch 2

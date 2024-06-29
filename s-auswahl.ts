@@ -14,7 +14,7 @@ namespace sender { // s-auswahl.ts
 
 
 
-    export function getFunkgruppe() { return a_StorageBuffer[eStorageBuffer.funkgruppe] }
+   // export function getFunkgruppe() { return a_StorageBuffer[eStorageBuffer.funkgruppe] }
 
     export function getModell() { return a_StorageBuffer[eStorageBuffer.modell] }
 
@@ -29,7 +29,9 @@ namespace sender { // s-auswahl.ts
             // wenn ungülti, Standardwert setzen
             a_StorageBuffer[eStorageBuffer.modell] = eModelle.cb2e
 
-        a_ModellImages[getModell()].showImage(0)
+        a_ModellImages[getModell()].showImage(0) // Bild vom Modell anzeigen
+        basic.pause(1500)
+        return a_StorageBuffer[eStorageBuffer.funkgruppe]
     }
 
 

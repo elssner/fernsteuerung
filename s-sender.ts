@@ -9,15 +9,15 @@ namespace sender {
 
     //% group="calliope-net.github.io/fernsteuerung"
     //% block="beim Start || Funkgruppe / Flash %storagei32" weight=8
-    //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=175
+    //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     //% inlineInputMode=inline
     export function beimStart(storagei32 = 175) {
-        startAuswahl(storagei32) // s-auswahl.ts
+        let funkgruppe = startAuswahl(storagei32) // s-auswahl.ts
 
-        radio.beimStart(getFunkgruppe()) // setzt auch n_start true, muss deshalb zuletzt stehen
+        radio.beimStart(funkgruppe) // setzt auch n_start true, muss deshalb zuletzt stehen
 
-        basic.pause(1500)
-        basic.clearScreen()
+      //  basic.pause(1500)
+        //basic.clearScreen()
         radio.setFunkgruppeButton(radio.eFunkgruppeButton.anzeigen)
 
     }

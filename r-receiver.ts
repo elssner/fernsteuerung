@@ -2,7 +2,7 @@
 namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
-    export enum eHardware {
+    export enum eModell {
         //% block="Controller v3"
         v3 = 0,     // Index in Arrays
         //% block="CaR 4"
@@ -11,7 +11,7 @@ namespace receiver { // r-receiver.ts
         calli2bot = 2
     }
 
-    export let n_Hardware = eHardware.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
+    export let n_Modell= eModell.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
 
     export let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
     let a_PinServo: AnalogPin[] = [108, AnalogPin.C4]       // 0:AnalogPin.C8 GPIO1
@@ -68,8 +68,8 @@ namespace receiver { // r-receiver.ts
     //% bFunkgruppe.shadow="toggleYesNo" bFunkgruppe.defl=1
     //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=175
     //% inlineInputMode=inline
-    export function beimStart(hardware: eHardware, servoGeradeaus: number, funkgruppe = 175) {
-        n_Hardware = hardware
+    export function beimStart(modell: eModell, servoGeradeaus: number, funkgruppe = 175) {
+        n_Modell = modell
         n_ServoGeradeaus = servoGeradeaus // Parameter
         // radio.n_funkgruppe = funkgruppe
 
@@ -78,9 +78,9 @@ namespace receiver { // r-receiver.ts
         //radio.zeige5x5Funkgruppe()
         radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
 
-        pins.servoWritePin(a_PinServo[n_Hardware], n_ServoGeradeaus)
+        pins.servoWritePin(a_PinServo[n_Modell], n_ServoGeradeaus)
 
-        pins.setPull(a_PinEncoder[n_Hardware], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+        pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
 
         //  n_ready = motorReset(ei2cMotor.i2cMotorAB) && motorReset(ei2cMotor.i2cMotorCD)
         //if (qMotorReset())
@@ -190,7 +190,7 @@ namespace receiver { // r-receiver.ts
         // (0+14)*3=42 keine Änderung, gültige Werte im Buffer 1-31  (1+14)*3=45  (16+14)*3=90  (31+14)*3=135
         if (radio.between(winkel, 45, 135) && n_ServoWinkel != winkel) {
             n_ServoWinkel = winkel
-            pins.servoWritePin(a_PinServo[n_Hardware], winkel + n_ServoGeradeaus - c_Servo_geradeaus)
+            pins.servoWritePin(a_PinServo[n_Modell], winkel + n_ServoGeradeaus - c_Servo_geradeaus)
         }
     }
 

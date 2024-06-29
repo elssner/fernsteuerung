@@ -14,7 +14,7 @@ namespace receiver { // r-pins.ts
     //% block="Stromversorgung 9V %pON"
     //% pON.shadow="toggleOnOff"
     export function pinRelay(pON: boolean) {
-        pins.digitalWritePin(a_PinRelay[n_Hardware], pON ? 1 : 0)
+        pins.digitalWritePin(a_PinRelay[n_Modell], pON ? 1 : 0)
     }
 
     // GPIO für Grove (5V) Licht oder Buzzer
@@ -23,7 +23,7 @@ namespace receiver { // r-pins.ts
     //% block="Hupe %pON"
     //% pON.shadow="toggleOnOff"
     export function pinGPIO4(pON: boolean) {
-        pins.digitalWritePin(a_PinGPIO4[n_Hardware], pON ? 1 : 0)
+        pins.digitalWritePin(a_PinGPIO4[n_Modell], pON ? 1 : 0)
     }
 
 
