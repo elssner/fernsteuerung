@@ -44,7 +44,7 @@ namespace sender {
     export function sendM01(buffer: Buffer, prozent = 100) {
         radio.setBetriebsart(radio.radio_sendBuffer19(), radio.e0Betriebsart.p0)
         radio.setByte(radio.radio_sendBuffer19(), radio.eBufferPointer.m0, radio.eBufferOffset.b0_Motor, radio.motorProzent(joystickValue(eJoystickValue.xmotor), prozent))
-        radio.setByte(radio.radio_sendBuffer19(), radio.eBufferPointer.m0, radio.eBufferOffset.b1_Servo, n_ServoButtonAB)
+        radio.setByte(radio.radio_sendBuffer19(), radio.eBufferPointer.m0, radio.eBufferOffset.b1_Servo, n_ServoWinkel)
         radio.setByte(radio.radio_sendBuffer19(), radio.eBufferPointer.m1, radio.eBufferOffset.b0_Motor, joystickValue(eJoystickValue.ymotor))
         radio.setaktiviert(radio.radio_sendBuffer19(), radio.e3aktiviert.m0, true)
         radio.setaktiviert(radio.radio_sendBuffer19(), radio.e3aktiviert.m1, true)

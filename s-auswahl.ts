@@ -1,14 +1,14 @@
 
 namespace sender { // s-auswahl.ts
 
-  export  let n_ServoButtonAB = 0 // 1..16..31 mit A- B+ ändern
-
+    export let n_ServoWinkel = 0 // 1..16..31 mit A- B+ ändern
+    export let n_Magnet = false
 
     // Storage: im Flash steht die Funkgruppe und das Modell, und wird beim Einschalten wieder hergestellt
 
     let a_StorageBuffer = Buffer.create(4) // lokaler Speicher 4 Byte NumberFormat.UInt32LE
     enum eStorageBuffer { funkgruppe, modell /* , c, d */ } // Index im Buffer
-    enum eModell { // zuletzt gewähltes Modell wird im offset 1 dauerhaft gespeiechert
+    export enum eModell { // zuletzt gewähltes Modell wird im offset 1 dauerhaft gespeiechert
         cb2e, // Standardwert CalliBot
         mkcg, // Maker Kit Car ohne und mit Gabelstapler
         mkck, // Maker Kit Car mit Kran
@@ -36,21 +36,11 @@ namespace sender { // s-auswahl.ts
         //% block="Zahnstange und Drehkranz"
         mc_mb       // MC und MB (Zahnstange und Drehkranz)
     }
-    let n_Funktion = eFunktion.ng // aktuell ausgewählte Funktion
-
-    //% group="Auswahl Modell" subcategory="Auswahl"
-    //% block="%pFunktion"
-    export function isFunktion(pFunktion: eFunktion) {
-        if (pFunktion == eFunktion.ng)
-            return n_Funktion != eFunktion.ng // wenn nicht nicht gestartet
-        else
-            return pFunktion == n_Funktion
-    }
+    export let n_Funktion = eFunktion.ng // aktuell ausgewählte Funktion
 
 
 
-    //% group="Auswahl Modell" subcategory="Auswahl"
-    //% block="Start Auswahl Modell Flash einlesen %storagei32"
+    // aufgerufen von sender.beimStart
     export function startAuswahl(storagei32: number) {
         storageBufferSet(storagei32)
         // let iModell = a_StorageBuffer[eStorageBuffer.modell]
@@ -64,8 +54,8 @@ namespace sender { // s-auswahl.ts
     }
 
 
-    //% group="Auswahl Modell" subcategory="Auswahl"
-    //% block="Knopf A geklickt"
+    //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
+    //% block="Knopf A geklickt" weight=7
     export function buttonA() {
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
@@ -76,8 +66,8 @@ namespace sender { // s-auswahl.ts
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
         }
-        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoButtonAB > 1) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-            n_ServoButtonAB--
+        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkel > 1) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+            n_ServoWinkel--
         }
         else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
 
@@ -88,8 +78,8 @@ namespace sender { // s-auswahl.ts
     }
 
 
-    //% group="Auswahl Modell" subcategory="Auswahl"
-    //% block="Knopf B geklickt"
+    //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
+    //% block="Knopf B geklickt" weight=6
     export function buttonB() {
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
@@ -100,8 +90,8 @@ namespace sender { // s-auswahl.ts
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
         }
-        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoButtonAB < 31) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-            n_ServoButtonAB++
+        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkel < 31) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+            n_ServoWinkel++
         }
         else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
 
@@ -113,8 +103,8 @@ namespace sender { // s-auswahl.ts
 
 
 
-    //% group="Auswahl Modell" subcategory="Auswahl"
-    //% block="Knopf A+B geklickt"
+    //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
+    //% block="Knopf A+B geklickt" weight=5
     export function buttonAB() {
         // wenn einmal A+B geklickt, wird n_Funktion nie wieder ng (nicht gestartet)
         if (n_Funktion == eFunktion.ng) // beim ersten Mal (nach Reset)
@@ -123,29 +113,28 @@ namespace sender { // s-auswahl.ts
         // Maker Kit Car ohne und mit Gabelstapler
         else if (getModell() == eModell.mkcg && n_Funktion == eFunktion.m0_s0)
             n_Funktion = eFunktion.m0_m1_s0
-        //else if (getModell() == eModell.mkcg && n_Funktion == eFunktion.m0_m1_s0)
-        //    n_Funktion = eFunktion.m0_s0
 
         // Maker Kit Car mit Kran
         else if (getModell() == eModell.mkck && n_Funktion == eFunktion.m0_s0)
             n_Funktion = eFunktion.ma_mb
         else if (getModell() == eModell.mkck && n_Funktion == eFunktion.ma_mb)
             n_Funktion = eFunktion.mc_mb
-        //else if (getModell() == eModell.mkck && n_Funktion == eFunktion.mc_mb)
-        //    n_Funktion = eFunktion.m0_s0
 
         else {
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
-            n_ServoButtonAB = 16
+            n_ServoWinkel = 16
         }
     }
 
 
-    // group="Auswahl Modell" subcategory="Auswahl"
-    // block="zeige Bild %index" weight=8
-    // function showImage(index: eModell) {
-    //    a_ModellImages[index].showImage(0)
-    //}
+    //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
+    //% block="%pFunktion" weight=3
+    export function isFunktion(pFunktion: eFunktion) {
+        if (pFunktion == eFunktion.ng)
+            return n_Funktion != eFunktion.ng // wenn nicht nicht gestartet
+        else
+            return pFunktion == n_Funktion
+    }
 
 
     // ========== group="Storage (Flash)" color=#FFBB00

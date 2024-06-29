@@ -4,6 +4,59 @@ namespace sender { // s-multiswitch.ts
     const i2cGroveMultiswitch_x03 = 0x03
     const i2c_CMD_GET_DEV_EVENT = 0x01	// gets device event status
 
+    let n_GroveMultiswitchConnected = true // Antwort von i2cWriteBuffer == 0 wenn angeschlossen
+
+    //% group="Grove Multiswitch 0x03"
+    //% block="Schalter einlesen und Funktion umschalten" weight=8
+    export function multiswitchGrove() {
+        if (n_GroveMultiswitchConnected) {
+            n_GroveMultiswitchConnected = pins.i2cWriteBuffer(i2cGroveMultiswitch_x03, Buffer.fromArray([i2c_CMD_GET_DEV_EVENT])) != 0
+
+            if (n_GroveMultiswitchConnected) {
+                let bu = pins.i2cReadBuffer(i2cGroveMultiswitch_x03, 10) // 4 Byte + 6 Schalter = 10
+                // Byte 0-3: 32 Bit UInt32LE; Byte 4:Schalter 1 ... Byte 9:Schalter 6
+                // Byte 4-9: 00000001:Schalter OFF; 00000000:Schalter ON; Bit 1-7 löschen & 0x01
+                // Richtung N = 1, W = 2, S = 3, O = 4, M = 5
+                // ON=00000000 OFF=00000001
+
+                if (getModell() == eModell.mkck) { // Maker Kit Car mit Kran
+
+                    if (bu[3 + 5] == 0) {      // 5 Mitte gedrückt
+                        n_Funktion = eFunktion.m0_s0 // Joystick steuert M0 und Servo (Fahren und Lenken)
+                    }
+                    else if (bu[3 + 1] == 0) { // 1 nach oben
+                        n_Funktion = eFunktion.ma_mb // MA und MB (Seilrolle und Drehkranz)
+                    }
+                    else if (bu[3 + 3] == 0) { // 3 nach unten
+                        n_Funktion = eFunktion.mc_mb // MC und MB (Zahnstange und Drehkranz)
+                    }
+                    else if (bu[3 + 2] == 0) { // 2 nach links
+                        n_Magnet = false
+                    }
+                    else if (bu[3 + 4] == 0) { // 4 nach rechts
+                        n_Magnet = true
+                    }
+                }
+                /* 
+                n_128 = radio.between(p128, 0, 8) ? p128 : 0
+                n_max = radio.between(pmax, 0, 20) ? pmax : 0
+    
+                let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
+                n_x = bu[0] // X_MSB = 0x03,       // Current Horizontal Position (MSB First)
+                n_y = bu[2] // Y_MSB = 0x05,       // Current Vertical Position (MSB First)
+                n_ButtonPosition = (bu[4] == 0)    // Current Button Position BUTTON 0:ist gedrückt
+    
+                if (bu[5] == 1) {// STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
+                    n_ButtonOnOff = !n_ButtonOnOff // OnOff umschalten
+                    pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([8, 0])) // (8) Status 'Button war gedrückt' löschen
+                } */
+
+            }
+        }
+        return n_GroveMultiswitchConnected
+
+    }
+
     export enum eStatus {
         //% block="[0] nicht angeschlossen"
         nicht_angeschlossen = 0,
@@ -23,9 +76,9 @@ namespace sender { // s-multiswitch.ts
     //let n_rgb = basic.rgb(7, 7, 7)
     let n_Status_changed = false
     let n_Status: eStatus // NaN 
-    let n_Magnet = false
+    // let n_Magnet = false
 
-    //% group="Grove Multiswitch 0x03"
+    //% group="Grove Multiswitch 0x03" deprecated=true
     //% block="Schalter einlesen und 1\\|3\\|5" weight=8
     export function i2cReadSwitch() {
         if (n_Status != eStatus.nicht_angeschlossen) {
