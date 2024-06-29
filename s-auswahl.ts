@@ -3,7 +3,7 @@ namespace sender { // s-auswahl.ts
 
     let a_StorageBuffer = Buffer.create(4)
 
-    export enum eStorageBuffer { modell, b, c, d } // Index im Buffer
+    export enum eStorageBuffer { funkgruppe, modell, c, d } // Index im Buffer
 
     export enum eModelle {
         cb2e,
@@ -12,8 +12,11 @@ namespace sender { // s-auswahl.ts
         car4
     } // so viele Images müssen im Array sein - Bilder am Ende dieser Datei
 
-  //  let n_Modell = eModelle.cb2e // aktuelles Modell, aus dem Flash und Buffer
 
+
+    export function getFunkgruppe() { return a_StorageBuffer[eStorageBuffer.funkgruppe] }
+
+    export function getModell() { return a_StorageBuffer[eStorageBuffer.modell] }
 
 
 
@@ -21,13 +24,12 @@ namespace sender { // s-auswahl.ts
     //% block="Start Auswahl Modell Flash einlesen %storagei32"
     export function startAuswahl(storagei32: number) {
         storageBufferSet(storagei32)
-        let iModell = a_StorageBuffer[eStorageBuffer.modell]
-        if (radio.between(iModell, 0, a_ModellImages.length - 1))
-            a_StorageBuffer[eStorageBuffer.modell] = iModell
-        else
+        // let iModell = a_StorageBuffer[eStorageBuffer.modell]
+        if (!radio.between(getModell(), 0, a_ModellImages.length - 1))
+            // wenn ungülti, Standardwert setzen
             a_StorageBuffer[eStorageBuffer.modell] = eModelle.cb2e
 
-        a_ModellImages[a_StorageBuffer[eStorageBuffer.modell]].showImage(0)
+        a_ModellImages[getModell()].showImage(0)
     }
 
 
@@ -38,7 +40,7 @@ namespace sender { // s-auswahl.ts
             a_StorageBuffer[eStorageBuffer.modell]--
         }
 
-        a_ModellImages[a_StorageBuffer[eStorageBuffer.modell]].showImage(0)
+        a_ModellImages[getModell()].showImage(0)
 
 
     }
@@ -50,8 +52,8 @@ namespace sender { // s-auswahl.ts
         if (a_StorageBuffer[eStorageBuffer.modell] < a_ModellImages.length - 1) {
             a_StorageBuffer[eStorageBuffer.modell]++
         }
-       
-        a_ModellImages[a_StorageBuffer[eStorageBuffer.modell]].showImage(0)
+
+        a_ModellImages[getModell()].showImage(0)
 
 
     }
