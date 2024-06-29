@@ -29,7 +29,7 @@ namespace sender { // s-advanced.ts
 
 
     // ========== group="lenken mit Tasten A:links B:rechts" advanced=true
-
+/* 
     export enum eServoButton {
         //% block="lesen"
         lesen,
@@ -55,6 +55,6 @@ namespace sender { // s-advanced.ts
 
         return n_ServoButton
     }
-
+ */
 
 } // s-advanced.ts

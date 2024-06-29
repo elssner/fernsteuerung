@@ -8,6 +8,7 @@ namespace radio { // bluetooth.ts
     let n_lastconnectedTime = input.runningTime()  // ms seit Start
     let n_programm = false // autonomes fahren nach Programm, kein Bluetooth timeout
 
+    let n_sendReset = false
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
     //% block="beim Start Funkgruppe %funkgruppe" weight=9
@@ -103,9 +104,9 @@ namespace radio { // bluetooth.ts
     //% block="Buffer senden %sendBuffer" weight=1
     //% sendBuffer.shadow="radio_sendBuffer19"
     export function sendData(sendBuffer: Buffer) {
-        if (sender.n_sendReset) {
+        if (n_sendReset) {
             setSchalter(sendBuffer, e0Schalter.b7, true)
-            sender.n_sendReset = false
+            n_sendReset = false
         }
         radio.sendBuffer(sendBuffer)
     }

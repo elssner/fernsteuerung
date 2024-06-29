@@ -12,11 +12,24 @@ namespace sender { // s-buttonevents.ts
     let n_ServoGabelstapler = 0 // 1..16..31 mit A- B+ ändern
 
     // ========== BUTTON EVENTS "halten"
-/* 
-    function aHold() {
-
-        let a = 0
-
+    /* 
+        function aHold() {
+    
+            let a = 0
+    
+            // wenn Knopf A halten
+            input.onButtonEvent(Button.A, ButtonEvent.Hold, function () {
+                if (n_enableButtonFunkgruppe && !(input.buttonIsPressed(Button.B))) {
+                    if (!radio.between(radio.n_funkgruppe, 0xA1, 0xBF))
+                        radio.n_funkgruppe = 0xA2
+                    radio.setGroup(--radio.n_funkgruppe)
+                    //zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
+                 if(a==0){}
+                }
+            })
+        }
+     */
+    /* 
         // wenn Knopf A halten
         input.onButtonEvent(Button.A, ButtonEvent.Hold, function () {
             if (n_enableButtonFunkgruppe && !(input.buttonIsPressed(Button.B))) {
@@ -24,32 +37,19 @@ namespace sender { // s-buttonevents.ts
                     radio.n_funkgruppe = 0xA2
                 radio.setGroup(--radio.n_funkgruppe)
                 //zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
-             if(a==0){}
             }
         })
-    }
- */
-/* 
-    // wenn Knopf A halten
-    input.onButtonEvent(Button.A, ButtonEvent.Hold, function () {
-        if (n_enableButtonFunkgruppe && !(input.buttonIsPressed(Button.B))) {
-            if (!radio.between(radio.n_funkgruppe, 0xA1, 0xBF))
-                radio.n_funkgruppe = 0xA2
-            radio.setGroup(--radio.n_funkgruppe)
-            //zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
-        }
-    })
-
-    // wenn Knopf B halten
-    input.onButtonEvent(Button.B, ButtonEvent.Hold, function () {
-        if (n_enableButtonFunkgruppe && !(input.buttonIsPressed(Button.A))) {
-            if (!radio.between(radio.n_funkgruppe, 0xA0, 0xBE))
-                radio.n_funkgruppe = 0xBE
-            radio.setGroup(++radio.n_funkgruppe)
-            //zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
-        }
-    })
- */
+    
+        // wenn Knopf B halten
+        input.onButtonEvent(Button.B, ButtonEvent.Hold, function () {
+            if (n_enableButtonFunkgruppe && !(input.buttonIsPressed(Button.A))) {
+                if (!radio.between(radio.n_funkgruppe, 0xA0, 0xBE))
+                    radio.n_funkgruppe = 0xBE
+                radio.setGroup(++radio.n_funkgruppe)
+                //zeigeBIN(n_funkgruppe - 0xA0, ePlot.bin, 0)
+            }
+        })
+     */
     // wenn Knopf A+B halten
     input.onButtonEvent(Button.AB, ButtonEvent.Hold, function () {
         if (n_enableButtonSendReset)

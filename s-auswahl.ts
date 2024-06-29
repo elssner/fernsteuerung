@@ -1,6 +1,8 @@
 
 namespace sender { // s-auswahl.ts
 
+  export  let n_ServoButtonAB = 0 // 1..16..31 mit A- B+ ändern
+
 
     // Storage: im Flash steht die Funkgruppe und das Modell, und wird beim Einschalten wieder hergestellt
 
@@ -12,6 +14,7 @@ namespace sender { // s-auswahl.ts
         mkck, // Maker Kit Car mit Kran
         car4  // CaR 4
     } // so viele Images müssen im Array sein - Bilder am Ende dieser Datei
+
     export function getModell(): eModell {
         // gibt den Enum Wert zurück
         return a_StorageBuffer[eStorageBuffer.modell]
@@ -73,8 +76,8 @@ namespace sender { // s-auswahl.ts
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
         }
-        else if (n_Funktion == eFunktion.m0_m1_s0) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-            setServoButton(eServoButton.links)
+        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoButtonAB > 1) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+            n_ServoButtonAB--
         }
         else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
 
@@ -97,8 +100,8 @@ namespace sender { // s-auswahl.ts
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
         }
-        else if (n_Funktion == eFunktion.m0_m1_s0) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-            setServoButton(eServoButton.rechts)
+        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoButtonAB < 31) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+            n_ServoButtonAB++
         }
         else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
 
@@ -107,6 +110,8 @@ namespace sender { // s-auswahl.ts
 
         }
     }
+
+
 
     //% group="Auswahl Modell" subcategory="Auswahl"
     //% block="Knopf A+B geklickt"
@@ -129,8 +134,10 @@ namespace sender { // s-auswahl.ts
         //else if (getModell() == eModell.mkck && n_Funktion == eFunktion.mc_mb)
         //    n_Funktion = eFunktion.m0_s0
 
-        else
+        else {
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
+            n_ServoButtonAB = 16
+        }
     }
 
 
