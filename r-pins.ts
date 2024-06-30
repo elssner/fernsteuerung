@@ -23,7 +23,7 @@ namespace receiver { // r-pins.ts
     //% block="Licht %pON"
     //% pON.shadow="toggleOnOff"
     export function pinGPIO4(pON: boolean) {
-        pins.digitalWritePin(a_PinGPIO4[n_Modell], pON ? 1 : 0)
+        pins.digitalWritePin(a_PinGPIO4[n_Modell], pON ? 0 : 1)
     }
 
 

@@ -58,18 +58,19 @@ namespace sender { // s-auswahl.ts
             a_ModellImages[radio.getModell()].showImage(0)
             radio.n5x5_clearScreen = true
         }
+        else if (isModell(eModell.mkck)) { // Modell Kran
+            a_Schalter[eSchalter.Magnet] = !a_Schalter[eSchalter.Magnet]
+        }
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
         }
         else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkelButtonAB > 1) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
             n_ServoWinkelButtonAB--
         }
-        else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
-
-        }
-        else if (n_Funktion == eFunktion.mc_mb) { // MC und MB (Zahnstange und Drehkranz)
-
-        }
+        //else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
+        //}
+        //else if (n_Funktion == eFunktion.mc_mb) { // MC und MB (Zahnstange und Drehkranz)
+        //}
     }
 
 
@@ -84,17 +85,17 @@ namespace sender { // s-auswahl.ts
             a_ModellImages[radio.getModell()].showImage(0)
             radio.n5x5_clearScreen = true
         }
-        else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
-
-        }
+        //else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
+        //}
         else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkelButtonAB < 31) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
             n_ServoWinkelButtonAB++
         }
-        else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
-
-        }
-        else if (n_Funktion == eFunktion.mc_mb) {
-
+        //else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
+        //}
+        //else if (n_Funktion == eFunktion.mc_mb) { // MC und MB (Zahnstange und Drehkranz)
+        //}
+        else {
+            a_Schalter[eSchalter.Licht] = !a_Schalter[eSchalter.Licht] // mit B Licht, wenn oben nichts anderes steht
         }
     }
 
@@ -113,9 +114,9 @@ namespace sender { // s-auswahl.ts
 
         // Maker Kit Car mit Kran
         else if (isModell(eModell.mkck) && n_Funktion == eFunktion.m0_s0)
-            n_Funktion = eFunktion.ma_mb
+            n_Funktion = eFunktion.ma_mb // Funktion weiter schalten
         else if (isModell(eModell.mkck) && n_Funktion == eFunktion.ma_mb)
-            n_Funktion = eFunktion.mc_mb
+            n_Funktion = eFunktion.mc_mb // Funktion weiter schalten
 
         else {
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
