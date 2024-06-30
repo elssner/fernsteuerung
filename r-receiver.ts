@@ -3,7 +3,7 @@ namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
     export enum eModell {
-        //% block="Controller v3"
+        //% block="Calliope v3"
         v3 = 0,     // Index in Arrays
         //% block="CaR 4"
         car4 = 1,   // Index in Arrays
@@ -70,13 +70,10 @@ namespace receiver { // r-receiver.ts
     export function beimStart(modell: eModell, servoGeradeaus: number, storagei32 = 175) {
         n_Modell = modell
         n_ServoGeradeaus = servoGeradeaus // Parameter
-        // radio.n_funkgruppe = funkgruppe
-        radio.storageBufferSet(storagei32)
 
-        pinRelay(true) // Relais an schalten (braucht gültiges n_Hardware, um den Pin zu finden)
+        pinRelay(true) // Relais an schalten (braucht gültiges n_Modell, um den Pin zu finden)
 
-        //radio.zeige5x5Funkgruppe()
-        // radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
+        radio.storageBufferSet(storagei32, true) // prüft ubd zeigt Funkgruppe an
 
         pins.servoWritePin(a_PinServo[n_Modell], n_ServoGeradeaus)
 

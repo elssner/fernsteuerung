@@ -1,25 +1,8 @@
 
 namespace sender { // s-auswahl.ts
 
-    export let n_ServoWinkel = 0 // 1..16..31 mit A- B+ ändern
-    //export let n_Magnet = false
-
-
-    // Storage: im Flash steht die Funkgruppe und das Modell, und wird beim Einschalten wieder hergestellt
-    /* 
-        let a_StorageBuffer = Buffer.create(4) // lokaler Speicher 4 Byte NumberFormat.UInt32LE
-        enum eStorageBuffer { funkgruppe, modell } // Index im Buffer
-        export enum eModell { // zuletzt gewähltes Modell wird im offset 1 dauerhaft gespeiechert
-            //% block="Calli:Bot"
-            cb2e, // Standardwert CalliBot
-            //% block="Maker Kit Car"
-            mkcg, // Maker Kit Car ohne und mit Gabelstapler
-            //% block="Maker Kit Car Kran"
-            mkck, // Maker Kit Car mit Kran
-            //% block="CaR 4"
-            car4  // CaR 4
-        } // so viele Images müssen im Array sein - Bilder am Ende dieser Datei
-     */
+  export   let n_ServoWinkelButtonAB = 0 // 1..16..31 mit A- B+ ändern
+   
 
     // Funktion: wird je nach Modell mit Tasten geändert, steht nicht im Flash
 
@@ -66,8 +49,8 @@ namespace sender { // s-auswahl.ts
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
         }
-        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkel > 1) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-            n_ServoWinkel--
+        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkelButtonAB > 1) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+            n_ServoWinkelButtonAB--
         }
         else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
 
@@ -91,8 +74,8 @@ namespace sender { // s-auswahl.ts
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
         }
-        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkel < 31) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-            n_ServoWinkel++
+        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkelButtonAB < 31) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+            n_ServoWinkelButtonAB++
         }
         else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
 
@@ -124,7 +107,7 @@ namespace sender { // s-auswahl.ts
 
         else {
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
-            n_ServoWinkel = 16
+            n_ServoWinkelButtonAB = 16
         }
     }
 

@@ -13,14 +13,15 @@ namespace sender {
     //% inlineInputMode=inline
     export function beimStart(storagei32 = 175) {
         if (!radio.simulator()) {
-            radio.storageBufferSet(storagei32)
+            radio.storageBufferSet(storagei32, true) // prüft ubd zeigt Funkgruppe an
 
-            // startAuswahlModell() // s-auswahl.ts Bild anzeigen mit Pause 1500ms
+
             if (!radio.between(radio.getModell(), 0, a_ModellImages.length - 1))
                 // wenn ungültig, Standardwert setzen
-                radio.setModell( radio.eModell.cb2e)
+                radio.setModell(radio.eModell.cb2e)
 
-            a_ModellImages[radio.getModell()].showImage(0) // Bild vom Modell anzeigen
+            // Bild anzeigen mit Pause 1500ms, Image-Array in s-auswahl.ts
+            a_ModellImages[radio.getModell()].showImage(0)
             basic.pause(1500)
 
             radio.beimStartintern() // setzt auch n_start true, startet Bluetooth Empfang
@@ -59,7 +60,7 @@ namespace sender {
     export function sendM01(buffer: Buffer, prozent = 100) {
         radio.setBetriebsart(radio.radio_sendBuffer19(), radio.e0Betriebsart.p0)
         radio.setByte(radio.radio_sendBuffer19(), radio.eBufferPointer.m0, radio.eBufferOffset.b0_Motor, radio.motorProzent(joystickValue(eJoystickValue.xmotor), prozent))
-        radio.setByte(radio.radio_sendBuffer19(), radio.eBufferPointer.m0, radio.eBufferOffset.b1_Servo, n_ServoWinkel)
+        radio.setByte(radio.radio_sendBuffer19(), radio.eBufferPointer.m0, radio.eBufferOffset.b1_Servo, n_ServoWinkelButtonAB)
         radio.setByte(radio.radio_sendBuffer19(), radio.eBufferPointer.m1, radio.eBufferOffset.b0_Motor, joystickValue(eJoystickValue.ymotor))
         radio.setaktiviert(radio.radio_sendBuffer19(), radio.e3aktiviert.m0, true)
         radio.setaktiviert(radio.radio_sendBuffer19(), radio.e3aktiviert.m1, true)

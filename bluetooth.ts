@@ -15,15 +15,15 @@ namespace radio { // bluetooth.ts
     //% block="beim Start Funkgruppe / Flash %storagei32" weight=9
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     export function beimStart(storagei32: number) {
-        storageBufferSet(storagei32)
+        storageBufferSet(storagei32, true)
         beimStartintern()
     }
 
     export function beimStartintern() {
         // storageBufferSet(storagei32) ist bereits erfolgt
 
-        if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
-            a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
+        //if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
+        //    a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
 
         //if (between(funkgruppe, 0xA0, 0xBF))
         //    a_StorageBuffer[eStorageBuffer.funkgruppe] = funkgruppe //      n_funkgruppe = funkgruppe
@@ -36,7 +36,7 @@ namespace radio { // bluetooth.ts
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
 
-        zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+        //  zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
 
         n_start = true
     }
@@ -56,7 +56,7 @@ namespace radio { // bluetooth.ts
         reset
     }
 
-  
+
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
     //% block="Funkgruppe %e" weight=7
@@ -96,10 +96,19 @@ namespace radio { // bluetooth.ts
 
 
     //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00 deprecated=true
-    //% block="Flash einlesen %i32" weight=3
-    export function storageBufferSet(i32: number) {
+    //% block="Flash einlesen %i32 || zeige Funkgruppe %zeigeFunkgruppe" weight=3
+    //% zeigeFunkgruppe.shadow="toggleYesNo"
+    export function storageBufferSet(i32: number, zeigeFunkgruppe = false) {
         // i32.shadow=storage_get_number
         a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
+
+        // Gültigkeit: Funkgruppe muss 0xA .. 0xBF sein
+        if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
+            a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
+
+        if (zeigeFunkgruppe)
+            zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+
     }
 
     //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00
