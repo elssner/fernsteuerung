@@ -22,7 +22,7 @@ namespace sender { // s-multiswitch.ts
                 // Richtung N = 1, W = 2, S = 3, O = 4, M = 5
                 // ON=00000000 OFF=00000001
 
-                if (getModell() == eModell.mkck) { // Maker Kit Car mit Kran
+                if (radio.isModell(radio.eModell.mkck)) { // (getModell() == eModell.mkck) { // Maker Kit Car mit Kran
 
                     if (bu[3 + 5] == 0) {      // 5 Mitte gedrückt
                         n_Funktion = eFunktion.m0_s0 // Joystick steuert M0 und Servo (Fahren und Lenken)

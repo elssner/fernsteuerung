@@ -23,7 +23,8 @@
         "r-pins.ts",
         "r-advanced.ts",
         "r-calliope-v3.ts",
-        "s-auswahl.ts"
+        "s-auswahl.ts",
+        "storage.ts"
     ],
     "testFiles": [
         "test.ts"
