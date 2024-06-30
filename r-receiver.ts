@@ -11,7 +11,7 @@ namespace receiver { // r-receiver.ts
         calli2bot = 2
     }
 
-    export let n_Modell= eModell.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
+    export let n_Modell = eModell.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
 
     export let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
     let a_PinServo: AnalogPin[] = [108, AnalogPin.C4]       // 0:AnalogPin.C8 GPIO1
@@ -63,20 +63,20 @@ namespace receiver { // r-receiver.ts
 
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start %hardware Servo ↑ %servoGeradeaus ° || Funkgruppe %funkgruppe" weight=8
+    //% block="beim Start %modell Servo ↑ %servoGeradeaus ° || Funkgruppe / Flash %storagei32" weight=8
     //% servoGeradeaus.min=81 servoGeradeaus.max=99 servoGeradeaus.defl=90
-    //% bFunkgruppe.shadow="toggleYesNo" bFunkgruppe.defl=1
-    //% funkgruppe.min=160 funkgruppe.max=191 funkgruppe.defl=175
+    //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     //% inlineInputMode=inline
-    export function beimStart(modell: eModell, servoGeradeaus: number, funkgruppe = 175) {
+    export function beimStart(modell: eModell, servoGeradeaus: number, storagei32 = 175) {
         n_Modell = modell
         n_ServoGeradeaus = servoGeradeaus // Parameter
         // radio.n_funkgruppe = funkgruppe
+        radio.storageBufferSet(storagei32)
 
         pinRelay(true) // Relais an schalten (braucht gültiges n_Hardware, um den Pin zu finden)
 
         //radio.zeige5x5Funkgruppe()
-        radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
+        // radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
 
         pins.servoWritePin(a_PinServo[n_Modell], n_ServoGeradeaus)
 
@@ -86,19 +86,13 @@ namespace receiver { // r-receiver.ts
         //if (qMotorReset())
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
-       
-        radio.beimStart(funkgruppe) // setzt auch n_start true, muss deshalb zuletzt stehen
+
+        radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
 
         //radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
         //  addStatus(n_ready)
     }
 
-
-    // group="calliope-net.github.io/mkc-63"
-    // block="Car bereit" weight=6
-    /* export function carReady() {
-        return n_ready && motorStatus(ei2cMotor.i2cMotorAB) && motorStatus(ei2cMotor.i2cMotorCD)
-    } */
 
 
     // ========== group="Motor"
