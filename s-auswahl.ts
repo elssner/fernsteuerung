@@ -108,7 +108,6 @@ namespace sender { // s-auswahl.ts
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
 
         // Maker Kit Car ohne und mit Gabelstapler
-
         else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_s0)
             n_Funktion = eFunktion.m0_m1_s0
 

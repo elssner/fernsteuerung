@@ -11,6 +11,10 @@ namespace radio { // dispaly5x5.ts
     let n5x5_x3 = 0 // Motor 1..16..31
     let n5x5_x4 = 0 // Servo 1..16..31
 
+    // ↕↕...
+    export function zeigeFunkgruppe() {
+        zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+    }
 
     //% group="BIN" subcategory="Display 5x5" color=#54C9C9
     //% block="zeige ↑↑↕.. aktive Motoren %buffer" weight=8
@@ -130,8 +134,9 @@ namespace radio { // dispaly5x5.ts
 
         if (format == ePlot.bin && between(xLed, 0, 4)) {
             if (n5x5_clearScreen) {
-                basic.clearScreen()
                 n5x5_clearScreen = false
+                basic.clearScreen()
+                zeigeFunkgruppe()
             }
             for (let y = 4; y >= 0; y--) {
                 if ((int % 2) == 1) { led.plot(xLed, y) } else { led.unplot(xLed, y) }

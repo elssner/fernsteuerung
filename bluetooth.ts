@@ -19,7 +19,7 @@ namespace radio { // bluetooth.ts
         beimStartintern(false)
     }
 
-    export function beimStartintern( zeigeFunkgruppe :boolean) {
+    export function beimStartintern(pZeigeFunkgruppe: boolean) {
         // storageBufferSet(storagei32) ist bereits erfolgt
 
         //if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
@@ -35,9 +35,10 @@ namespace radio { // bluetooth.ts
         radio.setGroup(getFunkgruppe())// a_StorageBuffer[eStorageBuffer.funkgruppe])
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
-        
-        if (zeigeFunkgruppe)
-            zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+
+        if (pZeigeFunkgruppe)
+            //zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+            zeigeFunkgruppe()
 
         //  zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
 
@@ -76,7 +77,10 @@ namespace radio { // bluetooth.ts
 
         radio.setGroup(a_StorageBuffer[eStorageBuffer.funkgruppe])
 
-        zeigeBIN(a_StorageBuffer[eStorageBuffer.funkgruppe], ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+        //zeigeBIN(a_StorageBuffer[eStorageBuffer.funkgruppe], ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+        zeigeFunkgruppe()
+
+
         //    return a_StorageBuffer[eStorageBuffer.funkgruppe]
         //}
         /* if (e == eFunkgruppeButton.lesen)
@@ -101,7 +105,7 @@ namespace radio { // bluetooth.ts
     //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00 deprecated=true
     //% block="Flash einlesen %i32 || zeige Funkgruppe %zeigeFunkgruppe" weight=3
     //% zeigeFunkgruppe.shadow="toggleYesNo"
-    export function storageBufferSet(i32: number, zeigeFunkgruppe = false) {
+    export function storageBufferSet(i32: number, pZeigeFunkgruppe = false) {
         // i32.shadow=storage_get_number
         a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
 
@@ -109,8 +113,9 @@ namespace radio { // bluetooth.ts
         if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
             a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
 
-        if (zeigeFunkgruppe)
-            zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+        if (pZeigeFunkgruppe)
+            // zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+            zeigeFunkgruppe()
 
     }
 
