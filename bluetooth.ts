@@ -44,12 +44,26 @@ namespace radio { // bluetooth.ts
     }
 
 
-    let n_FunkgruppeButton = 0xAF
+  //  let n_FunkgruppeButton = 0xAF
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
     //% block="Funkgruppe %i " weight=8
     export function setFunkgruppeButton(e: eFunkgruppeButton): number {
         if (e == eFunkgruppeButton.lesen)
+            return n_funkgruppe
+        else {
+            if (e == eFunkgruppeButton.minus && n_funkgruppe > 0xA0)
+                n_funkgruppe--
+            else if (e == eFunkgruppeButton.plus && n_funkgruppe < 0xBF)
+                n_funkgruppe++
+            else if (e == eFunkgruppeButton.reset)
+                n_funkgruppe = 0xAF
+
+            radio.setGroup(n_funkgruppe)
+            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+            return n_funkgruppe
+        }
+        /* if (e == eFunkgruppeButton.lesen)
             return n_FunkgruppeButton
         else {
             if (e == eFunkgruppeButton.minus && n_FunkgruppeButton > 0xA0)
@@ -62,7 +76,7 @@ namespace radio { // bluetooth.ts
             radio.setGroup(n_funkgruppe)
             zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
             return n_FunkgruppeButton
-        }
+        } */
     }
 
 
