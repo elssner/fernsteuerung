@@ -133,7 +133,7 @@ namespace sender { // s-auswahl.ts
         return radio.a_StorageBuffer[radio.eStorageBuffer.modell]
     }
 
-    //% group="Auswahl Modell und Funktion" subcategory="Auswahl" deprecated=true
+    //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
     //% block="%pModell" weight=4
     export function isModell(pModell: radio.eModell) {
         // return radio.isModell(pModell)
