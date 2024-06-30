@@ -20,7 +20,7 @@ namespace receiver { // r-pins.ts
     // GPIO für Grove (5V) Licht oder Buzzer
 
     //% group="Pin GPIO" subcategory="Pins"
-    //% block="Hupe %pON"
+    //% block="Licht %pON"
     //% pON.shadow="toggleOnOff"
     export function pinGPIO4(pON: boolean) {
         pins.digitalWritePin(a_PinGPIO4[n_Modell], pON ? 1 : 0)
