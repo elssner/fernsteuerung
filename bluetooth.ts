@@ -112,26 +112,6 @@ namespace radio { // bluetooth.ts
     }
 
 
-    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" deprecated=true
-    //% block="Funkgruppe || ändern %i und anzeigen" weight=8
-    //% i.min=-1 i.max=1
-    /* export function getFunkgruppe(i?: number): number {
-        if (i != undefined) {
-            if (i < 0 && n_funkgruppe + i > 0xA0) {
-                n_funkgruppe += i
-                radio.setGroup(n_funkgruppe)
-            }
-            else if (i > 0 && n_funkgruppe + i < 0xBF) {
-                n_funkgruppe += i
-                radio.setGroup(n_funkgruppe)
-            }
-            //zeige5x5Funkgruppe()
-            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-        }
-        return n_funkgruppe
-    } */
-
-
 
 
     // ========== group="Bluetooth senden" subcategory="Bluetooth"
@@ -241,42 +221,6 @@ namespace radio { // bluetooth.ts
 
 
 
-    /* 
-    
-        // ========== wenn Text empfangen (Bluetooth Status zurück senden)
-    
-        let n_receivedString = ""
-        let n_receivedStringChanged = false
-    
-        radio.onReceivedString(function (receivedString) {
-            n_receivedStringChanged = n_receivedString != receivedString
-            if (n_receivedStringChanged) {
-                n_receivedString = receivedString
-            }
-        })
-    
-    
-        //% group="Bluetooth empfangen (Text)" subcategory="Sender"
-    
-        //% group="Bluetooth empfangen (Text)" subcategory="Sender"
-        //% block="Status empfangen Änderung" weight=4
-        export function receivedStringChanged() { return n_receivedStringChanged }
-    
-        //% group="Bluetooth empfangen (Text)" subcategory="Sender"
-        //% block="Status empfangen Text" weight=3
-        export function receivedStringText() { return n_receivedString.substr(2) }
-    
-    
-    
-    // ========== group="Button A+B" subcategory="Sender"
-    
-        //% group="Button A+B" subcategory="Sender"
-        //% block="mit 'A+B halten' Reset senden %enable" weight=6
-        //% enable.shadow="toggleYesNo"
-        export function enableButtonSendReset(enable: boolean) { n_enableButtonSendReset = enable } // buttonevents.ts
-    
-     */
-
 
     // ========== group="Storage (Flash)" color=#FFBB00
 
@@ -292,14 +236,14 @@ namespace radio { // bluetooth.ts
         a_StorageBuffer[eStorageBuffer.modell] = pModell
     }
 
-    //% group="Storage (Flash)" subcategory="Auswahl"
+    //% group="Storage (Flash)" subcategory="Storage"
     //% block="Flash einlesen %i32" weight=9
     export function storageBufferSet(i32: number) {
         // i32.shadow=storage_get_number
         a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
     }
 
-    //% group="Storage (Flash)" subcategory="Auswahl"
+    //% group="Storage (Flash)" subcategory="Storage"
     //% block="Flash speichern" weight=8
     export function storageBufferGet() {
         return a_StorageBuffer.getNumber(NumberFormat.UInt32LE, 0)
