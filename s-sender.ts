@@ -13,14 +13,14 @@ namespace sender {
     //% inlineInputMode=inline
     export function beimStart(storagei32 = 175) {
         if (!radio.simulator()) {
-            storageBufferSet(storagei32)
+            radio.storageBufferSet(storagei32)
 
             // startAuswahlModell() // s-auswahl.ts Bild anzeigen mit Pause 1500ms
-            if (!radio.between(getModell(), 0, a_ModellImages.length - 1))
+            if (!radio.between(radio.getModell(), 0, a_ModellImages.length - 1))
                 // wenn ungültig, Standardwert setzen
-                radio.a_StorageBuffer[radio.eStorageBuffer.modell] = radio.eModell.cb2e
+                radio.setModell( radio.eModell.cb2e)
 
-            a_ModellImages[getModell()].showImage(0) // Bild vom Modell anzeigen
+            a_ModellImages[radio.getModell()].showImage(0) // Bild vom Modell anzeigen
             basic.pause(1500)
 
             radio.beimStartintern() // setzt auch n_start true, startet Bluetooth Empfang

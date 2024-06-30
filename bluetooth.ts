@@ -1,8 +1,9 @@
 
 namespace radio { // bluetooth.ts
 
-    // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
-    //  let n_funkgruppe = 0xA0
+    let a_StorageBuffer = Buffer.create(4) // lokaler Speicher 4 Byte NumberFormat.UInt32LE
+    enum eStorageBuffer { funkgruppe, modell /* , c, d */ } // Index im Buffer
+
     let n_start = false
 
     let n_lastconnectedTime = input.runningTime()  // ms seit Start
@@ -63,9 +64,9 @@ namespace radio { // bluetooth.ts
 
     export enum eFunkgruppeButton {
         //% block="lesen"
-        lesen,
+        // lesen,
         //% block="lesen und anzeigen"
-        anzeigen,
+        //  anzeigen,
         //% block="-1 und anzeigen"
         minus,
         //% block="+1 und anzeigen"
@@ -79,21 +80,21 @@ namespace radio { // bluetooth.ts
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
     //% block="Funkgruppe %i " weight=8
-    export function setFunkgruppeButton(e: eFunkgruppeButton): number {
-        if (e == eFunkgruppeButton.lesen)
-            return a_StorageBuffer[eStorageBuffer.funkgruppe]
-        else {
-            if (e == eFunkgruppeButton.minus && a_StorageBuffer[eStorageBuffer.funkgruppe] > 0xA0)
-                a_StorageBuffer[eStorageBuffer.funkgruppe]--
-            else if (e == eFunkgruppeButton.plus && a_StorageBuffer[eStorageBuffer.funkgruppe] < 0xBF)
-                a_StorageBuffer[eStorageBuffer.funkgruppe]++
-            else if (e == eFunkgruppeButton.reset)
-                a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
+    export function setFunkgruppeButton(e: eFunkgruppeButton) {
+        //if (e == eFunkgruppeButton.lesen)
+        //    return a_StorageBuffer[eStorageBuffer.funkgruppe]
+        //else {
+        if (e == eFunkgruppeButton.minus && a_StorageBuffer[eStorageBuffer.funkgruppe] > 0xA0)
+            a_StorageBuffer[eStorageBuffer.funkgruppe]--
+        else if (e == eFunkgruppeButton.plus && a_StorageBuffer[eStorageBuffer.funkgruppe] < 0xBF)
+            a_StorageBuffer[eStorageBuffer.funkgruppe]++
+        else if (e == eFunkgruppeButton.reset)
+            a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
 
-            radio.setGroup(a_StorageBuffer[eStorageBuffer.funkgruppe])
-            zeigeBIN(a_StorageBuffer[eStorageBuffer.funkgruppe], ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-            return a_StorageBuffer[eStorageBuffer.funkgruppe]
-        }
+        radio.setGroup(a_StorageBuffer[eStorageBuffer.funkgruppe])
+        zeigeBIN(a_StorageBuffer[eStorageBuffer.funkgruppe], ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+        //    return a_StorageBuffer[eStorageBuffer.funkgruppe]
+        //}
         /* if (e == eFunkgruppeButton.lesen)
             return n_FunkgruppeButton
         else {
@@ -103,7 +104,7 @@ namespace radio { // bluetooth.ts
                 n_FunkgruppeButton++
             else if (e == eFunkgruppeButton.reset)
                 n_FunkgruppeButton = 0xAF
-
+    
             radio.setGroup(n_funkgruppe)
             zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
             return n_FunkgruppeButton
@@ -275,5 +276,34 @@ namespace radio { // bluetooth.ts
         export function enableButtonSendReset(enable: boolean) { n_enableButtonSendReset = enable } // buttonevents.ts
     
      */
+
+
+    // ========== group="Storage (Flash)" color=#FFBB00
+
+    export function getFunkgruppe() {
+        return a_StorageBuffer[eStorageBuffer.funkgruppe]
+    }
+
+    export function getModell(): eModell {
+        // gibt den Enum Wert zurück
+        return a_StorageBuffer[eStorageBuffer.modell]
+    }
+    export function setModell(pModell: eModell) {
+        a_StorageBuffer[eStorageBuffer.modell] = pModell
+    }
+
+    //% group="Storage (Flash)" subcategory="Auswahl"
+    //% block="Flash einlesen %i32" weight=9
+    export function storageBufferSet(i32: number) {
+        // i32.shadow=storage_get_number
+        a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
+    }
+
+    //% group="Storage (Flash)" subcategory="Auswahl"
+    //% block="Flash speichern" weight=8
+    export function storageBufferGet() {
+        return a_StorageBuffer.getNumber(NumberFormat.UInt32LE, 0)
+    }
+
 
 } // bluetooth.ts

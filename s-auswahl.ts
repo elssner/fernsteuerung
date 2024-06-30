@@ -58,9 +58,10 @@ namespace sender { // s-auswahl.ts
     export function buttonA() {
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
-            if (radio.a_StorageBuffer[radio.eStorageBuffer.modell] > 0)
-                radio.a_StorageBuffer[radio.eStorageBuffer.modell]--
-            a_ModellImages[getModell()].showImage(0)
+            if (radio.getModell() > 0)
+                radio.setModell(radio.getModell() - 1)
+            //radio.a_StorageBuffer[radio.eStorageBuffer.modell]--
+            a_ModellImages[radio.getModell()].showImage(0)
         }
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
@@ -82,9 +83,10 @@ namespace sender { // s-auswahl.ts
     export function buttonB() {
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
-            if (radio.a_StorageBuffer[radio.eStorageBuffer.modell] < a_ModellImages.length - 1)
-                radio.a_StorageBuffer[radio.eStorageBuffer.modell]++
-            a_ModellImages[getModell()].showImage(0)
+            if (radio.getModell() < a_ModellImages.length - 1)
+                radio.setModell(radio.getModell() + 1)
+               //radio.a_StorageBuffer[radio.eStorageBuffer.modell]++
+            a_ModellImages[radio.getModell()].showImage(0)
         }
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
@@ -127,16 +129,16 @@ namespace sender { // s-auswahl.ts
     }
 
 
-    export function getModell(): radio.eModell {
+   /*  export function getModell(): radio.eModell {
         // gibt den Enum Wert zurück
         return radio.a_StorageBuffer[radio.eStorageBuffer.modell]
-    }
+    } */
 
     //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
     //% block="%pModell" weight=4
     export function isModell(pModell: radio.eModell) {
         // return radio.isModell(pModell)
-        return radio.a_StorageBuffer[radio.eStorageBuffer.modell] == pModell
+        return radio.getModell() == pModell
     }
 
 
@@ -164,23 +166,23 @@ namespace sender { // s-auswahl.ts
         return a_Schalter[pSchalter]
     }
 
-
-    // ========== group="Storage (Flash)" color=#FFBB00
-
-    //% group="Storage (Flash)" subcategory="Auswahl" deprecated=true
-    //% block="Flash einlesen %i32" weight=9
-    export function storageBufferSet(i32: number) {
-        // i32.shadow=storage_get_number
-        radio.a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
-    }
-
-    //% group="Storage (Flash)" subcategory="Auswahl" deprecated=true
-    //% block="Flash speichern" weight=8
-    export function storageBufferGet() {
-        return radio.a_StorageBuffer.getNumber(NumberFormat.UInt32LE, 0)
-    }
-
-
+    /* 
+        // ========== group="Storage (Flash)" color=#FFBB00
+    
+        //% group="Storage (Flash)" subcategory="Auswahl" deprecated=true
+        //% block="Flash einlesen %i32" weight=9
+        export function storageBufferSet(i32: number) {
+            // i32.shadow=storage_get_number
+            radio.a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
+        }
+    
+        //% group="Storage (Flash)" subcategory="Auswahl" deprecated=true
+        //% block="Flash speichern" weight=8
+        export function storageBufferGet() {
+            return radio.a_StorageBuffer.getNumber(NumberFormat.UInt32LE, 0)
+        }
+    
+     */
 
     // ========== Bilder für Auswahl Modell
 
