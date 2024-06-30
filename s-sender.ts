@@ -18,7 +18,7 @@ namespace sender {
 
             if (!radio.between(radio.getModell(), 0, a_ModellImages.length - 1))
                 // wenn ungültig, Standardwert setzen
-                radio.setModell(radio.eModell.cb2e)
+                radio.setModell(eModell.cb2e)
 
             // Bild anzeigen mit Pause 1500ms, Image-Array in s-auswahl.ts
             a_ModellImages[radio.getModell()].showImage(0)

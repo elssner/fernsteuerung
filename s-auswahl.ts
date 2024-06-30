@@ -1,8 +1,19 @@
 
 namespace sender { // s-auswahl.ts
 
-  export   let n_ServoWinkelButtonAB = 0 // 1..16..31 mit A- B+ ändern
-   
+    export let n_ServoWinkelButtonAB = 0 // 1..16..31 mit A- B+ ändern
+
+    export enum eModell { // zuletzt gewähltes Modell wird im offset 1 dauerhaft gespeiechert
+        //% block="Calli:Bot"
+        cb2e, // Standardwert CalliBot
+        //% block="Maker Kit Car"
+        mkcg, // Maker Kit Car ohne und mit Gabelstapler
+        //% block="Maker Kit Car Kran"
+        mkck, // Maker Kit Car mit Kran
+        //% block="CaR 4"
+        car4  // CaR 4
+    } // so viele Images müssen im Array sein - Bilder am Ende dieser Datei
+
 
     // Funktion: wird je nach Modell mit Tasten geändert, steht nicht im Flash
 
@@ -68,7 +79,7 @@ namespace sender { // s-auswahl.ts
             // wenn nicht gestartet, kann Modell geändert werden
             if (radio.getModell() < a_ModellImages.length - 1)
                 radio.setModell(radio.getModell() + 1)
-               //radio.a_StorageBuffer[radio.eStorageBuffer.modell]++
+            //radio.a_StorageBuffer[radio.eStorageBuffer.modell]++
             a_ModellImages[radio.getModell()].showImage(0)
         }
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
@@ -96,13 +107,13 @@ namespace sender { // s-auswahl.ts
 
         // Maker Kit Car ohne und mit Gabelstapler
 
-        else if (isModell(radio.eModell.mkcg) && n_Funktion == eFunktion.m0_s0)
+        else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_s0)
             n_Funktion = eFunktion.m0_m1_s0
 
         // Maker Kit Car mit Kran
-        else if (isModell(radio.eModell.mkck) && n_Funktion == eFunktion.m0_s0)
+        else if (isModell(eModell.mkck) && n_Funktion == eFunktion.m0_s0)
             n_Funktion = eFunktion.ma_mb
-        else if (isModell(radio.eModell.mkck) && n_Funktion == eFunktion.ma_mb)
+        else if (isModell(eModell.mkck) && n_Funktion == eFunktion.ma_mb)
             n_Funktion = eFunktion.mc_mb
 
         else {
@@ -112,20 +123,20 @@ namespace sender { // s-auswahl.ts
     }
 
 
-   /*  export function getModell(): radio.eModell {
-        // gibt den Enum Wert zurück
-        return radio.a_StorageBuffer[radio.eStorageBuffer.modell]
-    } */
+    /*  export function getModell(): radio.eModell {
+         // gibt den Enum Wert zurück
+         return radio.a_StorageBuffer[radio.eStorageBuffer.modell]
+     } */
 
-    //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
+    //% group="Modell" subcategory="Auswahl"
     //% block="%pModell" weight=4
-    export function isModell(pModell: radio.eModell) {
+    export function isModell(pModell: eModell) {
         // return radio.isModell(pModell)
         return radio.getModell() == pModell
     }
 
 
-    //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
+    //% group="Funktion" subcategory="Auswahl"
     //% block="%pFunktion" weight=3
     export function isFunktion(pFunktion: eFunktion) {
         if (pFunktion == eFunktion.ng)
@@ -134,38 +145,18 @@ namespace sender { // s-auswahl.ts
             return pFunktion == n_Funktion
     }
 
-    //% group="Auswahl Modell und Funktion" subcategory="Auswahl" deprecated=true
-    //% block="Magnet" weight=2
-    export function getMagnet() {
-        return false// n_Magnet 
-    }
+ 
 
     export enum eSchalter { Magnet, Licht }
     export let a_Schalter = [false, false]
 
-    //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
+    //% group="Schalter" subcategory="Auswahl"
     //% block="%pSchalter" weight=2
     export function getSchalter(pSchalter: eSchalter): boolean {
         return a_Schalter[pSchalter]
     }
 
-    /* 
-        // ========== group="Storage (Flash)" color=#FFBB00
-    
-        //% group="Storage (Flash)" subcategory="Auswahl" deprecated=true
-        //% block="Flash einlesen %i32" weight=9
-        export function storageBufferSet(i32: number) {
-            // i32.shadow=storage_get_number
-            radio.a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
-        }
-    
-        //% group="Storage (Flash)" subcategory="Auswahl" deprecated=true
-        //% block="Flash speichern" weight=8
-        export function storageBufferGet() {
-            return radio.a_StorageBuffer.getNumber(NumberFormat.UInt32LE, 0)
-        }
-    
-     */
+
 
     // ========== Bilder für Auswahl Modell
 

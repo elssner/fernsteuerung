@@ -233,11 +233,11 @@ namespace radio { // bluetooth.ts
         return a_StorageBuffer[eStorageBuffer.funkgruppe]
     }
 
-    export function getModell(): eModell {
+    export function getModell() {
         // gibt den Enum Wert zurück
         return a_StorageBuffer[eStorageBuffer.modell]
     }
-    export function setModell(pModell: eModell) {
+    export function setModell(pModell: number) {
         a_StorageBuffer[eStorageBuffer.modell] = pModell
     }
 
