@@ -16,10 +16,10 @@ namespace radio { // bluetooth.ts
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     export function beimStart(storagei32: number) {
         storageBufferSet(storagei32, true)
-        beimStartintern()
+        beimStartintern(false)
     }
 
-    export function beimStartintern() {
+    export function beimStartintern( zeigeFunkgruppe :boolean) {
         // storageBufferSet(storagei32) ist bereits erfolgt
 
         //if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
@@ -35,6 +35,9 @@ namespace radio { // bluetooth.ts
         radio.setGroup(getFunkgruppe())// a_StorageBuffer[eStorageBuffer.funkgruppe])
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
+        
+        if (zeigeFunkgruppe)
+            zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
 
         //  zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
 

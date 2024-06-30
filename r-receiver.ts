@@ -84,7 +84,7 @@ namespace receiver { // r-receiver.ts
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
 
-        radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
+        radio.beimStartintern(false) // setzt auch n_start true, muss deshalb zuletzt stehen
 
         //radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
         //  addStatus(n_ready)

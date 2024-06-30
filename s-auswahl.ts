@@ -56,6 +56,7 @@ namespace sender { // s-auswahl.ts
                 radio.setModell(radio.getModell() - 1)
             //radio.a_StorageBuffer[radio.eStorageBuffer.modell]--
             a_ModellImages[radio.getModell()].showImage(0)
+            radio.n5x5_clearScreen = true
         }
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
@@ -81,6 +82,7 @@ namespace sender { // s-auswahl.ts
                 radio.setModell(radio.getModell() + 1)
             //radio.a_StorageBuffer[radio.eStorageBuffer.modell]++
             a_ModellImages[radio.getModell()].showImage(0)
+            radio.n5x5_clearScreen = true
         }
         else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
 
@@ -145,7 +147,7 @@ namespace sender { // s-auswahl.ts
             return pFunktion == n_Funktion
     }
 
- 
+
 
     export enum eSchalter { Magnet, Licht }
     export let a_Schalter = [false, false]
