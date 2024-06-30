@@ -3,7 +3,7 @@ namespace sender { // s-qwiicjoystick.ts
 
     const i2cqwiicJoystick_x20 = 0x20
     let n_qwiicJoystickConnected = true // Antwort von i2cWriteBuffer == 0 wenn angeschlossen
-    let n_128 = 3 // Korrektur Joystick Nullstellung 128-3 .. 128+3 ist 128
+    // let n_128 = 3 // Korrektur Joystick Nullstellung 128-3 .. 128+3 ist 128
     let n_max = 0 // Korrektur Joystick Endstellung nur beim Servo
 
     // speichert die vom Joystick gelesenen Werte
@@ -30,21 +30,22 @@ namespace sender { // s-qwiicjoystick.ts
         servo90,
         //% block="y Servo (1 ↖ 16 ↗ 31)"
         servo16,
-        //% block="x Motor (1 ↓ 16 ↑ 31)"
-        //motor16
+        //% block="x Motor (-100 ↓ 0 ↑ +100)"
+        xmotor100,
+        //% block="y Motor (-100 ↓ 0 ↑ +100)"
+        ymotor100
     }
 
 
     //% group="Qwiic Joystick 0x20"
-    //% block="Joystick einlesen || 128 ± %p128 max ± %pmax" weight=9
-    //% p128.min=0 p128.max=8 p128.defl=3
+    //% block="Joystick einlesen || max ± %pmax" weight=9
     //% pmax.min=0 pmax.max=20
-    export function joystickQwiic(p128 = 3, pmax = 0) {
+    export function joystickQwiic(pmax = 0) {
         if (n_qwiicJoystickConnected) {
             n_qwiicJoystickConnected = pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) == 0
 
             if (n_qwiicJoystickConnected) {
-                n_128 = radio.between(p128, 0, 8) ? p128 : 0
+                // n_128 = radio.between(p128, 0, 8) ? p128 : 0
                 n_max = radio.between(pmax, 0, 20) ? pmax : 0
 
                 let bu = pins.i2cReadBuffer(i2cqwiicJoystick_x20, 6)
@@ -58,7 +59,7 @@ namespace sender { // s-qwiicjoystick.ts
                         n_xNull = n_x
                         n_yNull = n_y
                     } else
-                        return false // ungültige Werte gleich am Anfang
+                        return false // ungültige Werte gleich am Anfang ignorieren
                 }
 
                 if (bu[5] == 1) {// STATUS = 0x08, // Button Status: Indicates if button was pressed since last read of button state. Clears after read.
@@ -71,7 +72,7 @@ namespace sender { // s-qwiicjoystick.ts
         return n_qwiicJoystickConnected
     }
 
-   // const c_JToleranz = 2
+    // const c_JToleranz = 2
 
     //% group="Qwiic Joystick 0x20"
     //% block="Joystick %pJoystickValue" weight=8
@@ -89,12 +90,6 @@ namespace sender { // s-qwiicjoystick.ts
                 else if (radio.between(n_x, n_xNull - 2, n_xNull + 2)) // Joystick Ruhestellung (n_xNull=125) 123..127 -> 128
                     xMotor = 128
 
-
-                //else if (n_x < (0 + pmax)) // Werte < 0 + pmax wie 0 behandeln (max vorwärts)
-                //    xMotor = 1
-                //else if (n_x > (255 - pmax)) // Werte > 235 wie 255 behandeln (max rückwärts)
-                //    xMotor = 255
-
                 return xMotor
             }
             case eJoystickValue.ymotor: {
@@ -111,8 +106,6 @@ namespace sender { // s-qwiicjoystick.ts
 
             case eJoystickValue.servo90: {
                 let yServo = 90
-                //if (radio.between(n_y, 128 - n_128, 128 + n_128)) // Joystick Ruhestellung (p128=4) 124..132 -> 128
-                //    yServo = 90 // geradeaus 90°
 
                 if (radio.between(n_y, n_yNull - 2, n_yNull + 2)) // Joystick Ruhestellung (n_yNull=126) 124..128 -> 128
                     yServo = 90 // geradeaus 90°
@@ -122,7 +115,6 @@ namespace sender { // s-qwiicjoystick.ts
                 else if (n_y > (255 - n_max)) // Werte > 235 wie 255 behandeln (max rechts)
                     yServo = 135
                 else {
-                    //yServo = Math.round(Math.map(n_y, 0 + pmax, 255 - pmax, 46, 134))
                     yServo = radio.mapInt32(n_y, 0 + n_max, 255 - n_max, 45, 135)
                 }
                 return yServo // (45° ↖ 90° ↗ 135°)
@@ -130,16 +122,13 @@ namespace sender { // s-qwiicjoystick.ts
             case eJoystickValue.servo16: {
                 return Math.idiv(joystickValue(eJoystickValue.servo90), 3) - 14
             }
+            case eJoystickValue.xmotor100: {
+                return radio.mapInt32(joystickValue(eJoystickValue.xmotor), 1, 255, -100, 100)
+            }
+            case eJoystickValue.ymotor100: {
+                return radio.mapInt32(joystickValue(eJoystickValue.ymotor), 1, 255, -100, 100)
+            }
 
-            //case eJoystickValue.motor16: {
-            //return Math.idiv(joystickValue(eJoystickValue.xmotor), 8)
-            //    return mapInt32(joystickValue(eJoystickValue.xmotor), 1, 255, 1, 31)
-            // return Math.idiv(joystickValue(eJoystickValue.servo90, p128, pmax), 3) - 14
-            //}
-
-            //case eJoystickValue.servo90: return n_yServo // 45°..90°..135°
-            //case eJoystickValue.servo16: return Math.round(n_yServo / 3 - 14)// 45°=1 90°=16 135°=31 
-            //case eJoystickValue.servo16: return Math.idiv(n_yServo, 3) - 14 // Math.round(n_yServo / 3 - 14)// 45°=1 90°=16 135°=31 
             default:
                 return 0
         }
