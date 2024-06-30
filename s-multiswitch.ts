@@ -34,10 +34,12 @@ namespace sender { // s-multiswitch.ts
                         n_Funktion = eFunktion.mc_mb // MC und MB (Zahnstange und Drehkranz)
                     }
                     else if (bu[3 + 2] == 0) { // 2 nach links
-                        n_Magnet = false
+                        // n_Magnet = false
+                        a_Schalter[eSchalter.Magnet] = false
                     }
                     else if (bu[3 + 4] == 0) { // 4 nach rechts
-                        n_Magnet = true
+                        // n_Magnet = true
+                        a_Schalter[eSchalter.Magnet] = true
                     }
                 }
             }

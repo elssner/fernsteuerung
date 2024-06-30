@@ -182,7 +182,7 @@ namespace radio { // enums.ts
         b0 = 0x01,
         //% block="1 Magnet"
         b1 = 0x02,
-        //% block="2"
+        //% block="2 Licht"
         b2 = 0x04,
         //% block="3"
         b3 = 0x08,
