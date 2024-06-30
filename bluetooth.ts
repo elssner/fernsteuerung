@@ -11,31 +11,12 @@ namespace radio { // bluetooth.ts
 
     export let n_sendReset = false
 
-    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
+    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth"
     //% block="beim Start Funkgruppe / Flash %storagei32" weight=9
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     export function beimStart(storagei32: number) {
         storageBufferSet(storagei32)
         beimStartintern()
-        /* 
-                if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
-                    a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
-        
-                //if (between(funkgruppe, 0xA0, 0xBF))
-                //    a_StorageBuffer[eStorageBuffer.funkgruppe] = funkgruppe //      n_funkgruppe = funkgruppe
-                //else
-                //    a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF //      n_funkgruppe = 0xAF
-        
-                //n_enableButtonSendReset = bSendReset
-                //   sender.n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
-                radio.setGroup(getFunkgruppe())// a_StorageBuffer[eStorageBuffer.funkgruppe])
-                radio.setTransmitPower(7)
-                radio.setTransmitSerialNumber(true)
-        
-                zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-        
-                n_start = true
-                 */
     }
 
     export function beimStartintern() {
@@ -61,19 +42,6 @@ namespace radio { // bluetooth.ts
     }
 
 
-    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
-    //% block="Flash einlesen %i32" weight=5
-    export function storageBufferSet(i32: number) {
-        // i32.shadow=storage_get_number
-        a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
-    }
-
-    //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
-     //% block="Flash speichern" weight=4
-    export function storageBufferGet() {
-        return a_StorageBuffer.getNumber(NumberFormat.UInt32LE, 0)
-    }
-
 
     export enum eFunkgruppeButton {
         //% block="lesen"
@@ -88,11 +56,10 @@ namespace radio { // bluetooth.ts
         reset
     }
 
-
-    //  let n_FunkgruppeButton = 0xAF
+  
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
-    //% block="Funkgruppe %i " weight=2
+    //% block="Funkgruppe %e" weight=7
     export function setFunkgruppeButton(e: eFunkgruppeButton) {
         //if (e == eFunkgruppeButton.lesen)
         //    return a_StorageBuffer[eStorageBuffer.funkgruppe]
@@ -105,6 +72,7 @@ namespace radio { // bluetooth.ts
             a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
 
         radio.setGroup(a_StorageBuffer[eStorageBuffer.funkgruppe])
+
         zeigeBIN(a_StorageBuffer[eStorageBuffer.funkgruppe], ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
         //    return a_StorageBuffer[eStorageBuffer.funkgruppe]
         //}
@@ -124,6 +92,21 @@ namespace radio { // bluetooth.ts
         } */
     }
 
+
+
+
+    //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00 deprecated=true
+    //% block="Flash einlesen %i32" weight=3
+    export function storageBufferSet(i32: number) {
+        // i32.shadow=storage_get_number
+        a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
+    }
+
+    //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00
+    //% block="Flash speichern" weight=2
+    export function storageBufferGet() {
+        return a_StorageBuffer.getNumber(NumberFormat.UInt32LE, 0)
+    }
 
 
 
