@@ -40,18 +40,17 @@ namespace sender { // s-auswahl.ts
 
 
     // aufgerufen von sender.beimStart
-    export function startAuswahl(storagei32: number) {
-        radio.storageBufferSet(storagei32)
+    /* export function startAuswahlModell() {
+        // radio.storageBufferSet(storagei32)
         // let iModell = a_StorageBuffer[eStorageBuffer.modell]
         if (!radio.between(getModell(), 0, a_ModellImages.length - 1))
             // wenn ungültig, Standardwert setzen
-
             radio.a_StorageBuffer[radio.eStorageBuffer.modell] = radio.eModell.cb2e
 
         a_ModellImages[getModell()].showImage(0) // Bild vom Modell anzeigen
         basic.pause(1500)
-        return radio.getFunkgruppe() // radio.a_StorageBuffer[radio.eStorageBuffer.funkgruppe]
-    }
+        // return radio.getFunkgruppe() // radio.a_StorageBuffer[radio.eStorageBuffer.funkgruppe]
+    } */
 
 
     //% group="Auswahl Modell und Funktion" subcategory="Auswahl"
@@ -186,7 +185,7 @@ namespace sender { // s-auswahl.ts
     // ========== Bilder für Auswahl Modell
 
 
-    let a_ModellImages = [
+    export let a_ModellImages = [
         images.createImage(`
     . # . # .
     . . . . .

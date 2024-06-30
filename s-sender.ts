@@ -13,13 +13,18 @@ namespace sender {
     //% inlineInputMode=inline
     export function beimStart(storagei32 = 175) {
         if (!radio.simulator()) {
-            let funkgruppe = startAuswahl(storagei32) // s-auswahl.ts
+            storageBufferSet(storagei32)
 
-            radio.beimStart(funkgruppe) // setzt auch n_start true, muss deshalb zuletzt stehen
+            // startAuswahlModell() // s-auswahl.ts Bild anzeigen mit Pause 1500ms
+            if (!radio.between(getModell(), 0, a_ModellImages.length - 1))
+                // wenn ungültig, Standardwert setzen
+                radio.a_StorageBuffer[radio.eStorageBuffer.modell] = radio.eModell.cb2e
 
-            //  basic.pause(1500)
-            //basic.clearScreen()
-            radio.setFunkgruppeButton(radio.eFunkgruppeButton.anzeigen)  // Funkgruppe in 5x5 anzeigen
+            a_ModellImages[getModell()].showImage(0) // Bild vom Modell anzeigen
+            basic.pause(1500)
+
+            radio.beimStartintern() // setzt auch n_start true, startet Bluetooth Empfang
+            //  radio.setFunkgruppeButton(radio.eFunkgruppeButton.anzeigen)  // Funkgruppe in 5x5 anzeigen
         }
     }
 
