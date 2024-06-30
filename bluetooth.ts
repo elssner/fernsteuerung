@@ -2,7 +2,7 @@
 namespace radio { // bluetooth.ts
 
     // const n_Simulator: boolean = ("€".charCodeAt(0) == 8364) // true, wenn der Code im Simulator läuft
-    let n_funkgruppe = 0xA0
+  //  let n_funkgruppe = 0xA0
     let n_start = false
 
     let n_lastconnectedTime = input.runningTime()  // ms seit Start
@@ -16,12 +16,12 @@ namespace radio { // bluetooth.ts
     //% bFunkgruppe.shadow="toggleYesNo"
     export function beimStart(funkgruppe: number) {
         if (between(funkgruppe, 0xA0, 0xBF))
-            n_funkgruppe = funkgruppe
+      a_StorageBuffer[eStorageBuffer.funkgruppe]=funkgruppe //      n_funkgruppe = funkgruppe
         else
-            n_funkgruppe = 0xAF
+            a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF //      n_funkgruppe = 0xAF
         //n_enableButtonSendReset = bSendReset
         //   sender.n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
-        radio.setGroup(n_funkgruppe)
+        radio.setGroup(a_StorageBuffer[eStorageBuffer.funkgruppe])
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
 
@@ -50,18 +50,18 @@ namespace radio { // bluetooth.ts
     //% block="Funkgruppe %i " weight=8
     export function setFunkgruppeButton(e: eFunkgruppeButton): number {
         if (e == eFunkgruppeButton.lesen)
-            return n_funkgruppe
+            return a_StorageBuffer[eStorageBuffer.funkgruppe]
         else {
-            if (e == eFunkgruppeButton.minus && n_funkgruppe > 0xA0)
-                n_funkgruppe--
-            else if (e == eFunkgruppeButton.plus && n_funkgruppe < 0xBF)
-                n_funkgruppe++
+            if (e == eFunkgruppeButton.minus && a_StorageBuffer[eStorageBuffer.funkgruppe] > 0xA0)
+                a_StorageBuffer[eStorageBuffer.funkgruppe]--
+            else if (e == eFunkgruppeButton.plus && a_StorageBuffer[eStorageBuffer.funkgruppe] < 0xBF)
+                a_StorageBuffer[eStorageBuffer.funkgruppe]++
             else if (e == eFunkgruppeButton.reset)
-                n_funkgruppe = 0xAF
+                a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
 
-            radio.setGroup(n_funkgruppe)
-            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-            return n_funkgruppe
+            radio.setGroup(a_StorageBuffer[eStorageBuffer.funkgruppe])
+            zeigeBIN(a_StorageBuffer[eStorageBuffer.funkgruppe], ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+            return a_StorageBuffer[eStorageBuffer.funkgruppe]
         }
         /* if (e == eFunkgruppeButton.lesen)
             return n_FunkgruppeButton
@@ -83,7 +83,7 @@ namespace radio { // bluetooth.ts
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" deprecated=true
     //% block="Funkgruppe || ändern %i und anzeigen" weight=8
     //% i.min=-1 i.max=1
-    export function getFunkgruppe(i?: number): number {
+    /* export function getFunkgruppe(i?: number): number {
         if (i != undefined) {
             if (i < 0 && n_funkgruppe + i > 0xA0) {
                 n_funkgruppe += i
@@ -97,7 +97,7 @@ namespace radio { // bluetooth.ts
             zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
         }
         return n_funkgruppe
-    }
+    } */
 
 
 
