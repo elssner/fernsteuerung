@@ -35,11 +35,11 @@ namespace sender { // s-multiswitch.ts
                     }
                     else if (bu[3 + 2] == 0) { // 2 nach links
                         // n_Magnet = false
-                        a_Schalter[eSchalter.Magnet] = false
+                        a_Schalter[eSchalter.A] = false
                     }
                     else if (bu[3 + 4] == 0) { // 4 nach rechts
                         // n_Magnet = true
-                        a_Schalter[eSchalter.Magnet] = true
+                        a_Schalter[eSchalter.A] = true
                     }
                 }
             }
