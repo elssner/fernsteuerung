@@ -48,8 +48,8 @@ namespace receiver { // r-pins.ts
 
     let n_ringTone = false
 
-    //% group="Klingelton P0" subcategory="Pins"
-    //% block="Ton P0 %pON || Frequenz %frequency Hz"
+    //% group="Klingelton (Calliope v3: P0)" subcategory="Pins"
+    //% block="spiele Note %pON || Frequenz %frequency Hz"
     //% pON.shadow="toggleOnOff"
     //% frequency.defl=262
     export function ringTone(pON: boolean, frequency = 262) {
