@@ -3,7 +3,7 @@ namespace sender { // s-auswahl.ts
 
     export enum eSchalter { A, B, AB }
     export let a_Schalter = [false, false, false] // so viele Elemente wie Member in der Enum
-    export let n_ServoWinkelButtonAB = 0 // 1..16..31 mit A- B+ ändern
+    export let n_ServoWinkelButtonAB = 16 // 1..16..31 mit A- B+ ändern
 
     export enum eModell { // zuletzt gewähltes Modell wird im offset 1 dauerhaft gespeiechert
         //% block="Calli:Bot"

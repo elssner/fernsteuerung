@@ -13,7 +13,7 @@ namespace sender {
     //% inlineInputMode=inline
     export function beimStart(storagei32 = 175) {
         if (!radio.simulator()) {
-            radio.storageBufferSet(storagei32) // prüft ubd zeigt Funkgruppe an
+            radio.storageBufferSet(storagei32) // prüft und zeigt Funkgruppe an
 
 
             if (!radio.between(radio.getModell(), 0, a_ModellImages.length - 1))
@@ -21,7 +21,7 @@ namespace sender {
                 radio.setModell(eModell.cb2e)
 
             // Bild anzeigen mit Pause 1500ms, Image-Array in s-auswahl.ts
-            a_ModellImages[radio.getModell()].showImage(0)
+            radio.zeigeImage(a_ModellImages[radio.getModell()])
             basic.pause(1500)
 
             radio.beimStartintern() // setzt auch n_start true, startet Bluetooth Empfang
