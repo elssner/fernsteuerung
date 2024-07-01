@@ -21,6 +21,7 @@
         "s-multiswitch.ts",
         "s-advanced.ts",
         "r-receiver.ts",
+        "r-datenpaket.ts",
         "r-pins.ts",
         "r-qwiicmotor.ts",
         "r-advanced.ts",
@@ -39,5 +40,5 @@
     "supportedTargets": [
         "calliopemini"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "blocksprj"
 }
