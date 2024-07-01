@@ -2,8 +2,8 @@
 namespace receiver { // r-datenpaket.ts
 
     //% group="Betriebsart" subcategory="Datenpaket"
-    //% block="receivedData %buffer 00 Fernsteuerung Motoren" weight=5
- 
+    //% block="%receivedData 00 Fernsteuerung Motoren" weight=5
+    //% receivedData.shadow="radio_receivedBuffer19"
     export function sendM0(receivedData: Buffer) {
 
         if (radio.isBetriebsart(receivedData, radio.e0Betriebsart.p0)) {

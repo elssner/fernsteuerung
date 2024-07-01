@@ -20,27 +20,10 @@ namespace radio { // bluetooth.ts
     }
 
     export function beimStartintern() {
-        // storageBufferSet(storagei32) ist bereits erfolgt
 
-        //if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
-        //    a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
-
-        //if (between(funkgruppe, 0xA0, 0xBF))
-        //    a_StorageBuffer[eStorageBuffer.funkgruppe] = funkgruppe //      n_funkgruppe = funkgruppe
-        //else
-        //    a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF //      n_funkgruppe = 0xAF
-
-        //n_enableButtonSendReset = bSendReset
-        //   sender.n_enableButtonFunkgruppe = bFunkgruppe // in buttonevents.ts
         radio.setGroup(getFunkgruppe())// a_StorageBuffer[eStorageBuffer.funkgruppe])
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
-
-       // if (pZeigeFunkgruppe)
-            //zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-        //    zeigeFunkgruppe()
-
-        //  zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
 
         n_start = true
     }
@@ -65,9 +48,7 @@ namespace radio { // bluetooth.ts
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
     //% block="Funkgruppe %e" weight=7
     export function setFunkgruppeButton(e: eFunkgruppeButton) {
-        //if (e == eFunkgruppeButton.lesen)
-        //    return a_StorageBuffer[eStorageBuffer.funkgruppe]
-        //else {
+
         if (e == eFunkgruppeButton.minus && a_StorageBuffer[eStorageBuffer.funkgruppe] > 0xA0)
             a_StorageBuffer[eStorageBuffer.funkgruppe]--
         else if (e == eFunkgruppeButton.plus && a_StorageBuffer[eStorageBuffer.funkgruppe] < 0xBF)
@@ -77,26 +58,8 @@ namespace radio { // bluetooth.ts
 
         radio.setGroup(a_StorageBuffer[eStorageBuffer.funkgruppe])
 
-        //zeigeBIN(a_StorageBuffer[eStorageBuffer.funkgruppe], ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
         zeigeFunkgruppe()
 
-
-        //    return a_StorageBuffer[eStorageBuffer.funkgruppe]
-        //}
-        /* if (e == eFunkgruppeButton.lesen)
-            return n_FunkgruppeButton
-        else {
-            if (e == eFunkgruppeButton.minus && n_FunkgruppeButton > 0xA0)
-                n_FunkgruppeButton--
-            else if (e == eFunkgruppeButton.plus && n_FunkgruppeButton < 0xBF)
-                n_FunkgruppeButton++
-            else if (e == eFunkgruppeButton.reset)
-                n_FunkgruppeButton = 0xAF
-    
-            radio.setGroup(n_funkgruppe)
-            zeigeBIN(n_funkgruppe, ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-            return n_FunkgruppeButton
-        } */
     }
 
 
@@ -113,10 +76,6 @@ namespace radio { // bluetooth.ts
         if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
             a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
 
-        //if (pZeigeFunkgruppe)
-            // zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-          //  zeigeFunkgruppe()
-
     }
 
     //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00
@@ -129,25 +88,16 @@ namespace radio { // bluetooth.ts
 
     // ========== group="Bluetooth senden" subcategory="Bluetooth"
 
-    let n_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
+    let a_sendBuffer19 = Buffer.create(19) // wird gesendet mit radio.sendBuffer
 
     //% blockId=radio_sendBuffer19
     //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
     //% block="sendData" color="#7E84F7" weight=5
-    export function radio_sendBuffer19(): Buffer { return n_sendBuffer19 }
+    export function radio_sendBuffer19(): Buffer { return a_sendBuffer19 }
 
     //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
     //% block="sendData löschen" weight=3
-    export function fill_sendBuffer19() { n_sendBuffer19.fill(0) }
-
-    /* 
-        //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
-        //% block="setSendReset %reset" weight=2
-        //% reset.shadow="toggleYesNo"
-        export function setSendReset(reset = false) {
-            n_sendReset = reset
-        }
-     */
+    export function fill_sendBuffer19() { a_sendBuffer19.fill(0) }
 
     //% group="Bluetooth senden (19 Byte)" subcategory="Bluetooth"
     //% block="Buffer senden %sendBuffer" weight=1
@@ -180,6 +130,8 @@ namespace radio { // bluetooth.ts
 
         if (n_start && receivedBuffer.length == 19) { // beim ersten Mal warten bis Motor bereit
 
+            a_receivedBuffer19 = receivedBuffer // lokal speichern
+
             if ((receivedBuffer[0] & 0x80) == 0x80) // Bit 7 reset
                 control.reset() // Soft-Reset, Calliope zurücksetzen
 
@@ -204,6 +156,9 @@ namespace radio { // bluetooth.ts
 
     // ========== group="Bluetooth empfangen" subcategory="Buffer"
 
+    let a_receivedBuffer19: Buffer
+
+
     // sichtbarer Event-Block
 
     //% group="Bluetooth empfangen (19 Byte)" subcategory="Bluetooth"
@@ -218,6 +173,11 @@ namespace radio { // bluetooth.ts
         // das sind die Blöcke, die später im Ereignis Block 'wenn Buffer empfangen (receivedData)' enthalten sind
     }
 
+
+    //% blockId=radio_receivedBuffer19
+    //% group="Bluetooth empfangen (19 Byte)" subcategory="Bluetooth"
+    //% block="receivedData" weight=8
+    export function radio_receivedBuffer19() { return a_receivedBuffer19 }
 
 
     //% group="Bluetooth empfangen (19 Byte)" subcategory="Bluetooth"
