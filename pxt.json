@@ -24,9 +24,9 @@
         "r-datenpaket.ts",
         "r-pins.ts",
         "r-qwiicmotor.ts",
+        "r-qwiic.ts",
         "r-advanced.ts",
-        "r-calliope-v3.ts",
-        "r-qwiic.ts"
+        "r-calliope-v3.ts"
     ],
     "testFiles": [
         "test.ts"
