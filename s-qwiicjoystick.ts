@@ -18,9 +18,9 @@ namespace sender { // s-qwiicjoystick.ts
 
 
     export enum eJoystickValue {
-        //% block="x 0..128..255"
+        //% block="x 0..128..255 (Joystick)"
         x,
-        //% block="y 0..128..255"
+        //% block="y 0..128..255 (Joystick)"
         y,
         //% block="x Motor (1 ↓ 128 ↑ 255)"
         xmotor,
@@ -72,8 +72,7 @@ namespace sender { // s-qwiicjoystick.ts
         return n_qwiicJoystickConnected
     }
 
-    // const c_JToleranz = 2
-
+   
     //% group="Qwiic Joystick 0x20"
     //% block="Joystick %pJoystickValue" weight=8
     export function joystickValue(pJoystickValue: eJoystickValue): number {

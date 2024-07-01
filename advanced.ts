@@ -33,6 +33,7 @@ namespace radio { // advanced.ts
 
     //% group="Funktionen" advanced=true
     //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=4
+    //% fromLow.defl=1 fromHigh.defl=255 toLow.defl=-100 toHigh.defl=100
     //% inlineInputMode=inline
     export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
         // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow

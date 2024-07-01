@@ -1,17 +1,7 @@
 
 namespace radio { // enums.ts
 
-  /*   export enum eModell { // zuletzt gewähltes Modell wird im offset 1 dauerhaft gespeiechert
-        //% block="Calli:Bot"
-        cb2e, // Standardwert CalliBot
-        //% block="Maker Kit Car"
-        mkcg, // Maker Kit Car ohne und mit Gabelstapler
-        //% block="Maker Kit Car Kran"
-        mkck, // Maker Kit Car mit Kran
-        //% block="CaR 4"
-        car4  // CaR 4
-    } // so viele Images müssen im Array sein - Bilder am Ende dieser Datei
- */
+
     // ========== Buffer offset
 
     // group="Enums" advanced=true
