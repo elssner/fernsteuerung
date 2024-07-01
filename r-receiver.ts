@@ -73,7 +73,8 @@ namespace receiver { // r-receiver.ts
 
         pinRelay(true) // Relais an schalten (braucht gültiges n_Modell, um den Pin zu finden)
 
-        radio.storageBufferSet(storagei32, true) // prüft ubd zeigt Funkgruppe an
+        radio.storageBufferSet(storagei32) // prüft ubd zeigt Funkgruppe an
+        radio.zeigeFunkgruppe()
 
         pins.servoWritePin(a_PinServo[n_Modell], n_ServoGeradeaus)
 
@@ -84,7 +85,7 @@ namespace receiver { // r-receiver.ts
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
 
-        radio.beimStartintern(false) // setzt auch n_start true, muss deshalb zuletzt stehen
+        radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
 
         //radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
         //  addStatus(n_ready)

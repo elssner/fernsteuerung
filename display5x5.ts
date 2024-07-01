@@ -4,7 +4,7 @@ namespace radio { // dispaly5x5.ts
 
     // ========== group="25 LED Display" advanced=true color=#54C9C9
 
-    export let n5x5_clearScreen = true
+    let n5x5_setClearScreen = false // wenn ein Image angezeigt wird, merken dass z.B. Funkgruppe wieder angezeigt werden muss
 
     let n5x5_x01y0 = 0 // Bit 5-4 Betriebsart in x=0-1 y=0
     let n5x5_x2 = 0 // Bit 5-4-3-2-1 Motor Power in x=2
@@ -133,16 +133,20 @@ namespace radio { // dispaly5x5.ts
         xLed = Math.imul(xLed, 1) // entfernt mögliche Kommastellen
 
         if (format == ePlot.bin && between(xLed, 0, 4)) {
-            if (n5x5_clearScreen) {
-                n5x5_clearScreen = false
-                basic.clearScreen()
-                zeigeFunkgruppe()
+            // pro Ziffer werden mit zeigeBIN immer 5 LEDs geschaltet 0..31
+            if (n5x5_setClearScreen) {  // wenn vorher Image oder Text angezeigt wurde
+                n5x5_setClearScreen = false
+                basic.clearScreen()     // löschen und Funkgruppe in 01 ↕↕... wieder anzeigen
+                zeigeFunkgruppe()       // !ruft zeigeBIN rekursiv auf!
             }
             for (let y = 4; y >= 0; y--) {
                 if ((int % 2) == 1) { led.plot(xLed, y) } else { led.unplot(xLed, y) }
                 int = int >> 1 // bitweise Division durch 2
             }
         } else {
+            // bcd und hex zeigt von rechts nach links so viele Spalten an, wie die Zahl Ziffern hat
+            // wenn die nächste Zahl weniger Ziffern hat, werden die links daneben nicht gelöscht
+            // pro Ziffer werden mit zeigeBIN immer 5 LEDs geschaltet, die obere 2^4 ist immer aus
             while (int > 0 && between(xLed, 0, 4)) {
                 if (format == ePlot.bcd) {
                     zeigeBIN(int % 10, ePlot.bin, xLed) // Ziffer 0..9
@@ -162,14 +166,21 @@ namespace radio { // dispaly5x5.ts
 
     //% group="Text" subcategory="Display 5x5" color=#54C9C9
     //% block="zeige Text wenn geändert %text" weight=1
+    //% text.shadow="radio_text"
     export function zeigeText(text: any) {
         let tx = convertToText(text)
         if (tx != n_showString) {
             n_showString = tx
             basic.showString(tx)
+            n5x5_setClearScreen = true
         }
     }
 
-
+    //% group="Image" subcategory="Display 5x5" color=#54C9C9
+    //% block="zeige Bild %image" weight=1
+    export function zeigeImage(image: Image) {
+        image.showImage(0)
+        n5x5_setClearScreen = true
+    }
 
 } // dispaly5x5.ts

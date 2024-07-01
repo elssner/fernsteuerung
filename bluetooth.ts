@@ -15,11 +15,11 @@ namespace radio { // bluetooth.ts
     //% block="beim Start Funkgruppe / Flash %storagei32" weight=9
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     export function beimStart(storagei32: number) {
-        storageBufferSet(storagei32, true)
-        beimStartintern(false)
+        storageBufferSet(storagei32)
+        beimStartintern()
     }
 
-    export function beimStartintern(pZeigeFunkgruppe: boolean) {
+    export function beimStartintern() {
         // storageBufferSet(storagei32) ist bereits erfolgt
 
         //if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
@@ -36,9 +36,9 @@ namespace radio { // bluetooth.ts
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
 
-        if (pZeigeFunkgruppe)
+       // if (pZeigeFunkgruppe)
             //zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-            zeigeFunkgruppe()
+        //    zeigeFunkgruppe()
 
         //  zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
 
@@ -103,9 +103,9 @@ namespace radio { // bluetooth.ts
 
 
     //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00 deprecated=true
-    //% block="Flash einlesen %i32 || zeige Funkgruppe %zeigeFunkgruppe" weight=3
+    //% block="Flash einlesen %i32" weight=3
     //% zeigeFunkgruppe.shadow="toggleYesNo"
-    export function storageBufferSet(i32: number, pZeigeFunkgruppe = false) {
+    export function storageBufferSet(i32: number) {
         // i32.shadow=storage_get_number
         a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
 
@@ -113,9 +113,9 @@ namespace radio { // bluetooth.ts
         if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
             a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
 
-        if (pZeigeFunkgruppe)
+        //if (pZeigeFunkgruppe)
             // zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
-            zeigeFunkgruppe()
+          //  zeigeFunkgruppe()
 
     }
 

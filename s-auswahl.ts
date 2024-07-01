@@ -55,8 +55,9 @@ namespace sender { // s-auswahl.ts
             if (radio.getModell() > 0)
                 radio.setModell(radio.getModell() - 1)
             //radio.a_StorageBuffer[radio.eStorageBuffer.modell]--
-            a_ModellImages[radio.getModell()].showImage(0)
-            radio.n5x5_clearScreen = true
+            radio.zeigeImage(a_ModellImages[radio.getModell()])
+           // a_ModellImages[radio.getModell()].showImage(0)
+           // radio.n5x5_clearScreen = true
         }
         else if (isModell(eModell.mkck)) { // Modell Kran
             a_Schalter[eSchalter.Magnet] = !a_Schalter[eSchalter.Magnet]
@@ -82,8 +83,9 @@ namespace sender { // s-auswahl.ts
             if (radio.getModell() < a_ModellImages.length - 1)
                 radio.setModell(radio.getModell() + 1)
             //radio.a_StorageBuffer[radio.eStorageBuffer.modell]++
-            a_ModellImages[radio.getModell()].showImage(0)
-            radio.n5x5_clearScreen = true
+            radio.zeigeImage(a_ModellImages[radio.getModell()])
+           // a_ModellImages[radio.getModell()].showImage(0)
+          //  radio.n5x5_clearScreen = true
         }
         //else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
         //}

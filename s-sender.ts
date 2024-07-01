@@ -13,7 +13,7 @@ namespace sender {
     //% inlineInputMode=inline
     export function beimStart(storagei32 = 175) {
         if (!radio.simulator()) {
-            radio.storageBufferSet(storagei32, false) // prüft ubd zeigt Funkgruppe an
+            radio.storageBufferSet(storagei32) // prüft ubd zeigt Funkgruppe an
 
 
             if (!radio.between(radio.getModell(), 0, a_ModellImages.length - 1))
@@ -24,7 +24,8 @@ namespace sender {
             a_ModellImages[radio.getModell()].showImage(0)
             basic.pause(1500)
 
-            radio.beimStartintern(true) // setzt auch n_start true, startet Bluetooth Empfang
+            radio.beimStartintern() // setzt auch n_start true, startet Bluetooth Empfang
+            radio.zeigeFunkgruppe()
             //  radio.setFunkgruppeButton(radio.eFunkgruppeButton.anzeigen)  // Funkgruppe in 5x5 anzeigen
         }
     }
