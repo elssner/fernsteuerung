@@ -9,8 +9,8 @@ namespace receiver { // r-pins.ts
     // aufgerufen im pins.onPulsed Ereignis, um die Zähl-Richtung +/- der Impule zu bestimmen
     function selectEncoderMotorRichtung() { // true: vorwärts > 128
         switch (n_Modell) {
-            case eModell.v3: return n_Motor0Speed > c_MotorStop // dualEncoderM0Richtung()
-            case eModell.car4: return a_MotorSpeed[eMotor.ma] > c_MotorStop // qEncoderMotorRichtung(eMotor.ma)
+            case eModell.v3: return n_Motor0Speed >= c_MotorStop // dualEncoderM0Richtung()
+            case eModell.car4: return a_MotorSpeed[eMotor.ma] >= c_MotorStop // qEncoderMotorRichtung(eMotor.ma)
             //case eModell.calli2bot:
             default: return false
         }
@@ -33,31 +33,36 @@ namespace receiver { // r-pins.ts
  */
 
         if (modell == eModell.v3 || modell == eModell.car4) {
-            pins.setPull(a_PinEncoder[modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
-
 
             // ========== Event Handler registrieren
             pins.onPulsed(a_PinEncoder[modell], PulseValue.Low, function () {
-                // Encoder 63.3 Impulse pro U/Motorwelle
-                if (selectEncoderMotorRichtung()) // true: vorwärts > 128
-                    n_EncoderCounter += 1 // vorwärts
-                else
-                    n_EncoderCounter -= 1 // rückwärts
 
-                if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
-                    n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+                if (pins.pulseDuration() > 500) {
 
-                    //n_EncoderStopEvent = true
-                    if (n_EncoderAutoStop) {
-                        selectEncoderMotor255(c_MotorStop) //   motorA255(c_MotorStop)
-                        n_EncoderAutoStop = false
+                    // Encoder 63.3 Impulse pro U/Motorwelle
+                    if (selectEncoderMotorRichtung()) // true: vorwärts > 128
+                        n_EncoderCounter += 1 // vorwärts
+                    else
+                        n_EncoderCounter -= 1 // rückwärts
+
+                    if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
+                        n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+
+                        //n_EncoderStopEvent = true
+                        if (n_EncoderAutoStop) {
+                            selectEncoderMotor255(c_MotorStop) //   motorA255(c_MotorStop)
+                            n_EncoderAutoStop = false
+                        }
+
+                        if (onEncoderStopHandler)
+                            onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
                     }
-
-                    if (onEncoderStopHandler)
-                        onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
                 }
             })
             // ========== Event Handler
+
+            pins.setPull(a_PinEncoder[modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+
         }
     }
 
