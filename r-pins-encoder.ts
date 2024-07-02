@@ -1,6 +1,22 @@
 
 namespace receiver { // r-pins.ts
 
+    function selectMotorRichtung() { // true: vorwärts > 128
+        switch (n_Modell) {
+            case eModell.v3: return dualEncoderM0Richtung()
+            case eModell.car4: return qEncoderMotorRichtung(eMotor.ma)
+            //case eModell.calli2bot:
+            default: return false
+        }
+    }
+    function selectMotorStop() {
+        switch (n_Modell) {
+            case eModell.v3: dualEncoderM0Stop()
+            case eModell.car4: qEncoderMotorStop(eMotor.ma)
+            //case eModell.calli2bot:
+        }
+    }
+
     // ========== group="Encoder" subcategory="Sensoren"
     export enum eEncoderEinheit { cm, Impulse }
 
@@ -9,29 +25,29 @@ namespace receiver { // r-pins.ts
     //let n_EncoderStrecke_cm: number = 0 // löst Event aus bei Zähler in cm
     let n_EncoderStrecke_impulse: number = 0
     export let n_EncoderAutoStop = false // true während der Fahrt, false bei Stop nach Ende der Strecke
-/* 
-    // Event Handler
-    pins.onPulsed(a_PinEncoder[n_Modell], PulseValue.Low, function () {
-        // Encoder 63.3 Impulse pro U/Motorwelle
-        if (motorA_get() >= c_MotorStop)
-            n_EncoderCounter += 1 // vorwärts
-        else
-            n_EncoderCounter -= 1 // rückwärts
-
-        if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
-            n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
-
-            //n_EncoderStopEvent = true
-            if (n_EncoderAutoStop) {
-                motorA255(c_MotorStop)
-                n_EncoderAutoStop = false
+    
+        // Event Handler
+        pins.onPulsed(a_PinEncoder[n_Modell], PulseValue.Low, function () {
+            // Encoder 63.3 Impulse pro U/Motorwelle
+            if (selectMotorRichtung()) // true: vorwärts > 128
+                n_EncoderCounter += 1 // vorwärts
+            else
+                n_EncoderCounter -= 1 // rückwärts
+    
+            if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
+                n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+    
+                //n_EncoderStopEvent = true
+                if (n_EncoderAutoStop) {
+                    selectMotorStop() //   motorA255(c_MotorStop)
+                    n_EncoderAutoStop = false
+                }
+    
+                if (onEncoderStopHandler)
+                    onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
             }
-
-            if (onEncoderStopHandler)
-                onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
-        }
-    })
- */
+        })
+    
     let onEncoderStopHandler: (v: number) => void
 
     //% block="wenn Ziel erreicht" subcategory="Sensoren"
@@ -50,8 +66,8 @@ namespace receiver { // r-pins.ts
         if (streckecm > 0) {
             n_EncoderStrecke_impulse = Math.round(streckecm * n_EncoderFaktor)
             n_EncoderAutoStop = autostop
-            
-           radio.n_lastconnectedTime = input.runningTime() // Connection-Timeout Zähler zurück setzen
+
+            radio.n_lastconnectedTime = input.runningTime() // Connection-Timeout Zähler zurück setzen
         } else {
             n_EncoderStrecke_impulse = 0
         }

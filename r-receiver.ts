@@ -51,7 +51,7 @@ namespace receiver { // r-receiver.ts
     //   let n_StatusChanged = false
     // let n_StatusString = ""
 
-    export const c_MotorStop = 128
+    const c_MotorStop = 128
     // export let n_MotorChipReady = false
     //  let n_MotorPower = false    // aktueller Wert im Chip Motor Power
     let n_Motor0 = c_MotorStop  // aktueller Wert im Chip
@@ -61,7 +61,13 @@ namespace receiver { // r-receiver.ts
     let n_ServoGeradeaus = c_Servo_geradeaus // Winkel für geradeaus wird beim Start eingestellt
     let n_ServoWinkel = c_Servo_geradeaus // aktuell eingestellter Winkel
 
-
+    // für Encoder r-pins-encoder.ts
+    export function dualEncoderM0Richtung() {
+        return n_Motor0 > c_MotorStop // true: vorwärts
+    }
+    export function dualEncoderM0Stop() {
+        motor255(eMotor01.M0, c_MotorStop)
+    }
 
     //% group="calliope-net.github.io/fernsteuerung"
     //% block="beim Start %modell Servo ↑ %servoGeradeaus ° || Funkgruppe / Flash %storagei32" weight=8
@@ -165,12 +171,12 @@ namespace receiver { // r-receiver.ts
 
     // group="Motor"
     // block="Motor %motor (1 ↓ 128 ↑ 255)" weight=3
-    export function motor_get(motor: eMotor01) {
+    /* export function motor_get(motor: eMotor01) {
         if (motor == eMotor01.M1)
             return n_Motor1
         else
             return n_Motor0
-    }
+    } */
 
 
     // ========== group="Servo"
@@ -206,7 +212,7 @@ namespace receiver { // r-receiver.ts
 
     // group="Servo"
     // block="Servo (135° ↖ 90° ↗ 45°)" weight=2
-    function servo_get() { return n_ServoWinkel }
+    //function servo_get() { return n_ServoWinkel }
 
 
 
