@@ -1,9 +1,6 @@
 
 namespace receiver { // r-pins.ts
 
-
-    export enum eEncoderEinheit { cm, Impulse }
-
     let n_EncoderCounter: number = 0 // Impuls Zähler
     let n_EncoderFaktor = 63.3 * (26 / 14) / (8 * Math.PI) // 63.3 Motorwelle * (26/14) Zahnräder / (8cm * PI) Rad Umfang = 4.6774502 cm
     let n_EncoderStrecke_impulse: number = 0
@@ -38,7 +35,7 @@ namespace receiver { // r-pins.ts
             pins.setPull(a_PinEncoder[modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
 
 
-            // ========== Event Handler
+            // ========== Event Handler registrieren
             pins.onPulsed(a_PinEncoder[modell], PulseValue.Low, function () {
                 // Encoder 63.3 Impulse pro U/Motorwelle
                 if (selectEncoderMotorRichtung()) // true: vorwärts > 128
@@ -115,7 +112,7 @@ namespace receiver { // r-pins.ts
      */
 
     //% group="Encoder" subcategory="Encodermotor"
-    //% block="Encoder starten (Stop Ereignis bei %streckecm cm) || AutoStop %autostop" weight=9
+    //% block="Encoder starten (Stop Ereignis bei %streckecm cm) || AutoStop %autostop" weight=8
     //% streckecm.min=1 streckecm.max=255 streckecm.defl=20
     //% autostop.shadow="toggleYesNo" autostop.defl=1
     export function encoder_start(streckecm: number, autostop = true) {
@@ -133,7 +130,9 @@ namespace receiver { // r-pins.ts
 
 
 
-    //% group="Encoder" subcategory="Encodermotor"
+    // ========== group="mehr" subcategory="Encodermotor"
+
+    //% group="... mehr" subcategory="Encodermotor"
     //% block="Fahrstrecke %pVergleich %cm cm" weight=7
     export function encoder_vergleich(pVergleich: eVergleich, cm: number) {
         switch (pVergleich) {
@@ -143,7 +142,7 @@ namespace receiver { // r-pins.ts
         }
     }
 
-    //% group="Encoder" subcategory="Encodermotor"
+    //% group="... mehr" subcategory="Encodermotor"
     //% block="warte bis Strecke %pVergleich %cm cm || Pause %ms ms" weight=6
     //% cm.defl=15 ms.defl=20
     export function encoder_warten(pVergleich: eVergleich, cm: number, ms?: number) {
@@ -153,31 +152,20 @@ namespace receiver { // r-pins.ts
     }
 
 
-    //% group="warten" subcategory="Encodermotor"
-    //% block="warte bis %bedingung || Pause %ms ms" weight=2
-    //% ms.defl=20
-    /* export function wartebis(bedingung: boolean, ms?: number) {
-        while (!bedingung) {
-            basic.pause(ms)
-        }
-    } */
 
+    export enum eEncoderEinheit { cm, Impulse }
 
-
-    //% group="Encoder" subcategory="Encodermotor"
+    //% group="... mehr" subcategory="Encodermotor"
     //% block="Encoder %pEncoderEinheit" weight=4
     export function encoder_get(pEncoderEinheit: eEncoderEinheit) {
         if (pEncoderEinheit == eEncoderEinheit.cm)
-            // 63.3 Motorwelle * (26/14) Zahnräder / (8cm * PI) Rad Umfang = 4.6774502 cm
-            // Test: 946 Impulse = 200 cm
             return Math.round(n_EncoderCounter / n_EncoderFaktor)
         else
             return n_EncoderCounter
     }
 
 
-    // ========== EVENT HANDLER
-
+    // ========== EVENT HANDLER === sichtbarer Event-Block
 
     let onEncoderStopHandler: (cm: number) => void
 
