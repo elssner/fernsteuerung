@@ -23,11 +23,11 @@
         "r-receiver.ts",
         "r-datenpaket.ts",
         "r-pins.ts",
+        "r-pins-encoder.ts",
         "r-qwiicmotor.ts",
         "r-qwiic.ts",
         "r-advanced.ts",
-        "r-calliope-v3.ts",
-        "r-pins-encoder.ts"
+        "r-calliope-v3.ts"
     ],
     "testFiles": [
         "test.ts"
