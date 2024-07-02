@@ -22,11 +22,11 @@ namespace receiver { // r-pins.ts
     //% group="Digital Pins" subcategory="Pins"
     //% block="Licht %pON" weight=7
     //% pON.shadow="toggleOnOff"
-    export function pinGPIO4(pON: boolean) {
-        pins.digitalWritePin(a_PinGPIO4[n_Modell], pON ? 1 : 0)
+    export function pinLicht(pON: boolean) {
+        pins.digitalWritePin(a_PinLicht[n_Modell], pON ? 1 : 0)
     }
 
-    export enum eDigitalPins {
+    export enum eDigitalPins { // Pins gültig für alle Modelle, unterscheiden sich im Enum Wert
         P0 = DigitalPin.P0,
         P1 = DigitalPin.P1,
         P2 = DigitalPin.P2,
@@ -65,6 +65,42 @@ namespace receiver { // r-pins.ts
         }
     }
 
+
+
+    // ========== group="Spursensor" subcategory="Pins"
+    // export enum eEncoderEinheit { cm, Impulse }
+    export enum elr { links, rechts }
+    export enum ehd {
+        //% block="0 dunkel"
+        dunkel,
+        //% block="1 hell"
+        hell
+    }
+
+    /*
+    let n_Spur_rechts: boolean
+    let n_Spur_links: boolean
+ 
+        pins.onPulsed(pinSpurlinks, PulseValue.High, function () { n_Spur_links = true }) // 1 weiß
+        pins.onPulsed(pinSpurlinks, PulseValue.Low, function () { n_Spur_links = false }) // 0 schwarz
+        pins.onPulsed(pinSpurrechts, PulseValue.High, function () { n_Spur_links = true })
+        pins.onPulsed(pinSpurrechts, PulseValue.Low, function () { n_Spur_links = false })
+     */
+    //% group="Spursensor" subcategory="Pins"
+    //% block="Spursensor %plr %phd" weight=4
+    export function spursensor(plr: elr, phd: ehd) {
+        switch (plr) {
+            case elr.links: return (pins.digitalReadPin(a_PinSpurlinks[n_Modell]) == 1) !== (phd == ehd.dunkel) // !== XOR (eine Seite ist true aber nicht beide)
+            case elr.rechts: return (pins.digitalReadPin(a_PinSpurrechts[n_Modell]) == 1) !== (phd == ehd.dunkel)
+            default: return false
+        }
+    }
+
+    //% group="Spursensor" subcategory="Pins"
+    //% block="Spursensor 00 01 10 11" weight=2
+    export function spursensor_2bit() {
+        return pins.digitalReadPin(a_PinSpurlinks[n_Modell]) * 2 + pins.digitalReadPin(a_PinSpurrechts[n_Modell])
+    }
 
 
 
