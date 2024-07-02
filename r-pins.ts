@@ -87,6 +87,15 @@ namespace receiver { // r-pins.ts
         pins.onPulsed(pinSpurrechts, PulseValue.Low, function () { n_Spur_links = false })
      */
     //% group="Spursensor" subcategory="Pins"
+    //% block="Spursensor %plr" weight=3
+    export function spursensor_lr(plr: elr) {
+        if (plr == elr.links)
+            return pins.digitalReadPin(a_PinSpurlinks[n_Modell]) //== 0
+        else
+            return pins.digitalReadPin(a_PinSpurrechts[n_Modell]) //== 0
+    }
+
+    //% group="Spursensor" subcategory="Pins"
     //% block="Spursensor %plr %phd" weight=4
     export function spursensor(plr: elr, phd: ehd) {
         switch (plr) {
@@ -99,7 +108,8 @@ namespace receiver { // r-pins.ts
     //% group="Spursensor" subcategory="Pins"
     //% block="Spursensor 00 01 10 11" weight=2
     export function spursensor_2bit() {
-        return pins.digitalReadPin(a_PinSpurlinks[n_Modell]) * 2 + pins.digitalReadPin(a_PinSpurrechts[n_Modell])
+
+        return (1 - pins.digitalReadPin(a_PinSpurlinks[n_Modell])) * 2 + (1 - pins.digitalReadPin(a_PinSpurrechts[n_Modell]))
     }
 
 
