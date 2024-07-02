@@ -71,10 +71,10 @@ namespace receiver { // r-pins.ts
     // export enum eEncoderEinheit { cm, Impulse }
     export enum elr { links, rechts }
     export enum ehd {
-        //% block="0 dunkel"
-        dunkel,
-        //% block="1 hell"
-        hell
+        //% block="0 hell"
+        hell,
+        //% block="1 dunkel"
+        dunkel
     }
 
     /*
@@ -90,8 +90,8 @@ namespace receiver { // r-pins.ts
     //% block="Spursensor %plr %phd" weight=4
     export function spursensor(plr: elr, phd: ehd) {
         switch (plr) {
-            case elr.links: return (pins.digitalReadPin(a_PinSpurlinks[n_Modell]) == 1) !== (phd == ehd.dunkel) // !== XOR (eine Seite ist true aber nicht beide)
-            case elr.rechts: return (pins.digitalReadPin(a_PinSpurrechts[n_Modell]) == 1) !== (phd == ehd.dunkel)
+            case elr.links: return (pins.digitalReadPin(a_PinSpurlinks[n_Modell]) == 0) !== (phd == ehd.dunkel) // !== XOR (eine Seite ist true aber nicht beide)
+            case elr.rechts: return (pins.digitalReadPin(a_PinSpurrechts[n_Modell]) == 0) !== (phd == ehd.dunkel)
             default: return false
         }
     }
