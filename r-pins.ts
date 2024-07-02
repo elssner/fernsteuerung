@@ -92,6 +92,8 @@ namespace receiver { // r-pins.ts
     // ==========
 
 
+    //% group="Entfernung (alle Modelle)" subcategory="Pins"
+    //% block="Entfernung in cm" weight=6
     export function entfernung_modell() {
         switch (n_Modell) {
             case eModell.v3: {
@@ -118,25 +120,17 @@ namespace receiver { // r-pins.ts
         lt
     }
 
-    //% group="Ultraschall (Calliope v1: C8)" subcategory="Pins"
-    //% block="Entfernung %pVergleich %cm cm" weight=6
-    //% cm.min=1 cm.max=50 cm.defl=15
-    export function entfernung_vergleich(pVergleich: eVergleich, p3Entfernung: radio.e3Entfernung) {
-        let cm = 0
-        switch (p3Entfernung) {
-            case
-                radio.e3Entfernung.u0: cm = 5
-                break
-            case
-                radio.e3Entfernung.u1: cm = 10
-                break
-        }
-
-        radio.e3Entfernung.u1
+    //% group="Entfernung (alle Modelle)" subcategory="Pins"
+    //% block="Entfernung %pVergleich %cm cm" weight=5
+    //% cm.shadow=radio_getEntfernung
+    export function entfernung_vergleich(pVergleich: eVergleich, cm: number) { // cm.min=5 cm.max=50 cm.defl=20 
         switch (pVergleich) {
-            case eVergleich.gt: return entfernung_modell() >= cm
-            case eVergleich.lt: return entfernung_modell() <= cm
-            default: return false
+            case eVergleich.gt:
+                return entfernung_modell() >= cm
+            case eVergleich.lt:
+                return entfernung_modell() <= cm
+            default:
+                return false
         }
     }
 
