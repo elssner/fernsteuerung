@@ -1,6 +1,7 @@
 
 namespace receiver { // r-pins.ts
 
+
     function selectMotorRichtung() { // true: vorwärts > 128
         switch (n_Modell) {
             case eModell.v3: return dualEncoderM0Richtung()
@@ -16,28 +17,7 @@ namespace receiver { // r-pins.ts
             //case eModell.calli2bot:
         }
     }
-   
 
-    //% group="Encoder" subcategory="Pins"
-    //% block="beim Start: Encoder aktivieren"
-    export function startEncoder() {
-        switch (n_Modell) {
-
-            case eModell.v3: {   // Maker Kit Car Roboter Räder 6.5 cm
-                pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
-                n_EncoderFaktor = 63.9 * (26 / 14) / (6.5 * Math.PI)
-                break
-            }
-            case eModell.car4: { // Offroader Räder 8 cm
-                pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
-                n_EncoderFaktor = 63.9 * (26 / 14) / (8 * Math.PI) // 63.9 Motorwelle * (26/14) Zahnräder / (8cm * PI) Rad Umfang = 4.6774502 cm
-                break
-            }
-            case eModell.calli2bot: {
-                break
-            }
-        }
-    }
 
 
     // ========== group="Encoder" subcategory="Pins"
@@ -51,35 +31,97 @@ namespace receiver { // r-pins.ts
 
 
 
-    // Event Handler
-    pins.onPulsed(a_PinEncoder[n_Modell], PulseValue.Low, function () {
-        // Encoder 63.3 Impulse pro U/Motorwelle
-        if (selectMotorRichtung()) // true: vorwärts > 128
-            n_EncoderCounter += 1 // vorwärts
-        else
-            n_EncoderCounter -= 1 // rückwärts
 
-        if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
-            n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+    // aufgerufen von receiver.beimStart
+    export function startEncoder(modell: eModell) {
+        /*  switch (modell) {
+ 
+             case eModell.v3: {   // Maker Kit Car Roboter Räder 6.5 cm
+                 pins.setPull(a_PinEncoder[modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+                 n_EncoderFaktor = 63.9 * (26 / 14) / (6.5 * Math.PI)
+                 break
+             }
+             case eModell.car4: { // Offroader Räder 8 cm
+                 pins.setPull(a_PinEncoder[modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+                 n_EncoderFaktor = 63.9 * (26 / 14) / (8 * Math.PI) // 63.9 Motorwelle * (26/14) Zahnräder / (8cm * PI) Rad Umfang = 4.6774502 cm
+                 break
+             }
+             case eModell.calli2bot: {
+                 break
+             }
+         } */
 
-            //n_EncoderStopEvent = true
-            if (n_EncoderAutoStop) {
-                selectMotorStop() //   motorA255(c_MotorStop)
-                n_EncoderAutoStop = false
-            }
+        if (modell == eModell.v3) {
+            n_EncoderFaktor = 63.9 * (26 / 14) / (6.5 * Math.PI)
 
-            if (onEncoderStopHandler)
-                onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
+        } else if (modell == eModell.car4) {
+            n_EncoderFaktor = 63.9 * (26 / 14) / (8 * Math.PI) // 63.9 Motorwelle * (26/14) Zahnräder / (8cm * PI) Rad Umfang = 4.6774502 cm
         }
-    })
+        else if (modell == eModell.calli2bot) {
+
+        }
 
 
-    let onEncoderStopHandler: (v: number) => void
+        if (modell == eModell.v3 || modell == eModell.car4) {
+            pins.setPull(a_PinEncoder[modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+
+
+            // ========== Event Handler
+            pins.onPulsed(a_PinEncoder[modell], PulseValue.Low, function () {
+                // Encoder 63.3 Impulse pro U/Motorwelle
+                if (selectMotorRichtung()) // true: vorwärts > 128
+                    n_EncoderCounter += 1 // vorwärts
+                else
+                    n_EncoderCounter -= 1 // rückwärts
+
+                if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
+                    n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+
+                    //n_EncoderStopEvent = true
+                    if (n_EncoderAutoStop) {
+                        selectMotorStop() //   motorA255(c_MotorStop)
+                        n_EncoderAutoStop = false
+                    }
+
+                    if (onEncoderStopHandler)
+                        onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
+                }
+            })
+            // ========== Event Handler
+        }
+    }
+
+
+    /* 
+        // Event Handler
+        pins.onPulsed(a_PinEncoder[n_Modell], PulseValue.Low, function () {
+            // Encoder 63.3 Impulse pro U/Motorwelle
+            if (selectMotorRichtung()) // true: vorwärts > 128
+                n_EncoderCounter += 1 // vorwärts
+            else
+                n_EncoderCounter -= 1 // rückwärts
+    
+            if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
+                n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+    
+                //n_EncoderStopEvent = true
+                if (n_EncoderAutoStop) {
+                    selectMotorStop() //   motorA255(c_MotorStop)
+                    n_EncoderAutoStop = false
+                }
+    
+                if (onEncoderStopHandler)
+                    onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
+            }
+        })
+     */
+
+    let onEncoderStopHandler: (cm: number) => void
 
     //% group="Encoder" subcategory="Pins"
     //% block="wenn Ziel erreicht"
     //% draggableParameters=reporter
-    export function onEncoderStop(cb: (v: number) => void) {
+    export function onEncoderStop(cb: (cm: number) => void) {
         onEncoderStopHandler = cb
     }
 

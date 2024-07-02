@@ -3,11 +3,11 @@ namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
     export enum eModell {
-        //% block="Calliope v3"
+        //% block="Calliope v3 (Maker Kit Car)"
         v3 = 0,     // Index in Arrays
-        //% block="CaR 4"
+        //% block="Calliope auf Rädern 4 (v1)"
         car4 = 1,   // Index in Arrays
-        //% block="Calli:Bot 2"
+        //% block="Calli:Bot 2 (v1 v2 v3)"
         calli2bot = 2
     }
 
@@ -70,11 +70,12 @@ namespace receiver { // r-receiver.ts
     }
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start %modell Servo ↑ %servoGeradeaus ° || Funkgruppe / Flash %storagei32" weight=8
+    //% block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Funkgruppe (aus Flash lesen) | %storagei32" weight=8
     //% servoGeradeaus.min=81 servoGeradeaus.max=99 servoGeradeaus.defl=90
+    //% encoder.shadow="toggleOnOff"
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
-    //% inlineInputMode=inline
-    export function beimStart(modell: eModell, servoGeradeaus: number, storagei32 = 175) {
+    // inlineInputMode=inline
+    export function beimStart(modell: eModell, servoGeradeaus: number, encoder: boolean, storagei32 = 175) {
         n_Modell = modell
         n_ServoGeradeaus = servoGeradeaus // Parameter
 
@@ -85,12 +86,14 @@ namespace receiver { // r-receiver.ts
 
         pins.servoWritePin(a_PinServo[n_Modell], n_ServoGeradeaus)
 
-      //  pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+        //  pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
 
         //  n_ready = motorReset(ei2cMotor.i2cMotorAB) && motorReset(ei2cMotor.i2cMotorCD)
         //if (qMotorReset())
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
+        if (encoder)
+            startEncoder(n_Modell)
 
         radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
 
