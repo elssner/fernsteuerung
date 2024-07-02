@@ -26,6 +26,7 @@
         "r-pins.ts",
         "r-qwiicmotor.ts",
         "r-qwiic.ts",
+        "r-callibot.ts",
         "r-advanced.ts",
         "r-calliope-v3.ts"
     ],
