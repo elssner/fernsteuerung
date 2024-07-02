@@ -26,7 +26,8 @@
         "r-qwiicmotor.ts",
         "r-qwiic.ts",
         "r-advanced.ts",
-        "r-calliope-v3.ts"
+        "r-calliope-v3.ts",
+        "r-pins-encoder.ts"
     ],
     "testFiles": [
         "test.ts"

@@ -51,7 +51,7 @@ namespace receiver { // r-receiver.ts
     //   let n_StatusChanged = false
     // let n_StatusString = ""
 
-    const c_MotorStop = 128
+    export const c_MotorStop = 128
     // export let n_MotorChipReady = false
     //  let n_MotorPower = false    // aktueller Wert im Chip Motor Power
     let n_Motor0 = c_MotorStop  // aktueller Wert im Chip

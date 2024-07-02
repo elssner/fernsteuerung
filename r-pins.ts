@@ -44,16 +44,16 @@ namespace receiver { // r-pins.ts
         pins.digitalWritePin(<number>pin, pON ? 0 : 1)
     }
 
-
+/* 
 
     // ========== group="Klingelton (Calliope v3: P0)" subcategory="Pins"
 
     let n_ringTone = false
 
-    //% group="Klingelton (Calliope v3: P0)" subcategory="Pins"
-    //% block="spiele Note %pON || Frequenz %frequency Hz"
-    //% pON.shadow="toggleOnOff"
-    //% frequency.defl=262
+    // group="Klingelton (Calliope v3: P0)" subcategory="Pins"
+    // block="spiele Note %pON || Frequenz %frequency Hz"
+    // pON.shadow="toggleOnOff"
+    // frequency.defl=262
     export function ringTone(pON: boolean, frequency = 262) {
         if (n_ringTone !== pON) { // XOR
             n_ringTone = pON
@@ -65,7 +65,7 @@ namespace receiver { // r-pins.ts
         }
     }
 
-
+ */
 
     // ========== group="Spursensor" subcategory="Pins"
 
@@ -106,9 +106,9 @@ namespace receiver { // r-pins.ts
      * Create a new driver of Grove - Ultrasonic Sensor to measure distances in cm
      * @param pin signal pin of ultrasonic ranger module
      */
-    //% group="Ultraschall (Calliope v1: C8)" subcategory="Pins"
-    //% block="Ultraschall Entfernung in cm" weight=8
-    export function groveUltraschall_cm(): number {
+    // group="Ultraschall (Calliope v1: C8)" subcategory="Pins"
+    // block="Ultraschall Entfernung in cm" weight=8
+    /* export function groveUltraschall_cm(): number {
         pins.digitalWritePin(c_PinUltraschall, 0);
         control.waitMicros(2);
         pins.digitalWritePin(c_PinUltraschall, 1);
@@ -116,13 +116,13 @@ namespace receiver { // r-pins.ts
         pins.digitalWritePin(c_PinUltraschall, 0);
 
         return Math.round(pins.pulseIn(c_PinUltraschall, PulseValue.High, 50000) * 0.0263793)
-    }
+    } */
 
 
     // ==========
 
 
-    //% group="Entfernung (alle Modelle)" subcategory="Pins"
+    //% group="Ultraschall (alle Sensoren)" subcategory="Pins"
     //% block="Entfernung in cm" weight=6
     export function entfernung_modell() {
         switch (n_Modell) {
@@ -150,7 +150,7 @@ namespace receiver { // r-pins.ts
         lt
     }
 
-    //% group="Entfernung (alle Modelle)" subcategory="Pins"
+    //% group="Ultraschall (alle Sensoren)" subcategory="Pins"
     //% block="Entfernung %pVergleich %cm cm" weight=5
     //% cm.shadow=radio_getEntfernung
     export function entfernung_vergleich(pVergleich: eVergleich, cm: number) { // cm.min=5 cm.max=50 cm.defl=20 

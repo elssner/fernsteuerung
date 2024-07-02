@@ -6,7 +6,7 @@ namespace radio { // bluetooth.ts
 
     let n_start = false
 
-    let n_lastconnectedTime = input.runningTime()  // ms seit Start
+    export let n_lastconnectedTime = input.runningTime()  // ms seit Start
     let n_programm = false // autonomes fahren nach Programm, kein Bluetooth timeout
 
     export let n_sendReset = false
