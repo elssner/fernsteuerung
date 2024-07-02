@@ -2,7 +2,7 @@
 namespace receiver { // r-pins.ts
 
 
-    function selectMotorRichtung() { // true: vorwärts > 128
+    function selectEncoderMotorRichtung() { // true: vorwärts > 128
         switch (n_Modell) {
             case eModell.v3: return dualEncoderM0Richtung()
             case eModell.car4: return qEncoderMotorRichtung(eMotor.ma)
@@ -18,9 +18,21 @@ namespace receiver { // r-pins.ts
         }
     }
 
+    //% group="Encoder" subcategory="Encodermotor"
+    //% block="Encodermotor (1 ↓ 128 ↑ 255) %speed" weight=9
+    //% speed.min=0 speed.max=255 speed.defl=128
+    export function selectEncoderMotor128(speed: number) {
+        switch (n_Modell) {
+            case eModell.v3: motor255(eMotor01.M0, speed)
+            case eModell.car4: qMotor255(eMotor.ma, speed) // Qwiic
+            //case eModell.calli2bot:
+        }
+
+    }
 
 
-    // ========== group="Encoder" subcategory="Pins"
+
+    // ========== group="Encoder" subcategory="Encodermotor"
     export enum eEncoderEinheit { cm, Impulse }
 
     let n_EncoderCounter: number = 0 // Impuls Zähler
@@ -69,7 +81,7 @@ namespace receiver { // r-pins.ts
             // ========== Event Handler
             pins.onPulsed(a_PinEncoder[modell], PulseValue.Low, function () {
                 // Encoder 63.3 Impulse pro U/Motorwelle
-                if (selectMotorRichtung()) // true: vorwärts > 128
+                if (selectEncoderMotorRichtung()) // true: vorwärts > 128
                     n_EncoderCounter += 1 // vorwärts
                 else
                     n_EncoderCounter -= 1 // rückwärts
@@ -118,14 +130,14 @@ namespace receiver { // r-pins.ts
 
     let onEncoderStopHandler: (cm: number) => void
 
-    //% group="Encoder" subcategory="Pins"
+    //% group="Encoder" subcategory="Encodermotor"
     //% block="wenn Ziel erreicht"
     //% draggableParameters=reporter
     export function onEncoderStop(cb: (cm: number) => void) {
         onEncoderStopHandler = cb
     }
 
-    //% group="Encoder" subcategory="Pins"
+    //% group="Encoder" subcategory="Encodermotor"
     //% block="Encoder starten (Stop Ereignis bei %streckecm cm) || AutoStop %autostop" weight=9
     //% streckecm.min=1 streckecm.max=255 streckecm.defl=20
     //% autostop.shadow="toggleYesNo" autostop.defl=1
@@ -144,7 +156,7 @@ namespace receiver { // r-pins.ts
 
 
 
-    //% group="Encoder" subcategory="Pins"
+    //% group="Encoder" subcategory="Encodermotor"
     //% block="Fahrstrecke %pVergleich %cm cm" weight=7
     export function encoder_vergleich(pVergleich: eVergleich, cm: number) {
         switch (pVergleich) {
@@ -154,7 +166,7 @@ namespace receiver { // r-pins.ts
         }
     }
 
-    //% group="Encoder" subcategory="Pins"
+    //% group="Encoder" subcategory="Encodermotor"
     //% block="warte bis Strecke %pVergleich %cm cm || Pause %ms ms" weight=6
     //% cm.defl=15 ms.defl=20
     export function encoder_warten(pVergleich: eVergleich, cm: number, ms?: number) {
@@ -164,7 +176,7 @@ namespace receiver { // r-pins.ts
     }
 
 
-    //% group="warten" subcategory="Pins"
+    //% group="warten" subcategory="Encodermotor"
     //% block="warte bis %bedingung || Pause %ms ms" weight=2
     //% ms.defl=20
     /* export function wartebis(bedingung: boolean, ms?: number) {
@@ -175,7 +187,7 @@ namespace receiver { // r-pins.ts
 
 
 
-    //% group="Encoder" subcategory="Pins"
+    //% group="Encoder" subcategory="Encodermotor"
     //% block="Encoder %pEncoderEinheit" weight=4
     export function encoder_get(pEncoderEinheit: eEncoderEinheit) {
         if (pEncoderEinheit == eEncoderEinheit.cm)
