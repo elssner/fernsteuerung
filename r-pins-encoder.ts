@@ -19,7 +19,7 @@ namespace receiver { // r-pins.ts
    
 
     //% group="Encoder" subcategory="Pins"
-    //% block="Start Encoder"
+    //% block="beim Start: Encoder aktivieren"
     export function startEncoder() {
         switch (n_Modell) {
 
@@ -84,7 +84,7 @@ namespace receiver { // r-pins.ts
     }
 
     //% group="Encoder" subcategory="Pins"
-    //% block="Encoder Start (Stop Ereignis bei %streckecm cm) || AutoStop %autostop" weight=9
+    //% block="Encoder starten (Stop Ereignis bei %streckecm cm) || AutoStop %autostop" weight=9
     //% streckecm.min=1 streckecm.max=255 streckecm.defl=20
     //% autostop.shadow="toggleYesNo" autostop.defl=1
     export function encoder_start(streckecm: number, autostop = true) {
