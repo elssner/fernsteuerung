@@ -19,9 +19,10 @@ namespace receiver { // r-pins.ts
 
 
     // aufgerufen von receiver.beimStart
-    export function startEncoder(modell: eModell) {
+    export function startEncoder(modell: eModell, radDmm: number) {
+        n_EncoderFaktor = 63.9 * (26 / 14) / (radDmm / 10 * Math.PI)
 
-        if (modell == eModell.v3) {
+        /* if (modell == eModell.v3) {
             n_EncoderFaktor = 63.9 * (26 / 14) / (6.5 * Math.PI)
         } else if (modell == eModell.car4) {
             n_EncoderFaktor = 63.9 * (26 / 14) / (8 * Math.PI) // 63.9 Motorwelle * (26/14) Zahnräder / (8cm * PI) Rad Umfang = 4.6774502 cm
@@ -29,7 +30,7 @@ namespace receiver { // r-pins.ts
         else if (modell == eModell.calli2bot) {
 
         }
-
+ */
 
         if (modell == eModell.v3 || modell == eModell.car4) {
             pins.setPull(a_PinEncoder[modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp

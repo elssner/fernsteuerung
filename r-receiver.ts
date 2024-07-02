@@ -62,12 +62,13 @@ namespace receiver { // r-receiver.ts
     //}
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Funkgruppe (aus Flash lesen) | %storagei32" weight=8
+    //% block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm Funkgruppe (aus Flash lesen) | %storagei32" weight=8
     //% servoGeradeaus.min=81 servoGeradeaus.max=99 servoGeradeaus.defl=90
     //% encoder.shadow="toggleOnOff"
+    //% radDmm.min=60 radDmm.max=80 radDmm.defl=65
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     // inlineInputMode=inline
-    export function beimStart(modell: eModell, servoGeradeaus: number, encoder: boolean, storagei32 = 175) {
+    export function beimStart(modell: eModell, servoGeradeaus: number, encoder: boolean, radDmm: number, storagei32 = 175) {
         n_Modell = modell
         n_ServoGeradeaus = servoGeradeaus // Parameter
 
@@ -85,7 +86,7 @@ namespace receiver { // r-receiver.ts
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
         if (encoder)
-            startEncoder(n_Modell)
+            startEncoder(n_Modell, radDmm)
 
         radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
 
