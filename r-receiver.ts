@@ -44,30 +44,22 @@ namespace receiver { // r-receiver.ts
 
     export enum eMotor01 { M0, M1, M0_M1 } // muss mit v3 identisch sein
 
-
-
-    //const c_Simulator: boolean = ("€".charCodeAt(0) == 8364)
-    // let n_ready = false
-    //   let n_StatusChanged = false
-    // let n_StatusString = ""
-
-    const c_MotorStop = 128
-    // export let n_MotorChipReady = false
-    //  let n_MotorPower = false    // aktueller Wert im Chip Motor Power
-    let n_Motor0 = c_MotorStop  // aktueller Wert im Chip
-    let n_Motor1 = c_MotorStop  // aktueller Wert im Chip
+    export const c_MotorStop = 128
+   
+  export  let n_Motor0Speed = c_MotorStop  // aktueller Wert im Chip
+    let n_Motor1Speed = c_MotorStop  // aktueller Wert im Chip
 
     export const c_Servo_geradeaus = 90
     let n_ServoGeradeaus = c_Servo_geradeaus // Winkel für geradeaus wird beim Start eingestellt
     let n_ServoWinkel = c_Servo_geradeaus // aktuell eingestellter Winkel
 
     // für Encoder r-pins-encoder.ts
-    export function dualEncoderM0Richtung() {
-        return n_Motor0 > c_MotorStop // true: vorwärts
-    }
-    export function dualEncoderM0Stop() {
-        motor255(eMotor01.M0, c_MotorStop)
-    }
+   // export function dualEncoderM0Richtung() {
+    //    return n_Motor0 > c_MotorStop // true: vorwärts
+    //}
+    //export function dualEncoderM0Stop() {
+    //    motor255(eMotor01.M0, c_MotorStop)
+    //}
 
     //% group="calliope-net.github.io/fernsteuerung"
     //% block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Funkgruppe (aus Flash lesen) | %storagei32" weight=8
@@ -134,17 +126,17 @@ namespace receiver { // r-receiver.ts
             let duty_percent = radio.mapInt32(speed, 1, 255, -100, 100)
             //n_StatusString = duty_percent.toString()
 
-            if (motor == eMotor01.M0 && speed != n_Motor0) {
-                n_Motor0 = speed
+            if (motor == eMotor01.M0 && speed != n_Motor0Speed) {
+                n_Motor0Speed = speed
                 dualMotorPower(motor, duty_percent)
             }
-            else if (motor == eMotor01.M1 && speed != n_Motor1) {
-                n_Motor1 = speed
+            else if (motor == eMotor01.M1 && speed != n_Motor1Speed) {
+                n_Motor1Speed = speed
                 dualMotorPower(motor, duty_percent)
             }
-            else if (motor == eMotor01.M0_M1 && (speed != n_Motor0 || speed != n_Motor1)) {
-                n_Motor0 = speed
-                n_Motor1 = speed
+            else if (motor == eMotor01.M0_M1 && (speed != n_Motor0Speed || speed != n_Motor1Speed)) {
+                n_Motor0Speed = speed
+                n_Motor1Speed = speed
                 dualMotorPower(motor, duty_percent)
             }
         } else { // n_MotorPower false oder speed=0

@@ -6,12 +6,12 @@ namespace receiver { // r-qwiicmotor.ts
     const i2cRelay = 0x19 // SparkFun Qwiic Single Relay (Kran Elektromagnet)
     let a_i2cMotor = [0x5D, 0x5E] // SparkFun Qwiic Motor Driver // Index eMotorChip
 
-    const c_MotorStop = 128
+   // const c_MotorStop = 128
 
     let a_MotorChipConnected = [false, false] // Index eMotorChip
     let a_MotorChipReady = [false, false] // Index eMotorChip
     let a_MotorChipPower = [false, false] // Index eMotorChip
-    let a_MotorSpeed = [c_MotorStop, c_MotorStop, c_MotorStop, c_MotorStop] // Index eMotor
+  export  let a_MotorSpeed = [c_MotorStop, c_MotorStop, c_MotorStop, c_MotorStop] // Index eMotor
 
 
     // I²C Register Motor Chip
@@ -59,12 +59,12 @@ namespace receiver { // r-qwiicmotor.ts
     }
 
     // für Encoder r-pins-encoder.ts
-    export function qEncoderMotorRichtung(pMotor: eMotor) {
+    /* export function qEncoderMotorRichtung(pMotor: eMotor) {
         return a_MotorSpeed[pMotor] > c_MotorStop // true: vorwärts
     }
     export function qEncoderMotorStop(pMotor: eMotor) {
         qMotor255(pMotor, c_MotorStop)
-    }
+    } */
 
 
     export function qMotorReset() { // aufgerufen beim Start
