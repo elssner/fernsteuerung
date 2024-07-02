@@ -16,8 +16,31 @@ namespace receiver { // r-pins.ts
             //case eModell.calli2bot:
         }
     }
+   
 
-    // ========== group="Encoder" subcategory="Sensoren"
+    //% group="Encoder" subcategory="Pins"
+    //% block="Start Encoder"
+    export function startEncoder() {
+        switch (n_Modell) {
+
+            case eModell.v3: {   // Maker Kit Car Roboter Räder 6.5 cm
+                pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+                n_EncoderFaktor = 63.9 * (26 / 14) / (6.5 * Math.PI)
+                break
+            }
+            case eModell.car4: { // Offroader Räder 8 cm
+                pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+                n_EncoderFaktor = 63.9 * (26 / 14) / (8 * Math.PI) // 63.9 Motorwelle * (26/14) Zahnräder / (8cm * PI) Rad Umfang = 4.6774502 cm
+                break
+            }
+            case eModell.calli2bot: {
+                break
+            }
+        }
+    }
+
+
+    // ========== group="Encoder" subcategory="Pins"
     export enum eEncoderEinheit { cm, Impulse }
 
     let n_EncoderCounter: number = 0 // Impuls Zähler
@@ -25,39 +48,43 @@ namespace receiver { // r-pins.ts
     //let n_EncoderStrecke_cm: number = 0 // löst Event aus bei Zähler in cm
     let n_EncoderStrecke_impulse: number = 0
     export let n_EncoderAutoStop = false // true während der Fahrt, false bei Stop nach Ende der Strecke
-    
-        // Event Handler
-        pins.onPulsed(a_PinEncoder[n_Modell], PulseValue.Low, function () {
-            // Encoder 63.3 Impulse pro U/Motorwelle
-            if (selectMotorRichtung()) // true: vorwärts > 128
-                n_EncoderCounter += 1 // vorwärts
-            else
-                n_EncoderCounter -= 1 // rückwärts
-    
-            if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
-                n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
-    
-                //n_EncoderStopEvent = true
-                if (n_EncoderAutoStop) {
-                    selectMotorStop() //   motorA255(c_MotorStop)
-                    n_EncoderAutoStop = false
-                }
-    
-                if (onEncoderStopHandler)
-                    onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
+
+
+
+    // Event Handler
+    pins.onPulsed(a_PinEncoder[n_Modell], PulseValue.Low, function () {
+        // Encoder 63.3 Impulse pro U/Motorwelle
+        if (selectMotorRichtung()) // true: vorwärts > 128
+            n_EncoderCounter += 1 // vorwärts
+        else
+            n_EncoderCounter -= 1 // rückwärts
+
+        if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
+            n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+
+            //n_EncoderStopEvent = true
+            if (n_EncoderAutoStop) {
+                selectMotorStop() //   motorA255(c_MotorStop)
+                n_EncoderAutoStop = false
             }
-        })
-    
+
+            if (onEncoderStopHandler)
+                onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
+        }
+    })
+
+
     let onEncoderStopHandler: (v: number) => void
 
-    //% block="wenn Ziel erreicht" subcategory="Sensoren"
+    //% group="Encoder" subcategory="Pins"
+    //% block="wenn Ziel erreicht"
     //% draggableParameters=reporter
     export function onEncoderStop(cb: (v: number) => void) {
         onEncoderStopHandler = cb
     }
 
-    //% group="Encoder" subcategory="Sensoren"
-    //% block="Encoder Start, Stop Ereignis bei %streckecm cm || AutoStop %autostop" weight=9
+    //% group="Encoder" subcategory="Pins"
+    //% block="Encoder Start (Stop Ereignis bei %streckecm cm) || AutoStop %autostop" weight=9
     //% streckecm.min=1 streckecm.max=255 streckecm.defl=20
     //% autostop.shadow="toggleYesNo" autostop.defl=1
     export function encoder_start(streckecm: number, autostop = true) {
@@ -75,7 +102,7 @@ namespace receiver { // r-pins.ts
 
 
 
-    //% group="Encoder" subcategory="Sensoren"
+    //% group="Encoder" subcategory="Pins"
     //% block="Fahrstrecke %pVergleich %cm cm" weight=7
     export function encoder_vergleich(pVergleich: eVergleich, cm: number) {
         switch (pVergleich) {
@@ -85,7 +112,7 @@ namespace receiver { // r-pins.ts
         }
     }
 
-    //% group="Encoder" subcategory="Sensoren"
+    //% group="Encoder" subcategory="Pins"
     //% block="warte bis Strecke %pVergleich %cm cm || Pause %ms ms" weight=6
     //% cm.defl=15 ms.defl=20
     export function encoder_warten(pVergleich: eVergleich, cm: number, ms?: number) {
@@ -95,7 +122,7 @@ namespace receiver { // r-pins.ts
     }
 
 
-    //% group="warten" subcategory="Sensoren"
+    //% group="warten" subcategory="Pins"
     //% block="warte bis %bedingung || Pause %ms ms" weight=2
     //% ms.defl=20
     /* export function wartebis(bedingung: boolean, ms?: number) {
@@ -106,7 +133,7 @@ namespace receiver { // r-pins.ts
 
 
 
-    //% group="Encoder" subcategory="Sensoren"
+    //% group="Encoder" subcategory="Pins"
     //% block="Encoder %pEncoderEinheit" weight=4
     export function encoder_get(pEncoderEinheit: eEncoderEinheit) {
         if (pEncoderEinheit == eEncoderEinheit.cm)

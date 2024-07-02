@@ -85,7 +85,7 @@ namespace receiver { // r-receiver.ts
 
         pins.servoWritePin(a_PinServo[n_Modell], n_ServoGeradeaus)
 
-        pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
+      //  pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
 
         //  n_ready = motorReset(ei2cMotor.i2cMotorAB) && motorReset(ei2cMotor.i2cMotorCD)
         //if (qMotorReset())
