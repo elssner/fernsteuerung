@@ -68,42 +68,27 @@ namespace receiver { // r-pins.ts
 
 
     // ========== group="Spursensor" subcategory="Pins"
-    // export enum eEncoderEinheit { cm, Impulse }
-    export enum elr { links, rechts }
-    export enum ehd {
-        //% block="0 hell"
-        hell,
-        //% block="1 dunkel"
-        dunkel
-    }
 
-    /*
-    let n_Spur_rechts: boolean
-    let n_Spur_links: boolean
- 
-        pins.onPulsed(pinSpurlinks, PulseValue.High, function () { n_Spur_links = true }) // 1 weiß
-        pins.onPulsed(pinSpurlinks, PulseValue.Low, function () { n_Spur_links = false }) // 0 schwarz
-        pins.onPulsed(pinSpurrechts, PulseValue.High, function () { n_Spur_links = true })
-        pins.onPulsed(pinSpurrechts, PulseValue.Low, function () { n_Spur_links = false })
-     */
+    export enum elr { links, rechts }
+
     //% group="Spursensor" subcategory="Pins"
     //% block="Spursensor %plr schwarz" weight=3
     export function spursensor_lr(plr: elr) {
         if (plr == elr.links)
-            return pins.digitalReadPin(a_PinSpurlinks[n_Modell]) == 0
+            return pins.digitalReadPin(a_PinSpurlinks[n_Modell]) == 0 // 0 ist schwarz
         else
             return pins.digitalReadPin(a_PinSpurrechts[n_Modell]) == 0
     }
 
-    //% group="Spursensor" subcategory="Pins"
-    //% block="Spursensor %plr %phd" weight=4
-    export function spursensor(plr: elr, phd: ehd) {
-        switch (plr) {
-            case elr.links: return (pins.digitalReadPin(a_PinSpurlinks[n_Modell]) == 0) !== (phd == ehd.dunkel) // !== XOR (eine Seite ist true aber nicht beide)
-            case elr.rechts: return (pins.digitalReadPin(a_PinSpurrechts[n_Modell]) == 0) !== (phd == ehd.dunkel)
-            default: return false
-        }
-    }
+    // group="Spursensor" subcategory="Pins"
+    // block="Spursensor %plr %phd" weight=4
+    //export function spursensor(plr: elr, phd: ehd) {
+    //    switch (plr) {
+    //        case elr.links: return (pins.digitalReadPin(a_PinSpurlinks[n_Modell]) == 0) !== (phd == ehd.dunkel) // !== XOR (eine Seite ist true aber nicht beide)
+    //        case elr.rechts: return (pins.digitalReadPin(a_PinSpurrechts[n_Modell]) == 0) !== (phd == ehd.dunkel)
+    //        default: return false
+    //    }
+    //}
 
     //% group="Spursensor" subcategory="Pins"
     //% block="Spursensor 00 01 10 11" weight=2
