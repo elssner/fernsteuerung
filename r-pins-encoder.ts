@@ -36,8 +36,8 @@ namespace receiver { // r-pins.ts
 
             // ========== Event Handler registrieren
             pins.onPulsed(a_PinEncoder[modell], PulseValue.Low, function () {
-                // soll Prellen verhindern 2000 // 5000 geht nicht mehr
-                if (pins.pulseDuration() > 4000) { // 2 ms = 500 Hz, gemessen 174 Hz max. Drehzahl, 2 Flanken ~ 400 Hz
+                // soll Prellen verhindern 2000 // 4000 geht nicht mehr
+                if (pins.pulseDuration() > 3000) { // 2 ms = 500 Hz, gemessen 174 Hz max. Drehzahl, 2 Flanken ~ 400 Hz
 
                     // Encoder 63.3 Impulse pro U/Motorwelle
                     if (selectEncoderMotorRichtung()) // true: vorwärts > 128
