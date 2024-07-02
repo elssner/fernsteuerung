@@ -16,7 +16,7 @@ namespace receiver { // r-receiver.ts
     export let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
     let a_PinServo: AnalogPin[] = [108, AnalogPin.C4]       // 0:AnalogPin.C8 GPIO1
     export let a_PinGPIO4: DigitalPin[] = [112, DigitalPin.P3]    // 0:DigitalPin.C12 GPIO4
-    let a_PinEncoder: DigitalPin[] = [114, DigitalPin.P2]   // 0:DigitalPin.C14 SPI
+    export let a_PinEncoder: DigitalPin[] = [114, DigitalPin.P2]   // 0:DigitalPin.C14 SPI
     export let a_PinSpurrechts: DigitalPin[] = [113, DigitalPin.C9]// 0:DigitalPin.C13 SPI
     export let a_PinSpurlinks: DigitalPin[] = [115, DigitalPin.C11]// 0:DigitalPin.C15 SPI
 
@@ -29,7 +29,7 @@ namespace receiver { // r-receiver.ts
     //const pin5 = DigitalPin.C5              // Draht blau
     //const pin6 = DigitalPin.C6              // Draht gelb
     export const pinLicht = DigitalPin.C7          // 5V Licht
-    export const pinUltraschall = DigitalPin.C8    // 5V Grove Ultrasonic
+    export const c_PinUltraschall = DigitalPin.C8    // 5V Grove Ultrasonic
     //export const pinSpurrechts = DigitalPin.C9     // 9V fischertechnik 128598 IR-Spursensor
     //const pin10 = DigitalPin.C10
     //export const pinSpurlinks = DigitalPin.C11     // 9V fischertechnik 128598 IR-Spursensor

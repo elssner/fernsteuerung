@@ -82,13 +82,19 @@ für CalliBot, MakerKitCar, CaR4
         buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (entfernung & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf pEntfernung setzen
     }
 
+    //% blockId=radio_getEntfernung
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="%buffer [3] Ultraschall Entfernung" weight=3
-    function getEntfernung(buffer: Buffer): e3Entfernung {
-        return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
+    //% block="%buffer [3] Ultraschall Entfernung in cm" weight=3
+    export function getEntfernung(buffer: Buffer) {
+        return a_Entfernung[buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] >>> 6]
+        // return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
 
-    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
+    //export function getEntfernung(buffer: Buffer): e3Entfernung {// blockHidden=true
+    //    return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
+    //}
+
+    //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket" deprecated=true
     //% block="%buffer [3] Ultraschall Entfernung == %entfernung" weight=3
     export function isEntfernung(buffer: Buffer, entfernung: e3Entfernung): boolean {
         return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000) == entfernung

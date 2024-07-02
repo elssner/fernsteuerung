@@ -132,17 +132,24 @@ namespace radio { // enums.ts
     // block="[3] Ultraschall Entfernung %entfernung" weight=3
     //function radio_entfernung(entfernung: e3Entfernung) { return entfernung }
     export enum e3Entfernung {
-        //% block="5 cm"
-        u0 = 0x00,
         //% block="10 cm"
-        u1 = 0x40,
+        u0 = 0x00,
         //% block="15 cm"
-        u2 = 0x80,
+        u1 = 0x40,
         //% block="20 cm"
+        u2 = 0x80,
+        //% block="30 cm"
         u3 = 0xC0
     }
 
+   export let a_Entfernung = [10, 15, 20, 30] // auslesen beim Empfänger
 
+    // group="Daten" subcategory="Datenpaket"
+    // block="Entfernung %p3Entfernung" 
+    // p3Entfernung.shadow=radio_getEntfernung
+    //export function get_e3Entfernung(p3Entfernung: number) {
+    //    return [5, 10, 15, 20].get(p3Entfernung >>> 6)
+    //}
 
     // ========== Servo Bits 7-6-5
 
