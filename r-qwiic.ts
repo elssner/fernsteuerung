@@ -18,7 +18,7 @@ SparkFun Qwiic Ultrasonic Distance Sensor (HC-SR04)
 
     const measure_command = 0x01
 
-    let a_UltrasonicConnected = true // Qwiic Modul ist angesteckt
+    let n_UltrasonicConnected = true // Qwiic Modul ist angesteckt
     let n_Ultrasonic_mm = 0
 
 
@@ -35,17 +35,17 @@ SparkFun Qwiic Ultrasonic Distance Sensor (HC-SR04)
     //% block="Ultraschall Sensor einlesen || i2c %i2c" weight=8
     //% i2c.defl=0
     export function qUltrasonicRead(i2c = 0) { // SLAVE_BROADCAST_ADDR 0x00  //default address
-        if (a_UltrasonicConnected) {
-            a_UltrasonicConnected = pins.i2cWriteBuffer(i2c, Buffer.fromArray([measure_command]), true) == 0
+        if (n_UltrasonicConnected) {
+            n_UltrasonicConnected = pins.i2cWriteBuffer(i2c, Buffer.fromArray([measure_command]), true) == 0
 
-            if (!a_UltrasonicConnected)
+            if (!n_UltrasonicConnected)
                 basic.showNumber(i2c)
 
-            if (a_UltrasonicConnected) {
+            if (n_UltrasonicConnected) {
                 n_Ultrasonic_mm = pins.i2cReadBuffer(i2c, 2).getNumber(NumberFormat.UInt16BE, 0)
             }
         }
-        return a_UltrasonicConnected
+        return n_UltrasonicConnected
     }
 
     export enum eDist { cm, mm }
