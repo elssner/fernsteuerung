@@ -22,7 +22,7 @@
         "s-advanced.ts",
         "r-receiver.ts",
         "r-datenpaket.ts",
-        "r-pins-encoder.ts",
+        "r-encoder.ts",
         "r-pins.ts",
         "r-qwiicmotor.ts",
         "r-qwiic.ts",
@@ -30,8 +30,7 @@
         "r-advanced.ts",
         "r-calliope-v3.ts",
         "r_callibot.ts",
-        "r_callibot-enums.ts",
-        "r-encoder.ts"
+        "r_callibot-enums.ts"
     ],
     "testFiles": [
         "test.ts"
