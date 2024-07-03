@@ -83,7 +83,7 @@ namespace receiver { // r-pins.ts
                 break
             }
             case eModell.calli2bot: { // Fahrmotor Calli:Bot I²C
-
+                c2Motor255(speed)
                 break
             }
         }

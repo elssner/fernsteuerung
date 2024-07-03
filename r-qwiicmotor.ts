@@ -172,7 +172,7 @@ namespace receiver { // r-qwiicmotor.ts
 
 
     //% group="Motor A B C D (I²C: 0x5D, 0x5E)" subcategory="Qwiic"
-    //% block="Motor %pMotor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=2
+    //% block="Motor qw %pMotor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=2
     //% speed.min=0 speed.max=255 speed.defl=128
     export function qMotor255(pMotor: eMotor, speed: number) {
         let e = false

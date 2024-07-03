@@ -32,14 +32,21 @@ namespace radio { // advanced.ts
     }
 
     //% group="Funktionen" advanced=true
-    //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=4
+    //% block="speedPicker %speed (1 ↓ 128 ↑ 255)" weight=4
+    //% speed.shadow="speedPicker" speed.defl=0
+    export function speedPicker(speed: number) {
+        // -100..0..+100
+        return mapInt32(speed, -100, 100, 1, 255)
+    }
+
+    //% group="Funktionen" advanced=true
+    //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=3
     //% fromLow.defl=1 fromHigh.defl=255 toLow.defl=-100 toHigh.defl=100
     //% inlineInputMode=inline
     export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
         // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
         return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
     }
-
 
 
     // ========== group="Buffer" advanced=true
