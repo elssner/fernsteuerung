@@ -23,10 +23,12 @@ namespace r_callibot { // r-callibot.ts
                 private input_Spursensoren: number[]
         
     */
+    let i2cError: number = 0 // Fehlercode vom letzten WriteBuffer (0 ist kein Fehler)
     let qLogEnabled: boolean
     let qLog: string[] // Array muss bei Verwendung initialisiert werden
     let qLEDs = [0, 0, 0, 0, 0, 0, 0, 0, 0] // LED Wert in Register 0x03 merken zum blinken
     let qFernsteuerungPower: boolean = false // für Fernsteuerung
+    let qFernsteuerungStop: boolean = false   // für Fernsteuerung
 
     // interner Speicher für Sensoren
     let input_Digital: number
@@ -69,21 +71,6 @@ namespace r_callibot { // r-callibot.ts
             i2cWriteBuffer(Buffer.fromArray([eRegister.SET_MOTOR, pMotor, pRichtung, pwm, pRichtung, pwm]))
         else
             i2cWriteBuffer(Buffer.fromArray([eRegister.SET_MOTOR, pMotor, pRichtung, pwm]))
-    }
-
-    // ==========  subcategory="Fernsteuerung"
-
-    // ========== group="Motor (0 .. 255)" subcategory="Fernsteuerung"
-
-    //% group="Motor (0 .. 255)" subcategory="Fernsteuerung"
-    //% block="Motoren links %pPWM1 (0-255) %pRichtung1 rechts %pPWM2 %pRichtung2" weight=2
-    //% pwm1.min=0 pwm1.max=255 pwm1.defl=128 pwm2.min=0 pwm2.max=255 pwm2.defl=128
-    //% inlineInputMode=inline
-    export function setMotoren(pwm1: number, pRichtung1: eDirection, pwm2: number, pRichtung2: eDirection) {
-        if (radio.between(pwm1, 0, 255) && radio.between(pwm2, 0, 255))
-            i2cWriteBuffer(Buffer.fromArray([eRegister.SET_MOTOR, eMotor.beide, pRichtung1, pwm1, pRichtung2, pwm2]))
-        else // falscher Parameter -> beide Stop
-            i2cWriteBuffer(Buffer.fromArray([eRegister.SET_MOTOR, eMotor.beide, 0, 0, 0, 0]))
     }
 
 
@@ -323,6 +310,7 @@ namespace r_callibot { // r-callibot.ts
 
 
 
+    // ========== advanced=true
 
 
     // ========== group="Encoder 2*32 Bit [l,r]" advanced=true
@@ -331,22 +319,6 @@ namespace r_callibot { // r-callibot.ts
     //% block="Encoder Zähler löschen %encoder"
     //% encoder.defl=calli2bot.eMotor.beide
     export function resetEncoder(encoder: eMotor) {
-        /* let bitMask = 0;
-        switch (encoder) {
-            case C2eMotor.links:
-                bitMask = 1;
-                break;
-            case C2eMotor.rechts:
-                bitMask = 2;
-                break;
-            case C2eMotor.beide:
-                bitMask = 3;
-                break;
-        }
-
-        let buffer = pins.createBuffer(2)
-        buffer[0] = eRegister.RESET_ENCODER // 5
-        buffer[1] = bitMask; */
         i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_ENCODER, encoder]))
     }
 
@@ -355,52 +327,248 @@ namespace r_callibot { // r-callibot.ts
     export function encoderValue(): number[] {
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
         return i2cReadBuffer(9).slice(1, 8).toArray(NumberFormat.Int32LE)
-
-        /* 
-                    let result: number;
-                    let index: number;
-        
-                    let wbuffer = pins.createBuffer(1);
-                    wbuffer[0] = 0x91;
-                    pins.i2cWriteBuffer(0x22, wbuffer);
-                    let buffer = pins.i2cReadBuffer(0x22, 9);
-                    if (encoder == C2eSensor.links) {
-                        index = 1;
-                    }
-                    else {
-                        index = 5;
-                    }
-                    result = buffer[index + 3];
-                    result = result * 256 + buffer[index + 2];
-                    result = result * 256 + buffer[index + 1];
-                    result = result * 256 + buffer[index];
-                    result = -(~result + 1);
-                    return result; */
     }
+
+
+    // ========== group="i2c Register lesen" advanced=true
+
+    //% group="i2c Register lesen" advanced=true
+    //% block="%Calli2bot Version %pVersion HEX" weight=6
+    export function i2cReadFW_VERSION(pVersion: eVersion) {
+        i2cWriteBuffer(Buffer.fromArray([eRegister.GET_FW_VERSION]))
+        switch (pVersion) {
+            case eVersion.Typ: { return i2cReadBuffer(2).slice(1, 1).toHex() }
+            case eVersion.Firmware: { return i2cReadBuffer(6).slice(2, 4).toHex() }
+            case eVersion.Seriennummer: { return i2cReadBuffer(10).slice(6, 4).toHex() }
+            default: { return i2cReadBuffer(10).toHex() }
+        }
+    }
+
+    //% group="i2c Register lesen" advanced=true
+    //% block="%Calli2bot Versorgungsspannung mV" weight=4
+    export function i2cReadPOWER(): number {
+        i2cWriteBuffer(Buffer.fromArray([eRegister.GET_POWER]))
+        return i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1)
+    }
+
+    //% group="i2c Register lesen" advanced=true
+    //% block="%Calli2bot readRegister %pRegister size %size" weight=2
+    //% pRegister.defl=calli2bot.eRegister.GET_INPUTS
+    //% size.min=1 size.max=10 size.defl=1
+    export function i2cReadRegister(pRegister: eRegister, size: number): Buffer {
+        i2cWriteBuffer(Buffer.fromArray([pRegister]))
+        return i2cReadBuffer(size)
+    }
+
+
+    // ========== group="i2c Register schreiben"
+
+    //% group="i2c Register schreiben" advanced=true
+    //% block="%Calli2bot writeRegister %pRegister Bytes %bytes" weight=1
+    export function i2cWriteRegister(pRegister: eRegister, bytes: number[]) {
+        bytes.insertAt(0, pRegister)
+        i2cWriteBuffer(Buffer.fromArray(bytes))
+    }
+
+
+    // ========== group="i2c Fehlercode"
+
+    //% group="i2c Fehlercode" advanced=true
+    //% block="%Calli2bot i2c Fehlercode" weight=1
+    export function geti2cError() { return i2cError }
+
+
+
+
+    // ==========  subcategory="Fernsteuerung"
+
+    // ========== group="Motor (0 .. 255)" subcategory="Fernsteuerung"
+
+    //% group="Motor (0 .. 255)" subcategory="Fernsteuerung"
+    //% block="Motoren links %pPWM1 (0-255) %pRichtung1 rechts %pPWM2 %pRichtung2" weight=2
+    //% pwm1.min=0 pwm1.max=255 pwm1.defl=128 pwm2.min=0 pwm2.max=255 pwm2.defl=128
+    //% inlineInputMode=inline
+    export function setMotoren(pwm1: number, pRichtung1: eDirection, pwm2: number, pRichtung2: eDirection) {
+        if (radio.between(pwm1, 0, 255) && radio.between(pwm2, 0, 255))
+            i2cWriteBuffer(Buffer.fromArray([eRegister.SET_MOTOR, eMotor.beide, pRichtung1, pwm1, pRichtung2, pwm2]))
+        else // falscher Parameter -> beide Stop
+            i2cWriteBuffer(Buffer.fromArray([eRegister.SET_MOTOR, eMotor.beide, 0, 0, 0, 0]))
+    }
+
+
+    // ========== group="Fernsteuerung Motor (0 .. 128 .. 255) fahren und lenken"
+
+    //% group="Fernsteuerung (0 .. 128 .. 255) fahren und lenken" subcategory="Fernsteuerung"
+    //% block="fahre mit Joystick receivedNumber: %pUInt32LE || blinken %blink Stoßstange %stStange Entfernung %cm cm" weight=6
+    //% blink.shadow="toggleYesNo" blink.defl=1
+    //% stStange.shadow="toggleYesNo"
+    //% cm.min=1 cm.max=50
+    //% inlineInputMode=inline
+    export function fahreJoystick(pUInt32LE: number, blink = true, stStange = false, cm?: number) {
+        let blinkColor = 0x0000FF
+        let joyBuffer32 = Buffer.create(4)
+        joyBuffer32.setNumber(NumberFormat.UInt32LE, 0, pUInt32LE)
+
+        // Buffer[0] Register 3: Horizontal MSB 8 Bit (0 .. 128 .. 255)
+        let joyHorizontal = joyBuffer32.getUint8(0)
+        if (0x7C < joyHorizontal && joyHorizontal < 0x83) joyHorizontal = 0x80 // off at the outputs
+
+        // Buffer[1] Register 5: Vertical MSB 8 Bit (0 .. 128 .. 255)
+        let joyVertical = joyBuffer32.getUint8(1)
+        if (0x7C < joyVertical && joyVertical < 0x83) joyVertical = 0x80 // off at the outputs
+
+        // Buffer[2] 
+        let joyProzent = joyBuffer32.getUint8(2) // (0 .. 100)
+
+        // Buffer[3] Register 8: Button STATUS (1:war gedrückt)
+        //let joyButton = joyBuffer32.getUint8(3) == 0 ? false : true
+        // Motor Power ON ...
+        if (joyBuffer32.getUint8(3) == 1)
+            qFernsteuerungPower = true // Motor Power ON
+        else if (qFernsteuerungPower)
+            i2cRESET_OUTPUTS() // motorPower = false
+
+        // fahren
+        let fahren_minus255_0_255: number //= change(joyHorizontal) // (0.. 128.. 255) -> (-255 .. 0 .. +255)
+        let signed_128_0_127 = sign(joyHorizontal)
+        if (signed_128_0_127 < 0)
+            fahren_minus255_0_255 = 2 * (128 + signed_128_0_127) // (u) 128 .. 255 -> (s) -128 .. -1  ->   0 .. 127
+        else
+            fahren_minus255_0_255 = -2 * (127 - signed_128_0_127) // (u)   0 .. 127 -> (s)    0 .. 127 -> 127 ..   0
+
+        // minus ist rückwärts
+        let fahren_Richtung: eDirection = (fahren_minus255_0_255 < 0 ? eDirection.r : eDirection.v)
+
+        let fahren_0_255 = Math.abs(fahren_minus255_0_255)
+
+        if (fahren_Richtung == eDirection.r) {
+            qFernsteuerungStop = false
+        }
+        // wenn Stoßstange r oder l, dann nicht vorwärts fahren
+        else if (fahren_Richtung == eDirection.v && stStange) {
+            if (!qFernsteuerungStop) i2cReadINPUTS() // i2c Sensoren nur lesen, wenn nicht Stop
+            if (bitINPUTS(eINPUTS.st4e)) {
+                qFernsteuerungStop = true
+                fahren_0_255 = 0
+                blinkColor = 0xFFFF00
+            }
+        }
+
+        // wenn Entfernung angegeben und kleiner, dann nicht vorwärts fahren
+        else if (fahren_Richtung == eDirection.v && cm != undefined) {
+            if (!qFernsteuerungStop) i2cReadINPUT_US() // i2c Sensoren nur lesen, wenn nicht Stop
+            if (bitINPUT_US(eVergleich.lt, cm)) {
+                qFernsteuerungStop = true
+                fahren_0_255 = 0
+                blinkColor = 0xFF00FF
+            }
+        }
+
+
+        // max Geschwindigkeit wenn Buffer[2] (10 .. 100)
+        if (radio.between(joyProzent, 1, 8)) {
+            fahren_0_255 *= (joyProzent + 1) / 10 // (0,2 .. 0,9)
+        }
+
+        let fahren_links = fahren_0_255
+        let fahren_rechts = fahren_0_255
+
+        // max Geschwindigkeit wenn Buffer[2] (10 .. 100)
+        //if (between(joyProzent, 10, 100)) {
+        //    fahren_links *= joyProzent / 100 // (0,1 .. 1,0)
+        //    fahren_rechts *= joyProzent / 100 // (0,1 .. 1,0)
+        //}
+
+        // lenken
+        let lenken_255_0_255 = sign(joyVertical)
+        let lenken_100_50 = Math.round(Math.map(Math.abs(lenken_255_0_255), 0, 128, 50, 100))
+
+        // lenken Richtung
+        if (lenken_255_0_255 < 0) // minus ist rechts
+            fahren_rechts = Math.round(fahren_rechts * lenken_100_50 / 100)
+        else
+            fahren_links = Math.round(fahren_links * lenken_100_50 / 100)
+
+        if (qFernsteuerungPower)
+            setMotoren(fahren_links, fahren_Richtung, fahren_rechts, fahren_Richtung)
+
+        if (blink) {
+            setRgbLed3(blinkColor, true, true, true, true, true)
+        }
+
+        if (qLogEnabled) {
+            qLog = ["", ""] // init Array 2 Elemente
+            qLog[0] = format4r(joyHorizontal)
+                + format4r(fahren_minus255_0_255)
+                + format4r(fahren_links)
+                + format4r(fahren_rechts)
+            qLog[1] = format4r(joyVertical)
+                + format4r(lenken_255_0_255)
+                + format4r(lenken_100_50)
+                + " " + fahren_Richtung.toString().substr(0, 1)
+                + " " + qFernsteuerungPower.toString().substr(0, 1)
+            //+ " " + format(fahren_Richtung, 1)
+            //+ " " + format(motorPower, 1)
+        }
+
+    }
+
+
+    //% group="Protokoll lesen" subcategory="Fernsteuerung"
+    //% block="Log (Array)" weight=3
+    export function getLog(): string[] { return qLog }
+
+
+    //% group="Protokoll lesen" subcategory="Fernsteuerung"
+    //% block="Log Zeile %index" weight=2
+    //% index.min=0 index.max=1
+    export function getLog2(index: number): string {
+        if (qLog != undefined && index < qLog.length && index >= 0)
+            return qLog.get(index)
+        else
+            return index.toString()
+    }
+
+
+
+
 
 
     function i2cWriteBuffer(buf: Buffer) { // repeat funktioniert nicht
         pins.i2cWriteBuffer(eADDR.CB2_x22, buf)
         /* 
-                if (this.i2cError == 0) { // vorher kein Fehler
-                    this.i2cError = pins.i2cWriteBuffer(this.i2cADDR, buf)
+                if (i2cError == 0) { // vorher kein Fehler
+                    i2cError = pins.i2cWriteBuffer(i2cADDR, buf)
                     // NaN im Simulator
-                    if (this.i2cCheck && this.i2cError != 0)  // vorher kein Fehler, wenn (n_i2cCheck=true): beim 1. Fehler anzeigen
-                        basic.showString(Buffer.fromArray([this.i2cADDR]).toHex()) // zeige fehlerhafte i2c-Adresse als HEX
-                } else if (!this.i2cCheck)  // vorher Fehler, aber ignorieren (n_i2cCheck=false): i2c weiter versuchen
-                    this.i2cError = pins.i2cWriteBuffer(this.i2cADDR, buf)
+                    if (i2cCheck && i2cError != 0)  // vorher kein Fehler, wenn (n_i2cCheck=true): beim 1. Fehler anzeigen
+                        basic.showString(Buffer.fromArray([i2cADDR]).toHex()) // zeige fehlerhafte i2c-Adresse als HEX
+                } else if (!i2cCheck)  // vorher Fehler, aber ignorieren (n_i2cCheck=false): i2c weiter versuchen
+                    i2cError = pins.i2cWriteBuffer(i2cADDR, buf)
          */
     }
 
     function i2cReadBuffer(size: number): Buffer { // repeat funktioniert nicht
         return pins.i2cReadBuffer(eADDR.CB2_x22, size)
         /* 
-                if (!this.i2cCheck || this.i2cError == 0)
-                    return pins.i2cReadBuffer(this.i2cADDR, size)
+                if (!i2cCheck || i2cError == 0)
+                    return pins.i2cReadBuffer(i2cADDR, size)
                 else
                     return Buffer.create(size)
          */
     }
 
+
+    // ========== private
+
+    //export function between(i0: number, i1: number, i2: number): boolean { return (i0 >= i1 && i0 <= i2) }
+
+    export function sign(i: number, e: number = 7): number {
+        if (i < 2 ** e) return i
+        else return -((~i & ((2 ** e) - 1)) + 1)
+    }
+    export function format4r(pValue: any) {
+        let pText = convertToText(pValue)
+        return "    ".substr(0, 4 - pText.length) + pText
+    }
 
 } // r-callibot.ts
