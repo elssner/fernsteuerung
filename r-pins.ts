@@ -124,7 +124,7 @@ namespace receiver { // r-pins.ts
 
     //% group="Ultraschall (alle Sensoren)" subcategory="Pins"
     //% block="Entfernung in cm" weight=6
-    export function entfernung_modell() {
+    export function selectEntfernung() {
         switch (n_Modell) {
             case eModell.v3: {
                 if (qUltrasonicRead()) // i2c einlesen
@@ -143,7 +143,7 @@ namespace receiver { // r-pins.ts
         }
     }
 
-    export enum eVergleich {
+    export enum eVergleichEntfernung {
         //% block=">="
         gt,
         //% block="<="
@@ -153,12 +153,12 @@ namespace receiver { // r-pins.ts
     //% group="Ultraschall (alle Sensoren)" subcategory="Pins"
     //% block="Entfernung %pVergleich %cm cm" weight=5
     //% cm.shadow=radio_getEntfernung
-    export function entfernung_vergleich(pVergleich: eVergleich, cm: number) { // cm.min=5 cm.max=50 cm.defl=20 
+    export function entfernung_vergleich(pVergleich: eVergleichEntfernung, cm: number) { // cm.min=5 cm.max=50 cm.defl=20
         switch (pVergleich) {
-            case eVergleich.gt:
-                return entfernung_modell() >= cm
-            case eVergleich.lt:
-                return entfernung_modell() <= cm
+            case eVergleichEntfernung.gt:
+                return selectEntfernung() >= cm
+            case eVergleichEntfernung.lt:
+                return selectEntfernung() <= cm
             default:
                 return false
         }
