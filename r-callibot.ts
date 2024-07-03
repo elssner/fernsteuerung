@@ -207,6 +207,121 @@ namespace r_callibot { // r-callibot.ts
     }
 
 
+    //% group="INPUT digital" subcategory="Sensoren"
+    //% block="Stoßstange %sensor %status" weight=6
+    export function readBumperSensor(sensor: eSensor, status: eState): boolean {
+        switch (sensor) {
+            case eSensor.rechts:
+                switch (status) {
+                    case eState.an: return (input_Digital & 0b00000100) != 0
+                    case eState.aus: return (input_Digital & 0b00000100) == 0
+                }
+            case eSensor.links:
+                switch (status) {
+                    case eState.an: return (input_Digital & 0b00001000) != 0
+                    case eState.aus: return (input_Digital & 0b000001000) == 0
+                }
+            default:
+                return false
+        }
+
+    }
+
+    //% group="INPUT digital" subcategory="Sensoren"
+    //% block="%taste" weight=5
+    export function switchOn(taste: eTaster): boolean {
+        switch (taste) {
+            case eTaster.ont: return (input_Digital & 0b00010000) == 0b00010000
+            case eTaster.offt: return (input_Digital & 0b00100000) == 0b00100000
+            default: return false
+        }
+
+
+    }
+
+    //% group="INPUT digital" subcategory="Sensoren"
+    //% block="%pINPUTS" weight=3 deprecated=true
+    export function bitINPUTS(pINPUTS: eINPUTS): boolean {
+        switch (pINPUTS) {
+            case eINPUTS.sp0: return (input_Digital & 0b00000011) == 0
+            case eINPUTS.sp1r: return (input_Digital & 0b00000011) == 1
+            case eINPUTS.sp2l: return (input_Digital & 0b00000011) == 2
+            case eINPUTS.sp3b: return (input_Digital & 0b00000011) == 3
+            case eINPUTS.sp4e: return bitINPUTS(eINPUTS.sp1r) || bitINPUTS(eINPUTS.sp2l) || bitINPUTS(eINPUTS.sp3b)
+            case eINPUTS.st0: return (input_Digital & 0b00001100) == 0b00000000
+            case eINPUTS.st1r: return (input_Digital & 0b00001100) == 0b00000100
+            case eINPUTS.st2l: return (input_Digital & 0b00001100) == 0b00001000
+            case eINPUTS.st3b: return (input_Digital & 0b00001100) == 0b00001100
+            case eINPUTS.st4e: return bitINPUTS(eINPUTS.st1r) || bitINPUTS(eINPUTS.st2l) || bitINPUTS(eINPUTS.st3b)
+            case eINPUTS.ont: return (input_Digital & 0b00010000) == 0b00010000
+            case eINPUTS.off: return (input_Digital & 0b00100000) == 0b00100000
+            default: return false
+        }
+    }
+
+    //% group="INPUT digital" subcategory="Sensoren"
+    //% block="Digitaleingänge 6 Bit" weight=2
+    export function getINPUTS() { return input_Digital }
+
+
+
+
+
+    // ========== group="INPUT Ultraschallsensor" subcategory="Sensoren"
+
+    //% group="INPUT Ultraschallsensor" subcategory="Sensoren"
+    //% block="neu einlesen Ultraschallsensor" weight=3
+    export function i2cReadINPUT_US() {
+        i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUT_US]))
+        input_Ultraschallsensor = i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1)
+    }
+
+    //% group="INPUT Ultraschallsensor" subcategory="Sensoren"
+    //% block="Entfernung %pVergleich %cm cm" weight=2
+    //% cm.min=1 cm.max=50 cm.defl=15
+    export function bitINPUT_US(pVergleich: eVergleich, cm: number) {
+        switch (pVergleich) {
+            case eVergleich.gt: return input_Ultraschallsensor / 10 > cm
+            case eVergleich.lt: return input_Ultraschallsensor / 10 < cm
+            default: return false
+        }
+    }
+
+    //% group="INPUT Ultraschallsensor" subcategory="Sensoren"
+    //% block="Ultraschallsensor 16 Bit (mm)" weight=1
+    export function getINPUT_US() { return input_Ultraschallsensor }
+
+
+
+    // ========== group="INPUT Spursensoren 2*16 Bit [r,l]" subcategory="Sensoren"
+
+    // ========== group="INPUT Spursensoren 2*16 Bit [r,l]"
+
+    //% group="INPUT Spursensoren 2*16 Bit [r,l]" subcategory="Sensoren"
+    //% block="neu einlesen Spursensoren" weight=6
+    export function i2cReadLINE_SEN_VALUE() {
+        i2cWriteBuffer(Buffer.fromArray([eRegister.GET_LINE_SEN_VALUE]))
+        input_Spursensoren = i2cReadBuffer(5).slice(1, 4).toArray(NumberFormat.UInt16LE)
+    }
+
+    //% group="INPUT Spursensoren 2*16 Bit [r,l]" subcategory="Sensoren"
+    //% block="Spursensor %pRL %pVergleich %vergleich" weight=2
+    //% inlineInputMode=inline
+    export function bitLINE_SEN_VALUE(pRL: eRL, pVergleich: eVergleich, vergleich: number) {
+        let sensor = input_Spursensoren.get(pRL)
+        switch (pVergleich) {
+            case eVergleich.gt: return sensor > vergleich
+            case eVergleich.lt: return sensor < vergleich
+            default: return false
+        }
+    }
+
+    //% group="INPUT Spursensoren 2*16 Bit [r,l]" subcategory="Sensoren"
+    //% block="Spursensor %pRL" weight=1
+    export function getLINE_SEN_VALUE(pRL: eRL) { return input_Spursensoren.get(pRL) }
+
+
+
 
 
 
