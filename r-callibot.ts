@@ -22,6 +22,9 @@ namespace receiver { // r-callibot.ts
     let qLogEnabled: boolean
     let qLog: string[] // Array muss bei Verwendung initialisiert werden
     let qLEDs = [0, 0, 0, 0, 0, 0, 0, 0, 0] // LED Wert in Register 0x03 merken zum blinken
+    let qFernsteuerungPower: boolean = false // für Fernsteuerung
+
+
 
     // ========== group="Motor (-100% .. 0 .. +100%)"
 
@@ -141,6 +144,19 @@ namespace receiver { // r-callibot.ts
             qLEDs.set(pLed, pwm)
         }
     }
+
+
+
+
+    // ========== group="Reset"
+
+    //% group="Reset" subcategory="Calli:bot" color=#007F00
+    //% block="alles aus Motor, LEDs, Servo"
+    export function i2cRESET_OUTPUTS() {
+        i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_OUTPUTS]))
+        qFernsteuerungPower = false
+    }
+
 
 
 
