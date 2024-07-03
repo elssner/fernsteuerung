@@ -28,7 +28,8 @@
         "r-qwiic.ts",
         "r-callibot.ts",
         "r-advanced.ts",
-        "r-calliope-v3.ts"
+        "r-calliope-v3.ts",
+        "r-callibot-enums.ts"
     ],
     "testFiles": [
         "test.ts"

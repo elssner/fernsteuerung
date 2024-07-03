@@ -108,4 +108,25 @@ PWM rechts (0..255) von Motor 2
         GET_ENCODER_VALUE = 0x91 // 9 Byte links[1-4] rechts [5-8] 2* INT32BE mit Vorzeichen
     }
 
+
+
+    export enum eMotor {
+        //% block="links"
+        m1 = 0b01,
+        //% block="rechts"
+        m2 = 0b10,
+        //% block="beide"
+        beide = 0b11
+    }
+
+    export enum eRL { rechts = 0, links = 1 } // Index im Array
+
+    export enum eDirection {
+        //% block="vorwärts"
+        v = 0,
+        //% block="rückwärts"
+        r = 1
+    }
+
+
 } // r-callibot.ts
