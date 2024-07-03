@@ -27,7 +27,6 @@
         "r-qwiicmotor.ts",
         "r-qwiic.ts",
         "r-callibot.ts",
-        "r-callibot-enums.ts",
         "r-advanced.ts",
         "r-calliope-v3.ts",
         "r_callibot.ts",

@@ -1,6 +1,6 @@
 //% color=#007F00 icon="\uf188" block="Calli²bot" weight=93
 //% groups='["beim Start","Motor (-100% .. 0 .. +100%)","LED","Reset","Kommentar"]'
-namespace r_callibot { // r-callibot.ts
+namespace r_callibot { // r_callibot.ts
     /*
     // color=#008272 icon="\uf012" block="Empfänger" weight=94
     
@@ -571,4 +571,4 @@ namespace r_callibot { // r-callibot.ts
         return "    ".substr(0, 4 - pText.length) + pText
     }
 
-} // r-callibot.ts
+} // r_callibot.ts
