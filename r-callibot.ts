@@ -21,19 +21,20 @@ namespace receiver { // r-callibot.ts
         if (radio.between(speed, 129, 255)) { // vorwärts
             pwm = radio.mapInt32(speed, 128, 255, 0, 255)
             richtung = 0
-            basic.setLedColor(Colors.Red)
+           // basic.setLedColor(Colors.Red)
         }
         else if (radio.between(speed, 1, 127)) { // rückwärts
             pwm = radio.mapInt32(speed, 1, 128, 255, 0)
             richtung = 1
-            basic.setLedColor(Colors.Green)
-        } else {
+           // basic.setLedColor(Colors.Green)
+        } 
+        else { // wenn speed 0, 128 oder mehr als 8 Bit
             pwm = 0
             richtung = 0
-            basic.setLedColor(Colors.White)
+          //  basic.setLedColor(Colors.White)
         }
-        return pwm
-
+        i2cWriteBuffer(Buffer.fromArray([eRegister.SET_MOTOR, eMotor.beide, richtung, pwm, richtung, pwm]))
+      //  return pwm
     }
 
 
