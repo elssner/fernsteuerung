@@ -46,7 +46,7 @@ namespace radio { // bluetooth.ts
 
 
     //% group="calliope-net.github.io/fernsteuerung" subcategory="Bluetooth" 
-    //% block="Funkgruppe %e" weight=7
+    //% block="Funkgruppe ändern %e" weight=7
     export function setFunkgruppeButton(e: eFunkgruppeButton) {
 
         if (e == eFunkgruppeButton.minus && a_StorageBuffer[eStorageBuffer.funkgruppe] > 0xA0)
@@ -78,7 +78,7 @@ namespace radio { // bluetooth.ts
 
     }
 
-    //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00
+    //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00 deprecated=true
     //% block="Flash speichern" weight=2
     export function storageBufferGet() {
         return a_StorageBuffer.getNumber(NumberFormat.UInt32LE, 0)

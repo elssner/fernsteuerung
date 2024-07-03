@@ -5,13 +5,14 @@ namespace sender {
     // BF3F7F
 
 
+   // block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm Funkgruppe (aus Flash lesen) | %storagei32" weight=8
 
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start || Funkgruppe / Flash %storagei32" weight=8
+    //% block="beim Start | Funkgruppe (aus Flash lesen) | %storagei32" weight=8
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
-    //% inlineInputMode=inline
-    export function beimStart(storagei32 = 175) {
+    //% inlineInputMode=external
+    export function beimStart(storagei32: number) {
         if (!radio.simulator()) {
             radio.storageBufferSet(storagei32) // prüft und zeigt Funkgruppe an
 
@@ -30,10 +31,16 @@ namespace sender {
         }
     }
 
-
-
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="setSendReset %reset" weight=2
+    //% block="Flash speichern (in Storage)" weight=7
+    export function storageBufferGet() {
+        return radio.storageBufferGet()
+    }
+
+
+
+    //% group="Empfänger zurücksetzen"
+    //% block="Reset senden %reset" weight=2
     //% reset.shadow="toggleYesNo"
     export function setSendReset(reset = false) {
         if (isFunktion(sender.eFunktion.ng)) // nicht nicht gestartet

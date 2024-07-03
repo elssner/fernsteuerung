@@ -45,8 +45,8 @@ namespace receiver { // r-receiver.ts
     export enum eMotor01 { M0, M1, M0_M1 } // muss mit v3 identisch sein
 
     export const c_MotorStop = 128
-   
-  export  let n_Motor0Speed = c_MotorStop  // aktueller Wert im Chip
+
+    export let n_Motor0Speed = c_MotorStop  // aktueller Wert im Chip
     let n_Motor1Speed = c_MotorStop  // aktueller Wert im Chip
 
     export const c_Servo_geradeaus = 90
@@ -54,7 +54,7 @@ namespace receiver { // r-receiver.ts
     let n_ServoWinkel = c_Servo_geradeaus // aktuell eingestellter Winkel
 
     // für Encoder r-pins-encoder.ts
-   // export function dualEncoderM0Richtung() {
+    // export function dualEncoderM0Richtung() {
     //    return n_Motor0 > c_MotorStop // true: vorwärts
     //}
     //export function dualEncoderM0Stop() {
@@ -68,7 +68,7 @@ namespace receiver { // r-receiver.ts
     //% radDmm.min=60 radDmm.max=80 radDmm.defl=65
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     // inlineInputMode=inline
-    export function beimStart(modell: eModell, servoGeradeaus: number, encoder: boolean, radDmm: number, storagei32 = 175) {
+    export function beimStart(modell: eModell, servoGeradeaus: number, encoder: boolean, radDmm: number, storagei32: number) {
         n_Modell = modell
         n_ServoGeradeaus = servoGeradeaus // Parameter
 
@@ -94,6 +94,12 @@ namespace receiver { // r-receiver.ts
         //  addStatus(n_ready)
     }
 
+
+    //% group="calliope-net.github.io/fernsteuerung"
+    //% block="Flash speichern (in Storage)" weight=7
+    export function storageBufferGet() {
+        return radio.storageBufferGet()
+    }
 
 
     // ========== group="Motor"
