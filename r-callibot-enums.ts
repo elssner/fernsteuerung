@@ -1,5 +1,5 @@
 
-namespace receiver { // r-callibot-enums.ts
+namespace r_callibot { // r-callibot-enums.ts
 
     export enum eADDR {
         CB2_x22 = 0x22 //, WR_MOTOR_x20 = 0x20, WR_LED_x21 = 0x21, RD_SENSOR_x21
@@ -29,7 +29,7 @@ PWM rechts (0..255) von Motor 2
     }
 
 
-    //% group="Motor (-100% .. 0 .. +100%)" subcategory="Calli:bot" color=#007F00
+    //% group="Motor (-100% .. 0 .. +100%)"
     //% block="Pause %sekunden Sekunden" weight=1
     //% sekunden.shadow=calli2bot_ePause
     export function pauseSekunden(sekunden: number) {

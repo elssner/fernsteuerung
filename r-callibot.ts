@@ -1,34 +1,42 @@
-
-namespace receiver { // r-callibot.ts
-
+//% color=#007F00 icon="\uf188" block="Calli²bot" weight=93
+//% groups='["beim Start","Motor (-100% .. 0 .. +100%)","LED","Reset","Kommentar"]'
+namespace r_callibot { // r-callibot.ts
     /*
-            private readonly qSimulator: boolean = ("€".charCodeAt(0) == 8364)
-            private readonly i2cADDR: eADDR
-            private readonly i2cCheck: boolean // i2c-Check
-            private i2cError: number = 0 // Fehlercode vom letzten WriteBuffer (0 ist kein Fehler)
-            private readonly qLogEnabled: boolean
-            private qLog: string[] // Array muss bei Verwendung initialisiert werden
-            private qLEDs = [0, 0, 0, 0, 0, 0, 0, 0, 0] // LED Wert in Register 0x03 merken zum blinken
+    // color=#008272 icon="\uf012" block="Empfänger" weight=94
     
-            private qStopandGoMotoran: boolean = false // für seite4StopandGo()
-            private qFernsteuerungPower: boolean = false // für Fernsteuerung
-            private qFernsteuerungStop: boolean = false   // für Fernsteuerung
-            // interner Speicher für Sensoren
-            private input_Digital: number
-            private input_Ultraschallsensor: number
-            private input_Spursensoren: number[]
     
+    
+                private readonly qSimulator: boolean = ("€".charCodeAt(0) == 8364)
+                private readonly i2cADDR: eADDR
+                private readonly i2cCheck: boolean // i2c-Check
+                private i2cError: number = 0 // Fehlercode vom letzten WriteBuffer (0 ist kein Fehler)
+                private readonly qLogEnabled: boolean
+                private qLog: string[] // Array muss bei Verwendung initialisiert werden
+                private qLEDs = [0, 0, 0, 0, 0, 0, 0, 0, 0] // LED Wert in Register 0x03 merken zum blinken
+        
+                private qStopandGoMotoran: boolean = false // für seite4StopandGo()
+                private qFernsteuerungPower: boolean = false // für Fernsteuerung
+                private qFernsteuerungStop: boolean = false   // für Fernsteuerung
+                // interner Speicher für Sensoren
+                private input_Digital: number
+                private input_Ultraschallsensor: number
+                private input_Spursensoren: number[]
+        
     */
     let qLogEnabled: boolean
     let qLog: string[] // Array muss bei Verwendung initialisiert werden
     let qLEDs = [0, 0, 0, 0, 0, 0, 0, 0, 0] // LED Wert in Register 0x03 merken zum blinken
     let qFernsteuerungPower: boolean = false // für Fernsteuerung
 
+    // interner Speicher für Sensoren
+    let input_Digital: number
+    let input_Ultraschallsensor: number
+    let input_Spursensoren: number[]
 
 
     // ========== group="Motor (-100% .. 0 .. +100%)"
 
-    //% group="Motor (-100% .. 0 .. +100%)" subcategory="Calli:bot" color=#007F00
+    //% group="Motor (-100% .. 0 .. +100%)"
     //% block="Motoren links mit %pwm1 \\% rechts mit %pwm2 \\%" weight=8
     //% pwm1.shadow="speedPicker" pwm1.defl=0
     //% pwm2.shadow="speedPicker" pwm2.defl=0
@@ -43,13 +51,9 @@ namespace receiver { // r-callibot.ts
 
         setMotoren(pwm1, pRichtung1, pwm2, pRichtung2)
 
-        //if (this.between(pwm1, 0, 255) && this.between(pwm2, 0, 255))
-        //    this.i2cWriteBuffer(Buffer.fromArray([eRegister.SET_MOTOR, eMotor.beide, pRichtung1, pwm1, pRichtung2, pwm2]))
-        //else
-        //    this.i2cWriteBuffer(Buffer.fromArray([eRegister.SET_MOTOR, eMotor.beide, 0, 0, 0, 0]))
     }
 
-    //% group="Motor (-100% .. 0 .. +100%)" subcategory="Calli:bot" color=#007F00
+    //% group="Motor (-100% .. 0 .. +100%)"
     //% block="Motor %pMotor mit %pwm \\%" weight=7
     //% pwm.shadow="speedPicker" pwm.defl=0
     export function setMotor(pMotor: eMotor, pwm: number) {
@@ -71,7 +75,7 @@ namespace receiver { // r-callibot.ts
 
     // ========== group="Motor (0 .. 255)" subcategory="Fernsteuerung"
 
-    //% group="Motor (0 .. 255)" subcategory="Fernsteuerung" subcategory="Calli:bot" color=#007F00
+    //% group="Motor (0 .. 255)" subcategory="Fernsteuerung"
     //% block="Motoren links %pPWM1 (0-255) %pRichtung1 rechts %pPWM2 %pRichtung2" weight=2
     //% pwm1.min=0 pwm1.max=255 pwm1.defl=128 pwm2.min=0 pwm2.max=255 pwm2.defl=128
     //% inlineInputMode=inline
@@ -89,7 +93,7 @@ namespace receiver { // r-callibot.ts
 
 
 
-    //% group="LED" subcategory="Calli:bot" color=#007F00
+    //% group="LED"
     //% block="RGB LED %color || ↖ %lv ↙ %lh ↘ %rh ↗ %rv blinken %blink" weight=7
     //% color.shadow="callibot_colorPicker"
     //% lv.shadow="toggleYesNo" lh.shadow="toggleYesNo" rh.shadow="toggleYesNo" rv.shadow="toggleYesNo"
@@ -121,7 +125,7 @@ namespace receiver { // r-callibot.ts
     }
 
 
-    //% group="LED" subcategory="Calli:bot" color=#007F00
+    //% group="LED"
     //% block="LED %led %onoff || blinken %blink Helligkeit %pwm" weight=2
     //% onoff.shadow="toggleOnOff"
     //% blink.shadow="toggleYesNo"
@@ -150,7 +154,7 @@ namespace receiver { // r-callibot.ts
 
     // ========== group="Reset"
 
-    //% group="Reset" subcategory="Calli:bot" color=#007F00
+    //% group="Reset"
     //% block="alles aus Motor, LEDs, Servo"
     export function i2cRESET_OUTPUTS() {
         i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_OUTPUTS]))
@@ -160,13 +164,55 @@ namespace receiver { // r-callibot.ts
 
 
 
+    // ========== subcategory="Sensoren"
+
+    // ========== group="INPUT digital" subcategory="Sensoren"
+
+    //% group="INPUT digital" subcategory="Sensoren"
+    //% block="neu einlesen Digitaleingänge || %i2" weight=8
+    //% i2.defl=0
+    export function i2cReadINPUTS(i2 = 0) {
+        switch (i2) {
+            case 0:
+                i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUTS]))
+                input_Digital = i2cReadBuffer(1).getUint8(0)
+            case 1:
+                input_Digital = i2cReadBuffer(1).getUint8(0)
+            case 2:
+                input_Digital = pins.i2cReadBuffer(0x22, 1).getUint8(0)
+            case 3:
+                input_Digital = pins.i2cReadBuffer(0x21, 1).getUint8(0)
+        }
+    }
+
+    //% group="INPUT digital" subcategory="Sensoren"
+    //% block="Liniensensor %sensor %status" weight=7
+    export function readLineSensor(sensor: eSensor, status: eSensorStatus): boolean {
+        switch (sensor) {
+            case eSensor.rechts:
+                switch (status) {
+                    case eSensorStatus.hell: return (input_Digital & 0b00000001) != 0
+                    case eSensorStatus.dunkel: return (input_Digital & 0b00000001) == 0
+                }
+            case eSensor.links:
+                switch (status) {
+                    case eSensorStatus.hell: return (input_Digital & 0b00000010) != 0
+                    case eSensorStatus.dunkel: return (input_Digital & 0b000000010) == 0
+                }
+            default:
+                return false
+        }
+
+
+    }
+
 
 
 
 
     // ========== group="Encoder 2*32 Bit [l,r]" advanced=true
 
-    //% group="Encoder 2*32 Bit [l,r]" subcategory="Calli:bot" color=#007F00
+    //% group="Encoder 2*32 Bit [l,r]" advanced=true
     //% block="Encoder Zähler löschen %encoder"
     //% encoder.defl=calli2bot.eMotor.beide
     export function resetEncoder(encoder: eMotor) {
@@ -189,7 +235,7 @@ namespace receiver { // r-callibot.ts
         i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_ENCODER, encoder]))
     }
 
-    //% group="Encoder 2*32 Bit [l,r]" subcategory="Calli:bot" color=#007F00
+    //% group="Encoder 2*32 Bit [l,r]" advanced=true
     //% block="Encoder Werte lesen"
     export function encoderValue(): number[] {
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
