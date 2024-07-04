@@ -8,10 +8,10 @@ namespace receiver { // r-pins.ts
 
     // aufgerufen im pins.onPulsed Ereignis, um die Zähl-Richtung +/- der Impule zu bestimmen
     function selectEncoderMotorRichtung() { // true: vorwärts > 128
-        switch (n_Modell) {
-            case eModell.v3: return n_Motor0Speed >= c_MotorStop // dualEncoderM0Richtung()
-            case eModell.car4: return a_MotorSpeed[eMotor.ma] >= c_MotorStop // qEncoderMotorRichtung(eMotor.ma)
-            //case eModell.calli2bot:
+        switch (n_rModell) {
+            case erModell.v3: return n_v3Motor0Speed >= c_MotorStop // dualEncoderM0Richtung()
+            case erModell.car4: return a_qMotorSpeed[eMotor.ma] >= c_MotorStop // qEncoderMotorRichtung(eMotor.ma)
+            //case eModell.calli2bot: nicht relevant, wird in der Hardware gezählt
             default: return false
         }
     }
@@ -19,7 +19,7 @@ namespace receiver { // r-pins.ts
 
 
     // aufgerufen von receiver.beimStart
-    export function startEncoder(modell: eModell, radDmm: number) {
+    export function startEncoder(modell: erModell, radDmm: number) {
         n_EncoderFaktor = 63.9 * (26 / 14) / (radDmm / 10 * Math.PI)
 
         /* if (modell == eModell.v3) {
@@ -32,7 +32,7 @@ namespace receiver { // r-pins.ts
         }
  */
 
-        if (modell == eModell.v3 || modell == eModell.car4) {
+        if (modell == erModell.v3 || modell == erModell.car4) {
 
             // ========== Event Handler registrieren
             pins.onPulsed(a_PinEncoder[modell], PulseValue.Low, function () {
@@ -73,16 +73,16 @@ namespace receiver { // r-pins.ts
     //% block="Encodermotor starten (1 ↓ 128 ↑ 255) %speed" weight=9
     //% speed.min=0 speed.max=255 speed.defl=128
     export function selectEncoderMotor255(speed: number) {
-        switch (n_Modell) {
-            case eModell.v3: { // Fahrmotor an Calliope v3 Pins
-                motor255(eMotor01.M0, speed)
+        switch (n_rModell) {
+            case erModell.v3: { // Fahrmotor an Calliope v3 Pins
+                v3Motor255(eMotor01.M0, speed)
                 break
             }
-            case eModell.car4: { // Fahrmotor am Qwiic Modul
+            case erModell.car4: { // Fahrmotor am Qwiic Modul
                 qMotor255(eMotor.ma, speed)
                 break
             }
-            case eModell.calli2bot: { // Fahrmotor Calli:Bot I²C
+            case erModell.calli2bot: { // Fahrmotor Calli:Bot I²C
                 c2Motor255(speed)
                 break
             }

@@ -11,7 +11,7 @@ namespace receiver { // r-qwiicmotor.ts
     let a_MotorChipConnected = [false, false] // Index eMotorChip
     let a_MotorChipReady = [false, false] // Index eMotorChip
     let a_MotorChipPower = [false, false] // Index eMotorChip
-    export let a_MotorSpeed = [c_MotorStop, c_MotorStop, c_MotorStop, c_MotorStop] // Index eMotor
+    export let a_qMotorSpeed = [c_MotorStop, c_MotorStop, c_MotorStop, c_MotorStop] // Index eMotor
 
 
     // I²C Register Motor Chip
@@ -178,8 +178,8 @@ namespace receiver { // r-qwiicmotor.ts
         let e = false
         // addStatusHEX(speed)
         if (radio.between(speed, 1, 255)) {
-            if (speed != a_MotorSpeed[pMotor]) { // sendet nur, wenn der Wert sich ändert
-                a_MotorSpeed[pMotor] = speed
+            if (speed != a_qMotorSpeed[pMotor]) { // sendet nur, wenn der Wert sich ändert
+                a_qMotorSpeed[pMotor] = speed
 
                 let chip: eMotorChip = (pMotor == eMotor.mc || pMotor == eMotor.md) ? eMotorChip.cd : eMotorChip.ab
 

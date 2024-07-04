@@ -2,7 +2,7 @@
 namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
-    export enum eModell {
+  export   enum erModell {
         //% block="Calliope v3 (Maker Kit Car)"
         v3 = 0,     // Index in Arrays
         //% block="Calliope auf Rädern 4 (v1)"
@@ -11,7 +11,7 @@ namespace receiver { // r-receiver.ts
         calli2bot = 2
     }
 
-    export let n_Modell = eModell.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
+  export   let n_rModell = erModell.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
 
     // Calliope v3 freie Pins: C8, C9, C12, C13, C14, C15
     export let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
@@ -46,8 +46,8 @@ namespace receiver { // r-receiver.ts
 
     export const c_MotorStop = 128
 
-    export let n_Motor0Speed = c_MotorStop  // aktueller Wert im Chip
-    let n_Motor1Speed = c_MotorStop  // aktueller Wert im Chip
+    export let n_v3Motor0Speed = c_MotorStop  // aktueller Wert im Chip
+    let n_v3Motor1Speed = c_MotorStop  // aktueller Wert im Chip
 
     export const c_Servo_geradeaus = 90
     let n_ServoGeradeaus = c_Servo_geradeaus // Winkel für geradeaus wird beim Start eingestellt
@@ -71,8 +71,8 @@ namespace receiver { // r-receiver.ts
     //% zf.shadow="toggleYesNo" zf.defl=1
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     // inlineInputMode=inline
-    export function beimStart(modell: eModell, servoGeradeaus: number, encoder: boolean, radDmm: number, zf: boolean, storagei32: number) {
-        n_Modell = modell
+    export function beimStart(modell: erModell, servoGeradeaus: number, encoder: boolean, radDmm: number, zf: boolean, storagei32: number) {
+        n_rModell = modell
         n_ServoGeradeaus = servoGeradeaus // Parameter
 
         pinRelay(true) // Relais an schalten (braucht gültiges n_Modell, um den Pin zu finden)
@@ -81,17 +81,17 @@ namespace receiver { // r-receiver.ts
         if (zf)
             radio.zeigeFunkgruppe()
 
-        pins.servoWritePin(a_PinServo[n_Modell], n_ServoGeradeaus)
+        pins.servoWritePin(a_PinServo[n_rModell], n_ServoGeradeaus)
 
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
         if (encoder)
-            startEncoder(n_Modell, radDmm)
+            startEncoder(n_rModell, radDmm)
 
         radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
 
     }
-   
+
 
     //% group="calliope-net.github.io/fernsteuerung"
     //% block="Flash speichern" weight=7
@@ -123,7 +123,7 @@ namespace receiver { // r-receiver.ts
     //% group="Motor 0 1 (Calliope v3)"
     //% block="Motor v3 %motor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=6
     //% speed.min=0 speed.max=255 speed.defl=128
-    export function motor255(motor: eMotor01, speed: number) { // sendet nur an MotorChip, wenn der Wert sich ändert
+    export function v3Motor255(motor: eMotor01, speed: number) { // sendet nur an MotorChip, wenn der Wert sich ändert
         //  if (n_MotorPower) {
         if (radio.between(speed, 1, 255)) {
             //let duty_percent = (speed == c_MotorStop ? 0 : Math.map(speed, 1, 255, -100, 100))
@@ -131,21 +131,21 @@ namespace receiver { // r-receiver.ts
             let duty_percent = radio.mapInt32(speed, 1, 255, -100, 100)
             //n_StatusString = duty_percent.toString()
 
-            if (motor == eMotor01.M0 && speed != n_Motor0Speed) {
-                n_Motor0Speed = speed
+            if (motor == eMotor01.M0 && speed != n_v3Motor0Speed) {
+                n_v3Motor0Speed = speed
                 dualMotorPower(motor, duty_percent)
             }
-            else if (motor == eMotor01.M1 && speed != n_Motor1Speed) {
-                n_Motor1Speed = speed
+            else if (motor == eMotor01.M1 && speed != n_v3Motor1Speed) {
+                n_v3Motor1Speed = speed
                 dualMotorPower(motor, duty_percent)
             }
-            else if (motor == eMotor01.M0_M1 && (speed != n_Motor0Speed || speed != n_Motor1Speed)) {
-                n_Motor0Speed = speed
-                n_Motor1Speed = speed
+            else if (motor == eMotor01.M0_M1 && (speed != n_v3Motor0Speed || speed != n_v3Motor1Speed)) {
+                n_v3Motor0Speed = speed
+                n_v3Motor1Speed = speed
                 dualMotorPower(motor, duty_percent)
             }
         } else { // n_MotorPower false oder speed=0
-            motor255(motor, c_MotorStop) // 128
+            v3Motor255(motor, c_MotorStop) // 128
 
             //n_Motor0 = c_MotorStop
             //n_Motor1 = c_MotorStop
@@ -189,7 +189,7 @@ namespace receiver { // r-receiver.ts
         // (0+14)*3=42 keine Änderung, gültige Werte im Buffer 1-31  (1+14)*3=45  (16+14)*3=90  (31+14)*3=135
         if (radio.between(winkel, 45, 135) && n_ServoWinkel != winkel) {
             n_ServoWinkel = winkel
-            pins.servoWritePin(a_PinServo[n_Modell], winkel + n_ServoGeradeaus - c_Servo_geradeaus)
+            pins.servoWritePin(a_PinServo[n_rModell], winkel + n_ServoGeradeaus - c_Servo_geradeaus)
         }
     }
 

@@ -201,11 +201,11 @@ namespace radio { // bluetooth.ts
         return a_StorageBuffer[eStorageBuffer.funkgruppe]
     }
 
-    export function getModell() {
+    export function getStorageModell() {
         // gibt den Enum Wert zurück
         return a_StorageBuffer[eStorageBuffer.modell]
     }
-    export function setModell(pModell: number) {
+    export function setStorageModell(pModell: number) {
         a_StorageBuffer[eStorageBuffer.modell] = pModell
     }
 

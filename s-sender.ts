@@ -18,13 +18,13 @@ namespace sender {
             radio.storageBufferSet(storagei32) // prüft und speichert in a_StorageBuffer
 
 
-            if (!radio.between(radio.getModell(), 0, a_ModellImages.length - 1))
+            if (!radio.between(radio.getStorageModell(), 0, a_ModellImages.length - 1))
                 // wenn ungültig, Standardwert setzen
-                radio.setModell(eModell.cb2e)
+                radio.setStorageModell(eModell.cb2e)
 
             if (zf) {
                 // Bild anzeigen mit Pause 1500ms, Image-Array in s-auswahl.ts
-                radio.zeigeImage(a_ModellImages[radio.getModell()])
+                radio.zeigeImage(a_ModellImages[radio.getStorageModell()])
                 basic.pause(1500)
                 radio.zeigeFunkgruppe()
             }

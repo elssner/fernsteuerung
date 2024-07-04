@@ -39,10 +39,10 @@ namespace sender { // s-buttons.ts
     export function buttonA() {
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
-            if (radio.getModell() > 0)
-                radio.setModell(radio.getModell() - 1)
+            if (radio.getStorageModell() > 0)
+                radio.setStorageModell(radio.getStorageModell() - 1)
 
-            radio.zeigeImage(a_ModellImages[radio.getModell()])
+            radio.zeigeImage(a_ModellImages[radio.getStorageModell()])
         }
         //else if (isModell(eModell.mkck)) { // Modell Kran
         //    a_Schalter[eSchalter.A] = !a_Schalter[eSchalter.A]
@@ -67,10 +67,10 @@ namespace sender { // s-buttons.ts
     export function buttonB() {
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
-            if (radio.getModell() < a_ModellImages.length - 1)
-                radio.setModell(radio.getModell() + 1)
+            if (radio.getStorageModell() < a_ModellImages.length - 1)
+                radio.setStorageModell(radio.getStorageModell() + 1)
             //radio.a_StorageBuffer[radio.eStorageBuffer.modell]++
-            radio.zeigeImage(a_ModellImages[radio.getModell()])
+            radio.zeigeImage(a_ModellImages[radio.getStorageModell()])
             // a_ModellImages[radio.getModell()].showImage(0)
             //  radio.n5x5_clearScreen = true
         }
@@ -129,7 +129,7 @@ namespace sender { // s-buttons.ts
     //% block="%pModell" weight=4
     export function isModell(pModell: eModell) {
         // return radio.isModell(pModell)
-        return radio.getModell() == pModell
+        return radio.getStorageModell() == pModell
     }
 
 
