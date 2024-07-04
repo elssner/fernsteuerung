@@ -22,14 +22,17 @@ für CalliBot, MakerKitCar, CaR4
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="%buffer [0] Betriebsart" weight=6
-    function getBetriebsart(buffer: Buffer): e0Betriebsart {
-        return (buffer[0] & 0b00110000)
-    }
+    //function getBetriebsart(buffer: Buffer): e0Betriebsart {
+    //    return (buffer[0] & 0b00110000)
+    //}
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
     //% block="%buffer [0] Betriebsart == %betriebsart" weight=6
     export function isBetriebsart(buffer: Buffer, betriebsart: e0Betriebsart): boolean {
-        return (buffer[0] & 0b00110000) == betriebsart
+        if (buffer)
+            return (buffer[0] & 0b00110000) == betriebsart
+        else
+            return false
     }
 
 
