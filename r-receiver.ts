@@ -61,28 +61,28 @@ namespace receiver { // r-receiver.ts
     //    motor255(eMotor01.M0, c_MotorStop)
     //}
 
+
+
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm Funkgruppe (aus Flash lesen) | %storagei32" weight=8
+    //% block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm zeige Funkgruppe %zf Funkgruppe (aus Flash lesen) | %storagei32" weight=8
     //% servoGeradeaus.min=81 servoGeradeaus.max=99 servoGeradeaus.defl=90
     //% encoder.shadow="toggleOnOff"
     //% radDmm.min=60 radDmm.max=80 radDmm.defl=65
+    //% zf.shadow="toggleYesNo" zf.defl=1
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     // inlineInputMode=inline
-    export function beimStart(modell: eModell, servoGeradeaus: number, encoder: boolean, radDmm: number, storagei32: number) {
+    export function beimStart(modell: eModell, servoGeradeaus: number, encoder: boolean, radDmm: number, zf: boolean, storagei32: number) {
         n_Modell = modell
         n_ServoGeradeaus = servoGeradeaus // Parameter
 
         pinRelay(true) // Relais an schalten (braucht gültiges n_Modell, um den Pin zu finden)
 
-        radio.storageBufferSet(storagei32) // prüft ubd zeigt Funkgruppe an
-        radio.zeigeFunkgruppe()
+        radio.storageBufferSet(storagei32) // prüft und speichert in a_StorageBuffer
+        if (zf)
+            radio.zeigeFunkgruppe()
 
         pins.servoWritePin(a_PinServo[n_Modell], n_ServoGeradeaus)
 
-        //  pins.setPull(a_PinEncoder[n_Modell], PinPullMode.PullUp) // Encoder PIN Eingang PullUp
-
-        //  n_ready = motorReset(ei2cMotor.i2cMotorAB) && motorReset(ei2cMotor.i2cMotorCD)
-        //if (qMotorReset())
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
         if (encoder)
@@ -90,13 +90,11 @@ namespace receiver { // r-receiver.ts
 
         radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
 
-        //radio.zeigeBIN(funkgruppe, radio.ePlot.hex, 1)
-        //  addStatus(n_ready)
     }
-
+   
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="Flash speichern (in Storage)" weight=7
+    //% block="Flash speichern" weight=7
     export function storageBufferGet() {
         return radio.storageBufferGet()
     }

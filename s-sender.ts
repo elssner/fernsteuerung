@@ -34,7 +34,7 @@ namespace sender {
     }
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="Flash speichern (in Storage)" weight=7
+    //% block="Flash speichern" weight=7
     export function storageBufferGet() {
         return radio.storageBufferGet()
     }
