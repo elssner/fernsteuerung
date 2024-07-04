@@ -16,7 +16,7 @@
         "enums.ts",
         "advanced.ts",
         "s-sender.ts",
-        "s-auswahl.ts",
+        "s-buttons.ts",
         "s-qwiicjoystick.ts",
         "s-multiswitch.ts",
         "s-advanced.ts",
@@ -30,8 +30,7 @@
         "r-advanced.ts",
         "r-calliope-v3.ts",
         "r_callibot.ts",
-        "r_callibot-enums.ts",
-        "s-buttons.ts"
+        "r_callibot-enums.ts"
     ],
     "testFiles": [
         "test.ts"
