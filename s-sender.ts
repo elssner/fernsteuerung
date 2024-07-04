@@ -5,28 +5,30 @@ namespace sender {
     // BF3F7F
 
 
-   // block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm Funkgruppe (aus Flash lesen) | %storagei32" weight=8
+    // block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm Funkgruppe (aus Flash lesen) | %storagei32" weight=8
 
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start | Funkgruppe (aus Flash lesen) | %storagei32" weight=8
+    //% block="beim Start | zeige Modell und Funkgruppe | %zf Funkgruppe (aus Flash lesen) | %storagei32" weight=8
+    //% zf.shadow="toggleYesNo" zf.defl=1
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     //% inlineInputMode=external
-    export function beimStart(storagei32: number) {
+    export function beimStart(zf: boolean, storagei32: number) {
         if (!radio.simulator()) {
-            radio.storageBufferSet(storagei32) // prüft und zeigt Funkgruppe an
+            radio.storageBufferSet(storagei32) // prüft und speichert in a_StorageBuffer
 
 
             if (!radio.between(radio.getModell(), 0, a_ModellImages.length - 1))
                 // wenn ungültig, Standardwert setzen
                 radio.setModell(eModell.cb2e)
 
-            // Bild anzeigen mit Pause 1500ms, Image-Array in s-auswahl.ts
-            radio.zeigeImage(a_ModellImages[radio.getModell()])
-            basic.pause(1500)
-
+            if (zf) {
+                // Bild anzeigen mit Pause 1500ms, Image-Array in s-auswahl.ts
+                radio.zeigeImage(a_ModellImages[radio.getModell()])
+                basic.pause(1500)
+                radio.zeigeFunkgruppe()
+            }
             radio.beimStartintern() // setzt auch n_start true, startet Bluetooth Empfang
-            radio.zeigeFunkgruppe()
             //  radio.setFunkgruppeButton(radio.eFunkgruppeButton.anzeigen)  // Funkgruppe in 5x5 anzeigen
         }
     }
