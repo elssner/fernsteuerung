@@ -2,7 +2,7 @@
 namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
-  export   enum erModell {
+    export enum erModell {
         //% block="Calliope v3 (Maker Kit Car)"
         v3 = 0,     // Index in Arrays
         //% block="Calliope auf Rädern 4 (v1)"
@@ -11,7 +11,7 @@ namespace receiver { // r-receiver.ts
         calli2bot = 2
     }
 
-  export   let n_rModell = erModell.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
+    export let n_rModell = erModell.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
 
     // Calliope v3 freie Pins: C8, C9, C12, C13, C14, C15
     export let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
