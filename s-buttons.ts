@@ -1,5 +1,5 @@
 
-namespace sender_ { // s-auswahl.ts
+namespace sender { // s-buttons.ts
 
     export enum eSchalter { A, B, AB }
     export let a_Schalter = [false, false, false] // so viele Elemente wie Member in der Enum
@@ -34,7 +34,7 @@ namespace sender_ { // s-auswahl.ts
     export let n_Funktion = eFunktion.ng // aktuell ausgewählte Funktion
 
 
-    //% group="in Eingabe Ereignisse einfügen" subcategory="Auswahl"
+    //% group="in Eingabe Ereignisse einfügen" subcategory="Knopf A B"
     //% block="Knopf A geklickt" weight=7
     export function buttonA() {
         if (n_Funktion == eFunktion.ng) {
@@ -62,7 +62,7 @@ namespace sender_ { // s-auswahl.ts
     }
 
 
-    //% group="in Eingabe Ereignisse einfügen" subcategory="Auswahl"
+    //% group="in Eingabe Ereignisse einfügen" subcategory="Knopf A B"
     //% block="Knopf B geklickt" weight=6
     export function buttonB() {
         if (n_Funktion == eFunktion.ng) {
@@ -90,7 +90,7 @@ namespace sender_ { // s-auswahl.ts
 
 
 
-    //% group="in Eingabe Ereignisse einfügen" subcategory="Auswahl"
+    //% group="in Eingabe Ereignisse einfügen" subcategory="Knopf A B"
     //% block="Knopf A+B geklickt" weight=5
     export function buttonAB() {
         // wenn einmal A+B geklickt, wird n_Funktion nie wieder ng (nicht gestartet)
@@ -116,7 +116,7 @@ namespace sender_ { // s-auswahl.ts
 
 
 
-    //% group="schaltet bei jedem Klick um" subcategory="Auswahl"
+    //% group="schaltet bei jedem Klick um" subcategory="Knopf A B"
     //% block="%pSchalter" weight=2
     export function getSchalter(pSchalter: eSchalter): boolean {
         return a_Schalter[pSchalter]
@@ -125,7 +125,7 @@ namespace sender_ { // s-auswahl.ts
 
 
 
-    //% group="Modell" subcategory="Auswahl"
+    //% group="Modell" subcategory="Knopf A B"
     //% block="%pModell" weight=4
     export function isModell(pModell: eModell) {
         // return radio.isModell(pModell)
@@ -133,7 +133,7 @@ namespace sender_ { // s-auswahl.ts
     }
 
 
-    //% group="Funktion" subcategory="Auswahl"
+    //% group="Funktion" subcategory="Knopf A B"
     //% block="%pFunktion" weight=3
     export function isFunktion(pFunktion: eFunktion) {
         if (pFunktion == eFunktion.ng)
@@ -186,4 +186,4 @@ namespace sender_ { // s-auswahl.ts
     `), */
     ]
 
-} // s-auswahl.ts
+} // s-buttons.ts
