@@ -19,23 +19,15 @@ namespace receiver { // r-pins.ts
 
 
     // aufgerufen von receiver.beimStart
-    export function startEncoder(modell: eHardware, radDmm: number) {
-        n_EncoderFaktor = 63.9 * (26 / 14) / (radDmm / 10 * Math.PI)
+    export function startEncoder(radDmm: number) { // radDmm: Rad Durchmesser in Millimeter
 
-        /* if (modell == eModell.v3) {
-            n_EncoderFaktor = 63.9 * (26 / 14) / (6.5 * Math.PI)
-        } else if (modell == eModell.car4) {
-            n_EncoderFaktor = 63.9 * (26 / 14) / (8 * Math.PI) // 63.9 Motorwelle * (26/14) Zahnräder / (8cm * PI) Rad Umfang = 4.6774502 cm
-        }
-        else if (modell == eModell.calli2bot) {
 
-        }
- */
+        if (n_Hardware == eHardware.v3 || n_Hardware == eHardware.car4) {
 
-        if (modell == eHardware.v3 || modell == eHardware.car4) {
+            n_EncoderFaktor = 63.9 * (26 / 14) / (radDmm / 10 * Math.PI)
 
             // ========== Event Handler registrieren
-            pins.onPulsed(a_PinEncoder[modell], PulseValue.Low, function () {
+            pins.onPulsed(a_PinEncoder[n_Hardware], PulseValue.Low, function () {
                 // soll Prellen verhindern 2000 // 2500 geht noch; 3000 geht nicht mehr
                 if (pins.pulseDuration() > 2000) { // 2 ms = 500 Hz, gemessen 174 Hz max. Drehzahl, 2 Flanken ~ 400 Hz
 
@@ -62,7 +54,7 @@ namespace receiver { // r-pins.ts
                         }
                     }
 
-                  
+
 
                     if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
                         n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
@@ -81,7 +73,9 @@ namespace receiver { // r-pins.ts
             // ========== Event Handler
 
             // Encoder PIN Eingang PullUp
-            pins.setPull(a_PinEncoder[modell], PinPullMode.PullUp)
+            pins.setPull(a_PinEncoder[n_Hardware], PinPullMode.PullUp)
+
+        } else if (n_Hardware == eHardware.calli2bot) {
 
         }
     }
