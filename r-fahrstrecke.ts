@@ -40,7 +40,7 @@ namespace receiver { // r-fahrstrecke.ts
     }
 
     function encoderMittelwert(encoderValues: number[]) {
-        return Math.idiv(encoderValues[0] + encoderValues[1], 2)
+        return Math.idiv(Math.abs(encoderValues[0]) + Math.abs(encoderValues[1]), 2)
     }
 
 } // r-fahrstrecke.ts
