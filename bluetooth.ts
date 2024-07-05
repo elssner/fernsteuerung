@@ -15,13 +15,13 @@ namespace radio { // bluetooth.ts
     //% block="beim Start Funkgruppe / Flash %storagei32" weight=9
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     export function beimStart(storagei32: number) {
-        storageBufferSet(storagei32)
+        setStorageBuffer(storagei32, 175)
         beimStartintern()
     }
 
     export function beimStartintern() {
 
-        radio.setGroup(getFunkgruppe())// a_StorageBuffer[eStorageBuffer.funkgruppe])
+        radio.setGroup(getStorageFunkgruppe())// a_StorageBuffer[eStorageBuffer.funkgruppe])
         radio.setTransmitPower(7)
         radio.setTransmitSerialNumber(true)
 
@@ -63,20 +63,6 @@ namespace radio { // bluetooth.ts
     }
 
 
-
-
-    //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00 deprecated=true
-    //% block="Flash einlesen %i32" weight=3
-    //% zeigeFunkgruppe.shadow="toggleYesNo"
-    export function storageBufferSet(i32: number) {
-        // i32.shadow=storage_get_number
-        a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
-
-        // Gültigkeit: Funkgruppe muss 0xA .. 0xBF sein
-        if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
-            a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
-
-    }
 
     //% group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00 deprecated=true
     //% block="Flash speichern" weight=2
@@ -197,16 +183,40 @@ namespace radio { // bluetooth.ts
 
     // ========== group="Storage (Flash)" color=#FFBB00
 
-    export function getFunkgruppe() {
+
+
+    // group="Flash Speicher (Storage)" subcategory="Bluetooth" color=#FFBB00 deprecated=true
+    // block="Flash einlesen %i32" weight=3
+    // zeigeFunkgruppe.shadow="toggleYesNo"
+
+    export function setStorageBuffer(i32: number, modellFunkgruppe: number) {
+        // i32 aus Storage enthält 4 Byte, Funkgruppe und Modell (nur beim Sender), + 2 Byte unbenutzt
+        // ist i32 undefined, kommt der Wert nicht aus Storage und es wird der Standardwert modellFunkgruppe genommen
+        // der Standardwert hängt beim Empfänger von der gewählten Hardware ab
+        if (i32) {
+            a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
+            // wenn angegeben, muss Funkgruppe (am offset 0) 0xA0 .. 0xBF sein
+            if (!between(a_StorageBuffer[eStorageBuffer.funkgruppe], 0xA0, 0xBF))
+                a_StorageBuffer[eStorageBuffer.funkgruppe] = 0xAF
+        }
+        else {
+            // optionaler Parameter (aus Storage) nicht angegeben, Standardwert nehmen
+            a_StorageBuffer.fill(0)
+            a_StorageBuffer[eStorageBuffer.funkgruppe] = modellFunkgruppe
+        }
+    }
+
+    export function getStorageFunkgruppe() {
         return a_StorageBuffer[eStorageBuffer.funkgruppe]
+    }
+
+    export function setStorageModell(pModell: number) {
+        a_StorageBuffer[eStorageBuffer.modell] = pModell
     }
 
     export function getStorageModell() {
         // gibt den Enum Wert zurück
         return a_StorageBuffer[eStorageBuffer.modell]
-    }
-    export function setStorageModell(pModell: number) {
-        a_StorageBuffer[eStorageBuffer.modell] = pModell
     }
 
 

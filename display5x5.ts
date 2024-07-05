@@ -13,7 +13,7 @@ namespace radio { // dispaly5x5.ts
 
     // ↕↕...
     export function zeigeFunkgruppe() {
-        zeigeBIN(getFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
+        zeigeBIN(getStorageFunkgruppe(), ePlot.hex, 1) // 5x5 x=0-1 y=1-2-3-4 (y=0 ist bei hex immer aus)
     }
 
     //% group="BIN" subcategory="Display 5x5" color=#54C9C9

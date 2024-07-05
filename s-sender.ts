@@ -15,7 +15,7 @@ namespace sender {
     //% inlineInputMode=external
     export function beimStart(zf: boolean, storagei32: number) {
         if (!radio.simulator()) {
-            radio.storageBufferSet(storagei32) // prüft und speichert in a_StorageBuffer
+            radio.setStorageBuffer(storagei32, 175) // prüft und speichert in a_StorageBuffer
 
 
             if (!radio.between(radio.getStorageModell(), 0, a_ModellImages.length - 1))

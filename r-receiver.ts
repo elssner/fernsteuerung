@@ -2,7 +2,7 @@
 namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
-    export enum erModell {
+    export enum eHardware {
         //% block="Calliope v3 (Maker Kit Car)"
         v3 = 0,     // Index in Arrays
         //% block="Calliope auf Rädern 4 (v1)"
@@ -11,7 +11,7 @@ namespace receiver { // r-receiver.ts
         calli2bot = 2
     }
 
-    export let n_rModell = erModell.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
+    export let n_Hardware = eHardware.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
 
     // Calliope v3 freie Pins: C8, C9, C12, C13, C14, C15
     export let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
@@ -64,29 +64,29 @@ namespace receiver { // r-receiver.ts
 
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm zeige Funkgruppe %zf Funkgruppe (aus Flash lesen) | %storagei32" weight=8
+    //% block="beim Start Modell (Hardware): | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm Funkgruppe || anzeigen %zf %storagei32" weight=8
     //% servoGeradeaus.min=81 servoGeradeaus.max=99 servoGeradeaus.defl=90
     //% encoder.shadow="toggleOnOff"
     //% radDmm.min=60 radDmm.max=80 radDmm.defl=65
     //% zf.shadow="toggleYesNo" zf.defl=1
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     // inlineInputMode=inline
-    export function beimStart(modell: erModell, servoGeradeaus: number, encoder: boolean, radDmm: number, zf: boolean, storagei32: number) {
-        n_rModell = modell
+    export function beimStart(modell: eHardware, servoGeradeaus: number, encoder: boolean, radDmm: number, zf = true, storagei32?: number) {
+        n_Hardware = modell
         n_ServoGeradeaus = servoGeradeaus // Parameter
 
         pinRelay(true) // Relais an schalten (braucht gültiges n_Modell, um den Pin zu finden)
 
-        radio.storageBufferSet(storagei32) // prüft und speichert in a_StorageBuffer
+        radio.setStorageBuffer(storagei32,175) // prüft und speichert in a_StorageBuffer
         if (zf)
             radio.zeigeFunkgruppe()
 
-        pins.servoWritePin(a_PinServo[n_rModell], n_ServoGeradeaus)
+        pins.servoWritePin(a_PinServo[n_Hardware], n_ServoGeradeaus)
 
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
         if (encoder)
-            startEncoder(n_rModell, radDmm)
+            startEncoder(n_Hardware, radDmm)
 
         radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
 
@@ -189,7 +189,7 @@ namespace receiver { // r-receiver.ts
         // (0+14)*3=42 keine Änderung, gültige Werte im Buffer 1-31  (1+14)*3=45  (16+14)*3=90  (31+14)*3=135
         if (radio.between(winkel, 45, 135) && n_ServoWinkel != winkel) {
             n_ServoWinkel = winkel
-            pins.servoWritePin(a_PinServo[n_rModell], winkel + n_ServoGeradeaus - c_Servo_geradeaus)
+            pins.servoWritePin(a_PinServo[n_Hardware], winkel + n_ServoGeradeaus - c_Servo_geradeaus)
         }
     }
 

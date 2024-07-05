@@ -14,7 +14,7 @@ namespace receiver { // r-pins.ts
     //% block="Stromversorgung 9V %pON" weight=8
     //% pON.shadow="toggleOnOff"
     export function pinRelay(pON: boolean) {
-        pins.digitalWritePin(a_PinRelay[n_rModell], pON ? 1 : 0)
+        pins.digitalWritePin(a_PinRelay[n_Hardware], pON ? 1 : 0)
     }
 
     // GPIO für Grove (5V) Licht oder Buzzer
@@ -23,7 +23,7 @@ namespace receiver { // r-pins.ts
     //% block="Licht %pON" weight=7
     //% pON.shadow="toggleOnOff"
     export function pinLicht(pON: boolean) {
-        pins.digitalWritePin(a_PinLicht[n_rModell], pON ? 1 : 0)
+        pins.digitalWritePin(a_PinLicht[n_Hardware], pON ? 1 : 0)
     }
 
     export enum eDigitalPins { // Pins gültig für alle Modelle, unterscheiden sich im Enum Wert
@@ -75,9 +75,9 @@ namespace receiver { // r-pins.ts
     //% block="Spursensor %plr schwarz" weight=3
     export function spursensor_lr(plr: elr) {
         if (plr == elr.links)
-            return pins.digitalReadPin(a_PinSpurlinks[n_rModell]) == 0 // 0 ist schwarz
+            return pins.digitalReadPin(a_PinSpurlinks[n_Hardware]) == 0 // 0 ist schwarz
         else
-            return pins.digitalReadPin(a_PinSpurrechts[n_rModell]) == 0
+            return pins.digitalReadPin(a_PinSpurrechts[n_Hardware]) == 0
     }
 
     // group="Spursensor" subcategory="Pins"
@@ -93,7 +93,7 @@ namespace receiver { // r-pins.ts
     //% group="Spursensor" subcategory="Pins"
     //% block="Spursensor 00 01 10 11" weight=2
     export function spursensor_2bit() {
-        return (1 - pins.digitalReadPin(a_PinSpurlinks[n_rModell])) * 2 + (1 - pins.digitalReadPin(a_PinSpurrechts[n_rModell]))
+        return (1 - pins.digitalReadPin(a_PinSpurlinks[n_Hardware])) * 2 + (1 - pins.digitalReadPin(a_PinSpurrechts[n_Hardware]))
     }
 
 
@@ -125,17 +125,17 @@ namespace receiver { // r-pins.ts
     //% group="Ultraschall (alle Sensoren)" subcategory="Pins"
     //% block="Entfernung in cm" weight=6
     export function selectEntfernung() {
-        switch (n_rModell) {
-            case erModell.v3: {
+        switch (n_Hardware) {
+            case eHardware.v3: {
                 if (qUltrasonicRead()) // i2c einlesen
                     return qUltrasonicDistance(eDist.cm)
                 else
                     return 0
             }
-            case erModell.car4: {
+            case eHardware.car4: {
                 return groveUltraschall_cm()
             }
-            case erModell.calli2bot: {
+            case eHardware.calli2bot: {
                 return 0
             }
             default:
