@@ -2,16 +2,19 @@
 namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
-    export enum eHardware {
+    export enum eHardware { // === NICHT DIE ZAHLENWERTE ÄNDERN, das ist der Index für die Pins, Funkgruppe, ===
+        //% block="Calli:Bot 2 (v1 v2 v3)"
+        calli2bot = 2,
         //% block="Calliope v3 (Maker Kit Car)"
         v3 = 0,     // Index in Arrays
         //% block="Calliope auf Rädern 4 (v1)"
-        car4 = 1,   // Index in Arrays
-        //% block="Calli:Bot 2 (v1 v2 v3)"
-        calli2bot = 2
+        car4 = 1   // Index in Arrays
     }
 
     export let n_Hardware = eHardware.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
+
+    // eHardware ist der Index für folgende Arrays:
+    export let a_ModellFunkgruppe = [0xA8, 239, 0xB8] // v3, car4, callibot
 
     // Calliope v3 freie Pins: C8, C9, C12, C13, C14, C15
     export let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
@@ -69,7 +72,7 @@ namespace receiver { // r-receiver.ts
     //% encoder.shadow="toggleOnOff"
     //% radDmm.min=60 radDmm.max=80 radDmm.defl=65
     //% zf.shadow="toggleYesNo" zf.defl=1
-    //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
+    //% storagei32.min=160 storagei32.max=191
     // inlineInputMode=inline
     export function beimStart(modell: eHardware, servoGeradeaus: number, encoder: boolean, radDmm: number, zf = true, storagei32?: number) {
         n_Hardware = modell
@@ -77,7 +80,7 @@ namespace receiver { // r-receiver.ts
 
         pinRelay(true) // Relais an schalten (braucht gültiges n_Modell, um den Pin zu finden)
 
-        radio.setStorageBuffer(storagei32,175) // prüft und speichert in a_StorageBuffer
+        radio.setStorageBuffer(storagei32, a_ModellFunkgruppe[n_Hardware]) // prüft und speichert in a_StorageBuffer
         if (zf)
             radio.zeigeFunkgruppe()
 
