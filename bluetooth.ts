@@ -193,7 +193,7 @@ namespace radio { // bluetooth.ts
         // i32 aus Storage enthält 4 Byte, Funkgruppe und Modell (nur beim Sender), + 2 Byte unbenutzt
         // ist i32 undefined, kommt der Wert nicht aus Storage und es wird der Standardwert modellFunkgruppe genommen
         // der Standardwert hängt beim Empfänger von der gewählten Hardware ab
-       // basic.showNumber(i32)
+        // basic.showNumber(i32)
         if (i32) {
             a_StorageBuffer.setNumber(NumberFormat.UInt32LE, 0, i32)
             // wenn angegeben, muss Funkgruppe (am offset 0) 0xA0 .. 0xBF sein
