@@ -9,18 +9,32 @@ SparkFun Qwiic Ultrasonic Distance Sensor (HC-SR04)
     
     
 */ {
+    // I²C Adressen Qwiic
+    const i2cRelay = 0x19 // SparkFun Qwiic Single Relay (Kran Elektromagnet)
+    const i2cqwiicUltrasonic_x00 = 0x00 // SLAVE_BROADCAST_ADDR 0x00  //default address
+
+
+
+    // ========== group="SparkFun Qwiic Single Relay 0x19" subcategory="Aktoren"
+
+    const SINGLE_OFF = 0x00
+    const SINGLE_ON = 0x01
+
+    //% group="SparkFun Qwiic Single Relay (I²C: 0x19)" subcategory="Qwiic"
+    //% block="Q Kran Magnet %pOn"
+    //% pOn.shadow="toggleOnOff"
+    export function qwiicRelay(pOn: boolean) {
+        pins.i2cWriteBuffer(i2cRelay, Buffer.fromArray([pOn ? SINGLE_ON : SINGLE_OFF]))
+    }
+
+
 
     // ========== group="Ultrasonic Distance Sensor (I²C: 0x00)" subcategory="Qwiic" 
-
-    // ========== I²C ==========
-    const i2cqwiicUltrasonic_x00 = 0x00 // SLAVE_BROADCAST_ADDR 0x00  //default address
-    //  let i2cqwiicUltrasonic = 0x00       // SLAVE_ADDR 0xA0-0xAF
 
     const measure_command = 0x01
 
     let n_UltrasonicConnected = true // Qwiic Modul ist angesteckt
     let n_Ultrasonic_mm = 0
-
 
 
     //% group="Ultrasonic Distance Sensor (I²C: 0x00)" subcategory="Qwiic"

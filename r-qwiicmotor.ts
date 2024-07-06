@@ -3,7 +3,6 @@ namespace receiver { // r-qwiicmotor.ts
 
 
     // I²C Adressen Qwiic
-    const i2cRelay = 0x19 // SparkFun Qwiic Single Relay (Kran Elektromagnet)
     let a_i2cMotor = [0x5D, 0x5E] // SparkFun Qwiic Motor Driver // Index eMotorChip
 
     // const c_MotorStop = 128
@@ -152,7 +151,7 @@ namespace receiver { // r-qwiicmotor.ts
     }
 
     //% group="Motor A B C D (I²C: 0x5D, 0x5E)" subcategory="Qwiic"
-    //% block="Motor %pMotorChip Power %pON" weight=3
+    //% block="Q Motor %pMotorChip Power %pON" weight=3
     //% pON.shadow="toggleOnOff"
     export function qMotorChipPower(pMotorChip: eMotorChip, pON: boolean) {
         if (qMotorChipReady(pMotorChip) && pON !== a_MotorChipPower[pMotorChip]) {
@@ -172,7 +171,7 @@ namespace receiver { // r-qwiicmotor.ts
 
 
     //% group="Motor A B C D (I²C: 0x5D, 0x5E)" subcategory="Qwiic"
-    //% block="Motor qw %pMotor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=2
+    //% block="Q Motor %pMotor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=2
     //% speed.min=0 speed.max=255 speed.defl=128
     export function qMotor255(pMotor: eMotor, speed: number) {
         let e = false
@@ -217,19 +216,6 @@ namespace receiver { // r-qwiicmotor.ts
         return pins.i2cReadBuffer(a_i2cMotor[pMotorChip], size)
     }
 
-
-
-    // ========== group="SparkFun Qwiic Single Relay 0x19" subcategory="Aktoren"
-
-    const SINGLE_OFF = 0x00
-    const SINGLE_ON = 0x01
-
-    //% group="SparkFun Qwiic Single Relay (I²C: 0x19)" subcategory="Qwiic"
-    //% block="Kran Magnet %pOn"
-    //% pOn.shadow="toggleOnOff"
-    export function qwiicRelay(pOn: boolean) {
-        pins.i2cWriteBuffer(i2cRelay, Buffer.fromArray([pOn ? SINGLE_ON : SINGLE_OFF]))
-    }
 
 
 
