@@ -51,12 +51,13 @@ namespace receiver { // r-callibot.ts
         }
         i2cWriteBuffer(Buffer.fromArray([ec2Register.SET_MOTOR, ec2Motor.beide, richtung, pwm, richtung, pwm]))
         //  return pwm
+
     }
 
 
 
     //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
-    //% block="Motoren links %pPWM1 (1 ↓ 128 ↑ 255) %pRichtung1 rechts %pPWM2 %pRichtung2" weight=2
+    //% block="Motoren links %pPWM1 (1 ↓ 128 ↑ 255) %pRichtung1 rechts %pPWM2 %pRichtung2" weight=3
     //% pwm1.min=0 pwm1.max=255 pwm1.defl=128 pwm2.min=0 pwm2.max=255 pwm2.defl=128
     //% inlineInputMode=inline
     function c2SetMotoren(pwm1: number, pRichtung1: eDirection, pwm2: number, pRichtung2: eDirection) {
@@ -67,11 +68,58 @@ namespace receiver { // r-callibot.ts
     }
 
 
+    //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
+    //% block="c2 fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31" weight=2
+    //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 
+    //% y1_16_31.min=1 y1_16_31.max=31 y1_16_31.defl=16
+    export function c2motor128(x1_128_255: number, y1_16_31: number) {
+
+        let setMotorBuffer = Buffer.create(6)
+        setMotorBuffer[0] = ec2Register.SET_MOTOR // 2
+        setMotorBuffer[1] = ec2Motor.beide // 3
+
+        // fahren (beide Motoren gleich)
+        if (radio.between(x1_128_255, 129, 255)) { // vorwärts
+            setMotorBuffer[2] = 0
+            setMotorBuffer[3] = radio.mapInt32(x1_128_255, 128, 255, 0, 255)
+            setMotorBuffer[4] = 0
+            setMotorBuffer[5] = setMotorBuffer[3]
+        }
+        else if (radio.between(x1_128_255, 1, 127)) { // rückwärts
+            setMotorBuffer[2] = 1
+            setMotorBuffer[3] = radio.mapInt32(x1_128_255, 1, 128, 255, 0)
+            setMotorBuffer[4] = 1
+            setMotorBuffer[5] = setMotorBuffer[3]
+        }
+        else { // wenn x fahren 0, 128 oder mehr als 8 Bit
+            setMotorBuffer[2] = 0
+            setMotorBuffer[3] = 0
+            setMotorBuffer[4] = 0
+            setMotorBuffer[5] = 0
+        }
+
+        // lenken (ein Motor wird langsamer)
+        if (radio.between(y1_16_31, 1, 15)) { // links
+            setMotorBuffer[3] *= Math.map(y1_16_31, 0, 16, 0.5, 1) // 0=linkslenken0.5 // 16=nichtlenken=1.0
+        }
+        else if (radio.between(y1_16_31, 17, 31)) { // rechts
+            setMotorBuffer[5] *= Math.map(y1_16_31, 16, 32, 1, 0.5) // 16=nichtlenken=1.0 // 32=rechtslenken0.5
+        }
+        else { // wenn y lenken 0, 16 oder mehr als 5 Bit
+        }
+
+        i2cWriteBuffer(setMotorBuffer)
+
+        // return setMotorBuffer
+    }
 
 
-
-
-
+    //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
+    //% block="c2lenk16 %y1_16_31"
+    export function c2lenk16(y1_16_31: number) {
+        //let x = y1_16_31 - 16 // -15..0..15
+        return Math.map(Math.abs(y1_16_31 - 16), 0, 15, 1, 0.5)// 1=0.5 16=1.0 31=0.5
+    }
 
 
 
@@ -157,7 +205,7 @@ namespace receiver { // r-callibot.ts
 
 
         // lenken
-        let lenken_255_0_255 = sign(joyVertical)
+        let lenken_255_0_255 = sign(joyVertical) // 0=0 127=127 128=-128 129=-127 255=-1
         let lenken_100_50 = Math.round(Math.map(Math.abs(lenken_255_0_255), 0, 128, 50, 100))
 
         // lenken Richtung
@@ -249,7 +297,9 @@ namespace receiver { // r-callibot.ts
             return Buffer.create(size)
     }
 
-    function sign(i: number, e: number = 7): number {
+    //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
+    //% block="sign %i || %e"
+    export function sign(i: number, e: number = 7): number {
         if (i < 2 ** e) return i
         else return -((~i & ((2 ** e) - 1)) + 1)
     }
