@@ -76,8 +76,8 @@ namespace receiver { // r-callibot.ts
     export function c2motor128(x1_128_255: number, y1_16_31: number, prozent = 50) {
 
         let setMotorBuffer = Buffer.create(6)
-        setMotorBuffer[0] = ec2Register.SET_MOTOR // 2
-        setMotorBuffer[1] = ec2Motor.beide // 3
+        setMotorBuffer[0] = ec2Register.SET_MOTOR   // 2
+        setMotorBuffer[1] = ec2Motor.beide          // 3
 
         // fahren (beide Motoren gleich)
         if (radio.between(x1_128_255, 129, 255)) { // vorwärts
@@ -93,10 +93,10 @@ namespace receiver { // r-callibot.ts
             setMotorBuffer[5] = setMotorBuffer[3]
         }
         else { // wenn x fahren 0, 128 oder mehr als 8 Bit
-            setMotorBuffer[2] = 0
-            setMotorBuffer[3] = 0
-            setMotorBuffer[4] = 0
-            setMotorBuffer[5] = 0
+            setMotorBuffer[2] = 0 // Motor 1 Richtung 0:vorwärts, 1:rückwärts
+            setMotorBuffer[3] = 0 // Motor 1 PWM (0..255)
+            setMotorBuffer[4] = 0 // Motor 2 Richtung 0:vorwärts, 1:rückwärts
+            setMotorBuffer[5] = 0 // Motor 2 PWM (0..255)
         }
 
         // lenken (ein Motor wird langsamer)
