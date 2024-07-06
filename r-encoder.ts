@@ -6,17 +6,6 @@ namespace receiver { // r-pins.ts
     let n_EncoderStrecke_impulse: number = 0
     export let n_EncoderAutoStop = false // true während der Fahrt, false bei Stop nach Ende der Strecke
 
-    // aufgerufen im pins.onPulsed Ereignis, um die Zähl-Richtung +/- der Impule zu bestimmen
-    //function selectEncoderMotorRichtung() { // true: vorwärts > 128
-    //    switch (n_Hardware) {
-    //        case eHardware.v3: return n_v3Motor0Speed >= c_MotorStop // dualEncoderM0Richtung()
-    //        case eHardware.car4: return a_qMotorSpeed[eMotor.ma] >= c_MotorStop // qEncoderMotorRichtung(eMotor.ma)
-    //        //case eModell.calli2bot: nicht relevant, wird in der Hardware gezählt
-    //        default: return false
-    //     }
-    //}
-
-
 
     // aufgerufen von receiver.beimStart
     export function startEncoder(radDmm: number) { // radDmm: Rad Durchmesser in Millimeter
@@ -39,7 +28,6 @@ namespace receiver { // r-pins.ts
 
                     if (n_EncoderAutoStop) {
 
-                        //  selectEncoderMotor_v3_car4(c_MotorStop) //   motorA255(c_MotorStop)
                         v3Motor255(eMotor01.M0, c_MotorStop)
                         n_EncoderAutoStop = false
                     }
@@ -74,7 +62,6 @@ namespace receiver { // r-pins.ts
 
                     if (n_EncoderAutoStop) {
 
-                        //  selectEncoderMotor_v3_car4(c_MotorStop) //   motorA255(c_MotorStop)
                         qMotor255(eMotor.ma, c_MotorStop) // Qwiic
                         n_EncoderAutoStop = false
                     }
