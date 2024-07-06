@@ -184,10 +184,10 @@ namespace receiver { // r-callibot.ts
     //% block="C Spursensor 00 01 10 11 || 0x21 %x21" weight=6
     export function c2Spursensor_2bit(x21 = false) {
         if (x21)
-            pins.i2cReadBuffer(0x21, 1).getUint8(0) & 0x03
+            return pins.i2cReadBuffer(0x21, 1).getUint8(0) & 0x03
         else {
             i2cWriteBuffer(Buffer.fromArray([ec2Register.GET_INPUTS]))
-            i2cReadBuffer(1).getUint8(0) & 0x03
+            return i2cReadBuffer(1).getUint8(0) & 0x03
         }
     }
 
