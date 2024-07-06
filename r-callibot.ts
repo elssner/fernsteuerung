@@ -18,12 +18,18 @@ namespace receiver { // r-callibot.ts
     // ========== group="Reset"
 
     //% group="Reset" subcategory="Calli:bot"
-    //% block="C Reset Motoren, LEDs"
+    //% block="C Reset Motoren, LEDs" weight=4
     export function c2RESET_OUTPUTS() {
         i2cWriteBuffer(Buffer.fromArray([ec2Register.RESET_OUTPUTS]))
         // n_c2MotorPower = false
     }
 
+    //% group="Reset" subcategory="Calli:bot"
+    //% block="C Call:bot Typ [1]" weight=3
+    export function c2Version() { // [1]=4:CB2(Gymnasium) =3:CB2E (=2:soll CB2 sein)
+        i2cWriteBuffer(Buffer.fromArray([ec2Register.GET_FW_VERSION]))
+        return i2cReadBuffer(10).toArray(NumberFormat.UInt8LE)
+    }
 
 
     // ========== group="Motor (Call:bot 2E)" subcategory="Calli:bot"
@@ -68,7 +74,7 @@ namespace receiver { // r-callibot.ts
     } */
 
 
-    //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
+    //% group="Motor" subcategory="Calli:bot"
     //% block="C Motor (1 ↓ 128 ↑ 255) %x1_128_255 Servo (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
     //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 
     //% y1_16_31.min=1 y1_16_31.max=31 y1_16_31.defl=16
@@ -114,7 +120,7 @@ namespace receiver { // r-callibot.ts
         // return setMotorBuffer
     }
 
-    //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
+    //% group="Motor" subcategory="Calli:bot"
     //% block="C Motoren (1 ↓ 128 ↑ 255) M1 %m1_1_128_255 M2 %m2_1_128_255" weight=1
     //% m1_1_128_255.min=0 m1_1_128_255.max=255 m1_1_128_255.defl=0
     //% m2_1_128_255.min=0 m2_1_128_255.max=255 m2_1_128_255.defl=0
@@ -174,26 +180,40 @@ namespace receiver { // r-callibot.ts
 
 
     // interner Speicher für Sensoren
-    let input_Digital: number
-    //  let input_Ultraschallsensor: number
-    let input_Spursensoren: number[]
+    let n_input_Digital: number
 
 
 
-    //% group="Sensoren" subcategory="Calli:bot"
-    //% block="C Spursensor 00 01 10 11 || 0x21 %x21" weight=6
-    export function c2Spursensor_2bit(x21 = false) {
+    //% group="INPUT digital" subcategory="Calli:bot"
+    //% block="C Digitaleingänge einlesen || 0x21 %i2" weight=8
+    export function c2ReadINPUTS(x21 = false) {
         if (x21)
-            return ~pins.i2cReadBuffer(0x21, 1).getUint8(0) & 0x03
+            n_input_Digital = pins.i2cReadBuffer(0x21, 1).getUint8(0)
         else {
             i2cWriteBuffer(Buffer.fromArray([ec2Register.GET_INPUTS]))
-            return ~i2cReadBuffer(1).getUint8(0) & 0x03
+            n_input_Digital = i2cReadBuffer(1).getUint8(0)
         }
     }
 
 
+    //% group="INPUT digital" subcategory="Calli:bot"
+    //% block="C Spursensor %plr schwarz" weight=6
+    export function c2Spursensor_lr(plr: elr) {
+        if (plr == elr.links)
+            return (n_input_Digital & 0x02) == 0 // 0 ist schwarz
+        else
+            return (n_input_Digital & 0x01) == 0 // 0 ist schwarz
+    }
 
-    //% group="Sensoren" subcategory="Calli:bot"
+    //% group="INPUT digital" subcategory="Calli:bot"
+    //% block="C Spursensor 00 01 10 11" weight=5
+    export function c2Spursensor_2bit() {
+        return ~n_input_Digital & 0x03
+    }
+
+
+
+    //% group="Ultraschall Sensor" subcategory="Calli:bot"
     //% block="C Ultraschall Entfernung in %e" weight=4
     export function c2UltraschallEntfernung(e: eDist) {
         i2cWriteBuffer(Buffer.fromArray([ec2Register.GET_INPUT_US]))
@@ -206,21 +226,13 @@ namespace receiver { // r-callibot.ts
 
 
 
-    //% group="Sensoren" subcategory="Calli:bot"
-    //% block="C Typ [1]" weight=3
-    export function c2Version() { // [1]=4:CB2(Gymnasium) =3:CB2E (=2:soll CB2 sein)
-        i2cWriteBuffer(Buffer.fromArray([ec2Register.GET_FW_VERSION]))
-        return i2cReadBuffer(10).toArray(NumberFormat.UInt8LE)
-    }
-
-
-    //% group="Sensoren" subcategory="Calli:bot"
+    //% group="Encoder (Call:bot 2E)" subcategory="Calli:bot"
     //% block="C Encoder Zähler löschen" weight=2
     export function c2ResetEncoder() {
         i2cWriteBuffer(Buffer.fromArray([ec2Register.RESET_ENCODER, 3]))
     }
 
-    //% group="Sensoren" subcategory="Calli:bot"
+    //% group="Encoder (Call:bot 2E)" subcategory="Calli:bot"
     //% block="C Encoder Werte [l,r]" weight=1
     export function c2EncoderValues(): number[] {
         i2cWriteBuffer(Buffer.fromArray([ec2Register.GET_ENCODER_VALUE]))
@@ -264,12 +276,12 @@ namespace receiver { // r-callibot.ts
         RESET_OUTPUTS = 0x01, // Alle Ausgänge abschalten (Motor, LEDs, Servo)
         SET_MOTOR = 0x02, // Bit0: 1=Motor 1 setzen;  Bit1: 1=Motor 2 setzen
         /*
-Bit0: 1=Motor 1 setzen;  Bit1: 1=Motor 2 setzen
-wenn beide auf 11, dann Motor2 Daten nachfolgend senden (also 6 Bytes) Richtung (0:vorwärts, 1:rückwärts) von Motor 1 oder 2
-PWM (0..255) Motor 1 oder 2
-wenn in [1] Motor 1 & Motor 2 aktiviert
-Richtung (0:vorwärts, 1:rückwärts) von Motor 2
-PWM rechts (0..255) von Motor 2
+    Bit0: 1=Motor 1 setzen;  Bit1: 1=Motor 2 setzen
+    wenn beide auf 11, dann Motor2 Daten nachfolgend senden (also 6 Bytes) Richtung (0:vorwärts, 1:rückwärts) von Motor 1 oder 2
+    PWM (0..255) Motor 1 oder 2
+    wenn in [1] Motor 1 & Motor 2 aktiviert
+    Richtung (0:vorwärts, 1:rückwärts) von Motor 2
+    PWM rechts (0..255) von Motor 2
         */
         SET_LED = 0x03, // Write: LED´s
         RESET_ENCODER = 0x05, // 2 Byte [0]=5 [1]= 1=links, 2=rechts, 3=beide
