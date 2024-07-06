@@ -161,23 +161,45 @@ namespace receiver { // r-callibot.ts
 
     }
 
-    function c2lenk16(y1_16_31: number) {
-        //let x = y1_16_31 - 16 // -15..0..15
-        return Math.map(Math.abs(y1_16_31 - 16), 0, 15, 1, 0.5)// 1=0.5 16=1.0 31=0.5
+    //function c2lenk16(y1_16_31: number) {
+    //    //let x = y1_16_31 - 16 // -15..0..15
+    //    return Math.map(Math.abs(y1_16_31 - 16), 0, 15, 1, 0.5)// 1=0.5 16=1.0 31=0.5
+    //}
+
+
+
+
+
+    // interner Speicher für Sensoren
+    let input_Digital: number
+    //  let input_Ultraschallsensor: number
+    let input_Spursensoren: number[]
+
+
+
+
+    //% group="Sensoren" subcategory="Calli:bot"
+    //% block="c2 Typ [1]" weight=3
+    export function c2Version() {
+        i2cWriteBuffer(Buffer.fromArray([ec2Register.GET_FW_VERSION]))
+        return i2cReadBuffer(10).toArray(NumberFormat.UInt8LE)
     }
 
 
 
+    // ========== group="INPUT Ultraschallsensor" subcategory="Calli:bot"
 
 
-
-
-
-
-
-
-
-
+    //% group="Sensoren" subcategory="Calli:bot"
+    //% block="c2 Ultraschall Entfernung in %e" weight=3
+    export function c2UltraschallEntfernung(e: eDist) {
+        i2cWriteBuffer(Buffer.fromArray([ec2Register.GET_INPUT_US]))
+        let mm = i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1) // 16 Bit (mm)
+        if (e == eDist.cm)
+            return Math.idiv(mm, 10)
+        else
+            return mm
+    }
 
 
 
@@ -187,7 +209,7 @@ namespace receiver { // r-callibot.ts
     //% group="Encoder 2*32 Bit [l,r]" subcategory="Calli:bot"
     //% block="Encoder Zähler löschen"
     export function c2ResetEncoder() {
-        i2cWriteBuffer(Buffer.fromArray([ec2Register.RESET_ENCODER, ec2Motor.beide]))
+        i2cWriteBuffer(Buffer.fromArray([ec2Register.RESET_ENCODER, 3]))
     }
 
     //% group="Encoder 2*32 Bit [l,r]" subcategory="Calli:bot"
@@ -201,6 +223,9 @@ namespace receiver { // r-callibot.ts
         let encoderValues = c2EncoderValues()
         return Math.idiv(Math.abs(encoderValues[0]) + Math.abs(encoderValues[1]), 2)
     }
+
+
+
 
 
 
@@ -250,16 +275,16 @@ PWM rechts (0..255) von Motor 2
     }
 
 
-    export enum ec2Motor {
+    /* export enum ec2Motor {
         //% block="beide"
         beide = 0b11,
         //% block="links"
         m1 = 0b01,
         //% block="rechts"
         m2 = 0b10
-    }
+    } */
 
-    export enum ec2RL { rechts = 0, links = 1 } // Index im Array
+    //export enum ec2RL { rechts = 0, links = 1 } // Index im Array
 
     /* enum eDirection {
         //% block="vorwärts"
