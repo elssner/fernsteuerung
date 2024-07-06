@@ -7,42 +7,42 @@ namespace receiver { // r-fahrstrecke.ts
     //% servo.min=1 servo.max=31 servo.defl=16
     //% strecke.min=0 strecke.max=255 strecke.defl=20
     export function fahreSchritt(motor: number, servo: number, strecke: number) {
-        if (motor != c_MotorStop && strecke > 0) {
 
-            if (n_Hardware == eHardware.v3 || n_Hardware == eHardware.car4) {
+        if (n_Hardware == eHardware.v3) {
 
-                encoder_start(strecke, true)
-                servo_set16(servo) //   servo_set(pServo)
-                selectEncoderMotor_v3_car4(motor) //   motorA255(pMotor)
+            encoder_start(strecke, true)
+            servo_set16(servo)
+            v3Motor255(eMotor01.M0, motor) // Fahrmotor an Calliope v3 Motor Pins
 
-                while (n_EncoderAutoStop) {
-                    basic.pause(200) // Pause kann größer sein, weil Stop schon im Event erfolgt ist
-                }
+            while (n_EncoderAutoStop) {
+                basic.pause(200) // Pause kann größer sein, weil Stop schon im Event erfolgt ist
+            }
+        }
+        else if (n_Hardware == eHardware.car4) {
 
-            } else if (n_Hardware == eHardware.calli2bot) {
+            encoder_start(strecke, true)
+            servo_set16(servo)
+            qMotor255(eMotor.ma, motor) // Fahrmotor am Qwiic Modul
 
-                c2motor128lenken16(c_MotorStop, 16)
-                // c2Motor255(c_MotorStop)
-                c2ResetEncoder()
+            while (n_EncoderAutoStop) {
+                basic.pause(200) // Pause kann größer sein, weil Stop schon im Event erfolgt ist
+            }
+        }
+        else if (n_Hardware == eHardware.calli2bot) {
 
-                c2motor128lenken16(motor, servo)
+            c2motor128lenken16(c_MotorStop, servo)
+            c2ResetEncoder()
 
-                while (encoderMittelwert(c2EncoderValues()) < strecke * n_c2EncoderFaktor) {
-                    // Pause eventuell bei hoher Geschwindigkeit motor verringern
-                    // oder langsamer fahren wenn Rest strecke kleiner wird
-                    basic.pause(200)
-                }
+            c2motor128lenken16(motor, servo)
 
-                c2motor128lenken16(c_MotorStop, 16)
-                // c2Motor255(c_MotorStop)
-
+            while (c2EncoderMittelwert() < strecke * n_c2EncoderFaktor) {
+                // Pause eventuell bei hoher Geschwindigkeit motor verringern
+                // oder langsamer fahren wenn Rest strecke kleiner wird
+                basic.pause(200)
             }
 
+            c2motor128lenken16(c_MotorStop, 16)
         }
-    }
-
-    function encoderMittelwert(encoderValues: number[]) {
-        return Math.idiv(Math.abs(encoderValues[0]) + Math.abs(encoderValues[1]), 2)
     }
 
 } // r-fahrstrecke.ts

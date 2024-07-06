@@ -20,64 +20,136 @@ namespace receiver { // r-pins.ts
 
     // aufgerufen von receiver.beimStart
     export function startEncoder(radDmm: number) { // radDmm: Rad Durchmesser in Millimeter
+        if (n_Hardware == eHardware.v3) {
 
-
-        if (n_Hardware == eHardware.v3 || n_Hardware == eHardware.car4) {
-
+            if (!radDmm)
+                radDmm = 65
             n_EncoderFaktor = 63.9 * (26 / 14) / (radDmm / 10 * Math.PI)
 
             // ========== Event Handler registrieren
             pins.onPulsed(a_PinEncoder[n_Hardware], PulseValue.Low, function () {
-                // soll Prellen verhindern 2000 // 2500 geht noch; 3000 geht nicht mehr
-                if (pins.pulseDuration() > 2000) { // 2 ms = 500 Hz, gemessen 174 Hz max. Drehzahl, 2 Flanken ~ 400 Hz
 
-                    // Encoder 63.9 Impulse pro U/Motorwelle
-                    //if (selectEncoderMotorRichtung()) // true: vorwärts > 128
-                    //    n_EncoderCounter += 1 // vorwärts
-                    //else
-                    //    n_EncoderCounter -= 1 // rückwärts
+                if (n_v3Motor0Speed > c_MotorStop)
+                    n_EncoderCounter++ // vorwärts
+                else
+                    n_EncoderCounter-- // rückwärts
 
-                    switch (n_Hardware) {
-                        case eHardware.v3: {
-                            if (n_v3Motor0Speed > c_MotorStop)
-                                n_EncoderCounter++ // vorwärts
-                            else //if (n_v3Motor0Speed < c_MotorStop)
-                                n_EncoderCounter-- // rückwärts
-                            break
-                        }
-                        case eHardware.car4: {
-                            if (a_qMotorSpeed[eMotor.ma] > c_MotorStop)
-                                n_EncoderCounter++ // vorwärts
-                            else //if (a_qMotorSpeed[eMotor.ma] < c_MotorStop)
-                                n_EncoderCounter-- // rückwärts
-                            break
-                        }
+                if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
+                    n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+
+                    if (n_EncoderAutoStop) {
+
+                        //  selectEncoderMotor_v3_car4(c_MotorStop) //   motorA255(c_MotorStop)
+                        v3Motor255(eMotor01.M0, c_MotorStop)
+                        n_EncoderAutoStop = false
                     }
 
-
-
-                    if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
-                        n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
-
-                        //n_EncoderStopEvent = true
-                        if (n_EncoderAutoStop) {
-                            selectEncoderMotor_v3_car4(c_MotorStop) //   motorA255(c_MotorStop)
-                            n_EncoderAutoStop = false
-                        }
-
-                        if (onEncoderStopHandler)
-                            onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
-                    }
+                    if (onEncoderStopHandler)
+                        onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
                 }
+
+            })
+            // ========== Event Handler
+
+            // Encoder PIN Eingang PullUp
+            pins.setPull(a_PinEncoder[n_Hardware], PinPullMode.PullUp)
+        }
+
+        else if (n_Hardware == eHardware.car4) {
+
+            if (!radDmm)
+                radDmm = 80
+            n_EncoderFaktor = 63.9 * (26 / 14) / (radDmm / 10 * Math.PI)
+
+            // ========== Event Handler registrieren
+            pins.onPulsed(a_PinEncoder[n_Hardware], PulseValue.Low, function () {
+
+                if (n_v3Motor0Speed > c_MotorStop)
+                    n_EncoderCounter++ // vorwärts
+                else
+                    n_EncoderCounter-- // rückwärts
+
+                if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
+                    n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+
+                    if (n_EncoderAutoStop) {
+
+                        //  selectEncoderMotor_v3_car4(c_MotorStop) //   motorA255(c_MotorStop)
+                        qMotor255(eMotor.ma, c_MotorStop) // Qwiic
+                        n_EncoderAutoStop = false
+                    }
+
+                    if (onEncoderStopHandler)
+                        onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
+                }
+
             })
             // ========== Event Handler
 
             // Encoder PIN Eingang PullUp
             pins.setPull(a_PinEncoder[n_Hardware], PinPullMode.PullUp)
 
-        } else if (n_Hardware == eHardware.calli2bot) {
-
         }
+
+
+        /* 
+        
+                if (n_Hardware == eHardware.v3 || n_Hardware == eHardware.car4) {
+        
+                    n_EncoderFaktor = 63.9 * (26 / 14) / (radDmm / 10 * Math.PI)
+        
+                    // ========== Event Handler registrieren
+                    pins.onPulsed(a_PinEncoder[n_Hardware], PulseValue.Low, function () {
+                        // soll Prellen verhindern 2000 // 2500 geht noch; 3000 geht nicht mehr
+                        if (pins.pulseDuration() > 2000) { // 2 ms = 500 Hz, gemessen 174 Hz max. Drehzahl, 2 Flanken ~ 400 Hz
+        
+                            // Encoder 63.9 Impulse pro U/Motorwelle
+                            //if (selectEncoderMotorRichtung()) // true: vorwärts > 128
+                            //    n_EncoderCounter += 1 // vorwärts
+                            //else
+                            //    n_EncoderCounter -= 1 // rückwärts
+        
+                            switch (n_Hardware) {
+                                case eHardware.v3: {
+                                    if (n_v3Motor0Speed > c_MotorStop)
+                                        n_EncoderCounter++ // vorwärts
+                                    else //if (n_v3Motor0Speed < c_MotorStop)
+                                        n_EncoderCounter-- // rückwärts
+                                    break
+                                }
+                                case eHardware.car4: {
+                                    if (a_qMotorSpeed[eMotor.ma] > c_MotorStop)
+                                        n_EncoderCounter++ // vorwärts
+                                    else //if (a_qMotorSpeed[eMotor.ma] < c_MotorStop)
+                                        n_EncoderCounter-- // rückwärts
+                                    break
+                                }
+                            }
+        
+        
+        
+                            if (n_EncoderStrecke_impulse > 0 && Math.abs(n_EncoderCounter) >= n_EncoderStrecke_impulse) {
+                                n_EncoderStrecke_impulse = 0 // Ereignis nur einmalig auslösen, wieder aktivieren mit encoder_start
+        
+                                //n_EncoderStopEvent = true
+                                if (n_EncoderAutoStop) {
+                                    selectEncoderMotor_v3_car4(c_MotorStop) //   motorA255(c_MotorStop)
+                                    n_EncoderAutoStop = false
+                                }
+        
+                                if (onEncoderStopHandler)
+                                    onEncoderStopHandler(n_EncoderCounter / n_EncoderFaktor)
+                            }
+                        }
+                    })
+                    // ========== Event Handler
+        
+                    // Encoder PIN Eingang PullUp
+                    pins.setPull(a_PinEncoder[n_Hardware], PinPullMode.PullUp)
+        
+                } else if (n_Hardware == eHardware.calli2bot) {
+        
+                } */
     }
 
 
@@ -85,7 +157,7 @@ namespace receiver { // r-pins.ts
     //% group="Encoder" subcategory="Encodermotor"
     //% block="Encodermotor starten (1 ↓ 128 ↑ 255) %speed" weight=9
     //% speed.min=0 speed.max=255 speed.defl=128
-    export function selectEncoderMotor_v3_car4(speed: number) {
+    /* export function selectEncoderMotor_v3_car4(speed: number) {
         switch (n_Hardware) {
             case eHardware.v3: { // Fahrmotor an Calliope v3 Pins
                 v3Motor255(eMotor01.M0, speed)
@@ -101,7 +173,7 @@ namespace receiver { // r-pins.ts
             //}
         }
     }
-
+ */
 
 
     // ========== group="Encoder" subcategory="Encodermotor"

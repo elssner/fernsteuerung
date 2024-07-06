@@ -9,8 +9,8 @@ namespace receiver { // r-callibot.ts
     const i2cCallibot2_x22 = 0x22
 
     let n_CallibotConnected = true // I²C Device ist angesteckt
-    let n_c2MotorPower = true
-    let qFernsteuerungStop: boolean = false
+    // let n_c2MotorPower = true
+    //  let qFernsteuerungStop: boolean = false
 
     export let n_c2EncoderFaktor = 31.25 // Impulse = 31.25 * Fahrstrecke in cm
 
@@ -21,7 +21,7 @@ namespace receiver { // r-callibot.ts
     //% block="c2 Reset Motoren, LEDs"
     export function c2RESET_OUTPUTS() {
         i2cWriteBuffer(Buffer.fromArray([ec2Register.RESET_OUTPUTS]))
-        n_c2MotorPower = false
+        // n_c2MotorPower = false
     }
 
 
@@ -195,6 +195,11 @@ namespace receiver { // r-callibot.ts
     export function c2EncoderValues(): number[] {
         i2cWriteBuffer(Buffer.fromArray([ec2Register.GET_ENCODER_VALUE]))
         return i2cReadBuffer(9).slice(1, 8).toArray(NumberFormat.Int32LE)
+    }
+
+    export function c2EncoderMittelwert() {
+        let encoderValues = c2EncoderValues()
+        return Math.idiv(Math.abs(encoderValues[0]) + Math.abs(encoderValues[1]), 2)
     }
 
 
