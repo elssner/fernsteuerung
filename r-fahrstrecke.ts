@@ -13,7 +13,7 @@ namespace receiver { // r-fahrstrecke.ts
 
                 encoder_start(strecke, true)
                 servo_set16(servo) //   servo_set(pServo)
-                selectEncoderMotor255(motor) //   motorA255(pMotor)
+                selectEncoderMotor_v3_car4(motor) //   motorA255(pMotor)
 
                 while (n_EncoderAutoStop) {
                     basic.pause(200) // Pause kann größer sein, weil Stop schon im Event erfolgt ist
@@ -21,10 +21,11 @@ namespace receiver { // r-fahrstrecke.ts
 
             } else if (n_Hardware == eHardware.calli2bot) {
 
-                c2Motor255(c_MotorStop)
+                c2motor128lenken16(c_MotorStop, 16)
+                // c2Motor255(c_MotorStop)
                 c2ResetEncoder()
 
-                c2Motor255(motor)
+                c2motor128lenken16(motor, servo)
 
                 while (encoderMittelwert(c2EncoderValues()) < strecke * n_c2EncoderFaktor) {
                     // Pause eventuell bei hoher Geschwindigkeit motor verringern
@@ -32,7 +33,8 @@ namespace receiver { // r-fahrstrecke.ts
                     basic.pause(200)
                 }
 
-                c2Motor255(c_MotorStop)
+                c2motor128lenken16(c_MotorStop, 16)
+                // c2Motor255(c_MotorStop)
 
             }
 

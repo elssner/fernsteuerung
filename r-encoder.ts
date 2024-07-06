@@ -61,7 +61,7 @@ namespace receiver { // r-pins.ts
 
                         //n_EncoderStopEvent = true
                         if (n_EncoderAutoStop) {
-                            selectEncoderMotor255(c_MotorStop) //   motorA255(c_MotorStop)
+                            selectEncoderMotor_v3_car4(c_MotorStop) //   motorA255(c_MotorStop)
                             n_EncoderAutoStop = false
                         }
 
@@ -85,7 +85,7 @@ namespace receiver { // r-pins.ts
     //% group="Encoder" subcategory="Encodermotor"
     //% block="Encodermotor starten (1 ↓ 128 ↑ 255) %speed" weight=9
     //% speed.min=0 speed.max=255 speed.defl=128
-    export function selectEncoderMotor255(speed: number) {
+    export function selectEncoderMotor_v3_car4(speed: number) {
         switch (n_Hardware) {
             case eHardware.v3: { // Fahrmotor an Calliope v3 Pins
                 v3Motor255(eMotor01.M0, speed)
@@ -95,10 +95,10 @@ namespace receiver { // r-pins.ts
                 qMotor255(eMotor.ma, speed)
                 break
             }
-            case eHardware.calli2bot: { // Fahrmotor Calli:Bot I²C
-                c2Motor255(speed)
-                break
-            }
+            //case eHardware.calli2bot: { // Fahrmotor Calli:Bot I²C
+            //    c2Motor255(speed)
+            //    break
+            //}
         }
     }
 
