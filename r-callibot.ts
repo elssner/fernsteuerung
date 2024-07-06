@@ -69,10 +69,11 @@ namespace receiver { // r-callibot.ts
 
 
     //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
-    //% block="c2 fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31" weight=2
+    //% block="c2 fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
     //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 
     //% y1_16_31.min=1 y1_16_31.max=31 y1_16_31.defl=16
-    export function c2motor128(x1_128_255: number, y1_16_31: number) {
+    //% prozent.min=10 prozent.max=90 prozent.defl=50
+    export function c2motor128(x1_128_255: number, y1_16_31: number, prozent = 50) {
 
         let setMotorBuffer = Buffer.create(6)
         setMotorBuffer[0] = ec2Register.SET_MOTOR // 2
@@ -100,10 +101,10 @@ namespace receiver { // r-callibot.ts
 
         // lenken (ein Motor wird langsamer)
         if (radio.between(y1_16_31, 1, 15)) { // links
-            setMotorBuffer[3] *= Math.map(y1_16_31, 0, 16, 0.5, 1) // 0=linkslenken0.5 // 16=nichtlenken=1.0
+            setMotorBuffer[3] *= Math.map(y1_16_31, 0, 16, prozent / 100, 1) // 0=linkslenken50% // 16=nichtlenken=100%
         }
         else if (radio.between(y1_16_31, 17, 31)) { // rechts
-            setMotorBuffer[5] *= Math.map(y1_16_31, 16, 32, 1, 0.5) // 16=nichtlenken=1.0 // 32=rechtslenken0.5
+            setMotorBuffer[5] *= Math.map(y1_16_31, 16, 32, 1, prozent / 100) // 16=nichtlenken=100% // 32=rechtslenken50%
         }
         else { // wenn y lenken 0, 16 oder mehr als 5 Bit
         }
