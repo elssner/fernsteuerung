@@ -69,15 +69,15 @@ namespace receiver { // r-callibot.ts
 
 
     //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
-    //% block="c2 fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
+    //% block="c2 Motoren (1 ↓ 128 ↑ 255) %x1_128_255 (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
     //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 
     //% y1_16_31.min=1 y1_16_31.max=31 y1_16_31.defl=16
     //% prozent.min=10 prozent.max=90 prozent.defl=50
-    export function c2motor128(x1_128_255: number, y1_16_31: number, prozent = 50) {
+    export function c2motor128lenken16(x1_128_255: number, y1_16_31: number, prozent = 50) {
 
         let setMotorBuffer = Buffer.create(6)
         setMotorBuffer[0] = ec2Register.SET_MOTOR   // 2
-        setMotorBuffer[1] = ec2Motor.beide          // 3
+        setMotorBuffer[1] = 3 // ec2Motor.beide     // 3
 
         // fahren (beide Motoren gleich)
         if (radio.between(x1_128_255, 129, 255)) { // vorwärts
@@ -114,6 +114,52 @@ namespace receiver { // r-callibot.ts
         // return setMotorBuffer
     }
 
+    //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
+    //% block="c2 Motoren (1 ↓ 128 ↑ 255) M1 %m1_1_128_255 M2 %m2_1_128_255" weight=1
+    //% m1_1_128_255.min=0 m1_1_128_255.max=255 m1_1_128_255.defl=0
+    //% m2_1_128_255.min=0 m2_1_128_255.max=255 m2_1_128_255.defl=0
+    export function c2motoren128(m1_1_128_255: number, m2_1_128_255: number) {
+        let m1 = radio.between(m1_1_128_255, 1, 255)
+        let m2 = radio.between(m2_1_128_255, 1, 255)
+        // if (m1 || m2) {
+        let setMotorBuffer: Buffer
+        let offset = 0
+        if (m1 && m2) {
+            setMotorBuffer = Buffer.create(6)
+            setMotorBuffer[offset++] = ec2Register.SET_MOTOR
+            setMotorBuffer[offset++] = 3
+        } else if (m1) {
+            setMotorBuffer = Buffer.create(4)
+            setMotorBuffer[offset++] = ec2Register.SET_MOTOR
+            setMotorBuffer[offset++] = 1
+        } else if (m2) {
+            setMotorBuffer = Buffer.create(4)
+            setMotorBuffer[offset++] = ec2Register.SET_MOTOR
+            setMotorBuffer[offset++] = 2
+        }
+
+        // M1 offset 2:Richtung, 3:PWM
+        if (m1 && radio.between(m1_1_128_255, 128, 255)) { // M1 vorwärts
+            setMotorBuffer[offset++] = 0
+            setMotorBuffer[offset++] = radio.mapInt32(m1_1_128_255, 128, 255, 0, 255)
+        } else if (m1) { // 1..127 M1 rückwärts
+            setMotorBuffer[offset++] = 1
+            setMotorBuffer[offset++] = radio.mapInt32(m1_1_128_255, 1, 128, 255, 0)
+        }
+
+        // M2 wenn !m1 offset 2:Richtung, 3:PWM sonst offset 4:Richtung, 5:PWM
+        if (m2 && radio.between(m2_1_128_255, 128, 255)) { // M2 vorwärts
+            setMotorBuffer[offset++] = 0
+            setMotorBuffer[offset++] = radio.mapInt32(m2_1_128_255, 128, 255, 0, 255)
+        } else if (m2) { // 1..127 M2 rückwärts
+            setMotorBuffer[offset++] = 1
+            setMotorBuffer[offset++] = radio.mapInt32(m2_1_128_255, 1, 128, 255, 0)
+        }
+
+        if (setMotorBuffer)
+            i2cWriteBuffer(setMotorBuffer)
+
+    }
 
     //% group="Motor (Call:bot 2E)" subcategory="Calli:bot"
     //% block="c2lenk16 %y1_16_31"
