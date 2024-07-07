@@ -200,4 +200,11 @@ namespace radio { // enums.ts
     }
 
 
+    export enum eNOT {
+        //% block=" "
+        t,
+        //% block="nicht"
+        f
+    }
+
 } // enums.ts

@@ -195,6 +195,14 @@ namespace receiver { // r-callibot.ts
         }
     }
 
+    //% group="INPUT digital" subcategory="Calli:bot"
+    //% block="C Digitaleingänge %n %e" weight=7
+    export function c2getInput(n: radio.eNOT, e: cb2.eINPUTS): boolean {
+        if (n == radio.eNOT.t)
+            return (n_input_Digital & e) == e
+        else
+            return (n_input_Digital & e) == 0
+    }
 
     //% group="INPUT digital" subcategory="Calli:bot"
     //% block="C Spursensor %plr schwarz" weight=6
@@ -271,7 +279,7 @@ namespace receiver { // r-callibot.ts
     }
 
 
-    enum ec2Register {
+    export enum ec2Register {
         // Write
         RESET_OUTPUTS = 0x01, // Alle Ausgänge abschalten (Motor, LEDs, Servo)
         SET_MOTOR = 0x02, // Bit0: 1=Motor 1 setzen;  Bit1: 1=Motor 2 setzen
@@ -313,4 +321,27 @@ namespace receiver { // r-callibot.ts
         r = 1
     } */
 
-} // r-callibot.ts
+} // r-callibot.ts namespace receiver
+
+
+namespace cb2 {
+
+    export enum eINPUTS {
+        //% block="Spursucher rechts hell"
+        spr = 0b00000001,
+        //% block="Spursucher links hell"
+        spl = 0b00000010,
+        //% block="Stoßstange rechts"
+        str = 0b00000100,
+        //% block="Stoßstange links"
+        stl = 0b00001000,
+        //% block="ON-Taster"
+        ont = 0b00010000,
+        //% block="OFF-Taster"
+        off = 0b00100000,
+        //reserviert = 0b01000000,
+        //% block="Calli:bot2 (0x21)"
+        cb2 = 0b10000000
+    }
+
+} // r-callibot.ts namespace cb2
