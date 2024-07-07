@@ -322,7 +322,7 @@ namespace receiver { // r-callibot.ts
     } */
 
 } // r-callibot.ts namespace receiver
-
+/* 
 
 namespace cb2 {
 
@@ -347,3 +347,4 @@ namespace cb2 {
     }
 
 } // r-callibot.ts namespace cb2
+ */

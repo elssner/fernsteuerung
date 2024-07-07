@@ -8,6 +8,7 @@ namespace cb2 { // c-callibot.ts
     //    CB2_x22 = 0x22 //, WR_MOTOR_x20 = 0x20, WR_LED_x21 = 0x21, RD_SENSOR_x21
     //}
     const i2cCallibot2_x22 = 0x22
+    const i2cCallibot_x21 = 0x21
 
     let n_Callibot2_x22Connected = true // I²C Device ist angesteckt
     // let n_c2MotorPower = true
@@ -18,28 +19,28 @@ namespace cb2 { // c-callibot.ts
 
     // ========== group="Reset"
 
-    //% group="Reset" subcategory="Calli:bot"
-    //% block="C Reset Motoren, LEDs" weight=4
-    export function reset() {
+    //% group="Reset"
+    //% block="Reset Motoren, LEDs" weight=4
+    export function writeReset() {
         i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_OUTPUTS]))
         // n_c2MotorPower = false
     }
 
-    //% group="Reset" subcategory="Calli:bot"
-    //% block="C Call:bot Typ [1]" weight=3
-    export function version() { // [1]=4:CB2(Gymnasium) =3:CB2E (=2:soll CB2 sein)
+    //% group="Reset" advanced=true
+    //% block="Call:bot Typ [1]" weight=3
+    export function readVersion() { // [1]=4:CB2(Gymnasium) =3:CB2E (=2:soll CB2 sein)
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_FW_VERSION]))
         return i2cReadBuffer(10).toArray(NumberFormat.UInt8LE)
     }
 
 
 
-    //% group="Motor" subcategory="Calli:bot"
-    //% block="C Motor (1 ↓ 128 ↑ 255) %x1_128_255 Servo (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
+    //% group="Motor"
+    //% block="Motor (1 ↓ 128 ↑ 255) %x1_128_255 Servo (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
     //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 
     //% y1_16_31.min=1 y1_16_31.max=31 y1_16_31.defl=16
     //% prozent.min=10 prozent.max=90 prozent.defl=50
-    export function motor128lenken16(x1_128_255: number, y1_16_31: number, prozent = 50) {
+    export function writeMotor128Servo16(x1_128_255: number, y1_16_31: number, prozent = 50) {
 
         let setMotorBuffer = Buffer.create(6)
         setMotorBuffer[0] = eRegister.SET_MOTOR   // 2
@@ -80,11 +81,11 @@ namespace cb2 { // c-callibot.ts
         // return setMotorBuffer
     }
 
-    //% group="Motor" subcategory="Calli:bot"
-    //% block="C Motoren (1 ↓ 128 ↑ 255) M1 %m1_1_128_255 M2 %m2_1_128_255" weight=1
+    //% group="Motor"
+    //% block="Motoren (1 ↓ 128 ↑ 255) M1 %m1_1_128_255 M2 %m2_1_128_255" weight=1
     //% m1_1_128_255.min=0 m1_1_128_255.max=255 m1_1_128_255.defl=0
     //% m2_1_128_255.min=0 m2_1_128_255.max=255 m2_1_128_255.defl=0
-    export function motoren128(m1_1_128_255: number, m2_1_128_255: number) {
+    export function writeMotoren128(m1_1_128_255: number, m2_1_128_255: number) {
         let m1 = radio.between(m1_1_128_255, 1, 255)
         let m2 = radio.between(m2_1_128_255, 1, 255)
         // if (m1 || m2) {
@@ -130,41 +131,41 @@ namespace cb2 { // c-callibot.ts
 
 
 
-    // ========== group="Sensoren" subcategory="Calli:bot"
+    // ========== group="Sensoren" subcategory="Sensoren"
 
 
 
     // interner Speicher für Sensoren
-    let n_input_Digital: number
+    let n_Inputs: number
 
 
 
-    //% group="INPUT digital" subcategory="Calli:bot"
-    //% block="C Digitaleingänge einlesen || 0x21 %i2" weight=8
-    export function c2ReadINPUTS(x21 = false) {
+    //% group="INPUT digital" subcategory="Sensoren"
+    //% block="Digitaleingänge einlesen || 0x21 %i2" weight=8
+    export function readInputs(x21 = false) {
         if (x21)
-            n_input_Digital = pins.i2cReadBuffer(0x21, 1).getUint8(0)
+            n_Inputs = pins.i2cReadBuffer(i2cCallibot_x21, 1).getUint8(0)
         else {
             i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUTS]))
-            n_input_Digital = i2cReadBuffer(1).getUint8(0)
+            n_Inputs = i2cReadBuffer(1).getUint8(0)
         }
     }
 
-    //% group="INPUT digital" subcategory="Calli:bot"
-    //% block="C %n %e" weight=7
-    export function c2getInput(n: radio.eNOT, e: cb2.eINPUTS): boolean {
+    //% group="INPUT digital" subcategory="Sensoren"
+    //% block="%n %e" weight=7
+    export function getInputs(n: radio.eNOT, e: cb2.eINPUTS): boolean {
         if (n == radio.eNOT.t)
-            return (n_input_Digital & e) == e
+            return (n_Inputs & e) == e
         else
-            return (n_input_Digital & e) == 0
+            return (n_Inputs & e) == 0
     }
 
 
     export enum eDist { cm, mm }
 
-    //% group="Ultraschall Sensor" subcategory="Calli:bot"
-    //% block="C Ultraschall Entfernung in %e" weight=4
-    export function c2UltraschallEntfernung(e: eDist) {
+    //% group="Ultraschall Sensor" subcategory="Sensoren"
+    //% block="Ultraschall Entfernung in %e" weight=4
+    export function readUltraschallEntfernung(e: eDist) {
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUT_US]))
         let mm = i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1) // 16 Bit (mm)
         if (e == eDist.cm)
@@ -175,21 +176,21 @@ namespace cb2 { // c-callibot.ts
 
 
 
-    //% group="Encoder (Call:bot 2E)" subcategory="Calli:bot"
-    //% block="C Encoder Zähler löschen" weight=2
-    export function c2ResetEncoder() {
+    //% group="Encoder (Call:bot 2E)" subcategory="Sensoren"
+    //% block="Encoder Zähler löschen" weight=2
+    export function writeEncoderReset() {
         i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_ENCODER, 3]))
     }
 
-    //% group="Encoder (Call:bot 2E)" subcategory="Calli:bot"
-    //% block="C Encoder Werte [l,r]" weight=1
-    export function c2EncoderValues(): number[] {
+    //% group="Encoder (Call:bot 2E)" subcategory="Sensoren"
+    //% block="Encoder Werte [l,r]" weight=1
+    export function readEncoderValues(): number[] {
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
         return i2cReadBuffer(9).slice(1, 8).toArray(NumberFormat.Int32LE)
     }
 
-    export function c2EncoderMittelwert() {
-        let encoderValues = c2EncoderValues()
+    export function getEncoderMittelwert() {
+        let encoderValues = readEncoderValues()
         return Math.idiv(Math.abs(encoderValues[0]) + Math.abs(encoderValues[1]), 2)
     }
 
@@ -217,7 +218,7 @@ namespace cb2 { // c-callibot.ts
     }
 
 
-    export enum eRegister {
+    enum eRegister {
         // Write
         RESET_OUTPUTS = 0x01, // Alle Ausgänge abschalten (Motor, LEDs, Servo)
         SET_MOTOR = 0x02, // Bit0: 1=Motor 1 setzen;  Bit1: 1=Motor 2 setzen
@@ -241,7 +242,7 @@ namespace cb2 { // c-callibot.ts
     }
 
 
-    /* export enum eINPUTS {
+    export enum eINPUTS {
         //% block="Spursensor rechts hell"
         spr = 0b00000001,
         //% block="Spursensor links hell"
@@ -259,6 +260,6 @@ namespace cb2 { // c-callibot.ts
         //reserviert = 0b01000000,
         //% block="Calli:bot2 (0x21)"
         cb2 = 0b10000000
-    } */
+    }
 
 } // c-callibot.ts
