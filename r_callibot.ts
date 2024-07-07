@@ -1,4 +1,4 @@
-//% color=#005F7F icon="\uf188" block="Calli²bot" weight=93
+//% color=#007F00 icon="\uf188" block="Calli²bot" weight=92
 //% groups='["beim Start","Motor (-100% .. 0 .. +100%)","LED","Reset","Kommentar"]'
 namespace r_callibot { // r_callibot.ts
     /*
