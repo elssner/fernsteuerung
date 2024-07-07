@@ -196,7 +196,7 @@ namespace receiver { // r-callibot.ts
     }
 
     //% group="INPUT digital" subcategory="Calli:bot"
-    //% block="C Digitaleingänge %n %e" weight=7
+    //% block="C %n %e" weight=7
     export function c2getInput(n: radio.eNOT, e: cb2.eINPUTS): boolean {
         if (n == radio.eNOT.t)
             return (n_input_Digital & e) == e
@@ -327,10 +327,12 @@ namespace receiver { // r-callibot.ts
 namespace cb2 {
 
     export enum eINPUTS {
-        //% block="Spursucher rechts hell"
+        //% block="Spursensor rechts hell"
         spr = 0b00000001,
-        //% block="Spursucher links hell"
+        //% block="Spursensor links hell"
         spl = 0b00000010,
+        //% block="Spursensor beide hell"
+        spb = 0b00000011,
         //% block="Stoßstange rechts"
         str = 0b00000100,
         //% block="Stoßstange links"
