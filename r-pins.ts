@@ -14,7 +14,8 @@ namespace receiver { // r-pins.ts
     //% block="Stromversorgung 9V %pON" weight=8
     //% pON.shadow="toggleOnOff"
     export function pinRelay(pON: boolean) {
-        pins.digitalWritePin(a_PinRelay[n_Hardware], pON ? 1 : 0)
+        if (a_PinRelay.length > n_Hardware)
+            pins.digitalWritePin(a_PinRelay[n_Hardware], pON ? 1 : 0)
     }
 
     // GPIO für Grove (5V) Licht oder Buzzer
@@ -23,7 +24,8 @@ namespace receiver { // r-pins.ts
     //% block="Licht %pON" weight=7
     //% pON.shadow="toggleOnOff"
     export function pinLicht(pON: boolean) {
-        pins.digitalWritePin(a_PinLicht[n_Hardware], pON ? 1 : 0)
+        if (a_PinLicht.length > n_Hardware)
+            pins.digitalWritePin(a_PinLicht[n_Hardware], pON ? 1 : 0)
     }
 
     export enum eDigitalPins { // Pins gültig für alle Modelle, unterscheiden sich im Enum Wert
@@ -44,41 +46,63 @@ namespace receiver { // r-pins.ts
         pins.digitalWritePin(<number>pin, pON ? 0 : 1)
     }
 
-/* 
-
-    // ========== group="Klingelton (Calliope v3: P0)" subcategory="Pins"
-
-    let n_ringTone = false
-
-    // group="Klingelton (Calliope v3: P0)" subcategory="Pins"
-    // block="spiele Note %pON || Frequenz %frequency Hz"
-    // pON.shadow="toggleOnOff"
-    // frequency.defl=262
-    export function ringTone(pON: boolean, frequency = 262) {
-        if (n_ringTone !== pON) { // XOR
-            n_ringTone = pON
-            if (n_ringTone)
-                music.ringTone(frequency)
-            else
-                music.stopAllSounds()
-            // pins.digitalWritePin(pinBuzzer, n_buzzer ? 1 : 0)
+    /* 
+    
+        // ========== group="Klingelton (Calliope v3: P0)" subcategory="Pins"
+    
+        let n_ringTone = false
+    
+        // group="Klingelton (Calliope v3: P0)" subcategory="Pins"
+        // block="spiele Note %pON || Frequenz %frequency Hz"
+        // pON.shadow="toggleOnOff"
+        // frequency.defl=262
+        export function ringTone(pON: boolean, frequency = 262) {
+            if (n_ringTone !== pON) { // XOR
+                n_ringTone = pON
+                if (n_ringTone)
+                    music.ringTone(frequency)
+                else
+                    music.stopAllSounds()
+                // pins.digitalWritePin(pinBuzzer, n_buzzer ? 1 : 0)
+            }
         }
-    }
-
- */
+    
+     */
 
     // ========== group="Spursensor" subcategory="Pins"
 
-    export enum elr { links, rechts }
+    //% group="Spursensor" subcategory="Pins"
+    //% block="Spursensor links %n hell" weight=3
+    export function pinSpurlinks(n: radio.eNOT) {
+        if (a_PinSpurlinks.length > n_Hardware)
+            return pins.digitalReadPin(a_PinSpurlinks[n_Hardware]) == (n = radio.eNOT.t ? 1 : 0) // 0 ist schwarz
+        else
+            return false
+    }
 
     //% group="Spursensor" subcategory="Pins"
-    //% block="Spursensor %plr schwarz" weight=3
-    export function spursensor_lr(plr: elr) {
-        if (plr == elr.links)
-            return pins.digitalReadPin(a_PinSpurlinks[n_Hardware]) == 0 // 0 ist schwarz
+    //% block="Spursensor rechts %n hell" weight=3
+    export function pinSpurrechts(n: radio.eNOT) {
+        if (a_PinSpurrechts.length > n_Hardware)
+            return pins.digitalReadPin(a_PinSpurrechts[n_Hardware]) == (n = radio.eNOT.t ? 1 : 0) // 0 ist schwarz
         else
-            return pins.digitalReadPin(a_PinSpurrechts[n_Hardware]) == 0
+            return false
     }
+
+
+    /*  export function pin_spursensor(n: radio.eNOT, plr: eSpursensor) {
+         if (a_PinSpurlinks.length > n_Hardware) {
+ 
+ 
+ 
+             if (plr == eSpursensor.spl)
+                 return pins.digitalReadPin(a_PinSpurlinks[n_Hardware]) == 1 // 0 ist schwarz
+             else
+                 return pins.digitalReadPin(a_PinSpurrechts[n_Hardware]) == 1
+         } else
+             return false
+ 
+     } */
 
     // group="Spursensor" subcategory="Pins"
     // block="Spursensor %plr %phd" weight=4
@@ -92,9 +116,10 @@ namespace receiver { // r-pins.ts
 
     //% group="Spursensor" subcategory="Pins"
     //% block="Spursensor 00 01 10 11" weight=2
-    export function spursensor_2bit() {
-        return (1 - pins.digitalReadPin(a_PinSpurlinks[n_Hardware])) * 2 + (1 - pins.digitalReadPin(a_PinSpurrechts[n_Hardware]))
-    }
+    /* export function pin_spursensor_2bit() {
+        return (pin_spursensor(radio.eNOT.t, eSpursensor.spl) ? 2 : 0) + (pin_spursensor(radio.eNOT.t, eSpursensor.spr) ? 1 : 0)
+        //return (1 - pins.digitalReadPin(a_PinSpurlinks[n_Hardware])) * 2 + (1 - pins.digitalReadPin(a_PinSpurrechts[n_Hardware]))
+    } */
 
 
 

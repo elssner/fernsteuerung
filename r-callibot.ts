@@ -204,20 +204,20 @@ namespace receiver { // r-callibot.ts
             return (n_input_Digital & e) == 0
     }
 
-    //% group="INPUT digital" subcategory="Calli:bot"
-    //% block="C Spursensor %plr schwarz" weight=6
-    export function c2Spursensor_lr(plr: elr) {
+    // group="INPUT digital" subcategory="Calli:bot"
+    // block="C Spursensor %plr schwarz" weight=6
+    /* export function c2Spursensor_lr(plr: elr) {
         if (plr == elr.links)
             return (n_input_Digital & 0x02) == 0 // 0 ist schwarz
         else
             return (n_input_Digital & 0x01) == 0 // 0 ist schwarz
-    }
+    } */
 
-    //% group="INPUT digital" subcategory="Calli:bot"
-    //% block="C Spursensor 00 01 10 11" weight=5
-    export function c2Spursensor_2bit() {
+    // group="INPUT digital" subcategory="Calli:bot"
+    // block="C Spursensor 00 01 10 11" weight=5
+    /* export function c2Spursensor_2bit() {
         return ~n_input_Digital & 0x03
-    }
+    } */
 
 
 
