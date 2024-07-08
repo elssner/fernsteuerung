@@ -218,7 +218,7 @@ namespace cb2 { // c-callibot.ts
         if (x21)
             n_Inputs = pins.i2cReadBuffer(i2cCallibot_x21, 1).getUint8(0)
         else {
-            i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUTS]))
+         //   i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUTS]))
             n_Inputs = i2cReadBuffer(1).getUint8(0)
         }
     }
