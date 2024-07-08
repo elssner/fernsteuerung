@@ -39,8 +39,20 @@ namespace cb2 { // c-callibot.ts
         setMotorBuffer[0] = eRegister.SET_MOTOR   // 2
         setMotorBuffer[1] = 3 // ec2Motor.beide     // 3
 
+        if ((x1_128_255 & 0x80) == 0x80) {  // 128..255 vorwärts
+            setMotorBuffer[2] = 0
+            setMotorBuffer[3] = x1_128_255 << 1 // linkes Bit weg=0..127 * 2 // 128=00, 129=02, 130=04, 254=FC, 255=FE
+            setMotorBuffer[4] = 0
+            setMotorBuffer[5] = setMotorBuffer[3]
+        } else {                            // 0..127 rückwärts
+            setMotorBuffer[2] = 1
+            setMotorBuffer[3] = ~(x1_128_255 << 1) // * 2 und bitweise NOT // 0=FF, 1=FD, 126=03, 127=01,
+            setMotorBuffer[4] = 1
+            setMotorBuffer[5] = setMotorBuffer[3]
+     }
+
         // fahren (beide Motoren gleich)
-        if (radio.between(x1_128_255, 129, 255)) { // vorwärts
+     /*    if (radio.between(x1_128_255, 129, 255)) { // vorwärts
             setMotorBuffer[2] = 0
             setMotorBuffer[3] = radio.mapInt32(x1_128_255, 128, 255, 0, 255)
             setMotorBuffer[4] = 0
@@ -57,7 +69,7 @@ namespace cb2 { // c-callibot.ts
             setMotorBuffer[3] = 0 // Motor 1 PWM (0..255)
             setMotorBuffer[4] = 0 // Motor 2 Richtung 0:vorwärts, 1:rückwärts
             setMotorBuffer[5] = 0 // Motor 2 PWM (0..255)
-        }
+        } */
 
         // lenken (ein Motor wird langsamer)
         if (radio.between(y1_16_31, 1, 15)) { // links
@@ -99,21 +111,21 @@ namespace cb2 { // c-callibot.ts
         }
 
         // M1 offset 2:Richtung, 3:PWM
-        if (m1 && radio.between(m1_1_128_255, 128, 255)) { // M1 vorwärts
+        if (m1 && (m1_1_128_255 & 0x80) == 0x80) { //     if (m1 && radio.between(m1_1_128_255, 128, 255)) { // M1 vorwärts
             setMotorBuffer[offset++] = 0
-            setMotorBuffer[offset++] = radio.mapInt32(m1_1_128_255, 128, 255, 0, 255)
+            setMotorBuffer[offset++] = m1_1_128_255 << 1// radio.mapInt32(m1_1_128_255, 128, 255, 0, 255)
         } else if (m1) { // 1..127 M1 rückwärts
             setMotorBuffer[offset++] = 1
-            setMotorBuffer[offset++] = radio.mapInt32(m1_1_128_255, 1, 128, 255, 0)
+            setMotorBuffer[offset++] = ~(m1_1_128_255 << 1) // radio.mapInt32(m1_1_128_255, 1, 128, 255, 0)
         }
 
         // M2 wenn !m1 offset 2:Richtung, 3:PWM sonst offset 4:Richtung, 5:PWM
-        if (m2 && radio.between(m2_1_128_255, 128, 255)) { // M2 vorwärts
+        if (m2 && (m2_1_128_255 & 0x80) == 0x80) { //    if (m2 && radio.between(m2_1_128_255, 128, 255)) { // M2 vorwärts
             setMotorBuffer[offset++] = 0
-            setMotorBuffer[offset++] = radio.mapInt32(m2_1_128_255, 128, 255, 0, 255)
+            setMotorBuffer[offset++] = m2_1_128_255 << 1// radio.mapInt32(m2_1_128_255, 128, 255, 0, 255)
         } else if (m2) { // 1..127 M2 rückwärts
             setMotorBuffer[offset++] = 1
-            setMotorBuffer[offset++] = radio.mapInt32(m2_1_128_255, 1, 128, 255, 0)
+            setMotorBuffer[offset++] = ~(m2_1_128_255 << 1) // radio.mapInt32(m2_1_128_255, 1, 128, 255, 0)
         }
 
         if (setMotorBuffer)
