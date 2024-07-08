@@ -240,7 +240,7 @@ namespace cb2 { // c-callibot.ts
     //% group="INPUT digital" subcategory="Sensoren"
     //% block="Spursensor links %l und rechts %r || I²C %i2c" weight=5
     //% i2c.defl=cb2.eI2C.x21
-    export function getSpursensor_2bit(l: eLR, r: eLR, i2c = eI2C.x21) {
+    export function getSpursensor_2bit(l: eLR, r: eLR, i2c: eI2C) {
         if (i2c != undefined)
             readInputs(i2c)
         return (n_Inputs & 0x03) == (l << 1 & r)
