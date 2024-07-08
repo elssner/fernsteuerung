@@ -32,7 +32,8 @@
         "r-calliope-v3.ts",
         "c-callibot.ts",
         "r_callibot.ts",
-        "r_callibot-enums.ts"
+        "r_callibot-enums.ts",
+        "c-beispiele.ts"
     ],
     "testFiles": [
         "test.ts"
