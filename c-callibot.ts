@@ -237,7 +237,7 @@ namespace cb2 { // c-callibot.ts
             return (n_Inputs & e) == 0
     }
 
-  export   enum eDH { dunkel = 0, hell = 1 }
+    export enum eDH { dunkel = 0, hell = 1 }
 
     //% group="INPUT digital" subcategory="Sensoren"
     //% block="Spursensor links %l und rechts %r || I²C %i2c" weight=5
