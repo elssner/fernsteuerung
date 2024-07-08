@@ -222,6 +222,7 @@ namespace cb2 { // c-callibot.ts
             i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUTS]))
             n_Inputs = i2cReadBuffer(1)[0]
         }
+        return n_Inputs
     }
 
     //% group="INPUT digital" subcategory="Sensoren"
