@@ -216,10 +216,10 @@ namespace cb2 { // c-callibot.ts
     //% block="Digitaleingänge einlesen || 0x21 %i2" weight=8
     export function readInputs(x21 = false) {
         if (x21)
-            n_Inputs = pins.i2cReadBuffer(i2cCallibot_x21, 1).getUint8(0)
+            n_Inputs = pins.i2cReadBuffer(i2cCallibot_x21, 1)[0]
         else {
-         //   i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUTS]))
-            n_Inputs = i2cReadBuffer(1).getUint8(0)
+            i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUTS]))
+            n_Inputs = i2cReadBuffer(1)[0]
         }
     }
 
@@ -230,6 +230,13 @@ namespace cb2 { // c-callibot.ts
             return (n_Inputs & e) == e
         else
             return (n_Inputs & e) == 0
+    }
+
+
+    //% group="INPUT digital" subcategory="Sensoren"
+    //% block="Spursensor (schwarz) 00 01 10 11 (hell)" weight=5
+    export function getSpursensor_2bit() {
+        return n_Inputs & 0x03
     }
 
 
@@ -299,7 +306,7 @@ namespace cb2 { // c-callibot.ts
 
 
 
-     enum eRegister {
+    enum eRegister {
         // Write
         RESET_OUTPUTS = 0x01, // Alle Ausgänge abschalten (Motor, LEDs, Servo)
         SET_MOTOR = 0x02, // Bit0: 1=Motor 1 setzen;  Bit1: 1=Motor 2 setzen
