@@ -7,8 +7,9 @@ namespace cb2 { // c-callibot.ts
     //export enum eADDR {
     //    CB2_x22 = 0x22 //, WR_MOTOR_x20 = 0x20, WR_LED_x21 = 0x21, RD_SENSOR_x21
     //}
-    const i2cCallibot2_x22 = 0x22
-    const i2cCallibot_x21 = 0x21
+    export enum eI2C { x22 = 0x22, x21 = 0x21 }
+    //const i2cCallibot2_x22 = 0x22
+    //const i2cCallibot_x21 = 0x21
 
     let n_Callibot2_x22Connected = true // I²C Device ist angesteckt
     // let n_c2MotorPower = true
@@ -213,10 +214,10 @@ namespace cb2 { // c-callibot.ts
 
 
     //% group="INPUT digital" subcategory="Sensoren"
-    //% block="Digitaleingänge einlesen || 0x21 %i2" weight=8
-    export function readInputs(x21 = false) {
-        if (x21)
-            n_Inputs = pins.i2cReadBuffer(i2cCallibot_x21, 1)[0]
+    //% block="Digitaleingänge einlesen || I²C %i2c" weight=8
+    export function readInputs(i2c = eI2C.x22) {
+        if (i2c == eI2C.x21)
+            n_Inputs = pins.i2cReadBuffer(eI2C.x21, 1)[0]
         else {
             i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUTS]))
             n_Inputs = i2cReadBuffer(1)[0]
@@ -232,13 +233,14 @@ namespace cb2 { // c-callibot.ts
             return (n_Inputs & e) == 0
     }
 
-    export enum eLR { dunkel, hell }
+    export enum eLR { dunkel = 0, hell = 1 }
 
     //% group="INPUT digital" subcategory="Sensoren"
-    //% block="Spursensor links %l und rechts %r" weight=5
-    export function getSpursensor_2bit(l: eLR, r: eLR) {
-       // let bits = l * 2 + r
-        return (n_Inputs & 0x03) == (l * 2 + r)
+    //% block="Spursensor links %l und rechts %r || I²C %i2c" weight=5
+    //% i2c.defl=cb2.eI2C.x21
+    export function getSpursensor_2bit(l: eLR, r: eLR, i2c = eI2C.x21) {
+        readInputs(i2c)
+        return (n_Inputs & 0x03) == (l << 1 & r)
     }
 
 
@@ -291,17 +293,17 @@ namespace cb2 { // c-callibot.ts
 
     export function i2cWriteBuffer(bu: Buffer) { // repeat funktioniert nicht bei Callibot
         if (n_Callibot2_x22Connected) {
-            n_Callibot2_x22Connected = pins.i2cWriteBuffer(i2cCallibot2_x22, bu) == 0
+            n_Callibot2_x22Connected = pins.i2cWriteBuffer(eI2C.x22, bu) == 0
 
             if (!n_Callibot2_x22Connected)
-                basic.showNumber(i2cCallibot2_x22)
+                basic.showNumber(eI2C.x22)
         }
         return n_Callibot2_x22Connected
     }
 
     export function i2cReadBuffer(size: number): Buffer { // repeat funktioniert nicht bei Callibot
         if (n_Callibot2_x22Connected)
-            return pins.i2cReadBuffer(i2cCallibot2_x22, size)
+            return pins.i2cReadBuffer(eI2C.x22, size)
         else
             return Buffer.create(size)
     }
