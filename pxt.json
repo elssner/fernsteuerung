@@ -27,13 +27,12 @@
         "r-pins.ts",
         "r-qwiicmotor.ts",
         "r-qwiic.ts",
-        "r-callibot.ts",
         "r-advanced.ts",
         "r-calliope-v3.ts",
         "c-callibot.ts",
+        "c-beispiele.ts",
         "r_callibot.ts",
-        "r_callibot-enums.ts",
-        "c-beispiele.ts"
+        "r_callibot-enums.ts"
     ],
     "testFiles": [
         "test.ts"

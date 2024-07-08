@@ -30,18 +30,18 @@ namespace receiver { // r-fahrstrecke.ts
         }
         else if (n_Hardware == eHardware.calli2bot) {
 
-            c2motor128lenken16(c_MotorStop, servo)
-            c2ResetEncoder()
+            cb2.writeMotor128Servo16(c_MotorStop, servo)
+            cb2.writeEncoderReset()
 
-            c2motor128lenken16(motor, servo)
+            cb2.writeMotor128Servo16(motor, servo)
 
-            while (c2EncoderMittelwert() < strecke * n_c2EncoderFaktor) {
+            while (cb2.getEncoderMittelwert() < strecke * cb2.n_EncoderFaktor) {
                 // Pause eventuell bei hoher Geschwindigkeit motor verringern
                 // oder langsamer fahren wenn Rest strecke kleiner wird
                 basic.pause(200)
             }
 
-            c2motor128lenken16(c_MotorStop, 16)
+            cb2.writeMotor128Servo16(c_MotorStop, 16)
         }
     }
 
