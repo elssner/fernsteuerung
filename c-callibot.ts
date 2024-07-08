@@ -7,7 +7,7 @@ namespace cb2 { // c-callibot.ts
     //export enum eADDR {
     //    CB2_x22 = 0x22 //, WR_MOTOR_x20 = 0x20, WR_LED_x21 = 0x21, RD_SENSOR_x21
     //}
-    export enum eI2C { x22 = 0x22, x21 = 0x21 }
+    export enum eI2C { x21 = 0x21, x22 = 0x22 }
     //const i2cCallibot2_x22 = 0x22
     //const i2cCallibot_x21 = 0x21
 
@@ -227,19 +227,21 @@ namespace cb2 { // c-callibot.ts
     }
 
     //% group="INPUT digital" subcategory="Sensoren"
-    //% block="%n %e" weight=7
-    export function getInputs(n: radio.eNOT, e: cb2.eINPUTS): boolean {
+    //% block="%n %e || I²C %i2c" weight=7
+    export function getInputs(n: radio.eNOT, e: cb2.eINPUTS, i2c?: eI2C): boolean {
+        if (i2c != undefined)
+            readInputs(i2c)
         if (n == radio.eNOT.t)
             return (n_Inputs & e) == e
         else
             return (n_Inputs & e) == 0
     }
 
-    export enum eLR { dunkel = 0, hell = 1 }
+  export   enum eDH { dunkel = 0, hell = 1 }
 
     //% group="INPUT digital" subcategory="Sensoren"
     //% block="Spursensor links %l und rechts %r || I²C %i2c" weight=5
-    export function readSpursensor(l: eLR, r: eLR, i2c?: eI2C) {
+    export function readSpursensor(l: eDH, r: eDH, i2c?: eI2C) {
         if (i2c != undefined)
             readInputs(i2c)
         return (n_Inputs & 0x03) == (l << 1 & r)
@@ -370,8 +372,6 @@ namespace cb2 { // c-callibot.ts
         spr = 0b00000001,
         //% block="Spursensor links hell"
         spl = 0b00000010,
-        //% block="Spursensor beide hell"
-        spb = 0b00000011,
         //% block="Stoßstange rechts"
         str = 0b00000100,
         //% block="Stoßstange links"
@@ -384,5 +384,8 @@ namespace cb2 { // c-callibot.ts
         //% block="Calli:bot2 (0x21)"
         cb2 = 0b10000000
     }
+    // block="Spursensor beide hell"
+    // spb = 0b00000011,
+
 
 } // c-callibot.ts

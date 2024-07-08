@@ -5,7 +5,7 @@ namespace cb2 { // c-beispiele.ts
 
     // ========== subcategory=Beispiele
 
-    function setMotoren2(pwm1: number, pwm2: number) { // (-100% .. 0 .. +100%)
+    function setMotoren0Prozent(pwm1: number, pwm2: number) { // (-100% .. 0 .. +100%)
         writeMotoren128(radio.speedPicker(pwm1), radio.speedPicker(pwm2))
     }
 
@@ -18,15 +18,15 @@ namespace cb2 { // c-beispiele.ts
     //% sf.shadow=cb2_ePause
     //% sd.shadow=cb2_ePause
     export function seite2Motor(sf: number, sd: number, rl: eRL) {
-        setMotoren2(100, 100)
+        setMotoren0Prozent(100, 100)
 
         pauseSekunden(sf)
         if (rl == eRL.links)
-            setMotoren2(-50, 50)
+            setMotoren0Prozent(-50, 50)
         else
-            setMotoren2(50, -50)
+            setMotoren0Prozent(50, -50)
         pauseSekunden(sd)
-        setMotoren2(0, 0)
+        setMotoren0Prozent(0, 0)
     }
 
     let n_StopandGoMotoran: boolean = false // für seite4StopandGo()
@@ -53,9 +53,9 @@ namespace cb2 { // c-beispiele.ts
 
             // nur bei Änderung an i2c senden
             if (n_StopandGoMotoran)
-                setMotoren2(pwm1, pwm2)
+                setMotoren0Prozent(pwm1, pwm2)
             else
-                setMotoren2(0, 0)
+                setMotoren0Prozent(0, 0)
 
             //if (this.initLog(2))
             //    this.qLog[1] = (this.qStopandGoMotoran ? "  Go" : "Stop") + format4r(laut)
@@ -78,22 +78,22 @@ namespace cb2 { // c-beispiele.ts
     export function seite9Linienfolger(pwm1: number, pwm2: number, stop: number) {
         //this.i2cReadINPUT_US()
         if (readUltraschallEntfernung(eDist.cm) < stop) { //  if (this.bitINPUT_US(eVergleich.lt, stop)) {
-            setMotoren2(0, 0)
+            setMotoren0Prozent(0, 0)
             return false
         } else {
             // this.i2cReadINPUTS()
-            readInputs()
-            if (getInputs(radio.eNOT.f, eINPUTS.spb)) { //     if (this.bitINPUTS(calli2bot.eINPUTS.sp0)) {
-                setMotoren2(pwm1, pwm1) // dunkel,dunkel
+            // readInputs()
+            if (readSpursensor(eDH.dunkel, eDH.dunkel, eI2C.x21)) { //     if (this.bitINPUTS(calli2bot.eINPUTS.sp0)) {
+                setMotoren0Prozent(pwm1, pwm1) // dunkel,dunkel
                 writeLed(eLed.redb, false) // beide rote LED aus
-            } else if (getInputs(radio.eNOT.t, eINPUTS.spb)) { // if (this.bitINPUTS(calli2bot.eINPUTS.sp1r)) {
-                setMotoren2(0, pwm2)
-                writeLed(eLed.redl, true)
-                writeLed(eLed.redr, false)
-            } else {
-                setMotoren2(pwm2, 0)
-                writeLed(eLed.redl, false)
+            } else if (readSpursensor(eDH.dunkel, eDH.hell)) { // if (this.bitINPUTS(calli2bot.eINPUTS.sp1r)) {
+                setMotoren0Prozent(0, pwm2)
+                // writeLed(eLed.redl, false)
                 writeLed(eLed.redr, true)
+            } else {
+                setMotoren0Prozent(pwm2, 0)
+                //  writeLed(eLed.redl, false)
+                writeLed(eLed.redr, false)
             }
             return true
         }
