@@ -232,11 +232,13 @@ namespace cb2 { // c-callibot.ts
             return (n_Inputs & e) == 0
     }
 
+    export enum eLR { dunkel, hell }
 
     //% group="INPUT digital" subcategory="Sensoren"
-    //% block="Spursensor (schwarz) 00 01 10 11 (hell)" weight=5
-    export function getSpursensor_2bit() {
-        return n_Inputs & 0x03
+    //% block="Spursensor links %l und rechts %r" weight=5
+    export function getSpursensor_2bit(l: eLR, r: eLR) {
+       // let bits = l * 2 + r
+        return (n_Inputs & 0x03) == (l * 2 + r)
     }
 
 
