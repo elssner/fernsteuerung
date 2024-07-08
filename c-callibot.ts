@@ -17,19 +17,9 @@ namespace cb2 { // c-callibot.ts
     export let n_EncoderFaktor = 31.25 // Impulse = 31.25 * Fahrstrecke in cm
 
 
-    // ========== group="Reset"
-
-    //% group="Reset"
-    //% block="Reset Motoren, LEDs" weight=4
-    export function writeReset() {
-        i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_OUTPUTS]))
-        // n_c2MotorPower = false
-    }
-
-
 
     //% group="Motor"
-    //% block="Motor (1 ↓ 128 ↑ 255) %x1_128_255 Servo (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
+    //% block="fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
     //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 
     //% y1_16_31.min=1 y1_16_31.max=31 y1_16_31.defl=16
     //% prozent.min=10 prozent.max=90 prozent.defl=50
@@ -49,27 +39,27 @@ namespace cb2 { // c-callibot.ts
             setMotorBuffer[3] = ~(x1_128_255 << 1) // * 2 und bitweise NOT // 0=FF, 1=FD, 126=03, 127=01,
             setMotorBuffer[4] = 1
             setMotorBuffer[5] = setMotorBuffer[3]
-     }
+        }
 
         // fahren (beide Motoren gleich)
-     /*    if (radio.between(x1_128_255, 129, 255)) { // vorwärts
-            setMotorBuffer[2] = 0
-            setMotorBuffer[3] = radio.mapInt32(x1_128_255, 128, 255, 0, 255)
-            setMotorBuffer[4] = 0
-            setMotorBuffer[5] = setMotorBuffer[3]
-        }
-        else if (radio.between(x1_128_255, 1, 127)) { // rückwärts
-            setMotorBuffer[2] = 1
-            setMotorBuffer[3] = radio.mapInt32(x1_128_255, 1, 128, 255, 0)
-            setMotorBuffer[4] = 1
-            setMotorBuffer[5] = setMotorBuffer[3]
-        }
-        else { // wenn x fahren 0, 128 oder mehr als 8 Bit
-            setMotorBuffer[2] = 0 // Motor 1 Richtung 0:vorwärts, 1:rückwärts
-            setMotorBuffer[3] = 0 // Motor 1 PWM (0..255)
-            setMotorBuffer[4] = 0 // Motor 2 Richtung 0:vorwärts, 1:rückwärts
-            setMotorBuffer[5] = 0 // Motor 2 PWM (0..255)
-        } */
+        /*    if (radio.between(x1_128_255, 129, 255)) { // vorwärts
+               setMotorBuffer[2] = 0
+               setMotorBuffer[3] = radio.mapInt32(x1_128_255, 128, 255, 0, 255)
+               setMotorBuffer[4] = 0
+               setMotorBuffer[5] = setMotorBuffer[3]
+           }
+           else if (radio.between(x1_128_255, 1, 127)) { // rückwärts
+               setMotorBuffer[2] = 1
+               setMotorBuffer[3] = radio.mapInt32(x1_128_255, 1, 128, 255, 0)
+               setMotorBuffer[4] = 1
+               setMotorBuffer[5] = setMotorBuffer[3]
+           }
+           else { // wenn x fahren 0, 128 oder mehr als 8 Bit
+               setMotorBuffer[2] = 0 // Motor 1 Richtung 0:vorwärts, 1:rückwärts
+               setMotorBuffer[3] = 0 // Motor 1 PWM (0..255)
+               setMotorBuffer[4] = 0 // Motor 2 Richtung 0:vorwärts, 1:rückwärts
+               setMotorBuffer[5] = 0 // Motor 2 PWM (0..255)
+           } */
 
         // lenken (ein Motor wird langsamer)
         if (radio.between(y1_16_31, 1, 15)) { // links
@@ -87,7 +77,7 @@ namespace cb2 { // c-callibot.ts
     }
 
     //% group="Motor"
-    //% block="Motoren (1 ↓ 128 ↑ 255) M1 %m1_1_128_255 M2 %m2_1_128_255" weight=1
+    //% block="Motoren (1 ↓ 128 ↑ 255) links %m1_1_128_255 rechts %m2_1_128_255" weight=1
     //% m1_1_128_255.min=0 m1_1_128_255.max=255 m1_1_128_255.defl=0
     //% m2_1_128_255.min=0 m2_1_128_255.max=255 m2_1_128_255.defl=0
     export function writeMotoren128(m1_1_128_255: number, m2_1_128_255: number) {
@@ -131,6 +121,83 @@ namespace cb2 { // c-callibot.ts
         if (setMotorBuffer)
             i2cWriteBuffer(setMotorBuffer)
 
+    }
+
+
+
+
+
+    // ========== group="LED"
+
+    let a_LEDs = [0, 0, 0, 0, 0, 0, 0, 0, 0] // LED Wert in Register 0x03 merken zum blinken
+
+
+    //% group="LED"
+    //% block="RGB LED %color || ↖ %lv ↙ %lh ↘ %rh ↗ %rv blinken %blink" weight=7
+    //% color.shadow="callibot_colorPicker"
+    //% lv.shadow="toggleYesNo" lh.shadow="toggleYesNo" rh.shadow="toggleYesNo" rv.shadow="toggleYesNo"
+    //% blink.shadow="toggleYesNo"
+    //% inlineInputMode=inline expandableArgumentMode="toggle"
+    export function writeRgbLed(color: number, lv = true, lh = true, rh = true, rv = true, blink = false) {
+        //basic.showString(lv.toString())
+        let buffer = Buffer.create(5)
+        buffer[0] = eRegister.SET_LED
+        buffer.setNumber(NumberFormat.UInt32BE, 1, color) // [1]=0 [2]=r [3]=g [4]=b
+        buffer[2] = buffer[2] >>> 4 // durch 16, gültige rgb Werte für callibot: 0-15
+        buffer[3] = buffer[3] >>> 4
+        buffer[4] = buffer[4] >>> 4
+
+        if (lv) writeRgbLedBlink(eRgbLed.lv, buffer, blink)
+        if (lh) writeRgbLedBlink(eRgbLed.lh, buffer, blink)
+        if (rh) writeRgbLedBlink(eRgbLed.rh, buffer, blink)
+        if (rv) writeRgbLedBlink(eRgbLed.rv, buffer, blink)
+    }
+
+    // blinken
+    function writeRgbLedBlink(pRgbLed: eRgbLed, buffer: Buffer, blink: boolean) {
+        if (blink && a_LEDs[pRgbLed] == buffer.getNumber(NumberFormat.UInt32BE, 1))
+            buffer.setNumber(NumberFormat.UInt32BE, 1, 0) // alle Farben aus
+        a_LEDs[pRgbLed] = buffer.getNumber(NumberFormat.UInt32BE, 1)
+        buffer[1] = pRgbLed // Led-Index 1,2,3,4 für RGB
+        i2cWriteBuffer(buffer)
+        basic.pause(10) // ms
+    }
+
+
+    //% group="LED"
+    //% block="LED %led %onoff || blinken %blink Helligkeit %pwm" weight=2
+    //% onoff.shadow="toggleOnOff"
+    //% blink.shadow="toggleYesNo"
+    //% pwm.min=1 pwm.max=16 pwm.defl=16
+    //% inlineInputMode=inline 
+    export function writeLed(pLed: eLed, on: boolean, blink = false, pwm?: number) {
+        if (!on)
+            pwm = 0 // LED aus schalten
+        else if (!radio.between(pwm, 0, 16))
+            pwm = 16 // bei ungültigen Werten max. Helligkeit
+
+        if (pLed == eLed.redb) {
+            writeLed(eLed.redl, on, blink, pwm) // 2 mal rekursiv aufrufen für beide rote LED
+            writeLed(eLed.redr, on, blink, pwm)
+        }
+        else {
+            if (blink && a_LEDs[pLed] == pwm)
+                pwm = 0
+            i2cWriteBuffer(Buffer.fromArray([eRegister.SET_LED, pLed, pwm]))
+            a_LEDs[pLed] = pwm
+        }
+    }
+
+
+
+
+    // ========== group="Reset"
+
+    //% group="Reset"
+    //% block="Reset Motoren, LEDs" weight=4
+    export function writeReset() {
+        i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_OUTPUTS]))
+        // n_c2MotorPower = false
     }
 
 
@@ -201,6 +268,14 @@ namespace cb2 { // c-callibot.ts
 
 
 
+    //% group="Calli:bot Version" subcategory="Sensoren"
+    //% block="Call:bot Typ [1]" weight=3
+    export function readVersion() { // [1]=4:CB2(Gymnasium) =3:CB2E (=2:soll CB2 sein)
+        i2cWriteBuffer(Buffer.fromArray([eRegister.GET_FW_VERSION]))
+        return i2cReadBuffer(10).toArray(NumberFormat.UInt8LE)
+    }
+
+
 
 
     // ========== I²C nur diese Datei Callibot
@@ -222,6 +297,59 @@ namespace cb2 { // c-callibot.ts
             return Buffer.create(size)
     }
 
+
+
+     enum eRegister {
+        // Write
+        RESET_OUTPUTS = 0x01, // Alle Ausgänge abschalten (Motor, LEDs, Servo)
+        SET_MOTOR = 0x02, // Bit0: 1=Motor 1 setzen;  Bit1: 1=Motor 2 setzen
+        /*
+    Bit0: 1=Motor 1 setzen;  Bit1: 1=Motor 2 setzen
+    wenn beide auf 11, dann Motor2 Daten nachfolgend senden (also 6 Bytes) Richtung (0:vorwärts, 1:rückwärts) von Motor 1 oder 2
+    PWM (0..255) Motor 1 oder 2
+    wenn in [1] Motor 1 & Motor 2 aktiviert
+    Richtung (0:vorwärts, 1:rückwärts) von Motor 2
+    PWM rechts (0..255) von Motor 2
+        */
+        SET_LED = 0x03, // Write: LED´s
+        RESET_ENCODER = 0x05, // 2 Byte [0]=5 [1]= 1=links, 2=rechts, 3=beide
+        // Read
+        GET_INPUTS = 0x80, // Digitaleingänge (1 Byte 6 Bit)
+        GET_INPUT_US = 0x81, // Ultraschallsensor (3 Byte 16 Bit)
+        GET_FW_VERSION = 0x82, // Typ & Firmwareversion & Seriennummer (10 Byte)
+        GET_POWER = 0x83, // Versorgungsspannung [ab CalliBot2E] (3 Byte 16 Bit)
+        GET_LINE_SEN_VALUE = 0x84, // Spursensoren links / rechts Werte (5 Byte 2x16 Bit)
+        GET_ENCODER_VALUE = 0x91 // 9 Byte links[1-4] rechts [5-8] 2* INT32BE mit Vorzeichen
+    }
+
+
+    export enum eLed {
+        //% block="linke rote LED"
+        redl = 5,
+        //% block="rechte rote LED"
+        redr = 6,
+        //% block="beide rote LED"
+        redb = 16,
+        //% block="Spursucher LED links"
+        spurl = 7,
+        //% block="Spursucher LED rechts"
+        spurr = 8,
+        //% block="Power-ON LED"
+        poweron = 0
+    }
+
+    export enum eRgbLed {
+        //% block="alle (4)"
+        alle = 0,
+        //% block="links vorne"
+        lv = 1,
+        //% block="links hinten"
+        lh = 2,
+        //% block="rechts hinten"
+        rh = 3,
+        //% block="rechts vorne"
+        rv = 4
+    }
 
 
     export enum eINPUTS {
