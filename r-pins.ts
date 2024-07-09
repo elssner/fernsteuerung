@@ -147,25 +147,31 @@ namespace receiver { // r-pins.ts
     // ==========
 
 
-    //% group="Ultraschall (alle Sensoren)" subcategory="Pins"
+    //% group="Ultraschall (Pin und Qwiic)" subcategory="Pins"
     //% block="Entfernung in cm" weight=6
     export function selectEntfernung() {
-        switch (n_Hardware) {
-            case eHardware.v3: {
-                if (readQwiicUltrasonic()) // i2c einlesen
-                    return getQwiicUltrasonic()
-                else
-                    return 0
-            }
-            case eHardware.car4: {
-                return groveUltraschall_cm()
-            }
-            //case eHardware.calli2bot: {
-            //    return 0
-            //}
-            default:
+        if (n_Hardware == eHardware.v3)
+            if (readQwiicUltrasonic()) // i2c einlesen, false wenn Modul nicht angesteckt
+                return getQwiicUltrasonic()
+            else
                 return 0
-        }
+        else if (n_Hardware == eHardware.car4)
+            return pinGroveUltraschall_cm() // in r-advanced.ts
+        else
+            return 0
+        /* 
+               switch (n_Hardware) {
+                   case eHardware.v3: {
+                       if (readQwiicUltrasonic()) // i2c einlesen, false wenn Modul nicht angesteckt
+                           return getQwiicUltrasonic()
+                       else
+                           return 0
+                   }
+                   case eHardware.car4: 
+                       return pinGroveUltraschall_cm() // in r-advanced.ts
+                   default:
+                       return 0
+               } */
     }
 
     export enum eVergleich {
@@ -175,9 +181,9 @@ namespace receiver { // r-pins.ts
         lt
     }
 
-    //% group="Ultraschall (alle Sensoren)" subcategory="Pins"
+    //% group="Ultraschall (Pin und Qwiic)" subcategory="Pins"
     //% block="Entfernung %pVergleich %cm cm" weight=5
-    //% cm.shadow=radio_getEntfernung
+    //% cm.shadow=receiver_getEntfernung
     export function entfernung_vergleich(pVergleich: eVergleich, cm: number) { // cm.min=5 cm.max=50 cm.defl=20
         switch (pVergleich) {
             case eVergleich.gt:
@@ -187,6 +193,15 @@ namespace receiver { // r-pins.ts
             default:
                 return false
         }
+    }
+
+    //% blockId=receiver_getEntfernung blockHidden=true
+    //% block="%buffer Entfernung in cm" weight=3
+    //% buffer.shadow="radio_receivedBuffer19"
+    export function receiver_getEntfernung(buffer: Buffer) {
+        return radio.getEntfernung(buffer)
+        //  return a_Entfernung[buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] >>> 6]
+        // return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
 
 }

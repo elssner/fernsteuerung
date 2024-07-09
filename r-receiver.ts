@@ -126,7 +126,7 @@ namespace receiver { // r-receiver.ts
 
 
     //% group="Motor 0 1 (Calliope v3)"
-    //% block="Motor v3 %motor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=6
+    //% block="Motor %motor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=6
     //% speed.min=0 speed.max=255 speed.defl=128
     export function dualMotor128(motor: eDualMotor, speed: number) { // sendet nur an MotorChip, wenn der Wert sich ändert
         //  if (n_MotorPower) {

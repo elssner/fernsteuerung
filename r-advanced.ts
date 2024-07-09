@@ -34,7 +34,7 @@ namespace receiver { // r-advanced.ts
      */
     //% group="Ultraschall (Calliope v1: C8)" advanced=true
     //% block="Ultraschall Entfernung in cm" weight=8
-    export function groveUltraschall_cm(): number {
+    export function pinGroveUltraschall_cm(): number {
         pins.digitalWritePin(c_PinUltraschall, 0);
         control.waitMicros(2);
         pins.digitalWritePin(c_PinUltraschall, 1);
