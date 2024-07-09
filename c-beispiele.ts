@@ -92,7 +92,7 @@ namespace cb2 { // c-beispiele.ts
     //% stop.min=0 stop.max=50 stop.defl=10
     export function seite9Linienfolger(pwm1: number, pwm2: number, stop: number) {
         //this.i2cReadINPUT_US()
-        if (readUltraschallAbstand(eDist.cm) < stop) { //  if (this.bitINPUT_US(eVergleich.lt, stop)) {
+        if (readUltraschallAbstand() < stop) { //  if (this.bitINPUT_US(eVergleich.lt, stop)) {
             setMotoren0Prozent(0, 0)
             return false
         } else {

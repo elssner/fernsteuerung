@@ -159,9 +159,18 @@ namespace cb2 { // c-callibot.ts 005F7F
     let a_LEDs = [0, 0, 0, 0, 0, 0, 0, 0, 0] // LED Wert in Register 0x03 merken zum blinken
 
 
+    //% blockId=cb2_colorPicker block="%value"
+    //% blockHidden=true
+    //% shim=TD_ID
+    //% value.fieldEditor="colornumber" value.fieldOptions.decompileLiterals=true
+    //% value.fieldOptions.colours='["#000000","#0000ff","#00ff00","#00ffdc","#ff0000","#a300ff","#ffff00","#ffffff"]'
+    //% value.fieldOptions.columns=4 value.fieldOptions.className='rgbColorPicker'  
+    export function cb2_colorPicker(value: number) { return value }
+
+
     //% group="LED"
     //% block="RGB LED %color || ↖ %lv ↙ %lh ↘ %rh ↗ %rv blinken %blink" weight=7
-    //% color.shadow="callibot_colorPicker"
+    //% color.shadow="cb2_colorPicker"
     //% lv.shadow="toggleYesNo" lh.shadow="toggleYesNo" rh.shadow="toggleYesNo" rv.shadow="toggleYesNo"
     //% blink.shadow="toggleYesNo"
     //% inlineInputMode=inline expandableArgumentMode="toggle"
@@ -274,17 +283,17 @@ namespace cb2 { // c-callibot.ts 005F7F
     }
 
 
-    export enum eDist { cm, mm }
+  //  export enum eDist { cm, mm }
 
     //% group="Ultraschall Sensor" subcategory="Sensoren"
-    //% block="Ultraschall Abstand in %e" weight=4
-    export function readUltraschallAbstand(e: eDist) {
+    //% block="Abstand cm" weight=4
+    export function readUltraschallAbstand() {
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUT_US]))
-        let mm = i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1) // 16 Bit (mm)
-        if (e == eDist.cm)
-            return Math.idiv(mm, 10)
-        else
-            return mm
+       return i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1)/10 // 16 Bit (mm)
+        //if (e == eDist.cm)
+        //    return Math.idiv(mm, 10)
+        //else
+       //     return mm
     }
 
 
@@ -406,7 +415,7 @@ namespace cb2 { // c-callibot.ts 005F7F
         poweron = 0
     }
 
-    export enum eRgbLed {
+    enum eRgbLed {
         //% block="alle (4)"
         alle = 0,
         //% block="links vorne"
