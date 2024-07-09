@@ -3,26 +3,36 @@ namespace receiver { // r-qwiicmotor.ts
 
 
     // I²C Adressen Qwiic
-    let a_i2cQwiicMotor = [0x5D, 0x5E] // SparkFun Qwiic Motor Driver // Index eMotorChip
+    let a_i2cQwiicMotor = [0x5D, 0x5E] // SparkFun Qwiic Motor Driver // Index eQwiicMotorChip
 
     // const c_MotorStop = 128
 
-    let a_QwiicMotorChipConnected = [false, false] // Index eMotorChip
-    let a_QwiicMotorChipReady = [false, false] // Index eMotorChip
-    let a_QwiicMotorChipPower = [false, false] // Index eMotorChip
-    export let a_QwiicMotorSpeed = [c_MotorStop, c_MotorStop, c_MotorStop, c_MotorStop] // Index eMotor
+    let a_QwiicMotorChipConnected = [false, false] // Index eQwiicMotorChip
+    let a_QwiicMotorChipReady = [false, false] // Index eQwiicMotorChip
+    let a_QwiicMotorChipPower = [false, false] // Index eQwiicMotorChip
+    export let a_QwiicMotorSpeed = [c_MotorStop, c_MotorStop, c_MotorStop, c_MotorStop] // Index eQwiicMotor
 
 
     // I²C Register Motor Chip
-    const ID = 0x01 // Reports hard-coded ID byte of 0xA9
-    const MA_DRIVE = 0x20 // 0x00..0xFF Default 0x80
-    const MB_DRIVE = 0x21
-    const DRIVER_ENABLE = 0x70 //  0x01: Enable, 0x00: Disable this driver
-    const FSAFE_CTRL = 0x1F // Use to configure what happens when failsafe occurs.
-    const FSAFE_TIME = 0x76 // This register sets the watchdog timeout time, from 10 ms to 2.55 seconds.
-    const STATUS_1 = 0x77 // This register uses bits to show status. Currently, only b0 is used.
-    const CONTROL_1 = 0x78 // 0x01: Reset the processor now.
-
+    enum eQwiicMotorI2CRegister {
+        ID = 0x01,// Reports hard-coded ID byte of 0xA9
+        MA_DRIVE = 0x20,// 0x00..0xFF Default 0x80
+        MB_DRIVE = 0x21,
+        DRIVER_ENABLE = 0x70, //  0x01: Enable, 0x00: Disable this driver
+        FSAFE_CTRL = 0x1F, // Use to configure what happens when failsafe occurs.
+        FSAFE_TIME = 0x76,// This register sets the watchdog timeout time, from 10 ms to 2.55 seconds.
+        STATUS_1 = 0x77,// This register uses bits to show status. Currently, only b0 is used.
+        CONTROL_1 = 0x78 // 0x01: Reset the processor now.
+    }
+    /*    const ID = 0x01 // Reports hard-coded ID byte of 0xA9
+       const MA_DRIVE = 0x20 // 0x00..0xFF Default 0x80
+       const MB_DRIVE = 0x21
+       const DRIVER_ENABLE = 0x70 //  0x01: Enable, 0x00: Disable this driver
+       const FSAFE_CTRL = 0x1F // Use to configure what happens when failsafe occurs.
+       const FSAFE_TIME = 0x76 // This register sets the watchdog timeout time, from 10 ms to 2.55 seconds.
+       const STATUS_1 = 0x77 // This register uses bits to show status. Currently, only b0 is used.
+       const CONTROL_1 = 0x78 // 0x01: Reset the processor now.
+    */
 
     //  let n_MotorReady = false
     //  let n_MotorON = false       // aktueller Wert im Chip
@@ -57,15 +67,6 @@ namespace receiver { // r-qwiicmotor.ts
         rgbLEDs(pMotorChip == eQwiicMotorChip.cd ? eRGBled.c : eRGBled.b, color, false)
     }
 
-    // für Encoder r-pins-encoder.ts
-    /* export function qEncoderMotorRichtung(pMotor: eMotor) {
-        return a_MotorSpeed[pMotor] > c_MotorStop // true: vorwärts
-    }
-    export function qEncoderMotorStop(pMotor: eMotor) {
-        qMotor255(pMotor, c_MotorStop)
-    } */
-
-
     export function qwiicMotorReset() { // aufgerufen beim Start
 
         a_QwiicMotorChipReady = [false, false]
@@ -78,20 +79,18 @@ namespace receiver { // r-qwiicmotor.ts
 
         a_QwiicMotorChipConnected[eQwiicMotorChip.cd] = qwiicMotorChipReset(eQwiicMotorChip.cd)
 
-        // return a && c
     }
-
 
     function qwiicMotorChipReset(pMotorChip: eQwiicMotorChip) {
         // Test Start, LED rot
         qwiicMotorRGBLEDs(pMotorChip, eQwiicMotorRGBColor.notconnected_red)
         //rgbLEDon(a_RGBLed[pMotorChip], Colors.Red, true)
 
-        if (i2cWriteBuffer(pMotorChip, [ID], true)) { // write Register Nummer ID
+        if (i2cWriteBuffer(pMotorChip, [eQwiicMotorI2CRegister.ID], true)) { // write Register Nummer ID
 
             if (i2cReadBuffer(pMotorChip, 1)[0] == 0xA9) { // Reports hard-coded ID byte of 0xA9
 
-                if (i2cWriteBuffer(pMotorChip, [CONTROL_1, 1])) { // Reset the processor now.
+                if (i2cWriteBuffer(pMotorChip, [eQwiicMotorI2CRegister.CONTROL_1, 1])) { // Reset the processor now.
                     // true 
                     qwiicMotorRGBLEDs(pMotorChip, eQwiicMotorRGBColor.notready_orange)
                     //rgbLEDon(a_RGBLed[pMotorChip], Colors.Orange, true)
@@ -119,7 +118,7 @@ namespace receiver { // r-qwiicmotor.ts
             return true
         else if (a_QwiicMotorChipConnected[pMotorChip]) {
             // nur wenn Modul Connected Status Ready testen
-            if (i2cWriteBuffer(pMotorChip, [STATUS_1])) {
+            if (i2cWriteBuffer(pMotorChip, [eQwiicMotorI2CRegister.STATUS_1])) {
 
                 if ((i2cReadBuffer(pMotorChip, 1)[0] & 0x01) == 1) {
                     a_QwiicMotorChipReady[pMotorChip] = true
@@ -156,7 +155,7 @@ namespace receiver { // r-qwiicmotor.ts
     export function qwiicMotorChipPower(pMotorChip: eQwiicMotorChip, pON: boolean) {
         if (qwiicMotorChipReady(pMotorChip) && pON !== a_QwiicMotorChipPower[pMotorChip]) {
             a_QwiicMotorChipPower[pMotorChip] = pON
-            if (i2cWriteBuffer(pMotorChip, [DRIVER_ENABLE, a_QwiicMotorChipPower[pMotorChip] ? 0x01 : 0x00])) {
+            if (i2cWriteBuffer(pMotorChip, [eQwiicMotorI2CRegister.DRIVER_ENABLE, a_QwiicMotorChipPower[pMotorChip] ? 0x01 : 0x00])) {
                 // true Motor ON blau, OFF Violet
                 qwiicMotorRGBLEDs(pMotorChip, a_QwiicMotorChipPower[pMotorChip] ? eQwiicMotorRGBColor.poweron_blue : eQwiicMotorRGBColor.poweroff_violet)
                 // rgbLEDon(a_RGBLed[pMotorChip], a_MotorChipPower[pMotorChip] ? Colors.Blue : Colors.Violet, true)
@@ -187,9 +186,9 @@ namespace receiver { // r-qwiicmotor.ts
                 if (qwiicMotorChipReady(chip) && a_QwiicMotorChipPower[chip]) {
 
                     if (pMotor == eQwiicMotor.ma || pMotor == eQwiicMotor.mc)
-                        e = i2cWriteBuffer(chip, [MA_DRIVE, speed])
+                        e = i2cWriteBuffer(chip, [eQwiicMotorI2CRegister.MA_DRIVE, speed])
                     else if (pMotor == eQwiicMotor.mb || pMotor == eQwiicMotor.md)
-                        e = i2cWriteBuffer(chip, [MB_DRIVE, speed])
+                        e = i2cWriteBuffer(chip, [eQwiicMotorI2CRegister.MB_DRIVE, speed])
 
                     if (!e)
                         qwiicMotorRGBLEDs(chip, eQwiicMotorRGBColor.notready_orange)

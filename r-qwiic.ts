@@ -19,7 +19,7 @@ SparkFun Qwiic Ultrasonic Distance Sensor (HC-SR04)
     let n_QwiicRelayConnected = true // Qwiic Modul ist angesteckt
 
     //% group="SparkFun Qwiic Single Relay (I²C: 0x19)" subcategory="Qwiic"
-    //% block="Q Kran Magnet %pOn"
+    //% block="Q Relay (Kran Elektromagnet) %pOn"
     //% pOn.shadow="toggleOnOff"
     export function writeQwiicRelay(pOn: boolean) {
         //  const SINGLE_OFF = 0x00
