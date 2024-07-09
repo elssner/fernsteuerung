@@ -8,7 +8,7 @@ namespace receiver { // r-receiver.ts
         //% block="CaR 4 (Calliope v1)"
         car4 = 1   // Index in Arrays
     }
-    //% block="Calli:Bot 2 (v1 v2 v3)"
+    //block="Calli:Bot 2 (v1 v2 v3)"
     //calli2bot = 2,
 
     export let n_Hardware = eHardware.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
@@ -89,7 +89,7 @@ namespace receiver { // r-receiver.ts
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
         if (encoder)
-            startEncoder(radDmm)
+            encoderRegisterEvent(radDmm)
 
         radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
 

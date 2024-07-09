@@ -36,6 +36,14 @@ namespace cb2 { // c-callibot.ts
     }
 
 
+    //% group="calliope-net.github.io/fernsteuerung"
+    //% block="Flash speichern" weight=7
+    export function storageBufferGet() {
+        return radio.storageBufferGet()
+    }
+
+
+
     //% group="Motor"
     //% block="fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
     //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 

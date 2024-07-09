@@ -10,7 +10,7 @@ namespace receiver { // r-fahrstrecke.ts
 
         if (n_Hardware == eHardware.v3) {
 
-            encoder_start(strecke, true)
+            encoderStartStrecke(strecke, true)
             servo_set16(servo)
             v3Motor255(eMotor01.M0, motor) // Fahrmotor an Calliope v3 Motor Pins
 
@@ -20,7 +20,7 @@ namespace receiver { // r-fahrstrecke.ts
         }
         else if (n_Hardware == eHardware.car4) {
 
-            encoder_start(strecke, true)
+            encoderStartStrecke(strecke, true)
             servo_set16(servo)
             qMotor255(eMotor.ma, motor) // Fahrmotor am Qwiic Modul
 

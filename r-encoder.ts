@@ -8,7 +8,7 @@ namespace receiver { // r-pins.ts
 
 
     // aufgerufen von receiver.beimStart
-    export function startEncoder(radDmm: number) { // radDmm: Rad Durchmesser in Millimeter
+    export function encoderRegisterEvent(radDmm: number) { // radDmm: Rad Durchmesser in Millimeter
         if (n_Hardware == eHardware.v3) {
 
             if (!radDmm)
@@ -52,7 +52,7 @@ namespace receiver { // r-pins.ts
             // ========== Event Handler registrieren
             pins.onPulsed(a_PinEncoder[n_Hardware], PulseValue.Low, function () {
 
-                if (n_v3Motor0Speed > c_MotorStop)
+                if (a_qMotorSpeed[eMotor.ma] > c_MotorStop)
                     n_EncoderCounter++ // vorwärts
                 else
                     n_EncoderCounter-- // rückwärts
@@ -144,23 +144,15 @@ namespace receiver { // r-pins.ts
     //% group="Encoder" subcategory="Encodermotor"
     //% block="Encodermotor starten (1 ↓ 128 ↑ 255) %speed" weight=9
     //% speed.min=0 speed.max=255 speed.defl=128
-    /* export function selectEncoderMotor_v3_car4(speed: number) {
-        switch (n_Hardware) {
-            case eHardware.v3: { // Fahrmotor an Calliope v3 Pins
-                v3Motor255(eMotor01.M0, speed)
-                break
-            }
-            case eHardware.car4: { // Fahrmotor am Qwiic Modul
-                qMotor255(eMotor.ma, speed)
-                break
-            }
-            //case eHardware.calli2bot: { // Fahrmotor Calli:Bot I²C
-            //    c2Motor255(speed)
-            //    break
-            //}
-        }
+    export function encoderSelectMotor(speed: number) {
+
+        if (n_Hardware == eHardware.v3) // Fahrmotor an Calliope v3 Pins
+            v3Motor255(eMotor01.M0, speed)
+
+        else if (n_Hardware == eHardware.car4) // Fahrmotor am Qwiic Modul
+            qMotor255(eMotor.ma, speed)
     }
- */
+
 
 
     // ========== group="Encoder" subcategory="Encodermotor"
@@ -194,7 +186,7 @@ namespace receiver { // r-pins.ts
     //% block="Encoder starten (Stop Ereignis bei %streckecm cm) || AutoStop %autostop" weight=8
     //% streckecm.min=1 streckecm.max=255 streckecm.defl=20
     //% autostop.shadow="toggleYesNo" autostop.defl=1
-    export function encoder_start(streckecm: number, autostop = true) {
+    export function encoderStartStrecke(streckecm: number, autostop = true) {
         n_EncoderCounter = 0 // Impuls Zähler zurück setzen
 
         if (streckecm > 0) {
@@ -213,10 +205,10 @@ namespace receiver { // r-pins.ts
 
     //% group="... mehr" subcategory="Encodermotor"
     //% block="Fahrstrecke %pVergleich %cm cm" weight=7
-    export function encoder_vergleich(pVergleich: eVergleich, cm: number) {
-        switch (pVergleich) {
-            case eVergleich.gt: return encoder_get(eEncoderEinheit.cm) >= cm
-            case eVergleich.lt: return encoder_get(eEncoderEinheit.cm) <= cm
+    export function encoderVergleich(e: eVergleich, cm: number) {
+        switch (e) {
+            case eVergleich.gt: return encoderCounter(eEncoderEinheit.cm) >= cm
+            case eVergleich.lt: return encoderCounter(eEncoderEinheit.cm) <= cm
             default: return false
         }
     }
@@ -224,8 +216,8 @@ namespace receiver { // r-pins.ts
     //% group="... mehr" subcategory="Encodermotor"
     //% block="warte bis Strecke %pVergleich %cm cm || Pause %ms ms" weight=6
     //% cm.defl=15 ms.defl=20
-    export function encoder_warten(pVergleich: eVergleich, cm: number, ms?: number) {
-        while (encoder_vergleich(pVergleich, cm)) {
+    export function encoderPause(pVergleich: eVergleich, cm: number, ms?: number) {
+        while (encoderVergleich(pVergleich, cm)) {
             basic.pause(ms)
         }
     }
@@ -236,7 +228,7 @@ namespace receiver { // r-pins.ts
 
     //% group="... mehr" subcategory="Encodermotor"
     //% block="Encoder %pEncoderEinheit" weight=4
-    export function encoder_get(pEncoderEinheit: eEncoderEinheit) {
+    export function encoderCounter(pEncoderEinheit: eEncoderEinheit) {
         if (pEncoderEinheit == eEncoderEinheit.cm)
             return Math.round(n_EncoderCounter / n_EncoderFaktor)
         else
