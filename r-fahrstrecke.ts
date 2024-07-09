@@ -11,8 +11,8 @@ namespace receiver { // r-fahrstrecke.ts
         if (n_Hardware == eHardware.v3) {
 
             encoderStartStrecke(strecke, true)
-            servo_set16(servo)
-            dualMotor128(eMotor01.M0, motor) // Fahrmotor an Calliope v3 Motor Pins
+            pinServo16(servo)
+            dualMotor128(eDualMotor.M0, motor) // Fahrmotor an Calliope v3 Motor Pins
 
             while (n_EncoderAutoStop) {
                 basic.pause(200) // Pause kann größer sein, weil Stop schon im Event erfolgt ist
@@ -21,7 +21,7 @@ namespace receiver { // r-fahrstrecke.ts
         else if (n_Hardware == eHardware.car4) {
 
             encoderStartStrecke(strecke, true)
-            servo_set16(servo)
+            pinServo16(servo)
             qwiicMotor128(eQwiicMotor.ma, motor) // Fahrmotor am Qwiic Modul
 
             while (n_EncoderAutoStop) {

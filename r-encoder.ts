@@ -18,7 +18,7 @@ namespace receiver { // r-pins.ts
             // ========== Event Handler registrieren
             pins.onPulsed(a_PinEncoder[n_Hardware], PulseValue.Low, function () {
 
-                if (n_dualMotor0Speed > c_MotorStop)
+                if (a_DualMotorSpeed[eDualMotor.M0] > c_DualMotorStop)
                     n_EncoderCounter++ // vorwärts
                 else
                     n_EncoderCounter-- // rückwärts
@@ -28,7 +28,7 @@ namespace receiver { // r-pins.ts
 
                     if (n_EncoderAutoStop) {
 
-                        dualMotor128(eMotor01.M0, c_MotorStop)
+                        dualMotor128(eDualMotor.M0, c_DualMotorStop)
                         n_EncoderAutoStop = false
                     }
 
@@ -52,7 +52,7 @@ namespace receiver { // r-pins.ts
             // ========== Event Handler registrieren
             pins.onPulsed(a_PinEncoder[n_Hardware], PulseValue.Low, function () {
 
-                if (a_QwiicMotorSpeed[eQwiicMotor.ma] > c_MotorStop)
+                if (a_QwiicMotorSpeed[eQwiicMotor.ma] > c_QwiicMotorStop)
                     n_EncoderCounter++ // vorwärts
                 else
                     n_EncoderCounter-- // rückwärts
@@ -62,7 +62,7 @@ namespace receiver { // r-pins.ts
 
                     if (n_EncoderAutoStop) {
 
-                        qwiicMotor128(eQwiicMotor.ma, c_MotorStop) // Qwiic
+                        qwiicMotor128(eQwiicMotor.ma, c_QwiicMotorStop) // Qwiic
                         n_EncoderAutoStop = false
                     }
 
@@ -166,7 +166,7 @@ namespace receiver { // r-pins.ts
     export function encoderSelectMotor(speed: number) {
 
         if (n_Hardware == eHardware.v3) // Fahrmotor an Calliope v3 Pins
-            dualMotor128(eMotor01.M0, speed)
+            dualMotor128(eDualMotor.M0, speed)
 
         else if (n_Hardware == eHardware.car4) // Fahrmotor am Qwiic Modul
             qwiicMotor128(eQwiicMotor.ma, speed)

@@ -5,12 +5,13 @@ namespace receiver { // r-qwiicmotor.ts
     // I²C Adressen Qwiic
     let a_i2cQwiicMotor = [0x5D, 0x5E] // SparkFun Qwiic Motor Driver // Index eQwiicMotorChip
 
-    // const c_MotorStop = 128
+    export const c_QwiicMotorStop = 128
+
 
     let a_QwiicMotorChipConnected = [false, false] // Index eQwiicMotorChip
     let a_QwiicMotorChipReady = [false, false] // Index eQwiicMotorChip
     let a_QwiicMotorChipPower = [false, false] // Index eQwiicMotorChip
-    export let a_QwiicMotorSpeed = [c_MotorStop, c_MotorStop, c_MotorStop, c_MotorStop] // Index eQwiicMotor
+    export let a_QwiicMotorSpeed = [c_QwiicMotorStop, c_QwiicMotorStop, c_QwiicMotorStop, c_QwiicMotorStop] // Index eQwiicMotor
 
 
     // I²C Register Motor Chip
@@ -197,7 +198,7 @@ namespace receiver { // r-qwiicmotor.ts
             }
         }
         else
-            qwiicMotor128(pMotor, c_MotorStop)
+            qwiicMotor128(pMotor, c_QwiicMotorStop)
     }
 
 

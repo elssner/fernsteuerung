@@ -45,12 +45,14 @@ namespace receiver { // r-receiver.ts
     //const c_pinServo = c_pinServov3// <AnalogPin><number>DigitalPin.C8
     //const c_pinEncoder = DigitalPin.P2        // 5V fischertechnik 186175 Encodermotor Competition
 
-    export enum eMotor01 { M0, M1, M0_M1 } // muss mit v3 identisch sein
+    export enum eDualMotor { M0, M1, M0_M1 } // muss mit v3 identisch sein
 
-    export const c_MotorStop = 128
+    export const c_DualMotorStop = 128
+    export let a_DualMotorSpeed = [c_DualMotorStop, c_DualMotorStop]
 
-    export let n_dualMotor0Speed = c_MotorStop  // aktueller Wert im Chip
-    let n_dualMotor1Speed = c_MotorStop  // aktueller Wert im Chip
+    //  export let n_dualMotor0Speed = c_DualMotorStop  // aktueller Wert im Chip
+    //  let n_dualMotor1Speed = c_DualMotorStop  // aktueller Wert im Chip
+
 
     export const c_Servo_geradeaus = 90
     let n_ServoGeradeaus = c_Servo_geradeaus // Winkel für geradeaus wird beim Start eingestellt
@@ -126,7 +128,7 @@ namespace receiver { // r-receiver.ts
     //% group="Motor 0 1 (Calliope v3)"
     //% block="Motor v3 %motor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=6
     //% speed.min=0 speed.max=255 speed.defl=128
-    export function dualMotor128(motor: eMotor01, speed: number) { // sendet nur an MotorChip, wenn der Wert sich ändert
+    export function dualMotor128(motor: eDualMotor, speed: number) { // sendet nur an MotorChip, wenn der Wert sich ändert
         //  if (n_MotorPower) {
         if (radio.between(speed, 1, 255)) {
             //let duty_percent = (speed == c_MotorStop ? 0 : Math.map(speed, 1, 255, -100, 100))
@@ -134,21 +136,21 @@ namespace receiver { // r-receiver.ts
             let duty_percent = radio.mapInt32(speed, 1, 255, -100, 100)
             //n_StatusString = duty_percent.toString()
 
-            if (motor == eMotor01.M0 && speed != n_dualMotor0Speed) {
-                n_dualMotor0Speed = speed
+            if (motor == eDualMotor.M0 && speed != a_DualMotorSpeed[eDualMotor.M0]) {
+                a_DualMotorSpeed[eDualMotor.M0] = speed
                 dualMotorPower(motor, duty_percent)
             }
-            else if (motor == eMotor01.M1 && speed != n_dualMotor1Speed) {
-                n_dualMotor1Speed = speed
+            else if (motor == eDualMotor.M1 && speed != a_DualMotorSpeed[eDualMotor.M1]) {
+                a_DualMotorSpeed[eDualMotor.M1] = speed
                 dualMotorPower(motor, duty_percent)
             }
-            else if (motor == eMotor01.M0_M1 && (speed != n_dualMotor0Speed || speed != n_dualMotor1Speed)) {
-                n_dualMotor0Speed = speed
-                n_dualMotor1Speed = speed
+            else if (motor == eDualMotor.M0_M1 && (speed != a_DualMotorSpeed[eDualMotor.M0] || speed != a_DualMotorSpeed[eDualMotor.M1])) {
+                a_DualMotorSpeed[eDualMotor.M0] = speed
+                a_DualMotorSpeed[eDualMotor.M1] = speed
                 dualMotorPower(motor, duty_percent)
             }
         } else { // n_MotorPower false oder speed=0
-            dualMotor128(motor, c_MotorStop) // 128
+            dualMotor128(motor, c_DualMotorStop) // 128
 
             //n_Motor0 = c_MotorStop
             //n_Motor1 = c_MotorStop
@@ -187,7 +189,7 @@ namespace receiver { // r-receiver.ts
     //% group="Servo"
     //% block="Servo (135° ↖ 90° ↗ 45°) %winkel °" weight=4
     //% winkel.min=45 winkel.max=135 winkel.defl=90
-    export function servo_set90(winkel: number) {
+    export function pinServo90(winkel: number) {
         // Richtung ändern: 180-winkel
         // (0+14)*3=42 keine Änderung, gültige Werte im Buffer 1-31  (1+14)*3=45  (16+14)*3=90  (31+14)*3=135
         if (radio.between(winkel, 45, 135) && n_ServoWinkel != winkel) {
@@ -199,17 +201,17 @@ namespace receiver { // r-receiver.ts
     //% group="Servo"
     //% block="Servo (1 ↖ 16 ↗ 31) %winkel" weight=3
     //% winkel.min=1 winkel.max=31 winkel.defl=16
-    export function servo_set16(winkel: number) {
+    export function pinServo16(winkel: number) {
         if (radio.between(winkel, 1, 31))
             // Formel: (x+14)*3
             // winkel 1..16..31 links und rechts tauschen (32-winkel) 32-1=31 32-16=16 32-31=1
             // winkel 31..16..1
             // 32+14=46 46-1=45     46-16=30    46-31=15
             //          45*3=135    30*3=90     15*3=45
-            servo_set90((46 - winkel) * 3)  // 1->135 16->90 31->45
+            pinServo90((46 - winkel) * 3)  // 1->135 16->90 31->45
         //  servo_set90((14 + winkel) * 3)  // 1->135 16->90 31->45
         else
-            servo_set90(90)
+            pinServo90(90)
     }
 
 
