@@ -86,7 +86,7 @@ namespace receiver { // r-receiver.ts
 
         pins.servoWritePin(a_PinServo[n_Hardware], n_ServoGeradeaus)
 
-        qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
+        qwiicMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
         if (encoder)
             encoderRegisterEvent(radDmm)
