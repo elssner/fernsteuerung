@@ -40,7 +40,16 @@ namespace radio { // advanced.ts
     }
 
     //% group="Funktionen" advanced=true
-    //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=3
+    //% block="protractorPicker %angle (1 ↖ 16 ↗ 31)" weight=3
+    //% angle.shadow="protractorPicker" angle.defl=90
+    export function protractorPicker(angle: number) {
+        // 0..90..180
+        return mapInt32(angle, 0, 180, 1, 31)
+    }
+
+
+    //% group="Funktionen" advanced=true
+    //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=1
     //% fromLow.defl=1 fromHigh.defl=255 toLow.defl=-100 toHigh.defl=100
     //% inlineInputMode=inline
     export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {

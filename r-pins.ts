@@ -152,8 +152,8 @@ namespace receiver { // r-pins.ts
     export function selectEntfernung() {
         switch (n_Hardware) {
             case eHardware.v3: {
-                if (qUltrasonicRead()) // i2c einlesen
-                    return qUltrasonicDistance(eDist.cm)
+                if (readQwiicUltrasonic()) // i2c einlesen
+                    return getQwiicUltrasonic()
                 else
                     return 0
             }

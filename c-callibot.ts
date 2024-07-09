@@ -14,7 +14,7 @@ namespace cb2 { // c-callibot.ts
     let n_Callibot2_x22Connected = true // I²C Device ist angesteckt
     // let n_c2MotorPower = true
     //  let qFernsteuerungStop: boolean = false
-  
+
     export const c_MotorStop = 128
 
     export let n_EncoderFaktor = 31.25 // Impulse = 31.25 * Fahrstrecke in cm
@@ -26,7 +26,7 @@ namespace cb2 { // c-callibot.ts
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=180
     //% inlineInputMode=external
     export function beimStart(zf: boolean, storagei32: number) {
-       
+
         radio.setStorageBuffer(storagei32, 180) // prüft und speichert in a_StorageBuffer
 
         if (zf)
@@ -46,6 +46,7 @@ namespace cb2 { // c-callibot.ts
 
     //% group="Motor"
     //% block="fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
+
     //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 
     //% y1_16_31.min=1 y1_16_31.max=31 y1_16_31.defl=16
     //% prozent.min=10 prozent.max=90 prozent.defl=50
@@ -322,23 +323,24 @@ namespace cb2 { // c-callibot.ts
     //% block="fahre Motor (1 ↓ 128 ↑ 255) %motor Servo (1 ↖ 16 ↗ 31) %servo Strecke (cm) %strecke" weight=3
     // motor.min=0 motor.max=255 motor.defl=128
     //% motor.shadow=cb2_speedPicker
-    //% servo.min=1 servo.max=31 servo.defl=16
+    // servo.min=1 servo.max=31 servo.defl=16
+    //% servo.shadow=cb2_protractorPicker
     //% strecke.min=0 strecke.max=255 strecke.defl=20
     export function fahreSchritt(motor: number, servo: number, strecke: number) {
 
-            cb2.writeMotor128Servo16(c_MotorStop, servo)
-            cb2.writeEncoderReset()
+        cb2.writeMotor128Servo16(c_MotorStop, servo)
+        cb2.writeEncoderReset()
 
-            cb2.writeMotor128Servo16(motor, servo)
+        cb2.writeMotor128Servo16(motor, servo)
 
-            while (cb2.getEncoderMittelwert() < strecke * cb2.n_EncoderFaktor) {
-                // Pause eventuell bei hoher Geschwindigkeit motor verringern
-                // oder langsamer fahren wenn Rest strecke kleiner wird
-                basic.pause(200)
-            }
+        while (cb2.getEncoderMittelwert() < strecke * cb2.n_EncoderFaktor) {
+            // Pause eventuell bei hoher Geschwindigkeit motor verringern
+            // oder langsamer fahren wenn Rest strecke kleiner wird
+            basic.pause(200)
+        }
 
-            cb2.writeMotor128Servo16(c_MotorStop, 16)
-       
+        cb2.writeMotor128Servo16(c_MotorStop, 16)
+
     }
 
 

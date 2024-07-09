@@ -7,9 +7,17 @@ namespace cb2 { // c-beispiele.ts
 
     //% blockId=cb2_speedPicker block="%speed" blockHidden=true
     //% speed.shadow="speedPicker"
-    export function cb2_speedPicker(speed: number) {
+    export function cb2_speedPicker(speed: number) { // defl ist 50%
         return radio.speedPicker(speed)
     }
+
+    //% blockId=cb2_protractorPicker block="%angle" blockHidden=true
+    //% angle.shadow="protractorPicker" angle.defl=90
+    export function cb2_protractorPicker(angle: number) { // defl ist 0°
+        return radio.protractorPicker(angle)
+    }
+
+
 
 
     function setMotoren0Prozent(pwm1: number, pwm2: number) { // (-100% .. 0 .. +100%)
