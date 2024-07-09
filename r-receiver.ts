@@ -3,18 +3,18 @@ namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
 
     export enum eHardware { // === NICHT DIE ZAHLENWERTE ÄNDERN, das ist der Index für die Pins, Funkgruppe, ===
-        //% block="Calli:Bot 2 (v1 v2 v3)"
-        calli2bot = 2,
-        //% block="Calliope v3 (Maker Kit Car)"
+        //% block="Maker Kit Car (Calliope v3)"
         v3 = 0,     // Index in Arrays
-        //% block="Calliope auf Rädern 4 (v1)"
+        //% block="CaR 4 (Calliope v1)"
         car4 = 1   // Index in Arrays
     }
+    //% block="Calli:Bot 2 (v1 v2 v3)"
+    //calli2bot = 2,
 
     export let n_Hardware = eHardware.v3 // Index in Arrays:// 0:_Calliope v3 Pins_
 
     // eHardware ist der Index für folgende Arrays:
-    export let a_ModellFunkgruppe = [0xA8, 239, 0xB8] // v3, car4, callibot
+    export let a_ModellFunkgruppe = [0xA8, 239] // v3, car4
 
     // Calliope v3 freie Pins: C8, C9, C12, C13, C14, C15
     export let a_PinRelay: DigitalPin[] = [109, DigitalPin.P0]     // 0:DigitalPin.C9 GPIO2
@@ -67,7 +67,7 @@ namespace receiver { // r-receiver.ts
 
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start Modell (Hardware): | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm Funkgruppe || anzeigen %zf %storagei32" weight=8
+    //% block="beim Start: Empfänger | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm Funkgruppe || anzeigen %zf Funkgruppe (aus Flash lesen) | %storagei32" weight=8
     //% servoGeradeaus.min=81 servoGeradeaus.max=99 servoGeradeaus.defl=90
     //% encoder.shadow="toggleOnOff"
     //% radDmm.min=60 radDmm.max=80 radDmm.defl=65
@@ -89,7 +89,7 @@ namespace receiver { // r-receiver.ts
         qMotorReset() // true wenn qwiicmotor bereit, false wenn Kran nicht angeschlossen
 
         if (encoder)
-            startEncoder( radDmm)
+            startEncoder(radDmm)
 
         radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
 

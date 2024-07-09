@@ -160,9 +160,9 @@ namespace receiver { // r-pins.ts
             case eHardware.car4: {
                 return groveUltraschall_cm()
             }
-            case eHardware.calli2bot: {
-                return 0
-            }
+            //case eHardware.calli2bot: {
+            //    return 0
+            //}
             default:
                 return 0
         }

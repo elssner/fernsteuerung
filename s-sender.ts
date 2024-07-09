@@ -9,7 +9,7 @@ namespace sender {
 
 
     //% group="calliope-net.github.io/fernsteuerung"
-    //% block="beim Start | zeige Modell und Funkgruppe | %zf Funkgruppe (aus Flash lesen) | %storagei32" weight=8
+    //% block="beim Start: Sender | zeige Modell und Funkgruppe | %zf Funkgruppe (aus Flash lesen) | %storagei32" weight=8
     //% zf.shadow="toggleYesNo" zf.defl=1
     //% storagei32.min=160 storagei32.max=191 storagei32.defl=175
     //% inlineInputMode=external

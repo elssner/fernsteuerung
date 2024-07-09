@@ -28,7 +28,7 @@ namespace receiver { // r-fahrstrecke.ts
                 basic.pause(200) // Pause kann größer sein, weil Stop schon im Event erfolgt ist
             }
         }
-        else if (n_Hardware == eHardware.calli2bot) {
+      /*   else if (n_Hardware == eHardware.calli2bot) {
 
             cb2.writeMotor128Servo16(c_MotorStop, servo)
             cb2.writeEncoderReset()
@@ -42,7 +42,7 @@ namespace receiver { // r-fahrstrecke.ts
             }
 
             cb2.writeMotor128Servo16(c_MotorStop, 16)
-        }
+        } */
     }
 
 } // r-fahrstrecke.ts

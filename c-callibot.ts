@@ -14,9 +14,26 @@ namespace cb2 { // c-callibot.ts
     let n_Callibot2_x22Connected = true // I²C Device ist angesteckt
     // let n_c2MotorPower = true
     //  let qFernsteuerungStop: boolean = false
+  
+    export const c_MotorStop = 128
 
     export let n_EncoderFaktor = 31.25 // Impulse = 31.25 * Fahrstrecke in cm
 
+
+    //% group="calliope-net.github.io/fernsteuerung"
+    //% block="beim Start: Calli:bot 2 | zeige Funkgruppe | %zf Funkgruppe (aus Flash lesen) | %storagei32" weight=8
+    //% zf.shadow="toggleYesNo" zf.defl=1
+    //% storagei32.min=160 storagei32.max=191 storagei32.defl=180
+    //% inlineInputMode=external
+    export function beimStart(zf: boolean, storagei32: number) {
+       
+        radio.setStorageBuffer(storagei32, 180) // prüft und speichert in a_StorageBuffer
+
+        if (zf)
+            radio.zeigeFunkgruppe()
+
+        radio.beimStartintern() // setzt auch n_start true, muss deshalb zuletzt stehen
+    }
 
 
     //% group="Motor"
@@ -288,6 +305,31 @@ namespace cb2 { // c-callibot.ts
     export function readVersion() { // [1]=4:CB2(Gymnasium) =3:CB2E (=2:soll CB2 sein)
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_FW_VERSION]))
         return i2cReadBuffer(10).toArray(NumberFormat.UInt8LE)
+    }
+
+
+
+
+    //% group="Programmieren" subcategory="Fahrstrecke"
+    //% block="fahre Motor (1 ↓ 128 ↑ 255) %motor Servo (1 ↖ 16 ↗ 31) %servo Strecke (cm) %strecke" weight=3
+    //% motor.min=0 motor.max=255 motor.defl=128
+    //% servo.min=1 servo.max=31 servo.defl=16
+    //% strecke.min=0 strecke.max=255 strecke.defl=20
+    export function fahreSchritt(motor: number, servo: number, strecke: number) {
+
+            cb2.writeMotor128Servo16(c_MotorStop, servo)
+            cb2.writeEncoderReset()
+
+            cb2.writeMotor128Servo16(motor, servo)
+
+            while (cb2.getEncoderMittelwert() < strecke * cb2.n_EncoderFaktor) {
+                // Pause eventuell bei hoher Geschwindigkeit motor verringern
+                // oder langsamer fahren wenn Rest strecke kleiner wird
+                basic.pause(200)
+            }
+
+            cb2.writeMotor128Servo16(c_MotorStop, 16)
+       
     }
 
 
