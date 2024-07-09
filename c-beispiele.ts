@@ -5,6 +5,13 @@ namespace cb2 { // c-beispiele.ts
 
     // ========== subcategory=Beispiele
 
+    //% blockId=cb2_speedPicker block="%speed" blockHidden=true
+    //% speed.shadow="speedPicker"
+    export function cb2_speedPicker(speed: number) {
+        return radio.speedPicker(speed)
+    }
+
+
     function setMotoren0Prozent(pwm1: number, pwm2: number) { // (-100% .. 0 .. +100%)
         writeMotoren128(radio.speedPicker(pwm1), radio.speedPicker(pwm2))
     }
