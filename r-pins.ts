@@ -164,10 +164,10 @@ namespace receiver { // r-pins.ts
     }
 
     //% group="Ultraschall (Pin und Qwiic)" subcategory="Pins"
-    //% block="Abstand %pVergleich %cm cm" weight=5
+    //% block="Abstand %e %cm" weight=5
     //% cm.shadow=receiver_getAbstand
-    export function abstand_vergleich(pVergleich: eVergleich, cm: number) { // cm.min=5 cm.max=50 cm.defl=20
-        switch (pVergleich) {
+    export function abstand_vergleich(e: eVergleich, cm: number) { // cm.min=5 cm.max=50 cm.defl=20
+        switch (e) {
             case eVergleich.gt:
                 return selectAbstand() >= cm
             case eVergleich.lt:
