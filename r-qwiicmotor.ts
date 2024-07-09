@@ -150,7 +150,7 @@ namespace receiver { // r-qwiicmotor.ts
         */
     }
 
-    //% group="Motor A B C D (I²C: 0x5D, 0x5E)" subcategory="Qwiic"
+    //% group="Motor A B C D (I²C: 0x5D, 0x5E)" subcategory="Qwiic" color=#008F3F
     //% block="Q Motor %pMotorChip Power %pON" weight=3
     //% pON.shadow="toggleOnOff"
     export function qwiicMotorChipPower(pMotorChip: eQwiicMotorChip, pON: boolean) {
@@ -170,7 +170,7 @@ namespace receiver { // r-qwiicmotor.ts
 
 
 
-    //% group="Motor A B C D (I²C: 0x5D, 0x5E)" subcategory="Qwiic"
+    //% group="Motor A B C D (I²C: 0x5D, 0x5E)" subcategory="Qwiic" color=#008F3F
     //% block="Q Motor %pMotor (1 ↓ 128 ↑ 255) %speed (128 ist STOP)" weight=2
     //% speed.min=0 speed.max=255 speed.defl=128
     export function qwiicMotor128(pMotor: eQwiicMotor, speed: number) {

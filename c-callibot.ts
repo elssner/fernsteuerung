@@ -1,5 +1,5 @@
 //% color=#005F7F icon="\uf188" block="Calli:bot 2" weight=93
-namespace cb2 { // c-callibot.ts
+namespace cb2 { // c-callibot.ts 005F7F
 
 
 
