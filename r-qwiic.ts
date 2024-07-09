@@ -57,7 +57,7 @@ SparkFun Qwiic Ultrasonic Distance Sensor (HC-SR04)
     // export enum eDist { cm, mm }
 
     //% group="Ultrasonic Distance Sensor (I²C: 0x00)" subcategory="Qwiic"
-    //% block="Q Ultraschall Entfernung cm || I²C %i2c" weight=3
+    //% block="Q Abstand cm || I²C %i2c" weight=3
     // mm.shadow="toggleYesNo"
     export function getQwiicUltrasonic(i2c?: eI2CQwiicUltrasonic) {
         if (i2c != undefined)

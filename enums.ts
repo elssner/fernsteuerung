@@ -66,7 +66,7 @@ namespace radio { // enums.ts
         b0_Motor = 0, // 1..128..255
         //% block="Servo (1 ↖ 16 ↗ 31)"
         b1_Servo = 1, // Bit 4-0 (0..31)
-        //% block="Entfernung 0..255 cm"
+        //% block="Fahrstrecke 0..255 cm"
         b2_Fahrstrecke = 2, // Encoder in cm max. 255cm
         // b1_3Bit = 3 // Bit 7-6-5
     }
@@ -128,10 +128,8 @@ namespace radio { // enums.ts
         //  m01abcd = m01 + mab + mcd
     }
 
-    // group="Enums" advanced=true
-    // block="[3] Ultraschall Entfernung %entfernung" weight=3
-    //function radio_entfernung(entfernung: e3Entfernung) { return entfernung }
-    export enum e3Entfernung {
+  
+    export enum e3Abstand {
         //% block="10 cm"
         u0 = 0x00,
         //% block="15 cm"
@@ -142,15 +140,9 @@ namespace radio { // enums.ts
         u3 = 0xC0
     }
 
-   export let a_Entfernung = [10, 15, 20, 30] // auslesen beim Empfänger
+    export let a_Abstand = [10, 15, 20, 30] // auslesen beim Empfänger
 
-    // group="Daten" subcategory="Datenpaket"
-    // block="Entfernung %p3Entfernung" 
-    // p3Entfernung.shadow=radio_getEntfernung
-    //export function get_e3Entfernung(p3Entfernung: number) {
-    //    return [5, 10, 15, 20].get(p3Entfernung >>> 6)
-    //}
-
+   
     // ========== Servo Bits 7-6-5
 
     export enum eSensor {

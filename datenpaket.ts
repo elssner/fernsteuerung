@@ -78,29 +78,29 @@ für CalliBot, MakerKitCar, CaR4
 
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
-    //% block="%buffer [3] Ultraschall Entfernung %entfernung" weight=3
+    //% block="%buffer [3] Ultraschall Abstand %e" weight=3
     //% buffer.shadow="radio_sendBuffer19"
-    export function setEntfernung(buffer: Buffer, entfernung: e3Entfernung) {
+    export function setAbstand(buffer: Buffer, e: e3Abstand) {
         buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] &= 0b00111111 // AND Bit 5-4-3-2-1-0 bleiben; 7-6 auf 0 setzen
-        buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (entfernung & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf pEntfernung setzen
+        buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] |= (e & 0b11000000) // OR Bit 5-4-3-2-1-0 bleiben; 7-6 auf e setzen
     }
 
-    //% blockId=radio_getEntfernung
+    //% blockId=radio_getAbstand
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket"
-    //% block="%buffer [3] Ultraschall Entfernung in cm" weight=3
-    export function getEntfernung(buffer: Buffer) {
-        return a_Entfernung[buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] >>> 6]
+    //% block="%buffer [3] Ultraschall Abstand in cm" weight=3
+    export function getAbstand(buffer: Buffer) {
+        return a_Abstand[buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] >>> 6]
         // return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
 
-    //export function getEntfernung(buffer: Buffer): e3Entfernung {// blockHidden=true
+    //export function getAbstand(buffer: Buffer): e3Abstand {// blockHidden=true
     //    return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     //}
 
     //% group="Datenpaket auslesen (receivedData oder sendData)" subcategory="Datenpaket" deprecated=true
-    //% block="%buffer [3] Ultraschall Entfernung == %entfernung" weight=3
-    export function isEntfernung(buffer: Buffer, entfernung: e3Entfernung): boolean {
-        return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000) == entfernung
+    //% block="%buffer [3] Ultraschall Abstand == %abstand" weight=3
+    export function isAbstand(buffer: Buffer, abstand: e3Abstand): boolean {
+        return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000) == abstand
     }
 
 
@@ -130,7 +130,7 @@ für CalliBot, MakerKitCar, CaR4
     }
 
 
-    // ========== 3 Byte (Motor, Servo, Entfernung)
+    // ========== 3 Byte (Motor, Servo, Strecke)
 
     //% group="Datenpaket zum Senden vorbereiten" subcategory="Datenpaket"
     //% block="%buffer %bufferPointer %bufferOffset Byte %byte" weight=1

@@ -126,30 +126,12 @@ namespace receiver { // r-pins.ts
     // ========== group="Ultraschall (Calliope v1: C8)" subcategory="Pins"
 
 
-    // adapted to Calliope mini V2 Core by M.Klein 17.09.2020
-    /**
-     * Create a new driver of Grove - Ultrasonic Sensor to measure distances in cm
-     * @param pin signal pin of ultrasonic ranger module
-     */
-    // group="Ultraschall (Calliope v1: C8)" subcategory="Pins"
-    // block="Ultraschall Entfernung in cm" weight=8
-    /* export function groveUltraschall_cm(): number {
-        pins.digitalWritePin(c_PinUltraschall, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(c_PinUltraschall, 1);
-        control.waitMicros(20);
-        pins.digitalWritePin(c_PinUltraschall, 0);
-
-        return Math.round(pins.pulseIn(c_PinUltraschall, PulseValue.High, 50000) * 0.0263793)
-    } */
-
-
     // ==========
 
 
     //% group="Ultraschall (Pin und Qwiic)" subcategory="Pins"
-    //% block="Entfernung in cm" weight=6
-    export function selectEntfernung() {
+    //% block="Abstand in cm" weight=6
+    export function selectAbstand() {
         if (n_Hardware == eHardware.v3)
             if (readQwiicUltrasonic()) // i2c einlesen, false wenn Modul nicht angesteckt
                 return getQwiicUltrasonic()
@@ -182,25 +164,25 @@ namespace receiver { // r-pins.ts
     }
 
     //% group="Ultraschall (Pin und Qwiic)" subcategory="Pins"
-    //% block="Entfernung %pVergleich %cm cm" weight=5
-    //% cm.shadow=receiver_getEntfernung
-    export function entfernung_vergleich(pVergleich: eVergleich, cm: number) { // cm.min=5 cm.max=50 cm.defl=20
+    //% block="Abstand %pVergleich %cm cm" weight=5
+    //% cm.shadow=receiver_getAbstand
+    export function abstand_vergleich(pVergleich: eVergleich, cm: number) { // cm.min=5 cm.max=50 cm.defl=20
         switch (pVergleich) {
             case eVergleich.gt:
-                return selectEntfernung() >= cm
+                return selectAbstand() >= cm
             case eVergleich.lt:
-                return selectEntfernung() <= cm
+                return selectAbstand() <= cm
             default:
                 return false
         }
     }
 
-    //% blockId=receiver_getEntfernung blockHidden=true
-    //% block="%buffer Entfernung in cm" weight=3
+    //% blockId=receiver_getAbstand blockHidden=true
+    //% block="%buffer Abstand in cm" weight=3
     //% buffer.shadow="radio_receivedBuffer19"
-    export function receiver_getEntfernung(buffer: Buffer) {
-        return radio.getEntfernung(buffer)
-        //  return a_Entfernung[buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] >>> 6]
+    export function receiver_getAbstand(buffer: Buffer) {
+        return radio.getAbstand(buffer)
+        //  return a_Abstand[buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] >>> 6]
         // return (buffer[eBufferPointer.p0 + eBufferOffset.b2_Fahrstrecke] & 0b11000000)
     }
 

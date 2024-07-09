@@ -33,7 +33,7 @@ namespace receiver { // r-advanced.ts
      * @param pin signal pin of ultrasonic ranger module
      */
     //% group="Ultraschall (Calliope v1: C8)" advanced=true
-    //% block="Ultraschall Entfernung in cm" weight=8
+    //% block="Abstand in cm" weight=8
     export function pinGroveUltraschall_cm(): number {
         pins.digitalWritePin(c_PinUltraschall, 0);
         control.waitMicros(2);

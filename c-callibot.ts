@@ -277,8 +277,8 @@ namespace cb2 { // c-callibot.ts
     export enum eDist { cm, mm }
 
     //% group="Ultraschall Sensor" subcategory="Sensoren"
-    //% block="Ultraschall Entfernung in %e" weight=4
-    export function readUltraschallEntfernung(e: eDist) {
+    //% block="Ultraschall Abstand in %e" weight=4
+    export function readUltraschallAbstand(e: eDist) {
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUT_US]))
         let mm = i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1) // 16 Bit (mm)
         if (e == eDist.cm)
