@@ -12,7 +12,7 @@ namespace receiver { // r-fahrstrecke.ts
 
             encoderStartStrecke(strecke, true)
             servo_set16(servo)
-            v3Motor255(eMotor01.M0, motor) // Fahrmotor an Calliope v3 Motor Pins
+            dualMotor128(eMotor01.M0, motor) // Fahrmotor an Calliope v3 Motor Pins
 
             while (n_EncoderAutoStop) {
                 basic.pause(200) // Pause kann größer sein, weil Stop schon im Event erfolgt ist

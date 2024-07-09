@@ -18,7 +18,7 @@ namespace receiver { // r-pins.ts
             // ========== Event Handler registrieren
             pins.onPulsed(a_PinEncoder[n_Hardware], PulseValue.Low, function () {
 
-                if (n_v3Motor0Speed > c_MotorStop)
+                if (n_dualMotor0Speed > c_MotorStop)
                     n_EncoderCounter++ // vorwärts
                 else
                     n_EncoderCounter-- // rückwärts
@@ -28,7 +28,7 @@ namespace receiver { // r-pins.ts
 
                     if (n_EncoderAutoStop) {
 
-                        v3Motor255(eMotor01.M0, c_MotorStop)
+                        dualMotor128(eMotor01.M0, c_MotorStop)
                         n_EncoderAutoStop = false
                     }
 
@@ -140,14 +140,33 @@ namespace receiver { // r-pins.ts
     }
 
 
+    //% group="Encoder" subcategory="Encodermotor"
+    //% block="Encoder starten (Stop Ereignis bei %streckecm cm) || AutoStop %autostop" weight=8
+    //% streckecm.min=1 streckecm.max=255 streckecm.defl=20
+    //% autostop.shadow="toggleYesNo" autostop.defl=1
+    export function encoderStartStrecke(streckecm: number, autostop = true) {
+        n_EncoderCounter = 0 // Impuls Zähler zurück setzen
+
+        if (streckecm > 0) {
+            n_EncoderStrecke_impulse = Math.round(streckecm * n_EncoderFaktor)
+            n_EncoderAutoStop = autostop
+
+            radio.n_lastconnectedTime = input.runningTime() // Connection-Timeout Zähler zurück setzen
+        } else {
+            n_EncoderStrecke_impulse = 0
+        }
+    }
+
+
+
 
     //% group="Encoder" subcategory="Encodermotor"
-    //% block="Encodermotor starten (1 ↓ 128 ↑ 255) %speed" weight=9
+    //% block="Encodermotor starten (1 ↓ 128 ↑ 255) %speed" weight=7
     //% speed.min=0 speed.max=255 speed.defl=128
     export function encoderSelectMotor(speed: number) {
 
         if (n_Hardware == eHardware.v3) // Fahrmotor an Calliope v3 Pins
-            v3Motor255(eMotor01.M0, speed)
+            dualMotor128(eMotor01.M0, speed)
 
         else if (n_Hardware == eHardware.car4) // Fahrmotor am Qwiic Modul
             qMotor255(eMotor.ma, speed)
@@ -181,24 +200,6 @@ namespace receiver { // r-pins.ts
             }
         })
      */
-
-    //% group="Encoder" subcategory="Encodermotor"
-    //% block="Encoder starten (Stop Ereignis bei %streckecm cm) || AutoStop %autostop" weight=8
-    //% streckecm.min=1 streckecm.max=255 streckecm.defl=20
-    //% autostop.shadow="toggleYesNo" autostop.defl=1
-    export function encoderStartStrecke(streckecm: number, autostop = true) {
-        n_EncoderCounter = 0 // Impuls Zähler zurück setzen
-
-        if (streckecm > 0) {
-            n_EncoderStrecke_impulse = Math.round(streckecm * n_EncoderFaktor)
-            n_EncoderAutoStop = autostop
-
-            radio.n_lastconnectedTime = input.runningTime() // Connection-Timeout Zähler zurück setzen
-        } else {
-            n_EncoderStrecke_impulse = 0
-        }
-    }
-
 
 
     // ========== group="mehr" subcategory="Encodermotor"
@@ -237,7 +238,6 @@ namespace receiver { // r-pins.ts
 
 
     // ========== EVENT HANDLER === sichtbarer Event-Block
-
     let onEncoderStopHandler: (cm: number) => void
 
     //% group="Event Handler" subcategory="Encodermotor"
@@ -246,6 +246,7 @@ namespace receiver { // r-pins.ts
     export function onEncoderStop(cb: (cm: number) => void) {
         onEncoderStopHandler = cb
     }
+    // ========== EVENT HANDLER === sichtbarer Event-Block
 
 
 } // r-pins.ts
