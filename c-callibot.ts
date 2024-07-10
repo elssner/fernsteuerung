@@ -343,6 +343,7 @@ namespace cb2 { // c-callibot.ts 005F7F
     // servo.min=1 servo.max=31 servo.defl=16
     //% servo.shadow=radio_protractorPicker
     //% strecke.min=0 strecke.max=255 strecke.defl=20
+    //% inlineInputMode=inline
     export function fahreSchritt(motor: number, servo: number, strecke: number, a10?: number[]) {
 
         cb2.writeMotor128Servo16(c_MotorStop, servo)
@@ -365,7 +366,7 @@ namespace cb2 { // c-callibot.ts 005F7F
                 a = a10
             //  let t = input.runningTime()  // ms seit Start
             basic.showNumber(i)
-            basic.pause(strecke * a[i])
+            basic.pause(strecke * a[i] + 3)
         }
 
         cb2.writeMotor128Servo16(c_MotorStop, 16)
