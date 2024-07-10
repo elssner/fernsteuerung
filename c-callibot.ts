@@ -44,66 +44,72 @@ namespace cb2 { // c-callibot.ts 005F7F
         return radio.storageBufferGet()
     }
 
+    // aktuelle Werte // I²C nur bei Änderung
+    let n_x1_128_255: number
+    let n_y1_16_31: number
+    let n_m1_1_128_255: number
+    let n_m2_1_128_255: number
 
 
     //% group="Motor"
     //% block="fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
-
     //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 
     //% y1_16_31.min=1 y1_16_31.max=31 y1_16_31.defl=16
     //% prozent.min=10 prozent.max=90 prozent.defl=50
     export function writeMotor128Servo16(x1_128_255: number, y1_16_31: number, prozent = 50) {
+        if (n_x1_128_255 != x1_128_255 || n_y1_16_31 != y1_16_31) {
+            n_x1_128_255 = x1_128_255
+            n_y1_16_31 = y1_16_31 // I²C nur bei Änderung
 
-        let setMotorBuffer = Buffer.create(6)
-        setMotorBuffer[0] = eRegister.SET_MOTOR   // 2
-        setMotorBuffer[1] = 3 // ec2Motor.beide     // 3
+            let setMotorBuffer = Buffer.create(6)
+            setMotorBuffer[0] = eRegister.SET_MOTOR   // 2
+            setMotorBuffer[1] = 3 // ec2Motor.beide     // 3
 
-        if ((x1_128_255 & 0x80) == 0x80) {  // 128..255 vorwärts
-            setMotorBuffer[2] = 0
-            setMotorBuffer[3] = x1_128_255 << 1 // linkes Bit weg=0..127 * 2 // 128=00, 129=02, 130=04, 254=FC, 255=FE
-            setMotorBuffer[4] = 0
-            setMotorBuffer[5] = setMotorBuffer[3]
-        } else {                            // 0..127 rückwärts
-            setMotorBuffer[2] = 1
-            setMotorBuffer[3] = ~(x1_128_255 << 1) // * 2 und bitweise NOT // 0=FF, 1=FD, 126=03, 127=01,
-            setMotorBuffer[4] = 1
-            setMotorBuffer[5] = setMotorBuffer[3]
+            if ((x1_128_255 & 0x80) == 0x80) {  // 128..255 vorwärts
+                setMotorBuffer[2] = 0
+                setMotorBuffer[3] = x1_128_255 << 1 // linkes Bit weg=0..127 * 2 // 128=00, 129=02, 130=04, 254=FC, 255=FE
+                setMotorBuffer[4] = 0
+                setMotorBuffer[5] = setMotorBuffer[3]
+            } else {                            // 0..127 rückwärts
+                setMotorBuffer[2] = 1
+                setMotorBuffer[3] = ~(x1_128_255 << 1) // * 2 und bitweise NOT // 0=FF, 1=FD, 126=03, 127=01,
+                setMotorBuffer[4] = 1
+                setMotorBuffer[5] = setMotorBuffer[3]
+            }
+            //   n_MotorPWM_0_255 = setMotorBuffer[3]
+
+            // fahren (beide Motoren gleich)
+            /*    if (radio.between(x1_128_255, 129, 255)) { // vorwärts
+                   setMotorBuffer[2] = 0
+                   setMotorBuffer[3] = radio.mapInt32(x1_128_255, 128, 255, 0, 255)
+                   setMotorBuffer[4] = 0
+                   setMotorBuffer[5] = setMotorBuffer[3]
+               }
+               else if (radio.between(x1_128_255, 1, 127)) { // rückwärts
+                   setMotorBuffer[2] = 1
+                   setMotorBuffer[3] = radio.mapInt32(x1_128_255, 1, 128, 255, 0)
+                   setMotorBuffer[4] = 1
+                   setMotorBuffer[5] = setMotorBuffer[3]
+               }
+               else { // wenn x fahren 0, 128 oder mehr als 8 Bit
+                   setMotorBuffer[2] = 0 // Motor 1 Richtung 0:vorwärts, 1:rückwärts
+                   setMotorBuffer[3] = 0 // Motor 1 PWM (0..255)
+                   setMotorBuffer[4] = 0 // Motor 2 Richtung 0:vorwärts, 1:rückwärts
+                   setMotorBuffer[5] = 0 // Motor 2 PWM (0..255)
+               } */
+
+            // lenken (ein Motor wird langsamer)
+            if (radio.between(y1_16_31, 1, 15)) { // links
+                setMotorBuffer[3] *= Math.map(y1_16_31, 0, 16, prozent / 100, 1) // 0=linkslenken50% // 16=nichtlenken=100%
+            }
+            else if (radio.between(y1_16_31, 17, 31)) { // rechts
+                setMotorBuffer[5] *= Math.map(y1_16_31, 16, 32, 1, prozent / 100) // 16=nichtlenken=100% // 32=rechtslenken50%
+            }
+            //else { // wenn y lenken 0, 16 oder mehr als 5 Bit
+            //}
+
+            i2cWriteBuffer(setMotorBuffer)
         }
-        //   n_MotorPWM_0_255 = setMotorBuffer[3]
-
-        // fahren (beide Motoren gleich)
-        /*    if (radio.between(x1_128_255, 129, 255)) { // vorwärts
-               setMotorBuffer[2] = 0
-               setMotorBuffer[3] = radio.mapInt32(x1_128_255, 128, 255, 0, 255)
-               setMotorBuffer[4] = 0
-               setMotorBuffer[5] = setMotorBuffer[3]
-           }
-           else if (radio.between(x1_128_255, 1, 127)) { // rückwärts
-               setMotorBuffer[2] = 1
-               setMotorBuffer[3] = radio.mapInt32(x1_128_255, 1, 128, 255, 0)
-               setMotorBuffer[4] = 1
-               setMotorBuffer[5] = setMotorBuffer[3]
-           }
-           else { // wenn x fahren 0, 128 oder mehr als 8 Bit
-               setMotorBuffer[2] = 0 // Motor 1 Richtung 0:vorwärts, 1:rückwärts
-               setMotorBuffer[3] = 0 // Motor 1 PWM (0..255)
-               setMotorBuffer[4] = 0 // Motor 2 Richtung 0:vorwärts, 1:rückwärts
-               setMotorBuffer[5] = 0 // Motor 2 PWM (0..255)
-           } */
-
-        // lenken (ein Motor wird langsamer)
-        if (radio.between(y1_16_31, 1, 15)) { // links
-            setMotorBuffer[3] *= Math.map(y1_16_31, 0, 16, prozent / 100, 1) // 0=linkslenken50% // 16=nichtlenken=100%
-        }
-        else if (radio.between(y1_16_31, 17, 31)) { // rechts
-            setMotorBuffer[5] *= Math.map(y1_16_31, 16, 32, 1, prozent / 100) // 16=nichtlenken=100% // 32=rechtslenken50%
-        }
-        //else { // wenn y lenken 0, 16 oder mehr als 5 Bit
-        //}
-
-        i2cWriteBuffer(setMotorBuffer)
-
-        // return setMotorBuffer
     }
 
     //% group="Motor"
@@ -111,46 +117,50 @@ namespace cb2 { // c-callibot.ts 005F7F
     //% m1_1_128_255.min=0 m1_1_128_255.max=255 m1_1_128_255.defl=0
     //% m2_1_128_255.min=0 m2_1_128_255.max=255 m2_1_128_255.defl=0
     export function writeMotoren128(m1_1_128_255: number, m2_1_128_255: number) {
-        let m1 = radio.between(m1_1_128_255, 1, 255)
-        let m2 = radio.between(m2_1_128_255, 1, 255)
-        // if (m1 || m2) {
-        let setMotorBuffer: Buffer
-        let offset = 0
-        if (m1 && m2) {
-            setMotorBuffer = Buffer.create(6)
-            setMotorBuffer[offset++] = eRegister.SET_MOTOR
-            setMotorBuffer[offset++] = 3
-        } else if (m1) {
-            setMotorBuffer = Buffer.create(4)
-            setMotorBuffer[offset++] = eRegister.SET_MOTOR
-            setMotorBuffer[offset++] = 1
-        } else if (m2) {
-            setMotorBuffer = Buffer.create(4)
-            setMotorBuffer[offset++] = eRegister.SET_MOTOR
-            setMotorBuffer[offset++] = 2
+        if (n_m1_1_128_255 != m1_1_128_255 || n_m2_1_128_255 != m2_1_128_255) {
+            n_m1_1_128_255 = m1_1_128_255
+            n_m2_1_128_255 = m2_1_128_255 // I²C nur bei Änderung
+
+            let m1 = radio.between(m1_1_128_255, 1, 255)
+            let m2 = radio.between(m2_1_128_255, 1, 255)
+            // if (m1 || m2) {
+            let setMotorBuffer: Buffer
+            let offset = 0
+            if (m1 && m2) {
+                setMotorBuffer = Buffer.create(6)
+                setMotorBuffer[offset++] = eRegister.SET_MOTOR
+                setMotorBuffer[offset++] = 3
+            } else if (m1) {
+                setMotorBuffer = Buffer.create(4)
+                setMotorBuffer[offset++] = eRegister.SET_MOTOR
+                setMotorBuffer[offset++] = 1
+            } else if (m2) {
+                setMotorBuffer = Buffer.create(4)
+                setMotorBuffer[offset++] = eRegister.SET_MOTOR
+                setMotorBuffer[offset++] = 2
+            }
+
+            // M1 offset 2:Richtung, 3:PWM
+            if (m1 && (m1_1_128_255 & 0x80) == 0x80) { //     if (m1 && radio.between(m1_1_128_255, 128, 255)) { // M1 vorwärts
+                setMotorBuffer[offset++] = 0
+                setMotorBuffer[offset++] = m1_1_128_255 << 1// radio.mapInt32(m1_1_128_255, 128, 255, 0, 255)
+            } else if (m1) { // 1..127 M1 rückwärts
+                setMotorBuffer[offset++] = 1
+                setMotorBuffer[offset++] = ~(m1_1_128_255 << 1) // radio.mapInt32(m1_1_128_255, 1, 128, 255, 0)
+            }
+
+            // M2 wenn !m1 offset 2:Richtung, 3:PWM sonst offset 4:Richtung, 5:PWM
+            if (m2 && (m2_1_128_255 & 0x80) == 0x80) { //    if (m2 && radio.between(m2_1_128_255, 128, 255)) { // M2 vorwärts
+                setMotorBuffer[offset++] = 0
+                setMotorBuffer[offset++] = m2_1_128_255 << 1// radio.mapInt32(m2_1_128_255, 128, 255, 0, 255)
+            } else if (m2) { // 1..127 M2 rückwärts
+                setMotorBuffer[offset++] = 1
+                setMotorBuffer[offset++] = ~(m2_1_128_255 << 1) // radio.mapInt32(m2_1_128_255, 1, 128, 255, 0)
+            }
+
+            if (setMotorBuffer)
+                i2cWriteBuffer(setMotorBuffer)
         }
-
-        // M1 offset 2:Richtung, 3:PWM
-        if (m1 && (m1_1_128_255 & 0x80) == 0x80) { //     if (m1 && radio.between(m1_1_128_255, 128, 255)) { // M1 vorwärts
-            setMotorBuffer[offset++] = 0
-            setMotorBuffer[offset++] = m1_1_128_255 << 1// radio.mapInt32(m1_1_128_255, 128, 255, 0, 255)
-        } else if (m1) { // 1..127 M1 rückwärts
-            setMotorBuffer[offset++] = 1
-            setMotorBuffer[offset++] = ~(m1_1_128_255 << 1) // radio.mapInt32(m1_1_128_255, 1, 128, 255, 0)
-        }
-
-        // M2 wenn !m1 offset 2:Richtung, 3:PWM sonst offset 4:Richtung, 5:PWM
-        if (m2 && (m2_1_128_255 & 0x80) == 0x80) { //    if (m2 && radio.between(m2_1_128_255, 128, 255)) { // M2 vorwärts
-            setMotorBuffer[offset++] = 0
-            setMotorBuffer[offset++] = m2_1_128_255 << 1// radio.mapInt32(m2_1_128_255, 128, 255, 0, 255)
-        } else if (m2) { // 1..127 M2 rückwärts
-            setMotorBuffer[offset++] = 1
-            setMotorBuffer[offset++] = ~(m2_1_128_255 << 1) // radio.mapInt32(m2_1_128_255, 1, 128, 255, 0)
-        }
-
-        if (setMotorBuffer)
-            i2cWriteBuffer(setMotorBuffer)
-
     }
 
 
@@ -333,40 +343,52 @@ namespace cb2 { // c-callibot.ts 005F7F
         return i2cReadBuffer(10).toArray(NumberFormat.UInt8LE)
     }
 
-
+    //% group="Programmieren" subcategory="Fahrstrecke"
+    //% block="fahre Motor (1 ↓ 128 ↑ 255) %motor Servo (1 ↖ 16 ↗ 31) %servo %zehntelsekunden" weight=4
+    //% motor.shadow=radio_speedPicker
+    //% servo.shadow=radio_protractorPicker
+    //% zehntelsekunden.shadow=cb2_zehntelsekunden
+    export function fahreZeit(motor: number, servo: number, zehntelsekunden: number) {
+        cb2.writeMotor128Servo16(motor, servo)
+        basic.pause(zehntelsekunden * 100)
+        cb2.writeMotor128Servo16(c_MotorStop, 16)
+    }
 
 
     //% group="Programmieren" subcategory="Fahrstrecke"
-    //% block="fahre Motor (1 ↓ 128 ↑ 255) %motor Servo (1 ↖ 16 ↗ 31) %servo Strecke (cm) %strecke || %a" weight=3
+    //% block="fahre Motor (1 ↓ 128 ↑ 255) %motor Servo (1 ↖ 16 ↗ 31) %servo Strecke (cm) %strecke" weight=3
     // motor.min=0 motor.max=255 motor.defl=128
     //% motor.shadow=radio_speedPicker
     // servo.min=1 servo.max=31 servo.defl=16
     //% servo.shadow=radio_protractorPicker
     //% strecke.min=0 strecke.max=255 strecke.defl=20
     //% inlineInputMode=inline
-    export function fahreSchritt(motor: number, servo: number, strecke: number, a10?: number[]) {
+    export function fahreStrecke(motor: number, servo: number, strecke: number) { // cm oder zehntelsekunden
 
         cb2.writeMotor128Servo16(c_MotorStop, servo)
-        cb2.writeEncoderReset()
+
+        let hasEncoder = cb2.writeEncoderReset() // Testet ob Encoder vorhanden, Ergebnis in n_Callibot2_x22hasEncoder
 
         cb2.writeMotor128Servo16(motor, servo)
 
-        if (n_Callibot2_x22hasEncoder) {
+        if (hasEncoder) {
 
             while (cb2.getEncoderMittelwert() < strecke * cb2.n_EncoderFaktor) { // 31.25
                 // Pause eventuell bei hoher Geschwindigkeit motor verringern
                 // oder langsamer fahren wenn Rest strecke kleiner wird
-                basic.pause(200)
+                basic.pause(100) // 200
             }
         }
         else {
-            let i = Math.abs(Math.round(Math.map(motor, 1, 255, -9, 9)))
-            let a = [160, 160, 91, 73, 63, 59, 56, 53, 52, 51] // Fahrzeit ms für 1cm bei 10%, 20% .. 100%
-            if (a10)
-                a = a10
-            //  let t = input.runningTime()  // ms seit Start
-            basic.showNumber(i)
-            basic.pause(strecke * a[i])
+            basic.pause(strecke * 100)
+
+            //let i = Math.abs(Math.round(Math.map(motor, 1, 255, -9, 9)))
+            //let a = [160, 160, 91, 73, 63, 59, 56, 53, 52, 51] // Fahrzeit ms für 1cm bei 10%, 20% .. 100%
+            //if (a10)
+            //    a = a10
+
+            //basic.showNumber(i)
+            //basic.pause(strecke * a[i])
         }
 
         cb2.writeMotor128Servo16(c_MotorStop, 16)

@@ -30,8 +30,8 @@ namespace cb2 { // c-beispiele.ts
     //% block="Motoren fahren %sf s • drehen %sd s • nach %rl" weight=8
     // sf.min=0 sf.max=10 sf.defl=5
     // sd.min=0 sd.max=10 sd.defl=2.5
-    //% sf.shadow=cb2_ePause
-    //% sd.shadow=cb2_ePause
+    //% sf.shadow=cb2_sekunden
+    //% sd.shadow=cb2_sekunden
     export function seite2Motor(sf: number, sd: number, rl: eRL) {
         setMotoren0Prozent(100, 100)
 
@@ -52,7 +52,7 @@ namespace cb2 { // c-beispiele.ts
     //% pwm1.shadow="speedPicker" pwm1.defl=80
     //% pwm2.shadow="speedPicker" pwm2.defl=-80
     //% soundLevel.min=0 soundLevel.max=255 soundLevel.defl=30
-    //% sekunden.shadow=cb2_ePause
+    //% sekunden.shadow=cb2_sekunden
     //% inlineInputMode=inline
     export function seite4StopandGoL(pwm1: number, pwm2: number, soundLevel: number, sekunden: number = 1) {
         let laut = input.soundLevel()
@@ -118,7 +118,7 @@ namespace cb2 { // c-beispiele.ts
 
     //% group="Pause" subcategory=Beispiele
     //% block="Pause %sekunden" weight=1
-    //% sekunden.shadow=cb2_ePause
+    //% sekunden.shadow=cb2_sekunden
     export function pauseSekunden(sekunden: number) {
         basic.pause(sekunden * 1000)
         // control.waitMicros(sekunden * 1000000)
@@ -139,17 +139,18 @@ namespace cb2 { // c-beispiele.ts
         s15 = 150,
         //% block="20 Sekunden"
         s20 = 200,
-        //% block="30 Sekunden"
-        s30 = 300,
-        //% block="45 Sekunden"
-        s45 = 450,
-        //% block="60 Sekunden"
-        s60 = 600
+        //% block="25 Sekunden"
+        s25 = 250
     }
 
-    //% blockId=cb2_ePause 
+    //% blockId=cb2_sekunden 
     //% block="%pause" blockHidden=true
-    export function cb2_ePause(pause: ePause): number { return pause / 10 }
+    export function cb2_sekunden(pause: ePause): number { return pause / 10 }
+
+    //% blockId=cb2_zehntelsekunden
+    //% block="%pause" blockHidden=true
+    export function cb2_zehntelsekunden(pause: ePause): number { return pause }
+
 
 
     export enum eRL { rechts = 0, links = 1 } // Index im Array
