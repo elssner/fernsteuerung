@@ -20,7 +20,7 @@ namespace cb2 { // c-callibot.ts 005F7F
     export const c_MotorStop = 128
 
     export let n_EncoderFaktor = 31.25 // Impulse = 31.25 * Fahrstrecke in cm
-   // let n_MotorPWM_0_255 = 0
+    // let n_MotorPWM_0_255 = 0
 
     //% group="calliope-net.github.io/fernsteuerung"
     //% block="beim Start: Calli:bot 2 | zeige Funkgruppe | %zf Funkgruppe (aus Flash lesen) | %storagei32" weight=8
@@ -69,7 +69,7 @@ namespace cb2 { // c-callibot.ts 005F7F
             setMotorBuffer[4] = 1
             setMotorBuffer[5] = setMotorBuffer[3]
         }
-     //   n_MotorPWM_0_255 = setMotorBuffer[3]
+        //   n_MotorPWM_0_255 = setMotorBuffer[3]
 
         // fahren (beide Motoren gleich)
         /*    if (radio.between(x1_128_255, 129, 255)) { // vorwärts
@@ -359,9 +359,10 @@ namespace cb2 { // c-callibot.ts 005F7F
             }
         }
         else {
-            let i = Math.abs(radio.mapInt32(motor, 1, 255, -9, 9))
+            let i = Math.abs(Math.round(Math.map(motor, 1, 255, -9, 9)))
             let a = [160, 160, 91, 73, 63, 59, 56, 53, 52, 51] // Fahrzeit ms für 1cm bei 10%, 20% .. 100%
             //  let t = input.runningTime()  // ms seit Start
+            basic.showNumber(i)
             basic.pause(strecke * a[i])
         }
 
