@@ -301,7 +301,8 @@ namespace cb2 { // c-callibot.ts 005F7F
     //% group="Encoder (Call:bot 2E)" subcategory="Sensoren"
     //% block="Encoder Zähler löschen" weight=2
     export function writeEncoderReset() {
-        i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_ENCODER, 3]))
+        return pins.i2cWriteBuffer(eI2C.x22, Buffer.fromArray([eRegister.RESET_ENCODER, 3])) // 3:beide
+     //   i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_ENCODER, 3]))
     }
 
     //% group="Encoder (Call:bot 2E)" subcategory="Sensoren"
