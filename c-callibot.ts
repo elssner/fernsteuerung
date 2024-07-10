@@ -366,7 +366,7 @@ namespace cb2 { // c-callibot.ts 005F7F
                 a = a10
             //  let t = input.runningTime()  // ms seit Start
             basic.showNumber(i)
-            basic.pause(strecke * a[i] + 3)
+            basic.pause(strecke * a[i])
         }
 
         cb2.writeMotor128Servo16(c_MotorStop, 16)
