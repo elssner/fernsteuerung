@@ -307,14 +307,16 @@ namespace cb2 { // c-callibot.ts 005F7F
 
     //% group="Encoder (Call:bot 2E)" subcategory="Sensoren"
     //% block="Encoder Werte [l,r]" weight=1
-    export function readEncoderValues(): number[] {
-        i2cWriteBuffer(Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
-        return i2cReadBuffer(9).slice(1, 8).toArray(NumberFormat.Int32LE)
+    export function readEncoderValues() {
+        return pins.i2cWriteBuffer(eI2C.x22, Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
+
+      //  i2cWriteBuffer(Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
+       // return i2cReadBuffer(9).slice(1, 8).toArray(NumberFormat.Int32LE)
     }
 
     export function getEncoderMittelwert() {
         let encoderValues = readEncoderValues()
-        return Math.idiv(Math.abs(encoderValues[0]) + Math.abs(encoderValues[1]), 2)
+        return 0// Math.idiv(Math.abs(encoderValues[0]) + Math.abs(encoderValues[1]), 2)
     }
 
 
