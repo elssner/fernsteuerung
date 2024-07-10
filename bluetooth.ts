@@ -148,7 +148,7 @@ namespace radio { // bluetooth.ts
     // sichtbarer Event-Block
 
     //% group="Bluetooth empfangen (19 Byte)" subcategory="Bluetooth"
-    //% block="wenn Buffer empfangen" weight=9
+    //% block="wenn Datenpaket empfangen" weight=9
     //% draggableParameters=reporter
     export function onReceivedData(cb: (receivedData: Buffer) => void) {
         // das ist der sichtbare Ereignis Block 'wenn Buffer empfangen (receivedData)'

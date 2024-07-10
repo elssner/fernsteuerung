@@ -1,6 +1,6 @@
 
-namespace receiver { // r-datenpaket.ts
-/* 
+namespace receiver { // r-fernsteuerung.ts
+
     //% group="Betriebsart" subcategory="Fernsteuerung"
     //% block="%receivedData 00 Fernsteuerung Motoren" weight=5
     //% receivedData.shadow="radio_receivedBuffer19"
@@ -24,6 +24,6 @@ namespace receiver { // r-datenpaket.ts
         }
 
     }
- */
 
-} // r-datenpaket.ts
+
+} // r-fernsteuerung.ts
