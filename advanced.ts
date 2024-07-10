@@ -31,22 +31,6 @@ namespace radio { // advanced.ts
         return Math.idiv((value - 128) * prozent, 100) + 128
     }
 
-    //% group="Funktionen" advanced=true
-    //% block="speedPicker %speed (1 ↓ 128 ↑ 255)" weight=4
-    //% speed.shadow="speedPicker" speed.defl=0
-    export function speedPicker(speed: number) {
-        // -100..0..+100
-        return mapInt32(speed, -100, 100, 1, 255)
-    }
-
-    //% group="Funktionen" advanced=true
-    //% block="protractorPicker %angle (1 ↖ 16 ↗ 31)" weight=3
-    //% angle.shadow="protractorPicker" angle.defl=90
-    export function protractorPicker(angle: number) {
-        // 0..90..180
-        return mapInt32(angle, 0, 180, 1, 31)
-    }
-
 
     //% group="Funktionen" advanced=true
     //% block="mapInt32 %value|from low %fromLow|high %fromHigh|to low %toLow|high %toHigh" weight=1
@@ -55,6 +39,25 @@ namespace radio { // advanced.ts
     export function mapInt32(value: number, fromLow: number, fromHigh: number, toLow: number, toHigh: number): number {
         // return ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
         return Math.idiv(Math.imul(value - fromLow, toHigh - toLow), fromHigh - fromLow) + toLow
+    }
+
+
+    //% blockId=radio_speedPicker
+    //% group="speedPicker (-100..0..+100) → (1 ↓ 128 ↑ 255)" advanced=true
+    //% block="%speed" weight=4
+    //% speed.shadow="speedPicker" speed.defl=0
+    export function speedPicker(speed: number) {
+        // -100..0..+100 umwandeln in (1 ↓ 128 ↑ 255)
+        return mapInt32(speed, -100, 100, 1, 255)
+    }
+
+    //% blockId=radio_protractorPicker
+    //% group="protractorPicker (0..90..180) → (1 ↖ 16 ↗ 31)" advanced=true
+    //% block="%angle" weight=3
+    //% angle.shadow="protractorPicker" angle.defl=90
+    export function protractorPicker(angle: number) {
+        // 0..90..180 umwandeln in (1 ↖ 16 ↗ 31)
+        return mapInt32(angle, 0, 180, 1, 31)
     }
 
 

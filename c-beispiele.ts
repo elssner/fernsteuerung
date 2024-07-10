@@ -5,17 +5,17 @@ namespace cb2 { // c-beispiele.ts
 
     // ========== subcategory=Beispiele
 
-    //% blockId=cb2_speedPicker block="%speed" blockHidden=true
-    //% speed.shadow="speedPicker"
-    export function cb2_speedPicker(speed: number) { // defl ist 50%
-        return radio.speedPicker(speed)
-    }
+    // blockId=cb2_speedPicker block="%speed" blockHidden=true
+    // speed.shadow="speedPicker"
+    //export function cb2_speedPicker(speed: number) { // defl ist 50%
+    //    return radio.speedPicker(speed)
+    //}
 
-    //% blockId=cb2_protractorPicker block="%angle" blockHidden=true
-    //% angle.shadow="protractorPicker" angle.defl=90
-    export function cb2_protractorPicker(angle: number) { // defl ist 0°
-        return radio.protractorPicker(angle)
-    }
+    // blockId=cb2_protractorPicker block="%angle" blockHidden=true
+    // angle.shadow="protractorPicker" angle.defl=90
+    //export function cb2_protractorPicker(angle: number) { // defl ist 0°
+    //    return radio.protractorPicker(angle)
+    //}
 
 
 

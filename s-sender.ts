@@ -5,9 +5,6 @@ namespace sender { // s-sender.ts
     // BF3F7F
 
 
-    // block="beim Start Modell: | %modell Servo ↑ ° %servoGeradeaus Encoder %encoder Rad Durchmesser mm %radDmm Funkgruppe (aus Flash lesen) | %storagei32" weight=8
-
-
     //% group="calliope-net.github.io/fernsteuerung"
     //% block="beim Start: Sender | zeige Modell und Funkgruppe | %zf Funkgruppe (aus Flash lesen) | %storagei32" weight=8
     //% zf.shadow="toggleYesNo" zf.defl=1
@@ -29,7 +26,6 @@ namespace sender { // s-sender.ts
                 radio.zeigeFunkgruppe()
             }
             radio.beimStartintern() // setzt auch n_start true, startet Bluetooth Empfang
-            //  radio.setFunkgruppeButton(radio.eFunkgruppeButton.anzeigen)  // Funkgruppe in 5x5 anzeigen
         }
     }
 
@@ -39,15 +35,6 @@ namespace sender { // s-sender.ts
         return radio.storageBufferGet()
     }
 
-
-
-    //% group="Empfänger zurücksetzen"
-    //% block="Reset senden %reset" weight=2
-    //% reset.shadow="toggleYesNo"
-    export function setSendReset(reset = false) {
-        if (isFunktion(sender.eFunktion.ng)) // nicht nicht gestartet
-            radio.n_sendReset = reset
-    }
 
 
 } // s-sender.ts

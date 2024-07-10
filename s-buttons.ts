@@ -125,7 +125,7 @@ namespace sender { // s-buttons.ts
 
 
 
-    //% group="Modell" subcategory="Knopf A B"
+    //% group="aktuelles Modell" subcategory="Knopf A B"
     //% block="%pModell" weight=4
     export function isModell(pModell: eModell) {
         // return radio.isModell(pModell)
@@ -133,7 +133,7 @@ namespace sender { // s-buttons.ts
     }
 
 
-    //% group="Funktion" subcategory="Knopf A B"
+    //% group="aktuelle Funktion" subcategory="Knopf A B"
     //% block="%pFunktion" weight=3
     export function isFunktion(pFunktion: eFunktion) {
         if (pFunktion == eFunktion.ng)
