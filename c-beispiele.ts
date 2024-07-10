@@ -5,6 +5,31 @@ namespace cb2 { // c-beispiele.ts
 
     // ========== subcategory=Beispiele
 
+
+    //% group="1 Spurfolger (1 ↓ 128 ↑ 255)" subcategory=Beispiele
+    //% block="Spurfolger Motoren %motoren lenkender Motor %langsamer Abstand %stop cm" weight=2
+    //% motoren.shadow=radio_speedPicker
+    //% langsamer.shadow=radio_speedPicker
+    //% stop.min=0 stop.max=50 stop.defl=10
+    export function beispielSpurfolger(motoren: number, langsamer: number, stop: number) {
+
+        if (readUltraschallAbstand() < stop) { //  if (this.bitINPUT_US(eVergleich.lt, stop)) {
+            writeMotoren128(128, 128)//   setMotoren0Prozent(0, 0)
+            return false
+        } else {
+
+            if (readSpursensor(eDH.dunkel, eDH.dunkel, eI2C.x21)) { //     if (this.bitINPUTS(calli2bot.eINPUTS.sp0)) {
+                writeMotoren128(motoren, langsamer)//         setMotoren0Prozent(pwm1, pwm1) // dunkel,dunkel
+            } else if (readSpursensor(eDH.dunkel, eDH.hell)) { // if (this.bitINPUTS(calli2bot.eINPUTS.sp1r)) {
+                writeMotoren128(128, langsamer)//      setMotoren0Prozent(0, pwm2)
+            } else {
+                writeMotoren128(langsamer, 128)//      setMotoren0Prozent(pwm2, 0)
+            }
+            return true
+        }
+    }
+
+
     // blockId=cb2_speedPicker block="%speed" blockHidden=true
     // speed.shadow="speedPicker"
     //export function cb2_speedPicker(speed: number) { // defl ist 50%
@@ -84,6 +109,8 @@ namespace cb2 { // c-beispiele.ts
 
 
     // ========== 
+
+
 
     //% group="9 Linienfolger" subcategory=Beispiele
     //% block="Linienfolger fahren %pwm1 \\% • drehen %pwm2 \\% • stop %stop cm" weight=2
