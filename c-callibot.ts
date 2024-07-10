@@ -302,21 +302,21 @@ namespace cb2 { // c-callibot.ts 005F7F
     //% block="Encoder Zähler löschen" weight=2
     export function writeEncoderReset() {
         return pins.i2cWriteBuffer(eI2C.x22, Buffer.fromArray([eRegister.RESET_ENCODER, 3])) // 3:beide
-     //   i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_ENCODER, 3]))
+        //   i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_ENCODER, 3]))
     }
 
     //% group="Encoder (Call:bot 2E)" subcategory="Sensoren"
     //% block="Encoder Werte [l,r]" weight=1
     export function readEncoderValues() {
-        return pins.i2cWriteBuffer(eI2C.x22, Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
+        // return pins.i2cWriteBuffer(eI2C.x22, Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
 
-      //  i2cWriteBuffer(Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
-       // return i2cReadBuffer(9).slice(1, 8).toArray(NumberFormat.Int32LE)
+        i2cWriteBuffer(Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
+        return i2cReadBuffer(9).slice(1, 8).toArray(NumberFormat.Int32LE)
     }
 
     export function getEncoderMittelwert() {
         let encoderValues = readEncoderValues()
-        return 0// Math.idiv(Math.abs(encoderValues[0]) + Math.abs(encoderValues[1]), 2)
+        return Math.idiv(Math.abs(encoderValues[0]) + Math.abs(encoderValues[1]), 2)
     }
 
 
