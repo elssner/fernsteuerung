@@ -12,6 +12,8 @@ namespace cb2 { // c-callibot.ts 005F7F
     //const i2cCallibot_x21 = 0x21
 
     let n_Callibot2_x22Connected = true // I²C Device ist angesteckt
+    let n_Callibot2_x22hasEncoder = false // 2:CB2 3:CB2E 4:CB2A=Gymnasium
+
     // let n_c2MotorPower = true
     //  let qFernsteuerungStop: boolean = false
 
@@ -290,28 +292,30 @@ namespace cb2 { // c-callibot.ts 005F7F
     export function readUltraschallAbstand() {
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUT_US]))
         return i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1) / 10 // 16 Bit (mm)
-        //if (e == eDist.cm)
-        //    return Math.idiv(mm, 10)
-        //else
-        //     return mm
     }
 
 
 
+
     //% group="Encoder (Call:bot 2E)" subcategory="Sensoren"
-    //% block="Encoder Zähler löschen" weight=2
+    //% block="Encoder Test und Zähler löschen" weight=2
     export function writeEncoderReset() {
-        return pins.i2cWriteBuffer(eI2C.x22, Buffer.fromArray([eRegister.RESET_ENCODER, 3])) // 3:beide
-        //   i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_ENCODER, 3]))
+        n_Callibot2_x22hasEncoder = readVersionArray().get(1) == 3 // 2:CB2 3:CB2E 4:CB2A=Gymnasium
+        if (n_Callibot2_x22hasEncoder)
+            i2cWriteBuffer(Buffer.fromArray([eRegister.RESET_ENCODER, 3])) // 3:beide
+        // return pins.i2cWriteBuffer(eI2C.x22, Buffer.fromArray([eRegister.RESET_ENCODER, 3])) 
+        return n_Callibot2_x22hasEncoder
     }
 
     //% group="Encoder (Call:bot 2E)" subcategory="Sensoren"
     //% block="Encoder Werte [l,r]" weight=1
     export function readEncoderValues() {
-        // return pins.i2cWriteBuffer(eI2C.x22, Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
-
-        i2cWriteBuffer(Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
-        return i2cReadBuffer(9).slice(1, 8).toArray(NumberFormat.Int32LE)
+        if (n_Callibot2_x22hasEncoder) {
+            i2cWriteBuffer(Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
+            return i2cReadBuffer(9).slice(1, 8).toArray(NumberFormat.Int32LE) // 32 Bit mit Vorzeichen
+            // return pins.i2cWriteBuffer(eI2C.x22, Buffer.fromArray([eRegister.GET_ENCODER_VALUE]))
+        } else
+            return [0, 0]
     }
 
     export function getEncoderMittelwert() {
@@ -322,8 +326,8 @@ namespace cb2 { // c-callibot.ts 005F7F
 
 
     //% group="Calli:bot Version" subcategory="Sensoren"
-    //% block="Call:bot Typ [1]" weight=3
-    export function readVersion() { // [1]=4:CB2(Gymnasium) =3:CB2E (=2:soll CB2 sein)
+    //% block="Call:bot Typ & FW & SN Array[10]" weight=3
+    export function readVersionArray() { // [1]=4:CB2(Gymnasium) =3:CB2E (=2:soll CB2 sein)
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_FW_VERSION]))
         return i2cReadBuffer(10).toArray(NumberFormat.UInt8LE)
     }
