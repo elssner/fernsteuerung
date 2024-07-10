@@ -95,8 +95,8 @@ namespace cb2 { // c-callibot.ts 005F7F
         else if (radio.between(y1_16_31, 17, 31)) { // rechts
             setMotorBuffer[5] *= Math.map(y1_16_31, 16, 32, 1, prozent / 100) // 16=nichtlenken=100% // 32=rechtslenken50%
         }
-        else { // wenn y lenken 0, 16 oder mehr als 5 Bit
-        }
+        //else { // wenn y lenken 0, 16 oder mehr als 5 Bit
+        //}
 
         i2cWriteBuffer(setMotorBuffer)
 
@@ -283,17 +283,17 @@ namespace cb2 { // c-callibot.ts 005F7F
     }
 
 
-  //  export enum eDist { cm, mm }
+    //  export enum eDist { cm, mm }
 
     //% group="Ultraschall Sensor" subcategory="Sensoren"
     //% block="Abstand cm" weight=4
     export function readUltraschallAbstand() {
         i2cWriteBuffer(Buffer.fromArray([eRegister.GET_INPUT_US]))
-       return i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1)/10 // 16 Bit (mm)
+        return i2cReadBuffer(3).getNumber(NumberFormat.UInt16LE, 1) / 10 // 16 Bit (mm)
         //if (e == eDist.cm)
         //    return Math.idiv(mm, 10)
         //else
-       //     return mm
+        //     return mm
     }
 
 
