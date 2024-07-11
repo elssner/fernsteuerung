@@ -15,7 +15,7 @@ namespace sender { // s-multiswitch.ts
             if (!n_GroveMultiswitchConnected)
                 radio.zeigeHex(i2cGroveMultiswitch_x03)
 
-            if (n_GroveMultiswitchConnected) {
+            else {
                 let bu = pins.i2cReadBuffer(i2cGroveMultiswitch_x03, 10) // 4 Byte + 6 Schalter = 10
                 // Byte 0-3: 32 Bit UInt32LE; Byte 4:Schalter 1 ... Byte 9:Schalter 6
                 // Byte 4-9: 00000001:Schalter OFF; 00000000:Schalter ON; Bit 1-7 löschen & 0x01
@@ -34,12 +34,14 @@ namespace sender { // s-multiswitch.ts
                         n_Funktion = eFunktion.mc_mb // MC und MB (Zahnstange und Drehkranz)
                     }
                     else if (bu[3 + 2] == 0) { // 2 nach links
-                        // n_Magnet = false
-                        a_Schalter[eSchalter.A] = false
+                      
+                        if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_m1_s0)
+                            a_ButtonAB_Switch[eButtonAB_Switch.A] = false // n_Magnet = false
                     }
                     else if (bu[3 + 4] == 0) { // 4 nach rechts
-                        // n_Magnet = true
-                        a_Schalter[eSchalter.A] = true
+                      
+                        if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_m1_s0)
+                            a_ButtonAB_Switch[eButtonAB_Switch.A] = true // n_Magnet = true
                     }
                 }
             }

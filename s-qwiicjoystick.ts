@@ -44,7 +44,10 @@ namespace sender { // s-qwiicjoystick.ts
         if (n_qwiicJoystickConnected) {
             n_qwiicJoystickConnected = pins.i2cWriteBuffer(i2cqwiicJoystick_x20, Buffer.fromArray([3]), true) == 0
 
-            if (n_qwiicJoystickConnected) {
+            if (!n_qwiicJoystickConnected)
+                radio.zeigeHex(i2cqwiicJoystick_x20)
+
+            else {
                 // n_128 = radio.between(p128, 0, 8) ? p128 : 0
                 n_max = radio.between(pmax, 0, 20) ? pmax : 0
 
@@ -72,7 +75,7 @@ namespace sender { // s-qwiicjoystick.ts
         return n_qwiicJoystickConnected
     }
 
-   
+
     //% group="Qwiic Joystick 0x20"
     //% block="Joystick %pJoystickValue" weight=8
     export function joystickValue(pJoystickValue: eJoystickValue): number {

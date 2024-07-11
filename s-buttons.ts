@@ -1,10 +1,10 @@
 
 namespace sender { // s-buttons.ts
 
-    export enum eSchalter { A, B, AB }
-    export let a_Schalter = [false, false, false] // so viele Elemente wie Member in der Enum eSchalter
-    export let n_CalliBotBeispielButtonAB = 0
-    export let n_ServoWinkelButtonAB = 16 // 1..16..31 mit A- B+ ändern
+    export enum eButtonAB_Switch { A, B, AB }
+    export let a_ButtonAB_Switch = [false, false, false] // so viele Elemente wie Member in der Enum eSchalter
+    //  export let n_CalliBotBeispielButtonAB = 0
+    export let n_ButtonAB_Counter = 16 // 1..16..31 mit A- B+ ändern
 
     export enum eModell { // zuletzt gewähltes Modell wird im offset 1 dauerhaft gespeiechert
         //% block="Calli:Bot"
@@ -52,18 +52,18 @@ namespace sender { // s-buttons.ts
         // Calli:bot && Funktion Beispiele (Modell Nummer ++)
         else if (isModell(eModell.cb2e && n_Funktion == eFunktion.mc_md_callibot_beispiele)) {
 
-            a_Schalter[eSchalter.B] = false // Beispiel noch nicht aktiv senden; erst nach B geklickt
+            a_ButtonAB_Switch[eButtonAB_Switch.B] = false // Beispiel noch nicht aktiv senden; erst nach B geklickt
 
-            if (n_CalliBotBeispielButtonAB < 3)
-                n_CalliBotBeispielButtonAB++
+            if (n_ButtonAB_Counter < 3) // zählt bis 3, dann 1
+                n_ButtonAB_Counter++
             else
-                n_CalliBotBeispielButtonAB = 1
+                n_ButtonAB_Counter = 1
         }
         // Maker Kit Car && Gabelstapler (lenken mit Tasten)
         else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_m1_s0) {
 
-            if (n_ServoWinkelButtonAB > 1)  // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-                n_ServoWinkelButtonAB--
+            if (n_ButtonAB_Counter > 1)  // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+                n_ButtonAB_Counter--
         }
 
         //else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkelButtonAB > 1) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
@@ -71,7 +71,7 @@ namespace sender { // s-buttons.ts
         //}
 
         else {
-            a_Schalter[eSchalter.A] = !a_Schalter[eSchalter.A] // Standardwert immer wechseln true-false
+            a_ButtonAB_Switch[eButtonAB_Switch.A] = !a_ButtonAB_Switch[eButtonAB_Switch.A] // Standardwert immer wechseln true-false
         }
         return modellChanged
     }
@@ -93,14 +93,14 @@ namespace sender { // s-buttons.ts
         // Calli:bot && Funktion Beispiele (mit A gewählte Modell Nummer starten)
         else if (isModell(eModell.cb2e && n_Funktion == eFunktion.mc_md_callibot_beispiele)) {
 
-            a_Schalter[eSchalter.B] = true // Beispiel jetzt aktiv senden
+            a_ButtonAB_Switch[eButtonAB_Switch.B] = true // Beispiel jetzt aktiv senden
 
         }
         // Maker Kit Car && Gabelstapler (lenken mit Tasten)
         else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_m1_s0) {
 
-            if (n_ServoWinkelButtonAB < 31)  // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-                n_ServoWinkelButtonAB++
+            if (n_ButtonAB_Counter < 31)  // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+                n_ButtonAB_Counter++
         }
 
 
@@ -112,7 +112,7 @@ namespace sender { // s-buttons.ts
         //else if (n_Funktion == eFunktion.mc_mb) { // MC und MB (Zahnstange und Drehkranz)
         //}
         else {
-            a_Schalter[eSchalter.B] = !a_Schalter[eSchalter.B] // Standardwert immer wechseln true-false
+            a_ButtonAB_Switch[eButtonAB_Switch.B] = !a_ButtonAB_Switch[eButtonAB_Switch.B] // Standardwert immer wechseln true-false
             // mit B Licht, wenn oben nichts anderes steht
         }
         return modellChanged
@@ -127,38 +127,44 @@ namespace sender { // s-buttons.ts
         if (n_Funktion == eFunktion.ng) // beim ersten Mal (nach Reset)
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
 
-        // Calli:bot von Joystick auf Beispiele umschalten
+        // cb2e Calli:bot von Joystick auf Beispiele umschalten
         else if (isModell(eModell.cb2e) && n_Funktion == eFunktion.m0_s0) {
 
-            a_Schalter[eSchalter.B] = false // Beispiel noch nicht aktiv senden; erst nach B geklickt
+            a_ButtonAB_Switch[eButtonAB_Switch.B] = false // Beispiel noch nicht aktiv senden; erst nach B geklickt
             n_Funktion = eFunktion.mc_md_callibot_beispiele
+            if (!radio.between(n_ButtonAB_Counter, 1, 3))
+                n_ButtonAB_Counter = 1
         }
-        // Maker Kit Car ohne und mit Gabelstapler
+        // mkcg Maker Kit Car ohne und mit Gabelstapler
         else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_s0) {
             n_Funktion = eFunktion.m0_m1_s0
+            n_ButtonAB_Counter = 16
         }
-        // Maker Kit Car mit Kran
+        // mkck Maker Kit Car mit Kran
         else if (isModell(eModell.mkck) && n_Funktion == eFunktion.m0_s0)
             n_Funktion = eFunktion.ma_mb // Funktion weiter schalten
         else if (isModell(eModell.mkck) && n_Funktion == eFunktion.ma_mb)
             n_Funktion = eFunktion.mc_mb // Funktion weiter schalten
 
         else {
-            a_Schalter[eSchalter.AB] = !a_Schalter[eSchalter.AB] // Standardwert immer wechseln true-false
+            a_ButtonAB_Switch[eButtonAB_Switch.AB] = !a_ButtonAB_Switch[eButtonAB_Switch.AB] // Standardwert immer wechseln true-false
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
-            n_ServoWinkelButtonAB = 16
+            //n_ButtonAB_Counter = 16
         }
     }
 
 
-
-    //% group="schaltet bei jedem Klick um" subcategory="Knopf A B"
-    //% block="%pSchalter" weight=2
-    export function getSchalter(pSchalter: eSchalter): boolean {
-        return a_Schalter[pSchalter]
+    //% group="Zähler / Schalter" subcategory="Knopf A B"
+    //% block="Knopf A-B+ Zähler" weight=4
+    export function getButtonAB_Counter() {
+        return n_ButtonAB_Counter
     }
 
-
+    //% group="Zähler / Schalter" subcategory="Knopf A B"
+    //% block="Knopf %pSchalter Schalter" weight=3
+    export function getButtonAB_Switch(pSwitch: eButtonAB_Switch): boolean {
+        return a_ButtonAB_Switch[pSwitch]
+    }
 
 
     //% group="aktuelles Modell" subcategory="Knopf A B"

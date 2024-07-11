@@ -44,7 +44,7 @@ namespace radio { // advanced.ts
 
     //% blockId=radio_speedPicker
     //% group="speedPicker (-100..0..+100) → (1 ↓ 128 ↑ 255)" advanced=true
-    //% block="%speed" weight=4
+    //% block="%speed \\%" weight=4
     //% speed.shadow="speedPicker" speed.defl=0
     export function speedPicker(speed: number) {
         // -100..0..+100 umwandeln in (1 ↓ 128 ↑ 255)
@@ -53,7 +53,7 @@ namespace radio { // advanced.ts
 
     //% blockId=radio_protractorPicker
     //% group="protractorPicker (0..90..180) → (1 ↖ 16 ↗ 31)" advanced=true
-    //% block="%angle" weight=3
+    //% block="%angle °" weight=3
     //% angle.shadow="protractorPicker" angle.defl=90
     export function protractorPicker(angle: number) {
         // 0..90..180 umwandeln in (1 ↖ 16 ↗ 31)
