@@ -50,7 +50,7 @@ namespace radio { // dispaly5x5.ts
             if (getaktiviert(buffer, e3aktiviert.m0)) {
                 // fahren und lenken mit Servo
                 zeigeBINx3Motor(buffer[eBufferPointer.m0])
-                zeigeBINx4Servo(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
+                zeigeBINx4Servo(6)//(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
 
             } else {
                 // die ersten 2 aktivierten Motoren ohne Servo
@@ -71,7 +71,7 @@ namespace radio { // dispaly5x5.ts
                     bin.push(buffer[eBufferPointer.md]) // Motor MD
 
                     if (bin.length < 2) // offset 17 (Servo) enthält Callibot Beispiel Nummer
-                        bin.push(5)//(buffer[eBufferPointer.md + eBufferOffset.b1_Servo] & 0x1F)
+                        bin.push(buffer[eBufferPointer.md + eBufferOffset.b1_Servo] & 0x1F)
                 }
 
                 if (bin.length >= 1)
