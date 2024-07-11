@@ -40,8 +40,10 @@ namespace sender { // s-buttons.ts
     //% group="in Eingabe Ereignisse einfügen" subcategory="Knopf A B"
     //% block="Knopf A geklickt" weight=7
     export function buttonA() {
+        let modellChanged = false
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
+            modellChanged = true
             if (radio.getStorageModell() > 0)
                 radio.setStorageModell(radio.getStorageModell() - 1)
 
@@ -71,15 +73,17 @@ namespace sender { // s-buttons.ts
         else {
             a_Schalter[eSchalter.A] = !a_Schalter[eSchalter.A] // Standardwert immer wechseln true-false
         }
-
+        return modellChanged
     }
 
 
     //% group="in Eingabe Ereignisse einfügen" subcategory="Knopf A B"
     //% block="Knopf B geklickt" weight=6
     export function buttonB() {
+        let modellChanged = false
         if (n_Funktion == eFunktion.ng) {
             // wenn nicht gestartet, kann Modell geändert werden
+            modellChanged = true
             if (radio.getStorageModell() < a_ModellImages.length - 1)
                 radio.setStorageModell(radio.getStorageModell() + 1)
 
@@ -111,6 +115,7 @@ namespace sender { // s-buttons.ts
             a_Schalter[eSchalter.B] = !a_Schalter[eSchalter.B] // Standardwert immer wechseln true-false
             // mit B Licht, wenn oben nichts anderes steht
         }
+        return modellChanged
     }
 
 
