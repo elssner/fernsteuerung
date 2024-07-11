@@ -93,7 +93,7 @@ namespace sender { // s-buttons.ts
         // Calli:bot && Funktion Beispiele (mit A gewählte Modell Nummer starten)
         else if (isModell(eModell.cb2e && n_Funktion == eFunktion.mc_md_callibot_beispiele)) {
 
-            a_ButtonAB_Switch[eButtonAB_Switch.B] = true // Beispiel jetzt aktiv senden
+            a_ButtonAB_Switch[eButtonAB_Switch.B] = !a_ButtonAB_Switch[eButtonAB_Switch.B] // Beispiel jetzt aktiv senden
 
         }
         // Maker Kit Car && Gabelstapler (lenken mit Tasten)
