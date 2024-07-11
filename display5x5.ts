@@ -50,7 +50,7 @@ namespace radio { // dispaly5x5.ts
             if (getaktiviert(buffer, e3aktiviert.m0)) {
                 // fahren und lenken mit Servo
                 zeigeBINx3Motor(buffer[eBufferPointer.m0])
-                zeigeBINx4Servo(6)//(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
+                zeigeBINx4Servo(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
 
             } else {
                 // die ersten 2 aktivierten Motoren ohne Servo
