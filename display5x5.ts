@@ -72,6 +72,7 @@ namespace radio { // dispaly5x5.ts
 
                     if (bin.length < 2) // offset 17 (Servo) enthält Callibot Beispiel Nummer
                         zeigeBINx4Servo_31(buffer[eBufferPointer.md + eBufferOffset.b1_Servo] & 0x1F)
+                    // zeigt als letztes direkt 0..31 an, mit Motor würde das gemapt werden
                 }
 
                 if (bin.length >= 1)
@@ -110,7 +111,6 @@ namespace radio { // dispaly5x5.ts
         if (n5x5_x4 != x4) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
             n5x5_x4 = x4
             zeigeBIN(x4, ePlot.bin, 4)
-            //zeigeBIN(x4 & 0x1F, ePlot.bin, 4)
         }
     }
 
