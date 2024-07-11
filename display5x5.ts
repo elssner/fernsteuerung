@@ -49,8 +49,8 @@ namespace radio { // dispaly5x5.ts
 
             if (getaktiviert(buffer, e3aktiviert.m0)) {
                 // fahren und lenken mit Servo
-                zeigeBINx3Motor(buffer[eBufferPointer.m0])
-                zeigeBINx4Servo(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
+                zeigeBINx3Motor_map255(buffer[eBufferPointer.m0])
+                zeigeBINx4Servo_31(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
 
             } else {
                 // die ersten 2 aktivierten Motoren ohne Servo
@@ -70,23 +70,23 @@ namespace radio { // dispaly5x5.ts
                 if (bin.length < 2 && getaktiviert(buffer, e3aktiviert.md)) {
                     bin.push(buffer[eBufferPointer.md]) // Motor MD
 
-                  //  if (bin.length < 2) // offset 17 (Servo) enthält Callibot Beispiel Nummer
-                        bin.push(buffer[eBufferPointer.md + eBufferOffset.b1_Servo])// & 0x1F
+                    if (bin.length < 2) // offset 17 (Servo) enthält Callibot Beispiel Nummer
+                        zeigeBINx4Servo_31(buffer[eBufferPointer.md + eBufferOffset.b1_Servo] & 0x1F)
                 }
 
                 if (bin.length >= 1)
-                    zeigeBINx3Motor(bin[0]) // in 5x5 LED Matrix x=3
+                    zeigeBINx3Motor_map255(bin[0]) // in 5x5 LED Matrix x=3
                 if (bin.length >= 2)
-                    zeigeBINx4Motor(bin[1]) // in 5x5 LED Matrix x=4
+                    zeigeBINx4Motor_map255(bin[1]) // in 5x5 LED Matrix x=4
             }
         } else {
             // andere Betriebsarten als '00 Fernsteuerung Motoren'
-            zeigeBINx3Motor(buffer[eBufferPointer.m0])
-            zeigeBINx4Servo(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
+            zeigeBINx3Motor_map255(buffer[eBufferPointer.m0])
+            zeigeBINx4Servo_31(buffer[eBufferPointer.m0 + eBufferOffset.b1_Servo] & 0x1F)
         }
     }
 
-    function zeigeBINx3Motor(x3: number) {
+    function zeigeBINx3Motor_map255(x3: number) {
         if (n5x5_x3 != x3) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=3)
             n5x5_x3 = x3
             if (x3 == 0)
@@ -96,7 +96,7 @@ namespace radio { // dispaly5x5.ts
         }
     }
 
-    function zeigeBINx4Motor(x4: number) {
+    function zeigeBINx4Motor_map255(x4: number) {
         if (n5x5_x4 != x4) { // zeigt Motor0 aus Buffer[1] 1..16..31 (x=4)
             n5x5_x4 = x4
             if (x4 == 0)
@@ -106,7 +106,7 @@ namespace radio { // dispaly5x5.ts
         }
     }
 
-    function zeigeBINx4Servo(x4: number) {
+    function zeigeBINx4Servo_31(x4: number) {
         if (n5x5_x4 != x4) { // zeigt Servo0 aus Buffer[2] 1..16..31 (x=4)
             n5x5_x4 = x4
             zeigeBIN(x4, ePlot.bin, 4)
