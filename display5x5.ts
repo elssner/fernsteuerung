@@ -71,7 +71,7 @@ namespace radio { // dispaly5x5.ts
                     bin.push(buffer[eBufferPointer.md]) // Motor MD
 
                     if (bin.length < 2) // offset 17 (Servo) enthält Callibot Beispiel Nummer
-                        zeigeBINx4Servo(buffer[eBufferPointer.md + eBufferOffset.b1_Servo] & 0x1F) 
+                        zeigeBINx4Servo(buffer[eBufferPointer.md + eBufferOffset.b1_Servo] & 0x1F)
                 }
 
                 if (bin.length >= 1)
@@ -173,11 +173,15 @@ namespace radio { // dispaly5x5.ts
     //% text.shadow="radio_text"
     export function zeigeText(text: any) {
         let tx = convertToText(text)
-        if (tx != n_showString) {
+        if (n_showString != tx) {
             n_showString = tx
             basic.showString(tx)
             n5x5_setClearScreen = true
         }
+    }
+
+    export function zeigeHex(n: number) {
+        zeigeText(Buffer.fromArray([n]).toHex())
     }
 
     //% group="Image" subcategory="Display 5x5" color=#54C9C9
