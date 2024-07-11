@@ -50,6 +50,8 @@ namespace sender { // s-buttons.ts
         // Calli:bot && Funktion Beispiele (Modell Nummer ++)
         else if (isModell(eModell.cb2e && n_Funktion == eFunktion.mc_md_callibot_beispiele)) {
 
+            a_Schalter[eSchalter.B] = false // Beispiel noch nicht aktiv senden; erst nach B geklickt
+
             if (n_CalliBotBeispielButtonAB < 3)
                 n_CalliBotBeispielButtonAB++
             else
@@ -84,8 +86,10 @@ namespace sender { // s-buttons.ts
             radio.zeigeImage(a_ModellImages[radio.getStorageModell()])
 
         }
-        // Calli:bot && Funktion Beispiele (Modell Nummer ++)
+        // Calli:bot && Funktion Beispiele (mit A gewählte Modell Nummer starten)
         else if (isModell(eModell.cb2e && n_Funktion == eFunktion.mc_md_callibot_beispiele)) {
+
+            a_Schalter[eSchalter.B] = true // Beispiel jetzt aktiv senden
 
         }
         // Maker Kit Car && Gabelstapler (lenken mit Tasten)
@@ -118,14 +122,16 @@ namespace sender { // s-buttons.ts
         if (n_Funktion == eFunktion.ng) // beim ersten Mal (nach Reset)
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
 
-        // Calli:bot Beispiele starten
-        else if (isModell(eModell.cb2e) && n_Funktion == eFunktion.m0_s0)
+        // Calli:bot von Joystick auf Beispiele umschalten
+        else if (isModell(eModell.cb2e) && n_Funktion == eFunktion.m0_s0) {
+
+            a_Schalter[eSchalter.B] = false // Beispiel noch nicht aktiv senden; erst nach B geklickt
             n_Funktion = eFunktion.mc_md_callibot_beispiele
-
+        }
         // Maker Kit Car ohne und mit Gabelstapler
-        else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_s0)
+        else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_s0) {
             n_Funktion = eFunktion.m0_m1_s0
-
+        }
         // Maker Kit Car mit Kran
         else if (isModell(eModell.mkck) && n_Funktion == eFunktion.m0_s0)
             n_Funktion = eFunktion.ma_mb // Funktion weiter schalten

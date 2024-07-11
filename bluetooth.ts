@@ -207,17 +207,27 @@ namespace radio { // bluetooth.ts
         }
     }
 
+
+    // ========== StorageFunkgruppe offset 0
+
     export function getStorageFunkgruppe() {
         return a_StorageBuffer[eStorageBuffer.funkgruppe]
     }
 
+
+    // ========== StorageModell offset 1
+
     export function setStorageModell(pModell: number) {
+        n_StorageModell = pModell
         a_StorageBuffer[eStorageBuffer.modell] = pModell
     }
 
+    let n_StorageModell: number // lokaler Speicher, um nicht immer aus Storage zu lesen
+
     export function getStorageModell() {
-        // gibt den Enum Wert zurück
-        return a_StorageBuffer[eStorageBuffer.modell]
+        if (n_StorageModell == undefined)
+            n_StorageModell = a_StorageBuffer[eStorageBuffer.modell]
+        return n_StorageModell
     }
 
 
