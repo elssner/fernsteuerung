@@ -2,7 +2,8 @@
 namespace sender { // s-buttons.ts
 
     export enum eSchalter { A, B, AB }
-    export let a_Schalter = [false, false, false] // so viele Elemente wie Member in der Enum
+    export let a_Schalter = [false, false, false] // so viele Elemente wie Member in der Enum eSchalter
+    export let n_CalliBotBeispielButtonAB = 0
     export let n_ServoWinkelButtonAB = 16 // 1..16..31 mit A- B+ ändern
 
     export enum eModell { // zuletzt gewähltes Modell wird im offset 1 dauerhaft gespeiechert
@@ -29,7 +30,9 @@ namespace sender { // s-buttons.ts
         //% block="Seilrolle und Drehkranz"
         ma_mb,      // MA und MB (Seilrolle und Drehkranz)
         //% block="Zahnstange und Drehkranz"
-        mc_mb       // MC und MB (Zahnstange und Drehkranz)
+        mc_mb,       // MC und MB (Zahnstange und Drehkranz)
+        //% block="Calli:bot Beispiele"
+        mc_md_callibot_beispiele
     }
     export let n_Funktion = eFunktion.ng // aktuell ausgewählte Funktion
 
@@ -44,21 +47,29 @@ namespace sender { // s-buttons.ts
 
             radio.zeigeImage(a_ModellImages[radio.getStorageModell()])
         }
-        //else if (isModell(eModell.mkck)) { // Modell Kran
-        //    a_Schalter[eSchalter.A] = !a_Schalter[eSchalter.A]
-        //}
-        //else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
-        //}
-        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkelButtonAB > 1) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-            n_ServoWinkelButtonAB--
+        // Calli:bot && Funktion Beispiele (Modell Nummer ++)
+        else if (isModell(eModell.cb2e && n_Funktion == eFunktion.mc_md_callibot_beispiele)) {
+
+            if (n_CalliBotBeispielButtonAB < 3)
+                n_CalliBotBeispielButtonAB++
+            else
+                n_CalliBotBeispielButtonAB = 1
         }
+        // Maker Kit Car && Gabelstapler (lenken mit Tasten)
+        else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_m1_s0) {
+
+            if (n_ServoWinkelButtonAB > 1)  // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+                n_ServoWinkelButtonAB--
+        }
+
+        //else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkelButtonAB > 1) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+        //    n_ServoWinkelButtonAB--
+        //}
+
         else {
-            a_Schalter[eSchalter.A] = !a_Schalter[eSchalter.A]
+            a_Schalter[eSchalter.A] = !a_Schalter[eSchalter.A] // Standardwert immer wechseln true-false
         }
-        //else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
-        //}
-        //else if (n_Funktion == eFunktion.mc_mb) { // MC und MB (Zahnstange und Drehkranz)
-        //}
+
     }
 
 
@@ -69,22 +80,32 @@ namespace sender { // s-buttons.ts
             // wenn nicht gestartet, kann Modell geändert werden
             if (radio.getStorageModell() < a_ModellImages.length - 1)
                 radio.setStorageModell(radio.getStorageModell() + 1)
-            //radio.a_StorageBuffer[radio.eStorageBuffer.modell]++
+
             radio.zeigeImage(a_ModellImages[radio.getStorageModell()])
-            // a_ModellImages[radio.getModell()].showImage(0)
-            //  radio.n5x5_clearScreen = true
+
         }
-        //else if (n_Funktion == eFunktion.m0_s0) { // Joystick steuert M0 und Servo (Fahren und Lenken)
+        // Calli:bot && Funktion Beispiele (Modell Nummer ++)
+        else if (isModell(eModell.cb2e && n_Funktion == eFunktion.mc_md_callibot_beispiele)) {
+
+        }
+        // Maker Kit Car && Gabelstapler (lenken mit Tasten)
+        else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_m1_s0) {
+
+            if (n_ServoWinkelButtonAB < 31)  // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+                n_ServoWinkelButtonAB++
+        }
+
+
+        //else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkelButtonAB < 31) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
+        //    n_ServoWinkelButtonAB++
         //}
-        else if (n_Funktion == eFunktion.m0_m1_s0 && n_ServoWinkelButtonAB < 31) { // M0 und M1, Servo über Tasten A- B+ (Gabelstapler)
-            n_ServoWinkelButtonAB++
-        }
         //else if (n_Funktion == eFunktion.ma_mb) { // MA und MB (Seilrolle und Drehkranz)
         //}
         //else if (n_Funktion == eFunktion.mc_mb) { // MC und MB (Zahnstange und Drehkranz)
         //}
         else {
-            a_Schalter[eSchalter.B] = !a_Schalter[eSchalter.B] // mit B Licht, wenn oben nichts anderes steht
+            a_Schalter[eSchalter.B] = !a_Schalter[eSchalter.B] // Standardwert immer wechseln true-false
+            // mit B Licht, wenn oben nichts anderes steht
         }
     }
 
@@ -97,6 +118,10 @@ namespace sender { // s-buttons.ts
         if (n_Funktion == eFunktion.ng) // beim ersten Mal (nach Reset)
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
 
+        // Calli:bot Beispiele starten
+        else if (isModell(eModell.cb2e) && n_Funktion == eFunktion.m0_s0)
+            n_Funktion = eFunktion.mc_md_callibot_beispiele
+
         // Maker Kit Car ohne und mit Gabelstapler
         else if (isModell(eModell.mkcg) && n_Funktion == eFunktion.m0_s0)
             n_Funktion = eFunktion.m0_m1_s0
@@ -108,7 +133,7 @@ namespace sender { // s-buttons.ts
             n_Funktion = eFunktion.mc_mb // Funktion weiter schalten
 
         else {
-            a_Schalter[eSchalter.AB] = !a_Schalter[eSchalter.AB]
+            a_Schalter[eSchalter.AB] = !a_Schalter[eSchalter.AB] // Standardwert immer wechseln true-false
             n_Funktion = eFunktion.m0_s0 // Standardwert immer Fahren und Lenken
             n_ServoWinkelButtonAB = 16
         }
