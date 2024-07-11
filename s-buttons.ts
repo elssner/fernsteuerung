@@ -55,7 +55,7 @@ namespace sender { // s-buttons.ts
             a_ButtonAB_Switch[eButtonAB_Switch.B] = false // Beispiel noch nicht aktiv senden; erst nach B geklickt
 
             if (n_ButtonAB_Counter < 3) // zählt bis 3, dann 1
-                n_ButtonAB_Counter++
+                n_ButtonAB_Counter += 1
             else
                 n_ButtonAB_Counter = 1
         }
