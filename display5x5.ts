@@ -70,8 +70,8 @@ namespace radio { // dispaly5x5.ts
                 if (bin.length < 2 && getaktiviert(buffer, e3aktiviert.md)) {
                     bin.push(buffer[eBufferPointer.md]) // Motor MD
 
-                    if (bin.length < 2) // offset 17 (Servo) enthält Callibot Beispiel Nummer
-                        bin.push(buffer[eBufferPointer.md + eBufferOffset.b1_Servo] & 0x1F)
+                  //  if (bin.length < 2) // offset 17 (Servo) enthält Callibot Beispiel Nummer
+                        bin.push(buffer[eBufferPointer.md + eBufferOffset.b1_Servo])// & 0x1F
                 }
 
                 if (bin.length >= 1)
