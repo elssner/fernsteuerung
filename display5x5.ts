@@ -71,7 +71,7 @@ namespace radio { // dispaly5x5.ts
                     bin.push(buffer[eBufferPointer.md]) // Motor MD
 
                     if (bin.length < 2) // offset 17 (Servo) enthält Callibot Beispiel Nummer
-                        zeigeBINx4Servo(buffer[eBufferPointer.md + eBufferOffset.b1_Servo] & 0x1F)
+                        bin.push(buffer[eBufferPointer.md + eBufferOffset.b1_Servo] & 0x1F)
                 }
 
                 if (bin.length >= 1)
