@@ -52,7 +52,7 @@ namespace cb2 { // c-callibot.ts 005F7F
 
 
     //% group="Motor"
-    //% block="fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=2
+    //% block="fahren (1 ↓ 128 ↑ 255) %x1_128_255 lenken (1 ↖ 16 ↗ 31) %y1_16_31 || (10\\%..90\\%) %prozent" weight=4
     //% x1_128_255.min=1 x1_128_255.max=255 x1_128_255.defl=128 
     //% y1_16_31.min=1 y1_16_31.max=31 y1_16_31.defl=16
     //% prozent.min=10 prozent.max=90 prozent.defl=50
@@ -113,7 +113,7 @@ namespace cb2 { // c-callibot.ts 005F7F
     }
 
     //% group="Motor"
-    //% block="Motoren (1 ↓ 128 ↑ 255) links %m1_1_128_255 rechts %m2_1_128_255" weight=1
+    //% block="Motoren (1 ↓ 128 ↑ 255) links %m1_1_128_255 rechts %m2_1_128_255" weight=3
     //% m1_1_128_255.min=0 m1_1_128_255.max=255 m1_1_128_255.defl=0
     //% m2_1_128_255.min=0 m2_1_128_255.max=255 m2_1_128_255.defl=0
     export function writeMotoren128(m1_1_128_255: number, m2_1_128_255: number) {
@@ -164,7 +164,21 @@ namespace cb2 { // c-callibot.ts 005F7F
     }
 
 
+    //% group="Motor"
+    //% block="Motoren Stop" weight=1
+    export function writeMotorenStop() {
+        let setMotorBuffer = Buffer.create(6)
+        setMotorBuffer[0] = eRegister.SET_MOTOR   // 2
+        setMotorBuffer[1] = 3 // ec2Motor.beide     // 3
+        setMotorBuffer.fill(0, 2)
 
+        n_x1_128_255 = undefined
+        n_y1_16_31 = undefined
+        n_m1_1_128_255 = undefined
+        n_m2_1_128_255 = undefined
+
+        i2cWriteBuffer(setMotorBuffer)
+    }
 
 
     // ========== group="LED"
