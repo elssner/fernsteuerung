@@ -1,1 +1,4 @@
-// Gib deinen Code hier ein
+
+namespace radio { // blue-v3.ts
+
+} // blue-v3.ts
