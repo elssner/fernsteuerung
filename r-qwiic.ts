@@ -1,6 +1,6 @@
 
 namespace receiver  // r-qwiic.ts
-/*
+/* 008F3F
 SparkFun Qwiic Ultrasonic Distance Sensor (HC-SR04)
     https://learn.sparkfun.com/tutorials/qwiic-ultrasonic-distance-sensor-hc-sr04-hookup-guide
     
@@ -18,7 +18,7 @@ SparkFun Qwiic Ultrasonic Distance Sensor (HC-SR04)
 
     let n_QwiicRelayConnected = true // Qwiic Modul ist angesteckt
 
-    //% group="SparkFun Qwiic Single Relay (I²C: 0x19)" subcategory="Qwiic" color=#008F3F
+    //% group="SparkFun Qwiic Single Relay (I²C: 0x19)" subcategory="Qwiic" color=#5FA38F
     //% block="Q Relay (Kran Elektromagnet) %pOn"
     //% pOn.shadow="toggleOnOff"
     export function writeQwiicRelay(pOn: boolean) {
@@ -36,7 +36,7 @@ SparkFun Qwiic Ultrasonic Distance Sensor (HC-SR04)
     let n_QwiicUltrasonic_mm = 0
 
 
-    //% group="Ultrasonic Distance Sensor (I²C: 0x00)" subcategory="Qwiic" color=#008F3F
+    //% group="Ultrasonic Distance Sensor (I²C: 0x00)" subcategory="Qwiic" color=#5FA38F
     //% block="Q Ultraschall Sensor einlesen || i2c %i2c " weight=8
     //% i2c.defl=receiver.eI2CQwiicUltrasonic.x00
     export function readQwiicUltrasonic(i2c = eI2CQwiicUltrasonic.x00) { // SLAVE_BROADCAST_ADDR 0x00  //default address
@@ -56,7 +56,7 @@ SparkFun Qwiic Ultrasonic Distance Sensor (HC-SR04)
 
     // export enum eDist { cm, mm }
 
-    //% group="Ultrasonic Distance Sensor (I²C: 0x00)" subcategory="Qwiic" color=#008F3F
+    //% group="Ultrasonic Distance Sensor (I²C: 0x00)" subcategory="Qwiic" color=#5FA38F
     //% block="Q Abstand cm || I²C %i2c" weight=3
     // mm.shadow="toggleYesNo"
     export function getQwiicUltrasonic(i2c?: eI2CQwiicUltrasonic) {

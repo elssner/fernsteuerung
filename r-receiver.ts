@@ -1,6 +1,7 @@
-//% color=#008272 icon="\uf012" block="Empfänger" weight=94
+//% color=#00A38F icon="\uf012" block="Empfänger" weight=94
 namespace receiver { // r-receiver.ts
     //radio: color=#E3008C weight=96 icon="\uf012" groups='["Group", "Broadcast", "Send", "Receive"]'
+//color=#008272 
 
     export enum eHardware { // === NICHT DIE ZAHLENWERTE ÄNDERN, das ist der Index für die Pins, Funkgruppe, ===
         //% block="Maker Kit Car (Calliope v3)"
