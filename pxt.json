@@ -33,7 +33,8 @@
         "c-callibot.ts",
         "c-beispiele.ts",
         "r_callibot.ts",
-        "r_callibot-enums.ts"
+        "r_callibot-enums.ts",
+        "blue-v3.ts"
     ],
     "testFiles": [
         "test.ts"
