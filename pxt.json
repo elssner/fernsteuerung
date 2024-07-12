@@ -11,6 +11,7 @@
         "main.ts",
         "README.md",
         "bluetooth.ts",
+        "blue-v3.ts",
         "datenpaket.ts",
         "display5x5.ts",
         "enums.ts",
@@ -33,14 +34,14 @@
         "c-callibot.ts",
         "c-beispiele.ts",
         "r_callibot.ts",
-        "r_callibot-enums.ts",
-        "blue-v3.ts"
+        "r_callibot-enums.ts"
     ],
     "testFiles": [
         "test.ts"
     ],
     "fileDependencies": {
-        "r-calliope-v3.ts": "v3"
+        "r-calliope-v3.ts": "v3",
+        "blue-v3.ts": "!v3"
     },
     "targetVersions": {
         "target": "4.0.29",
