@@ -1,10 +1,10 @@
 {
     "name": "fernsteuerung",
-    "version": "0.8.2",
+    "version": "0.7.32",
     "description": "",
     "dependencies": {
         "core": "*",
-        "radio4": "github:calliope-net/radio#v0.0.1"
+        "radio": "*"
     },
     "files": [
         "main.blocks",
