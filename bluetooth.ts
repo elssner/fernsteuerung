@@ -218,16 +218,16 @@ namespace radio { // bluetooth.ts
     // ========== StorageModell offset 1
 
     export function setStorageModell(pModell: number) {
-        n_StorageModell = pModell
+        //n_StorageModell = pModell
         a_StorageBuffer[eStorageBuffer.modell] = pModell
     }
 
-    let n_StorageModell: number // lokaler Speicher, um nicht immer aus Storage zu lesen
+    //let n_StorageModell: number // lokaler Speicher, um nicht immer aus Storage zu lesen
 
     export function getStorageModell() {
-        if (n_StorageModell == undefined)
-            n_StorageModell = a_StorageBuffer[eStorageBuffer.modell]
-        return n_StorageModell
+        //if (n_StorageModell == undefined)
+        return a_StorageBuffer[eStorageBuffer.modell] // liest 8 Bit aus dem Buffer, nicht aus dem Flash
+        //return n_StorageModell
     }
 
 
