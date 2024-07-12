@@ -4,7 +4,7 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "radio": "*"
+        "funk": "*"
     },
     "files": [
         "main.blocks",
@@ -44,7 +44,7 @@
         "blue-v3.ts": "!v3"
     },
     "targetVersions": {
-        "target": "4.0.29",
+        "target": "6.0.40",
         "targetId": "calliopemini"
     },
     "supportedTargets": [
