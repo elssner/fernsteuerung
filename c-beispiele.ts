@@ -7,15 +7,16 @@ namespace cb2 { // c-beispiele.ts
 
 
     //% group="1 Spurfolger (1 ↓ 128 ↑ 255)" subcategory=Beispiele
-    //% block="Spurfolger Motoren %motoren lenkender Motor %langsamer Abstand %stop cm" weight=2
+    //% block="Spurfolger Motoren %motoren lenkender Motor %langsamer Stop %stopbeiabstand bei Abstand < (cm) %abstand" weight=2
     //% motoren.shadow=radio_speedPicker
     //% langsamer.shadow=radio_speedPicker
-    //% stop.min=0 stop.max=50 stop.defl=10
-    export function beispielSpurfolger(motoren: number, langsamer: number, stop: number) {
+    //% stopbeiabstand.shadow=toggleYesNo
+    //% abstand.min=0 abstand.max=50 abstand.defl=15
+    export function beispielSpurfolger(motoren: number, langsamer: number, stopbeiabstand: boolean, abstand: number) {
 
-        if (readUltraschallAbstand() < stop) { //  if (this.bitINPUT_US(eVergleich.lt, stop)) {
-            writeMotoren128(128, 128)//   setMotoren0Prozent(0, 0)
-            return false
+        if (stopbeiabstand && (readUltraschallAbstand() < abstand)) { //  if (this.bitINPUT_US(eVergleich.lt, stop)) {
+            writeMotorenStop()
+            //return false
         } else {
 
             if (readSpursensor(eDH.dunkel, eDH.dunkel, eI2C.x21)) { //     if (this.bitINPUTS(calli2bot.eINPUTS.sp0)) {
@@ -25,9 +26,10 @@ namespace cb2 { // c-beispiele.ts
             } else {
                 writeMotoren128(langsamer, 128)//      setMotoren0Prozent(pwm2, 0)
             }
-            return true
+            //return true
         }
     }
+
 
 
     // blockId=cb2_speedPicker block="%speed" blockHidden=true
