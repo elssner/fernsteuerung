@@ -4,7 +4,7 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "radio": "*"
+        "radio": "github:calliope-net/radio#9c5e104cd018a17ee21d471e87724be434f97658"
     },
     "files": [
         "main.blocks",
@@ -48,5 +48,5 @@
     "supportedTargets": [
         "calliopemini"
     ],
-    "preferredEditor": "tsprj"
+    "preferredEditor": "blocksprj"
 }
