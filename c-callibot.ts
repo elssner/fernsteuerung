@@ -405,7 +405,7 @@ namespace cb2 { // c-callibot.ts 005F7F
             n_Callibot2_x22Connected = pins.i2cWriteBuffer(eI2C.x22, bu) == 0
 
             if (!n_Callibot2_x22Connected)
-                basic.showNumber(eI2C.x22)
+                radio.zeigeHex(eI2C.x22)
         }
         return n_Callibot2_x22Connected
     }
